@@ -2,30 +2,31 @@ package AST;
 
 public class OperationNode extends ExpressionNode {
 	private Object operand;
-	private ExpressionNode op1 = null;
-	private ExpressionNode op2 = null;
+	private ExpressionNode left = null;
+	private ExpressionNode right = null;
 
 	public OperationNode(Object operand) {
 		this.operand = operand;
 	}
 
 	public ExpressionNode getLeftOperand() {
-		return op1;
+		return left;
 	}
 
 	public ExpressionNode getRightOperand() {
-		return op2;
+		return right;
 	}
+
 	public Object getOperand() {
 		return operand;
 	}
 
-	public void setLeftOperand(ExpressionNode op1) {
-		this.op1 = op1;
+	public void setLeftOperand(ExpressionNode left) {
+		this.left = left;
 	}
 
-	public void setRightOperand(ExpressionNode op2) {
-		this.op2 = op2;
+	public void setRightOperand(ExpressionNode right) {
+		this.right = right;
 	}
 
 }

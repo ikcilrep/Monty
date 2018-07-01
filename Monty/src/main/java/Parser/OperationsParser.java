@@ -85,23 +85,23 @@ public class OperationsParser {
 		}
 		return null;
 	}
-
+	/*
+	 *	Parses list of tokens to abstract syntax tree.
+	 */
 	public static OperationNode parse(List<MontyToken> operations, DataTypes dataType) {
 		var stack = new Stack<OperationNode>();
 		for (MontyToken token : operations) {
-			var node = (OperationNode) null;
+			var node = new OperationNode(token.getText());
 			switch (token.getType()) {
-			case OPERATOR:
-				node = new OperationNode(token.getText());
+			case OPERATOR: // If token is operator
 				if (!token.getText().equals("!"))
 					node.setRightOperand(stack.pop());
 				node.setLeftOperand(stack.pop());
 				break;
-			case IDENTIFIER:
+			case IDENTIFIER: // If token is identifier
 				node = new OperationNode(new VariableNode(token.getText()));
 				break;
 			default:
-				node = new OperationNode(toDataType(dataType, token));
 				break;
 			}
 			stack.push(node);
