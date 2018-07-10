@@ -4,9 +4,10 @@ public class OperationNode extends ExpressionNode {
 	private Object operand;
 	private ExpressionNode left = null;
 	private ExpressionNode right = null;
-
+	
 	public OperationNode(Object operand) {
 		this.operand = operand;
+		this.nodeType = NodeTypes.OPERATION;
 	}
 
 	public ExpressionNode getLeftOperand() {
