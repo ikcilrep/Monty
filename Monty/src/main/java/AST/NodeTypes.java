@@ -1,7 +1,8 @@
 package AST;
 
 public enum NodeTypes {
-	CONSTANT,
+	OPERATION,
+	FUNCTION_BLOCK,
 	VARIABLE,
 	VARIABLE_DECLARATION;
 }
