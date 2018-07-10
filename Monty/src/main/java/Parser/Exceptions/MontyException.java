@@ -1,4 +1,4 @@
-package Monty;
+package Parser.Exceptions;
 
 public class MontyException {
 	protected MontyException(String message) {

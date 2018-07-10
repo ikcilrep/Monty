@@ -1,7 +1,5 @@
 package Parser.Exceptions;
 
-import Monty.MontyException;
-
 public class UnknownLiteralException extends MontyException {
 
 
