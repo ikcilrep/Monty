@@ -1,9 +1,9 @@
-package Parser;
+package parser;
 
 import java.util.ArrayList;
 
-import AST.VariableDeclarationNode;
-import Parser.Exceptions.NoSuchVariableException;
+import ast.declarations.VariableDeclarationNode;
+import parser.exceptions.NoSuchVariableException;
 
 public class Declared {
 	public static ArrayList<VariableDeclarationNode> globalVariables = new ArrayList<VariableDeclarationNode>();

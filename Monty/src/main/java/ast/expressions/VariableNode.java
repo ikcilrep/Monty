@@ -1,4 +1,6 @@
-package AST;
+package ast.expressions;
+
+import ast.NodeTypes;
 
 public class VariableNode extends ExpressionNode {
 	private String name;

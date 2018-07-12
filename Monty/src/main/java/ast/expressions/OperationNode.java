@@ -1,4 +1,6 @@
-package AST;
+package ast.expressions;
+
+import ast.NodeTypes;
 
 public class OperationNode extends ExpressionNode {
 	private Object operand;

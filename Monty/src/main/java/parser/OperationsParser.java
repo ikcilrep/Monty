@@ -1,13 +1,17 @@
-package Parser;
+package parser;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import AST.OperationNode;
-import AST.VariableNode;
-import Lexer.MontyToken;
-import Parser.Exceptions.AmbiguousResultException;
-import Parser.Exceptions.UnknownLiteralException;
+import ast.expressions.ExpressionNode;
+//import ast.expressions.FunctionCallNode;
+import ast.expressions.OperationNode;
+import ast.expressions.VariableNode;
+import lexer.MontyToken;
+import lexer.TokenTypes;
+import parser.exceptions.AmbiguousResultException;
+import parser.exceptions.UnknownLiteralException;
 
 public class OperationsParser {
 
@@ -85,12 +89,29 @@ public class OperationsParser {
 		}
 		return null;
 	}
+
+	public static List<ArrayList<MontyToken>> split(TokenTypes splitOnIt, List<MontyToken> list) {
+		ArrayList<ArrayList<MontyToken>> newList = new ArrayList<>();
+		int i = 0;
+		for (MontyToken t : list) {
+			if (t.getText().equals(splitOnIt)) {
+				newList.add(new ArrayList<MontyToken>());
+				i++;
+			} else
+				newList.get(i).add(t);
+
+		}
+		return newList;
+	}
+
 	/*
-	 *	Parses list of tokens to abstract syntax tree.
+	 * Parses list of tokens to abstract syntax tree.
 	 */
-	public static OperationNode parse(List<MontyToken> operations, DataTypes dataType) {
+	public static ExpressionNode parse(List<MontyToken> operations, DataTypes dataType) {
 		var stack = new Stack<OperationNode>();
-		for (MontyToken token : operations) {
+
+		for (int i = 0; i < operations.size(); i++) {
+			MontyToken token = operations.get(i);
 			var node = new OperationNode(token.getText());
 			switch (token.getType()) {
 			case OPERATOR: // If token is operator
@@ -99,15 +120,24 @@ public class OperationsParser {
 				node.setLeftOperand(stack.pop());
 				break;
 			case IDENTIFIER: // If token is identifier
+				/*
+				 * if (operations.get(++i).equals(TokenTypes.BRACKET)) { var arguments = new
+				 * ArrayList<ExpressionNode>(); int j; for (j = ++i;
+				 * !operations.get(j).equals(TokenTypes.BRACKET); ++j, ++i); for
+				 * (List<MontyToken> splited : split(TokenTypes.COMMA,operations.subList(i, j)))
+				 * { arguments.add(parse(splited, dataType)); } node = new OperationNode(new
+				 * FunctionCallNode(name)) } else
+				 */
 				node = new OperationNode(new VariableNode(token.getText()));
 				break;
 			default:
 				break;
 			}
 			stack.push(node);
+			i++;
 		}
 		if (stack.size() != 1)
-			new AmbiguousResultException("Ambiguous result for this operation: " + Tokens.getText(operations)+'.');
+			new AmbiguousResultException("Ambiguous result for this operation: " + Tokens.getText(operations) + '.');
 		return stack.pop();
 	}
 }

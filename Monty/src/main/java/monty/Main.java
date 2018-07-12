@@ -1,12 +1,13 @@
-package Monty;
+package monty;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
-import Lexer.LexerConfig;
-import Lexer.MontyToken;
+
+import lexer.LexerConfig;
+import lexer.MontyToken;
 
 
 public class Main {
@@ -33,6 +34,6 @@ public class Main {
 		var lb = LexerConfig.getLexer(code.toString());
 
 		List<MontyToken> tokens = lb.getAllTokens();
-		Parser.Parser.parse(tokens);
+		parser.Parser.parse(tokens);
 	}
 }

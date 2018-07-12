@@ -1,6 +1,7 @@
-package AST;
+package ast.declarations;
 
-import Parser.DataTypes;
+import ast.NodeTypes;
+import parser.DataTypes;
 
 public class VariableDeclarationNode extends DeclarationNode {
 

@@ -1,4 +1,4 @@
-package Lexer;
+package lexer;
 import LanguageBuilder.Token;
 
 public class MontyToken implements Token<MontyToken>, Cloneable{

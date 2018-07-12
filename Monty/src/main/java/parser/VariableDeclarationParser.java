@@ -1,9 +1,9 @@
-package Parser;
+package parser;
 
 import java.util.List;
 
-import AST.VariableDeclarationNode;
-import Lexer.MontyToken;
+import ast.declarations.VariableDeclarationNode;
+import lexer.MontyToken;
 
 public class VariableDeclarationParser {
 	public static VariableDeclarationNode parse(List<MontyToken> declaration) {

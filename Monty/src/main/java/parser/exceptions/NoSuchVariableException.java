@@ -1,4 +1,4 @@
-package Parser.Exceptions;
+package parser.exceptions;
 
 public class NoSuchVariableException extends MontyException {
 

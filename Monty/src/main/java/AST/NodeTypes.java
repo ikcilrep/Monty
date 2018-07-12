@@ -1,8 +1,0 @@
-package AST;
-
-public enum NodeTypes {
-	OPERATION,
-	FUNCTION_BLOCK,
-	VARIABLE,
-	VARIABLE_DECLARATION;
-}

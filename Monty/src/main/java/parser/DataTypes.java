@@ -1,4 +1,4 @@
-package Parser;
+package parser;
 
 public enum DataTypes {
 	BOOLEAN,

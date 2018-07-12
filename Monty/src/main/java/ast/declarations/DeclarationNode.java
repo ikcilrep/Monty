@@ -1,6 +1,7 @@
-package AST;
+package ast.declarations;
 
-import Parser.DataTypes;
+import ast.Node;
+import parser.DataTypes;
 
 public abstract class DeclarationNode extends Node {
 	protected String name;

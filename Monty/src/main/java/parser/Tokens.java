@@ -1,8 +1,8 @@
-package Parser;
+package parser;
 
 import java.util.List;
 
-import Lexer.MontyToken;
+import lexer.MontyToken;
 
 public class Tokens {
 	public static String getText(List<MontyToken> tokens) {

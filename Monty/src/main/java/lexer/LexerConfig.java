@@ -1,4 +1,4 @@
-package Lexer;
+package lexer;
 
 import LanguageBuilder.LexerBuilder;
 
@@ -7,6 +7,7 @@ public class LexerConfig {
 		var lb = new LexerBuilder<MontyToken>(code);
 		lb.setCommentChar('#', '\n');
 		lb.setKeyword("var", new MontyToken(TokenTypes.VAR_KEYWORD));
+		lb.setKeyword("func", new MontyToken(TokenTypes.FUNC_KEYWORD));
 		lb.setKeyword("print", new MontyToken(TokenTypes.PRINT_KEYWORD));
 		lb.setKeyword("int", new MontyToken(TokenTypes.INTEGER_KEYWORD));
 		lb.setKeyword("float", new MontyToken(TokenTypes.FLOAT_KEYWORD));
@@ -17,6 +18,7 @@ public class LexerConfig {
 		lb.setOnComparisonOperator(new MontyToken(TokenTypes.OPERATOR));
 		lb.setOnLogicalOperator(new MontyToken(TokenTypes.OPERATOR));
 		lb.setOnComma(new MontyToken(TokenTypes.COMMA));
+		lb.setOnBracket(new MontyToken(TokenTypes.BRACKET));
 		lb.setOnIdentifier(new MontyToken(TokenTypes.IDENTIFIER));
 		lb.setOnSemicolon(new MontyToken(TokenTypes.SEMICOLON));
 		lb.setOnFloatLiteral(new MontyToken(TokenTypes.FLOAT_LITERAL));
