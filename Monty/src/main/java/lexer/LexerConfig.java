@@ -5,9 +5,10 @@ import LanguageBuilder.LexerBuilder;
 public class LexerConfig {
 	public static LexerBuilder<MontyToken> getLexer(String code) {
 		var lb = new LexerBuilder<MontyToken>(code);
-		lb.setCommentChar('#', '\n');
+		lb.setCommentChar('\'', '`');
 		lb.setKeyword("var", new MontyToken(TokenTypes.VAR_KEYWORD));
 		lb.setKeyword("func", new MontyToken(TokenTypes.FUNC_KEYWORD));
+		lb.setKeyword("return", new MontyToken(TokenTypes.RETURN_KEYWORD));
 		lb.setKeyword("print", new MontyToken(TokenTypes.PRINT_KEYWORD));
 		lb.setKeyword("int", new MontyToken(TokenTypes.INTEGER_KEYWORD));
 		lb.setKeyword("float", new MontyToken(TokenTypes.FLOAT_KEYWORD));
