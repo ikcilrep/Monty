@@ -8,6 +8,7 @@ import java.util.List;
 
 import lexer.LexerConfig;
 import lexer.MontyToken;
+import parser.parsing.Parser;
 
 
 public class Main {
@@ -34,6 +35,6 @@ public class Main {
 		var lb = LexerConfig.getLexer(code.toString());
 
 		List<MontyToken> tokens = lb.getAllTokens();
-		parser.Parser.parse(tokens);
+		Parser.parse(tokens);
 	}
 }
