@@ -74,7 +74,7 @@ public class ExpressionParser {
 					for (List<MontyToken> ts : split(TokenTypes.COMMA, tokens.subList(i + 2, j - 1))) {
 						((FunctionCallNode) node).addArgument(parse(ts));
 					}
-					i = j;
+					i = j+1;
 				} else
 					node = new VariableNode(token.getText());
 				break;
@@ -82,12 +82,11 @@ public class ExpressionParser {
 				node = new ConstantNode(token.getText(), Tokens.getDataType(token.getType()));
 				break;
 			}
-
 			stack.push(node);
 		}
 
 		if (stack.size() != 1)
-			new MontyException("Ambiguous result for this operation:\t" + Tokens.getText(tokens) + '.');
+			new MontyException("Ambiguous result for this operation:\t" + Tokens.getText(tokens));
 		return stack.pop();
 	}
 
