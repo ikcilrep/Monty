@@ -1,9 +1,9 @@
-'func int sum (int a, int b);
+func int sum int a, float b;
     return a b +;
-end; `
+end;
 
 
-var int a sum(2,2) 2 + =;
+var int a sum(sum(2,3),2) 2 + =;
 print a;
 
 'This is comment.`
