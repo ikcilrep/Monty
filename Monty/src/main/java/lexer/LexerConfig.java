@@ -1,6 +1,6 @@
 package lexer;
 
-import LanguageBuilder.LexerBuilder;
+import lexer.lexerbuilder.LexerBuilder;
 
 public class LexerConfig {
 	public static LexerBuilder<MontyToken> getLexer(String code) {
