@@ -6,7 +6,6 @@ import ast.Node;
 import lexer.MontyToken;
 import lexer.TokenTypes;
 import parser.Identificator;
-import parser.Tokens;
 
 public class Parser {
 
@@ -18,6 +17,8 @@ public class Parser {
 					System.out.println("EXPRESSION!");
 				else if (Identificator.isPrintStatement(tokensBeforeSemicolon))
 					System.out.println("PRINT STATEMENT!");
+				else if (Identificator.isVariableDeclaration(tokensBeforeSemicolon))
+					System.out.println("VARIABLE DECLARATION!");
 				else if (Identificator.isReturnStatement(tokensBeforeSemicolon))
 					System.out.println("RETURN STATEMENT!");
 				tokensBeforeSemicolon.clear();
