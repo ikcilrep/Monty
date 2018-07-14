@@ -4,103 +4,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import ast.expressions.ConstantNode;
 import ast.expressions.ExpressionNode;
-//import ast.expressions.FunctionCallNode;
+import ast.expressions.FunctionCallNode;
 import ast.expressions.OperationNode;
 import ast.expressions.VariableNode;
 import lexer.MontyToken;
 import lexer.TokenTypes;
-import parser.DataTypes;
 import parser.MontyException;
 import parser.Tokens;
 
 public class ExpressionParser {
 
-	public static Object toDataType(DataTypes dataType, MontyToken token) {
-		switch (dataType) {
-		case INTEGER:
-			switch (token.getType()) {
-			case INTEGER_LITERAL:
-				return Integer.parseInt(token.getText());
-			case FLOAT_LITERAL:
-				return (int) Float.parseFloat(token.getText());
-			case BOOLEAN_LITERAL:
-				if (token.getText().equals("true"))
-					return 1;
-				else if (token.getText().equals("false"))
-					return 0;
-			case STRING_LITERAL:
-				if (token.getText().matches("[+-]?[0-9]+"))
-					return Integer.parseInt(token.getText());
-				else
-					new MontyException("Unknown literal for this type:\t" + token.getText() + '.');
-
-			default:
-				new MontyException("Unknown literal for this type:\t" + token.getText() + '.');
-			}
-		case FLOAT:
-			switch (token.getType()) {
-			case INTEGER_LITERAL:
-				return (float) Integer.parseInt(token.getText());
-			case FLOAT_LITERAL:
-				return Float.parseFloat(token.getText());
-			case BOOLEAN_LITERAL:
-				if (token.getText().equals("true"))
-					return 1.0;
-				else if (token.getText().equals("false"))
-					return 0.0;
-			case STRING_LITERAL:
-				if (token.getText().matches("[+-]?[0-9]+\\.[0-9]+"))
-					return Float.parseFloat(token.getText());
-				else
-					new MontyException("Unknown literal for this type:\t" + token.getText() + '.');
-			default:
-				new MontyException("Unknown literal for this type:\t" + token.getText() + '.');
-			}
-		case STRING:
-			return token.getText();
-		case BOOLEAN:
-			switch (token.getType()) {
-			case INTEGER_LITERAL:
-				if (Integer.parseInt(token.getText()) > 0)
-					return true;
-				else
-					return false;
-			case FLOAT_LITERAL:
-				if (Float.parseFloat(token.getText()) > 0.0)
-					return true;
-				else
-					return false;
-			case BOOLEAN_LITERAL:
-				if (token.getText().equals("true"))
-					return true;
-				else if (token.getText().equals("false"))
-					return false;
-			case STRING_LITERAL:
-				if (token.getText().equals("true"))
-					return true;
-				else if (token.getText().equals("false"))
-					return false;
-			default:
-				new MontyException("Unknown literal for this type:\t" + token.getText() + '.');
-			}
-		default:
-			new MontyException("Unknown literal:\t" + token.getText() + '.');
-
-		}
-		return null;
-	}
-
 	public static List<ArrayList<MontyToken>> split(TokenTypes splitOnIt, List<MontyToken> list) {
 		ArrayList<ArrayList<MontyToken>> newList = new ArrayList<>();
+		newList.add(new ArrayList<MontyToken>());
 		int i = 0;
+		int bracketCounter = 1;
 		for (MontyToken t : list) {
-			if (t.getText().equals(splitOnIt.toString())) {
+			if (t.getType().equals(TokenTypes.BRACKET))
+				bracketCounter++;
+			if (t.getType().equals(splitOnIt) && bracketCounter % 2 != 0) {
 				newList.add(new ArrayList<MontyToken>());
 				i++;
 			} else
 				newList.get(i).add(t);
-
 		}
 		return newList;
 	}
@@ -108,28 +36,56 @@ public class ExpressionParser {
 	/*
 	 * Parses list of tokens to abstract syntax tree.
 	 */
-	public static ExpressionNode parse(List<MontyToken> tokens, DataTypes dataType) {
-		var stack = new Stack<OperationNode>();
-
+	public static ExpressionNode parse(List<MontyToken> tokens) {
+		var stack = new Stack<ExpressionNode>();
 		for (int i = 0; i < tokens.size(); i++) {
 			MontyToken token = tokens.get(i);
-			var node = new OperationNode(token.getText());
+			var node = (ExpressionNode) null;
 			switch (token.getType()) {
 			case OPERATOR: // If token is operator
+				node = new OperationNode(token.getText());
 				if (!token.getText().equals("!"))
-					node.setRightOperand(stack.pop());
-				node.setLeftOperand(stack.pop());
+					((OperationNode) node).setRightOperand(stack.pop());
+				((OperationNode) node).setLeftOperand(stack.pop());
 				break;
 			case IDENTIFIER: // If token is identifier
-
-				node = new OperationNode(new VariableNode(token.getText()));
+				if (i + 1 < tokens.size() && tokens.get(i + 1).getType().equals(TokenTypes.BRACKET)) {
+					int j = 0;
+					int openBracketCounter = 1;
+					int closeBracketCounter = 0;
+					for (j = i + 2; openBracketCounter > closeBracketCounter; j++) {
+						if (j >= tokens.size()) {
+							if (openBracketCounter > closeBracketCounter)
+								new MontyException("Expected closing bracket:\t"
+										+ Tokens.getText(tokens.subList(i + 1, tokens.size())));
+						}
+						switch (tokens.get(j).getText()) {
+						case "(":
+							openBracketCounter++;
+							break;
+						case ")":
+							closeBracketCounter++;
+							break;
+						default:
+							break;
+						}
+					}
+					node = new FunctionCallNode(token.getText());
+					for (List<MontyToken> ts : split(TokenTypes.COMMA, tokens.subList(i + 2, j - 1))) {
+						((FunctionCallNode) node).addArgument(parse(ts));
+					}
+					i = j;
+				} else
+					node = new VariableNode(token.getText());
 				break;
 			default:
+				node = new ConstantNode(token.getText(), Tokens.getDataType(token.getType()));
 				break;
 			}
+
 			stack.push(node);
-			i++;
 		}
+
 		if (stack.size() != 1)
 			new MontyException("Ambiguous result for this operation:\t" + Tokens.getText(tokens) + '.');
 		return stack.pop();
