@@ -5,6 +5,7 @@ import parser.DataTypes;
 
 public abstract class DeclarationNode extends Node {
 	protected String name;
+	protected DataTypes type;
 
 	public String getName() {
 		return name;
@@ -21,8 +22,6 @@ public abstract class DeclarationNode extends Node {
 	public void setType(DataTypes type) {
 		this.type = type;
 	}
-
-	protected DataTypes type;
 
 	public DeclarationNode(String name, DataTypes type) {
 		this.name = name;

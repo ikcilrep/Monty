@@ -18,7 +18,7 @@ public class Block extends Node {
 		return children;
 	}
 
-	public void addChildren(Node child) {
+	public void addChild(Node child) {
 		children.add(child);
 	}
 }
