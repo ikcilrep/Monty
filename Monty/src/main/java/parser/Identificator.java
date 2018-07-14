@@ -79,6 +79,9 @@ public abstract class Identificator {
 		var expression = tokens.subList(2, tokens.size());
 		if (!isExpression(expression))
 			new MontyException("Wrong expression after data type declaration:\t" + Tokens.getText(expression));
+		if (!tokens.get(2).getType().equals(TokenTypes.IDENTIFIER))
+			new MontyException("Expected identifier after data type declaration:\t" + Tokens.getText(expression));
+
 		return true;
 	}
 }
