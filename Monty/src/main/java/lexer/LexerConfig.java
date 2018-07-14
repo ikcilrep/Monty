@@ -7,6 +7,7 @@ public class LexerConfig {
 		var lb = new LexerBuilder<MontyToken>(code);
 		lb.setCommentChar('\'', '`');
 		lb.setKeyword("var", new MontyToken(TokenTypes.VAR_KEYWORD));
+		lb.setKeyword("end", new MontyToken(TokenTypes.END_KEYWORD));
 		lb.setKeyword("func", new MontyToken(TokenTypes.FUNC_KEYWORD));
 		lb.setKeyword("return", new MontyToken(TokenTypes.RETURN_KEYWORD));
 		lb.setKeyword("print", new MontyToken(TokenTypes.PRINT_KEYWORD));
