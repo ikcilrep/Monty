@@ -23,11 +23,11 @@ public abstract class Identificator {
 				break;
 			case BRACKET:
 				if (last.getType().equals(TokenTypes.COMMA) || last.equals(null))
-					new MontyException("Unexpected comma before bracket:\t" + Tokens.getText(tokens.subList(0, i+1)));
+					new MontyException("Unexpected comma before bracket:\t" + Tokens.getText(tokens.subList(0, i + 1)));
 				break;
 			case COMMA:
 				if ((last.getType().equals(TokenTypes.BRACKET) && last.getText().equals("(")) || last.equals(null))
-					new MontyException("Unexpected bracket before comma:\t" + Tokens.getText(tokens.subList(0, i+1)));
+					new MontyException("Unexpected bracket before comma:\t" + Tokens.getText(tokens.subList(0, i + 1)));
 				break;
 			default:
 				return false;
