@@ -3,6 +3,7 @@ package parser.parsing;
 import java.util.List;
 
 import ast.Block;
+import ast.NodeTypes;
 import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.ExpressionNode;
@@ -12,6 +13,7 @@ import ast.statements.ReturnStatementNode;
 import lexer.MontyToken;
 import lexer.TokenTypes;
 import parser.DataTypes;
+import parser.MontyException;
 import parser.Tokens;
 
 public abstract class AdderToBlock {
@@ -59,10 +61,18 @@ public abstract class AdderToBlock {
 	}
 
 	public static Block addIfStatement(Block block, List<MontyToken> tokens) {
-		var ifStatement =new IfStatementNode(ExpressionParser.parse(tokens.subList(1, tokens.size()))); 
-		ifStatement.setThenBody(new Block(block));	
+		var ifStatement = new IfStatementNode(block, ExpressionParser.parse(tokens.subList(1, tokens.size())));
 		block.addChild(ifStatement);
-		return ifStatement.getThenBody();
+		return ifStatement;
+
+	}
+
+	public static Block addElseStatement(Block block, List<MontyToken> tokens) {
+		if (!block.getNodeType().equals(NodeTypes.IF_STATEMENT))
+			new MontyException("Unexpected \"else\" keyword.");
+		var elseBlock = new Block(block.getParent());
+		((IfStatementNode) block).setElseBody(elseBlock);
+		return elseBlock;
 
 	}
 }
