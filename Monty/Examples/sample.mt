@@ -7,9 +7,9 @@ var int a sum(sum(2,3),2) 2 + =;
 
 if a 9 == ;
    a 8 =;
-'else;
+else if a 8 ==;
    a 7 =;
-end;`
+end;
 
 print a;
 
