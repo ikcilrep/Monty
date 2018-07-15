@@ -58,7 +58,7 @@ public abstract class Identificator {
 
 		if (!isFirstTokenReturnKeyword)
 			return false;
-		if (isFirstTokenReturnKeyword && tokens.size() > 1 && !isExpression(tokens.subList(1, tokens.size())))
+		if (tokens.size() > 1 && !isExpression(tokens.subList(1, tokens.size())))
 			new MontyException("Wrong expression after return keyword:\t" + Tokens.getText(tokens));
 		return true;
 	}
@@ -131,12 +131,23 @@ public abstract class Identificator {
 		return true;
 
 	}
-	
+
 	public static boolean isEndKeyword(List<MontyToken> tokens) {
 		if (!tokens.get(0).getType().equals(TokenTypes.END_KEYWORD))
 			return false;
 		if (tokens.size() > 1)
-			new MontyException("Nothing expected after end keyword:\t" + Tokens.getText(tokens));
+			new MontyException("Nothing expected after \"end\" keyword:\t" + Tokens.getText(tokens));
 		return true;
+	}
+
+	public static boolean isIfStatement(List<MontyToken> tokens) {
+		if (!tokens.get(0).getType().equals(TokenTypes.IF_KEYWORD))
+			return false;
+		if (tokens.size() == 1)
+			new MontyException("Expected expression after \"if\" keyword:\t" + Tokens.getText(tokens));
+		if (!isExpression(tokens.subList(1, tokens.size())))
+			new MontyException("Wrong expression after \"if\" keyword:\t" + Tokens.getText(tokens));
+		return true;
+
 	}
 }
