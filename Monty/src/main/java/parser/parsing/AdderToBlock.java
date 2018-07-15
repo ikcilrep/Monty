@@ -10,6 +10,7 @@ import ast.expressions.ExpressionNode;
 import ast.statements.IfStatementNode;
 import ast.statements.PrintStatementNode;
 import ast.statements.ReturnStatementNode;
+import ast.statements.WhileStatementNode;
 import lexer.MontyToken;
 import lexer.TokenTypes;
 import parser.DataTypes;
@@ -56,7 +57,7 @@ public abstract class AdderToBlock {
 				function.addParameter(new VariableDeclarationNode(name, type));
 		}
 		function.setBody(new Block(block));
-		block.addChild(function);
+		block.addFunction(function);
 		return function.getBody();
 	}
 
@@ -73,5 +74,13 @@ public abstract class AdderToBlock {
 		var elseBlock = new Block(block.getParent());
 		((IfStatementNode) block).setElseBody(elseBlock);
 		return elseBlock;
+	}
+
+	public static Block addWhileStatement(Block block, List<MontyToken> tokens) {
+		var whileStatement = new WhileStatementNode(ExpressionParser.parse(tokens.subList(1, tokens.size())));
+		whileStatement.setBody(new Block(block));
+		block.addChild(whileStatement);
+		return whileStatement.getBody();
+
 	}
 }
