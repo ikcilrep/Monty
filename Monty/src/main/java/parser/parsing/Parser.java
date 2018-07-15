@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ast.Block;
-import ast.Node;
 import lexer.MontyToken;
 import lexer.TokenTypes;
 import parser.Identificator;
@@ -12,7 +11,7 @@ import parser.MontyException;
 
 public class Parser {
 
-	public static Node parse(List<MontyToken> tokens) {
+	public static Block parse(List<MontyToken> tokens) {
 		var tokensBeforeSemicolon = new ArrayList<MontyToken>();
 		var block = new Block(null);
 		for (MontyToken token : tokens) {
@@ -37,6 +36,11 @@ public class Parser {
 				} else if (Identificator.isIfStatement(tokensBeforeSemicolon)) {
 					System.out.println("IF STATEMENT!");
 					block = AdderToBlock.addIfStatement(block, tokensBeforeSemicolon);
+				} else if (Identificator.isElseStatement(tokensBeforeSemicolon)) {
+					System.out.println("ELSE STATEMENT!");
+					block = AdderToBlock.addElseStatement(block, tokensBeforeSemicolon);
+					if (tokensBeforeSemicolon.size() > 1)
+						AdderToBlock.addIfStatement(block, tokensBeforeSemicolon.subList(1, tokensBeforeSemicolon.size()));
 				} else if (Identificator.isEndKeyword(tokensBeforeSemicolon)) {
 					var parent = block.getParent();
 					if (parent == null)
@@ -47,7 +51,8 @@ public class Parser {
 			} else
 				tokensBeforeSemicolon.add(token);
 		}
-		return null;
+		System.out.println(block.getChildren());
+		return block;
 
 	}
 }
