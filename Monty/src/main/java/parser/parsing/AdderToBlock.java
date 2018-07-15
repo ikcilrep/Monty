@@ -73,6 +73,5 @@ public abstract class AdderToBlock {
 		var elseBlock = new Block(block.getParent());
 		((IfStatementNode) block).setElseBody(elseBlock);
 		return elseBlock;
-
 	}
 }
