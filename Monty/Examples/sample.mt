@@ -9,6 +9,8 @@ if a 9 == ;
    a 8 =;
 else if a 8 ==;
    a 7 =;
+else if a 7 ==;
+   a 7 =;
 end;
 
 print a;
