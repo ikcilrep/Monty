@@ -7,7 +7,6 @@ import ast.Block;
 import ast.Node;
 import lexer.MontyToken;
 import lexer.TokenTypes;
-import parser.AdderToBlock;
 import parser.Identificator;
 import parser.MontyException;
 
@@ -34,7 +33,10 @@ public class Parser {
 					AdderToBlock.addReturnStatement(block, tokensBeforeSemicolon);
 				} else if (Identificator.isFunctionDeclaration(tokensBeforeSemicolon)) {
 					System.out.println("FUNCTION DECLARTION!");
-					block = AdderToBlock.addFunctionDeclaration(block, tokensBeforeSemicolon).getBody();
+					block = AdderToBlock.addFunctionDeclaration(block, tokensBeforeSemicolon);
+				} else if (Identificator.isIfStatement(tokensBeforeSemicolon)) {
+					System.out.println("IF STATEMENT!");
+					block = AdderToBlock.addIfStatement(block, tokensBeforeSemicolon);
 				} else if (Identificator.isEndKeyword(tokensBeforeSemicolon)) {
 					var parent = block.getParent();
 					if (parent == null)
