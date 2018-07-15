@@ -4,21 +4,16 @@ import ast.Block;
 import ast.NodeTypes;
 import ast.expressions.ExpressionNode;
 
-public class IfStatementNode extends StatementNode {
+public class IfStatementNode extends Block {
 	private ExpressionNode condition;
-	private Block thenBody;
 	private Block elseBody;
 	
-	public IfStatementNode(ExpressionNode condition) {
+	public IfStatementNode(Block parent, ExpressionNode condition) {
+		super(parent);
 		this.condition = condition;
 		super.nodeType = NodeTypes.IF_STATEMENT;
 	}
-	public Block getThenBody() {
-		return thenBody;
-	}
-	public void setThenBody(Block thenBody) {
-		this.thenBody = thenBody;
-	}
+
 	public Block getElseBody() {
 		return elseBody;
 	}
