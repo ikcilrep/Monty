@@ -150,4 +150,13 @@ public abstract class Identificator {
 		return true;
 
 	}
+	
+	public static boolean isElseStatement(List<MontyToken> tokens) {
+		if (!tokens.get(0).getType().equals(TokenTypes.ELSE_KEYWORD))
+			return false;
+		if (tokens.size() > 1 && !isIfStatement(tokens.subList(1, tokens.size())))
+			new MontyException("Expected if statement or nothing after \"else\" keyword:\t"+Tokens.getText(tokens));
+		return true;
+		
+	}
 }
