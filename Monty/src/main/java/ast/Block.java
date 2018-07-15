@@ -3,12 +3,14 @@ package ast;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 
 public class Block extends Node {
 	private ArrayList<Node> children = new ArrayList<>();
 	private Block parent;
 	HashMap<String, VariableDeclarationNode> variables = new HashMap<>();
+	HashMap<String, FunctionDeclarationNode> functions = new HashMap<>();
 
 	public Block(Block parent) {
 		this.parent = parent;
@@ -28,5 +30,9 @@ public class Block extends Node {
 
 	public void addVariable(VariableDeclarationNode variable) {
 		variables.put(variable.getName(), variable);
+	}
+	
+	public void addFunction(FunctionDeclarationNode variable) {
+		functions.put(variable.getName(), variable);
 	}
 }
