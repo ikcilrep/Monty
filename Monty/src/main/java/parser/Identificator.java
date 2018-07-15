@@ -159,4 +159,16 @@ public abstract class Identificator {
 		return true;
 		
 	}
+	
+	public static boolean isWhileStatement(List<MontyToken> tokens) {
+		if (!tokens.get(0).getType().equals(TokenTypes.WHILE_KEYWORD))
+			return false;
+		if (tokens.size() == 1)
+			new MontyException("Expected expression after \"while\" keyword:\t" + Tokens.getText(tokens));
+		if (!isExpression(tokens.subList(1, tokens.size())))
+			new MontyException("Wrong expression after \"while\" keyword:\t" + Tokens.getText(tokens));
+		return true;
+
+	}
+	
 }
