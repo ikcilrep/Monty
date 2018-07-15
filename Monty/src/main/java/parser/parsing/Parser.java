@@ -40,7 +40,11 @@ public class Parser {
 					System.out.println("ELSE STATEMENT!");
 					block = AdderToBlock.addElseStatement(block, tokensBeforeSemicolon);
 					if (tokensBeforeSemicolon.size() > 1)
-						block = AdderToBlock.addIfStatement(block, tokensBeforeSemicolon.subList(1, tokensBeforeSemicolon.size()));
+						block = AdderToBlock.addIfStatement(block,
+								tokensBeforeSemicolon.subList(1, tokensBeforeSemicolon.size()));
+				} else if (Identificator.isWhileStatement(tokensBeforeSemicolon)) {
+					System.out.println("WHILE STATEMENT!");
+					block = AdderToBlock.addWhileStatement(block, tokensBeforeSemicolon);
 				} else if (Identificator.isEndKeyword(tokensBeforeSemicolon)) {
 					var parent = block.getParent();
 					if (parent == null)
