@@ -6,10 +6,11 @@ import parser.DataTypes;
 
 public class PrintStatementNode extends StatementNode {
 	private OperationNode expression;
-
-	public PrintStatementNode(OperationNode expression) {
+	private DataTypes dataType = DataTypes.STRING;
+	public PrintStatementNode(OperationNode expression, DataTypes dataType) {
 		this.expression = expression;
 		super.nodeType = NodeTypes.PRINT_STATEMENT;
+		this.dataType = dataType;
 	}
 	
 	public OperationNode getExpression() {
@@ -17,7 +18,7 @@ public class PrintStatementNode extends StatementNode {
 	}
 	
 	public void run() {
-		System.out.println(expression.run(DataTypes.STRING));
+		System.out.println(expression.run(dataType));
 	}
 }
 	

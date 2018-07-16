@@ -43,13 +43,16 @@ public abstract class Identificator {
 		var isFirstTokenPrintKeyword = tokens.get(0).getType().equals(TokenTypes.PRINT_KEYWORD);
 		if (!isFirstTokenPrintKeyword)
 			return false;
-		if (tokens.size() == 1 && isFirstTokenPrintKeyword)
-			new MontyException("Expected expression after \"print\" keyword:\t" + Tokens.getText(tokens));
-		if (tokens.size() > 1) {
-			var expression = tokens.subList(1, tokens.size());
-			if (isFirstTokenPrintKeyword && !isExpression(expression))
-				new MontyException("Wrong expression after \"print\" keyword:\t" + Tokens.getText(expression));
-		}
+		var isSecondTokenDataTypeKeyword = tokens.size() > 1
+				&& (tokens.get(1).getType().equals(TokenTypes.INTEGER_KEYWORD)
+						|| tokens.get(1).getType().equals(TokenTypes.FLOAT_KEYWORD)
+						|| tokens.get(1).getType().equals(TokenTypes.STRING_KEYWORD)
+						|| tokens.get(1).getType().equals(TokenTypes.BOOLEAN_KEYWORD));
+		if (tokens.size() == 1 || !isSecondTokenDataTypeKeyword)
+			new MontyException("Expected data type declaration after \"print\" keyword:\t" + Tokens.getText(tokens));
+		var expression = tokens.subList(2, tokens.size());
+		if (!isExpression(expression))
+			new MontyException("Wrong expression after data type declaration keyword:\t" + Tokens.getText(expression));
 		return true;
 	}
 
@@ -150,16 +153,16 @@ public abstract class Identificator {
 		return true;
 
 	}
-	
+
 	public static boolean isElseStatement(List<MontyToken> tokens) {
 		if (!tokens.get(0).getType().equals(TokenTypes.ELSE_KEYWORD))
 			return false;
 		if (tokens.size() > 1 && !isIfStatement(tokens.subList(1, tokens.size())))
-			new MontyException("Expected if statement or nothing after \"else\" keyword:\t"+Tokens.getText(tokens));
+			new MontyException("Expected if statement or nothing after \"else\" keyword:\t" + Tokens.getText(tokens));
 		return true;
-		
+
 	}
-	
+
 	public static boolean isWhileStatement(List<MontyToken> tokens) {
 		if (!tokens.get(0).getType().equals(TokenTypes.WHILE_KEYWORD))
 			return false;
@@ -170,5 +173,5 @@ public abstract class Identificator {
 		return true;
 
 	}
-	
+
 }
