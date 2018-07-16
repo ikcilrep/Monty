@@ -1,9 +1,11 @@
 package ast.declarations;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import ast.Block;
 import ast.NodeTypes;
+import ast.expressions.ExpressionNode;
 import parser.DataTypes;
 
 public class FunctionDeclarationNode extends DeclarationNode {
@@ -25,5 +27,8 @@ public class FunctionDeclarationNode extends DeclarationNode {
 	}
 	public HashSet<VariableDeclarationNode> getParameters() {
 		return parameters;
+	}
+	public Object call(ArrayList<ExpressionNode> arguments) {
+		return null;
 	}
 }

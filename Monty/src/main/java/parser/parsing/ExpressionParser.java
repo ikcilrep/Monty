@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import ast.Block;
 import ast.expressions.ConstantNode;
-import ast.expressions.ExpressionNode;
 import ast.expressions.FunctionCallNode;
 import ast.expressions.OperationNode;
 import ast.expressions.VariableNode;
@@ -36,14 +36,14 @@ public class ExpressionParser {
 	/*
 	 * Parses list of tokens to abstract syntax tree.
 	 */
-	public static ExpressionNode parse(List<MontyToken> tokens) {
-		var stack = new Stack<ExpressionNode>();
+	public static OperationNode parse(Block parent, List<MontyToken> tokens) {
+		var stack = new Stack<OperationNode>();
 		for (int i = 0; i < tokens.size(); i++) {
 			MontyToken token = tokens.get(i);
-			var node = (ExpressionNode) null;
+			var node = (OperationNode) null;
 			switch (token.getType()) {
 			case OPERATOR: // If token is operator
-				node = new OperationNode(token.getText());
+				node = new OperationNode(token.getText(),parent);
 				if (!token.getText().equals("!"))
 					((OperationNode) node).setRightOperand(stack.pop());
 				((OperationNode) node).setLeftOperand(stack.pop());
@@ -70,16 +70,18 @@ public class ExpressionParser {
 							break;
 						}
 					}
-					node = new FunctionCallNode(token.getText());
+					var function = new FunctionCallNode(token.getText());
 					for (List<MontyToken> ts : split(TokenTypes.COMMA, tokens.subList(i + 2, j - 1))) {
-						((FunctionCallNode) node).addArgument(parse(ts));
+						function.addArgument(parse(parent, ts));
 					}
-					i = j+1;
+					node = new OperationNode(function, parent);
+					i = j + 1;
 				} else
-					node = new VariableNode(token.getText());
+					node = new OperationNode(new VariableNode(token.getText()), parent);
 				break;
 			default:
-				node = new ConstantNode(token.getText(), Tokens.getDataType(token.getType()));
+				node = new OperationNode(new ConstantNode(token.getText(), Tokens.getDataType(token.getType())),
+						parent);
 				break;
 			}
 			stack.push(node);

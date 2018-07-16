@@ -20,17 +20,17 @@ import parser.Tokens;
 public abstract class AdderToBlock {
 
 	public static void addExpression(Block block, List<MontyToken> tokens) {
-		block.addChild(ExpressionParser.parse(tokens));
+		block.addChild(ExpressionParser.parse(block, tokens));
 	}
 
 	public static void addPrintStatement(Block block, List<MontyToken> tokens) {
-		block.addChild(new PrintStatementNode(ExpressionParser.parse(tokens.subList(1, tokens.size()))));
+		block.addChild(new PrintStatementNode(ExpressionParser.parse(block, tokens.subList(1, tokens.size()))));
 	}
 
 	public static void addReturnStatement(Block block, List<MontyToken> tokens) {
 		var expression = (ExpressionNode) null;
 		if (tokens.size() > 1)
-			expression = ExpressionParser.parse(tokens.subList(1, tokens.size()));
+			expression = ExpressionParser.parse(block, tokens.subList(1, tokens.size()));
 		block.addChild(new ReturnStatementNode(expression));
 	}
 
@@ -62,7 +62,7 @@ public abstract class AdderToBlock {
 	}
 
 	public static Block addIfStatement(Block block, List<MontyToken> tokens) {
-		var ifStatement = new IfStatementNode(block, ExpressionParser.parse(tokens.subList(1, tokens.size())));
+		var ifStatement = new IfStatementNode(block, ExpressionParser.parse(block, tokens.subList(1, tokens.size())));
 		block.addChild(ifStatement);
 		return ifStatement;
 
@@ -77,7 +77,7 @@ public abstract class AdderToBlock {
 	}
 
 	public static Block addWhileStatement(Block block, List<MontyToken> tokens) {
-		var whileStatement = new WhileStatementNode(ExpressionParser.parse(tokens.subList(1, tokens.size())));
+		var whileStatement = new WhileStatementNode(ExpressionParser.parse(block, tokens.subList(1, tokens.size())));
 		whileStatement.setBody(new Block(block));
 		block.addChild(whileStatement);
 		return whileStatement.getBody();

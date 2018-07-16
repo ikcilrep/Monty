@@ -1,18 +1,23 @@
 package ast.statements;
 
 import ast.NodeTypes;
-import ast.expressions.ExpressionNode;
+import ast.expressions.OperationNode;
+import parser.DataTypes;
 
 public class PrintStatementNode extends StatementNode {
-	private ExpressionNode expression;
+	private OperationNode expression;
 
-	public PrintStatementNode(ExpressionNode expression) {
+	public PrintStatementNode(OperationNode expression) {
 		this.expression = expression;
 		super.nodeType = NodeTypes.PRINT_STATEMENT;
 	}
 	
-	public ExpressionNode getExpression() {
+	public OperationNode getExpression() {
 		return expression;
+	}
+	
+	public void run() {
+		System.out.println(expression.run(DataTypes.STRING));
 	}
 }
 	

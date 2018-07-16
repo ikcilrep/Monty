@@ -13,6 +13,7 @@ public class ConstantNode extends ExpressionNode {
 		super.nodeType = NodeTypes.CONSTANT;
 	}
 
+
 	public String getValue() {
 		return value;
 	}

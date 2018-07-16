@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ast.Block;
+import ast.statements.PrintStatementNode;
 import lexer.MontyToken;
 import lexer.TokenTypes;
 import parser.Identificator;
@@ -24,6 +25,7 @@ public class Parser {
 				} else if (Identificator.isPrintStatement(tokensBeforeSemicolon)) {
 					System.out.println("PRINT STATEMENT!");
 					AdderToBlock.addPrintStatement(block, tokensBeforeSemicolon);
+					((PrintStatementNode) block.getChildren().get(block.getChildren().size()-1)).run();
 				} else if (Identificator.isVariableDeclaration(tokensBeforeSemicolon)) {
 					System.out.println("VARIABLE DECLARATION!");
 					AdderToBlock.addVariableDeclaration(block, tokensBeforeSemicolon);

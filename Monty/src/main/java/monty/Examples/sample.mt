@@ -17,7 +17,7 @@ while a 20 <;
 	a 7 +=;
 end;
 
-print a;
+print 22 12 +;
 
 'This is comment.`
 
