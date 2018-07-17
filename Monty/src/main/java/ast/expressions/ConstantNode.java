@@ -4,17 +4,17 @@ import ast.NodeTypes;
 import parser.DataTypes;
 
 public class ConstantNode extends ExpressionNode {
-	private String value;
+	private Object value;
 	private DataTypes type;
 
-	public ConstantNode(String value, DataTypes type) {
+	public ConstantNode(Object value, DataTypes type) {
 		this.value = value;
 		this.type = type;
 		super.nodeType = NodeTypes.CONSTANT;
 	}
 
 
-	public String getValue() {
+	public Object getValue() {
 		return value;
 	}
 

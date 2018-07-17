@@ -11,11 +11,11 @@ import ast.expressions.OperationNode;
 import ast.expressions.VariableNode;
 import lexer.MontyToken;
 import lexer.TokenTypes;
+import parser.DataTypes;
 import parser.MontyException;
 import parser.Tokens;
 
 public class ExpressionParser {
-
 	public static List<ArrayList<MontyToken>> split(TokenTypes splitOnIt, List<MontyToken> list) {
 		ArrayList<ArrayList<MontyToken>> newList = new ArrayList<>();
 		newList.add(new ArrayList<MontyToken>());
@@ -31,6 +31,20 @@ public class ExpressionParser {
 				newList.get(i).add(t);
 		}
 		return newList;
+	}
+
+	public static Object toDataType(String literal, DataTypes dataType) {
+		switch (dataType) {
+		case INTEGER:
+			return Integer.parseInt(literal);
+		case FLOAT:
+			return Float.parseFloat(literal);
+		case STRING:
+			return literal;
+		case BOOLEAN:
+			return Boolean.parseBoolean(literal);
+		}
+		return dataType;
 	}
 
 	/*
@@ -80,8 +94,8 @@ public class ExpressionParser {
 					node = new OperationNode(new VariableNode(token.getText()), parent);
 				break;
 			default:
-				node = new OperationNode(new ConstantNode(token.getText(), Tokens.getDataType(token.getType())),
-						parent);
+				var dataType = Tokens.getDataType(token.getType());
+				node = new OperationNode(new ConstantNode(toDataType(token.getText(),dataType),dataType),parent );
 				break;
 			}
 			stack.push(node);

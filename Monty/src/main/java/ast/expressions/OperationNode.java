@@ -8,100 +8,6 @@ import parser.DataTypes;
 import parser.MontyException;
 
 public class OperationNode extends ExpressionNode {
-	public static Object toDataType(ConstantNode literal, DataTypes dataType) {
-		var value = literal.getValue();
-		switch (dataType) {
-		case INTEGER:
-			switch (literal.getType()) {
-			case INTEGER:
-				return Integer.parseInt(value);
-			case FLOAT:
-				return (int) Float.parseFloat(value);
-			case BOOLEAN:
-				if (value.equals("true"))
-					return 1;
-				else
-					return 0;
-			case STRING:
-				if (value.matches("[+-]?[0-9]+"))
-					return Integer.parseInt(value);
-				else if (value.matches("[+-]?[0-9]+\\.[0-9]+"))
-					return (int) Float.parseFloat(value);
-				else if (value.equals("true") || value.equals("false"))
-					return toDataType(new ConstantNode(value, DataTypes.BOOLEAN), DataTypes.INTEGER);
-				else if (value.length() == 1)
-					return Character.getNumericValue(value.charAt(0));
-				else
-					new MontyException("Value \"" + value + "\" can't be casted to integer.");
-			default:
-				break;
-			}
-			break;
-		case FLOAT:
-			switch (literal.getType()) {
-			case INTEGER:
-				return (float) Integer.parseInt(value);
-			case FLOAT:
-				return Float.parseFloat(value);
-			case BOOLEAN:
-				if (value.equals("true"))
-					return 1f;
-				else
-					return 0f;
-			case STRING:
-				if (value.matches("[+-]?[0-9]+"))
-					return (float) Integer.parseInt(value);
-				else if (value.matches("[+-]?[0-9]+\\.[0-9]+"))
-					return Float.parseFloat(value);
-				else if (value.equals("true") || value.equals("false"))
-					return toDataType(new ConstantNode(value, DataTypes.BOOLEAN), DataTypes.FLOAT);
-				else if (value.length() == 1)
-					return (float) Character.getNumericValue(value.charAt(0));
-				else
-					new MontyException("Value \"" + value + "\" can't be casted to float.");
-			default:
-				break;
-			}
-			break;
-		case BOOLEAN:
-			switch (literal.getType()) {
-			case INTEGER:
-				if (Integer.parseInt(value) > 0)
-					return true;
-				else
-					return false;
-			case FLOAT:
-				if (Float.parseFloat(value) > 0f)
-					return true;
-				else
-					return false;
-			case BOOLEAN:
-				return value.equals("true");
-
-			case STRING:
-				if (value.matches("[+-]?[0-9]+"))
-					return toDataType(new ConstantNode(value, DataTypes.INTEGER), DataTypes.BOOLEAN);
-				else if (value.matches("[+-]?[0-9]+\\.[0-9]+"))
-					return toDataType(new ConstantNode(value, DataTypes.FLOAT), DataTypes.BOOLEAN);
-				else if (value.equals("true"))
-					return 1;
-				else if (value.equals("false"))
-					return 0;
-				else if (value.length() == 1)
-					return Character.getNumericValue(value.charAt(0)) > 1;
-				else
-					new MontyException("Value \"" + value + "\" can't be casted to boolean.");
-			default:
-				break;
-			}
-			break;
-		case STRING:
-			return value;
-		default:
-			return literal;
-		}
-		return dataType;
-	}
 
 	private Object operand;
 	private OperationNode left = null;
@@ -121,56 +27,26 @@ public class OperationNode extends ExpressionNode {
 				|| operator.toString().equals(">") || operator.toString().equals("<");
 		Object leftValue = null;
 		Object rightValue = null;
-		DataTypes type = null;
-		if (isComparison) {
-			switch (((Node) a).getNodeType()) {
-			case VARIABLE:
-				type = parent.getVariableByName(((VariableNode) a).getName()).getType();
-				leftValue = getLiteral(a, type);
-				rightValue = getLiteral(b, type);
-				break;
-			case FUNCTION_CALL:
-				type = parent.getFunctionByName(((FunctionCallNode) a).getName()).getType();
-				leftValue = getLiteral(a, type);
-				rightValue = getLiteral(b, type);
-				break;
-			case CONSTANT:
-				type = ((ConstantNode) a).getType();
-				leftValue = getLiteral(a, type);
-				rightValue = getLiteral(b, type);
-				break;
-			default:
-				break;
-			}
-		} else {
-			leftValue = getLiteral(a, dataType);
-			rightValue = getLiteral(b, dataType);
-		}
-
+		DataTypes type = getDataType(a);
+		leftValue = getLiteral(a);
+		rightValue = getLiteral(b);
 		if (!operator.toString().contains("=") || (operator.toString().contains("=") && isComparison))
-			if (((Node) a).getNodeType().equals(NodeTypes.VARIABLE)) {
+			if (a instanceof Node && ((Node) a).getNodeType().equals(NodeTypes.VARIABLE)) {
 				var variable = parent.getVariableByName(((VariableNode) a).getName());
-				if (isComparison)
-					leftValue = toDataType(new ConstantNode(variable.getValue().toString(), variable.getType()), type);
-				else
-					leftValue = toDataType(new ConstantNode(variable.getValue().toString(), variable.getType()),
-							dataType);
+				leftValue = variable.getValue();
 
 			}
-		if (((Node) b).getNodeType().equals(NodeTypes.VARIABLE)) {
+		if (b instanceof Node && ((Node) b).getNodeType().equals(NodeTypes.VARIABLE)) {
 			var variable = parent.getVariableByName(((VariableNode) b).getName());
-			if (isComparison)
-				rightValue = toDataType(new ConstantNode(variable.getValue().toString(), variable.getType()), type);
-			else
-				rightValue = toDataType(new ConstantNode(variable.getValue().toString(), variable.getType()), dataType);
+			rightValue = variable.getValue();
 		}
 		switch (operator.toString()) {
 		case "+":
-			switch (dataType) {
+			switch (type) {
 			case INTEGER:
-				return ((int) leftValue) + ((int) rightValue);
+				return ((Integer) leftValue) + ((Integer) rightValue);
 			case FLOAT:
-				return ((float) leftValue) + ((float) rightValue);
+				return ((Float) leftValue) + ((Float) rightValue);
 			case STRING:
 				return leftValue.toString() + rightValue.toString();
 			case BOOLEAN:
@@ -178,24 +54,24 @@ public class OperationNode extends ExpressionNode {
 						+ operator.toString());
 			}
 		case "-":
-			switch (dataType) {
+			switch (type) {
 			case INTEGER:
-				return ((int) leftValue) - ((int) rightValue);
+				return ((Integer) leftValue) - ((Integer) rightValue);
 			case FLOAT:
-				return ((float) leftValue) - ((float) rightValue);
+				return ((Float) leftValue) - ((Float) rightValue);
 			case STRING:
-				new MontyException("Can't subtract strings:\t\"" + leftValue.toString() + "\" \""
-						+ rightValue.toString() + "\" " + operator.toString());
+				new MontyException("Can't subtract strings:\t" + leftValue.toString() + " " + rightValue.toString()
+						+ " " + operator.toString());
 			case BOOLEAN:
 				new MontyException("Can't subtract booleans:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
 			}
 		case "*":
-			switch (dataType) {
+			switch (type) {
 			case INTEGER:
-				return ((int) leftValue) * ((int) rightValue);
+				return ((Integer) leftValue) * ((Integer) rightValue);
 			case FLOAT:
-				return ((float) leftValue) * ((float) rightValue);
+				return ((Float) leftValue) * ((Float) rightValue);
 			case STRING:
 				new MontyException("Can't multiply strings:\t\"" + leftValue.toString() + "\" \""
 						+ rightValue.toString() + "\" " + operator.toString());
@@ -204,11 +80,11 @@ public class OperationNode extends ExpressionNode {
 						+ " " + operator.toString());
 			}
 		case "/":
-			switch (dataType) {
+			switch (type) {
 			case INTEGER:
-				return ((int) leftValue) / ((int) rightValue);
+				return ((Integer) leftValue) / ((Integer) rightValue);
 			case FLOAT:
-				return ((float) leftValue) / ((float) rightValue);
+				return ((Float) leftValue) / ((Float) rightValue);
 			case STRING:
 				new MontyException("Can't divide strings:\t\"" + leftValue.toString() + "\" \"" + rightValue.toString()
 						+ "\" " + operator.toString());
@@ -217,11 +93,11 @@ public class OperationNode extends ExpressionNode {
 						+ operator.toString());
 			}
 		case "%":
-			switch (dataType) {
+			switch (type) {
 			case INTEGER:
-				return ((int) leftValue) % ((int) rightValue);
+				return (Integer) leftValue % (Integer) rightValue;
 			case FLOAT:
-				return ((float) leftValue) % ((float) rightValue);
+				return ((Float) leftValue) % ((Float) rightValue);
 			case STRING:
 				new MontyException("Can't modulo strings:\t\"" + leftValue.toString() + "\" \"" + rightValue.toString()
 						+ "\" " + operator.toString());
@@ -230,22 +106,22 @@ public class OperationNode extends ExpressionNode {
 						+ operator.toString());
 			}
 		case "!":
-			switch (dataType) {
+			switch (type) {
 			case INTEGER:
-				return 0 - (int) rightValue;
+				return 0 - (Integer) rightValue;
 			case FLOAT:
-				return 0 - (int) rightValue;
+				return 0 - (Float) rightValue;
 			case STRING:
 				new MontyException("There isn't opposite of \"" + rightValue.toString() + "\".");
 			case BOOLEAN:
 				return !(boolean) rightValue;
 			}
 		case "<<":
-			switch (dataType) {
+			switch (type) {
 			case INTEGER:
-				return ((int) leftValue) / ((int) rightValue);
+				return ((Integer) leftValue) << ((Integer) rightValue);
 			case FLOAT:
-				new MontyException("Can't shift left floats:\t " + leftValue.toString() + " " + rightValue.toString()
+				new MontyException("Can't shift left Floats:\t " + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
 			case STRING:
 				new MontyException("Can't shift left strings:\t\"" + leftValue.toString() + "\" \""
@@ -255,11 +131,11 @@ public class OperationNode extends ExpressionNode {
 						+ " " + operator.toString());
 			}
 		case ">>":
-			switch (dataType) {
+			switch (type) {
 			case INTEGER:
-				return ((int) leftValue) >> ((int) rightValue);
+				return ((Integer) leftValue) >> ((Integer) rightValue);
 			case FLOAT:
-				new MontyException("Can't shift right floats:\t" + leftValue.toString() + " " + rightValue.toString()
+				new MontyException("Can't shift right Floats:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
 			case STRING:
 				new MontyException("Can't shift right strings:\t\"" + leftValue.toString() + "\" \""
@@ -269,11 +145,11 @@ public class OperationNode extends ExpressionNode {
 						+ " " + operator.toString());
 			}
 		case "^":
-			switch (dataType) {
+			switch (type) {
 			case INTEGER:
-				return ((int) leftValue) ^ ((int) rightValue);
+				return ((Integer) leftValue) ^ ((Integer) rightValue);
 			case FLOAT:
-				new MontyException("Can't xor floats:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+				new MontyException("Can't xor Floats:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 						+ operator.toString());
 			case STRING:
 				new MontyException("Can't xor strings:\t\"" + leftValue.toString() + "\" \"" + rightValue.toString()
@@ -283,11 +159,11 @@ public class OperationNode extends ExpressionNode {
 						+ operator.toString());
 			}
 		case "&":
-			switch (dataType) {
+			switch (type) {
 			case INTEGER:
-				return ((int) leftValue) & ((int) rightValue);
+				return ((Integer) leftValue) & ((Integer) rightValue);
 			case FLOAT:
-				new MontyException("Can't and floats:\t\"" + leftValue.toString() + "\" \"" + rightValue.toString()
+				new MontyException("Can't and Floats:\t\"" + leftValue.toString() + "\" \"" + rightValue.toString()
 						+ "\" " + operator.toString());
 			case STRING:
 				new MontyException("Can't and strings:\t\"" + leftValue.toString() + "\" \"" + rightValue.toString()
@@ -297,11 +173,11 @@ public class OperationNode extends ExpressionNode {
 						+ operator.toString());
 			}
 		case "|":
-			switch (dataType) {
+			switch (type) {
 			case INTEGER:
-				return ((int) leftValue) ^ ((int) rightValue);
+				return ((Integer) leftValue) | ((Integer) rightValue);
 			case FLOAT:
-				new MontyException("Can't or floats:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+				new MontyException("Can't or Floats:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 						+ operator.toString());
 			case STRING:
 				new MontyException("Can't or strings:\t\"" + leftValue.toString() + "\" \"" + rightValue.toString()
@@ -311,12 +187,12 @@ public class OperationNode extends ExpressionNode {
 						+ operator.toString());
 			}
 		case "&&":
-			switch (dataType) {
+			switch (type) {
 			case INTEGER:
-				new MontyException("Can't and integers:\t" + leftValue.toString() + " " + rightValue.toString() + " "
-						+ operator.toString());
+				new MontyException("Can't and Integeregers:\t" + leftValue.toString() + " " + rightValue.toString()
+						+ " " + operator.toString());
 			case FLOAT:
-				new MontyException("Can't and floats:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+				new MontyException("Can't and Floats:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 						+ operator.toString());
 			case STRING:
 				new MontyException("Can't and strings:\t\"" + leftValue.toString() + "\" \"" + rightValue.toString()
@@ -325,38 +201,36 @@ public class OperationNode extends ExpressionNode {
 				return ((boolean) leftValue) && ((boolean) rightValue);
 			}
 		case "||":
-			switch (dataType) {
+			switch (type) {
 			case INTEGER:
-				new MontyException("Can't or integers:\t" + leftValue.toString() + " " + rightValue.toString() + "\" "
-						+ operator.toString());
+				new MontyException("Can't or Integeregers:\t" + leftValue.toString() + " " + rightValue.toString()
+						+ "\" " + operator.toString());
 			case FLOAT:
-				new MontyException("Can't or floats:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+				new MontyException("Can't or Floats:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 						+ operator.toString());
 			case STRING:
 				new MontyException("Can't or strings:\t\"" + leftValue.toString() + "\" \"" + rightValue.toString()
 						+ "\" " + operator.toString());
 			case BOOLEAN:
 				return ((boolean) leftValue) || ((boolean) rightValue);
-
 			}
 		case "==":
-			switch (dataType) {
+			switch (type) {
 			case INTEGER:
+				return (Integer) leftValue == (Integer) rightValue;
 			case FLOAT:
-			case STRING:
+				return (Float) leftValue == (Float) rightValue;
 			case BOOLEAN:
-				return toDataType(
-						new ConstantNode(((Boolean) (leftValue.equals(rightValue))).toString(), DataTypes.BOOLEAN),
-						dataType);
+				return (boolean) leftValue == (boolean) rightValue;
+			case STRING:
+				return leftValue.equals(rightValue);
 			}
 		case ">":
-			switch (dataType) {
+			switch (type) {
 			case INTEGER:
-				return toDataType(new ConstantNode(((Boolean) (((int) leftValue) > ((int) rightValue))).toString(),
-						DataTypes.BOOLEAN), dataType);
+				return (Integer) leftValue > (Integer) rightValue;
 			case FLOAT:
-				return toDataType(new ConstantNode(((Boolean) (((float) leftValue) > ((float) rightValue))).toString(),
-						DataTypes.BOOLEAN), dataType);
+				return (Float) leftValue > (Float) rightValue;
 			case STRING:
 				new MontyException("One string can't be greater than other string:\t" + leftValue.toString() + " "
 						+ rightValue.toString() + " " + operator.toString());
@@ -367,11 +241,9 @@ public class OperationNode extends ExpressionNode {
 		case "<":
 			switch (type) {
 			case INTEGER:
-				return toDataType(new ConstantNode(((Boolean) (((int) leftValue) < ((int) rightValue))).toString(),
-						DataTypes.BOOLEAN), dataType);
+				return (Integer) leftValue < (Integer) rightValue;
 			case FLOAT:
-				return toDataType(new ConstantNode(((Boolean) (((float) leftValue) < ((float) rightValue))).toString(),
-						DataTypes.BOOLEAN), dataType);
+				return (Float) leftValue < (Float) rightValue;
 			case STRING:
 				new MontyException("One string can't be lower than other string:\t" + leftValue.toString() + " "
 						+ rightValue.toString() + " " + operator.toString());
@@ -382,11 +254,9 @@ public class OperationNode extends ExpressionNode {
 		case "<=":
 			switch (type) {
 			case INTEGER:
-				return toDataType(new ConstantNode(((Boolean) (((int) leftValue) <= ((int) rightValue))).toString(),
-						DataTypes.BOOLEAN), dataType);
+				return (Integer) leftValue <= (Integer) rightValue;
 			case FLOAT:
-				return toDataType(new ConstantNode(((Boolean) (((float) leftValue) <= ((float) rightValue))).toString(),
-						DataTypes.BOOLEAN), dataType);
+				return (Float) leftValue <= (Float) rightValue;
 			case STRING:
 				new MontyException("One string can't be lower than other string:\t" + leftValue.toString() + " "
 						+ rightValue.toString() + " " + operator.toString());
@@ -397,11 +267,9 @@ public class OperationNode extends ExpressionNode {
 		case ">=":
 			switch (type) {
 			case INTEGER:
-				return toDataType(new ConstantNode(((Boolean) (((int) leftValue) >= ((int) rightValue))).toString(),
-						DataTypes.BOOLEAN), dataType);
+				return (Integer) leftValue >= (Integer) rightValue;
 			case FLOAT:
-				return toDataType(new ConstantNode(((Boolean) (((float) leftValue) >= ((float) rightValue))).toString(),
-						DataTypes.BOOLEAN), dataType);
+				return (Float) leftValue >= (Float) rightValue;
 			case STRING:
 				new MontyException("One string can't be greater than other string:\t" + leftValue.toString() + " "
 						+ rightValue.toString() + " " + operator.toString());
@@ -412,35 +280,36 @@ public class OperationNode extends ExpressionNode {
 		case "!=":
 			switch (type) {
 			case INTEGER:
+				return (Integer) leftValue != (Integer) rightValue;
 			case FLOAT:
-			case STRING:
+				return (Float) leftValue != (Float) rightValue;
 			case BOOLEAN:
-				return toDataType(
-						new ConstantNode(((Boolean) (!leftValue.equals(rightValue))).toString(), DataTypes.BOOLEAN),
-						dataType);
+				return (boolean) leftValue != (boolean) rightValue;
+			case STRING:
+				return !leftValue.equals(rightValue);
 			}
 		case "=":
 			var variable = ((VariableDeclarationNode) leftValue);
-			switch (dataType) {
+			switch (type) {
 			case INTEGER:
 			case FLOAT:
 			case STRING:
 			case BOOLEAN:
 				variable.setValue(rightValue);
-				return rightValue;
+				return variable.getValue();
 			}
 		case "+=":
 			variable = ((VariableDeclarationNode) leftValue);
-			switch (dataType) {
+			switch (type) {
 			case INTEGER:
-				variable.setValue(((int) variable.getValue()) + ((int) rightValue));
+				variable.setValue((Integer) variable.getValue() + (Integer) rightValue);
 				return variable.getValue();
 			case FLOAT:
-				variable.setValue(((float) variable.getValue()) + ((float) rightValue));
-				return rightValue;
+				variable.setValue((Float) variable.getValue() + (Float) rightValue);
+				return variable.getValue();
 			case STRING:
 				variable.setValue(variable.getValue().toString() + rightValue.toString());
-				return rightValue;
+				return variable.getValue();
 			case BOOLEAN:
 				new MontyException("Can't add booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 						+ operator.toString());
@@ -448,12 +317,12 @@ public class OperationNode extends ExpressionNode {
 			}
 		case "-=":
 			variable = ((VariableDeclarationNode) leftValue);
-			switch (dataType) {
+			switch (type) {
 			case INTEGER:
-				variable.setValue(((int) variable.getValue()) - ((int) rightValue));
+				variable.setValue((Integer) variable.getValue() - (Integer) rightValue);
 				return variable.getValue();
 			case FLOAT:
-				variable.setValue(((float) variable.getValue()) - ((float) rightValue));
+				variable.setValue((Float) variable.getValue() - (Float) rightValue);
 				return variable.getValue();
 			case STRING:
 				new MontyException("Can't subtract strings:\t" + leftValue.toString() + " " + rightValue.toString()
@@ -464,12 +333,12 @@ public class OperationNode extends ExpressionNode {
 			}
 		case "*=":
 			variable = ((VariableDeclarationNode) leftValue);
-			switch (dataType) {
+			switch (type) {
 			case INTEGER:
-				variable.setValue(((int) variable.getValue()) * ((int) rightValue));
+				variable.setValue((Integer) variable.getValue() * (Integer) rightValue);
 				return variable.getValue();
 			case FLOAT:
-				variable.setValue(((float) variable.getValue()) * ((float) rightValue));
+				variable.setValue((Float) variable.getValue() * (Float) rightValue);
 				return variable.getValue();
 			case STRING:
 				new MontyException("Can't multiply strings:\t" + leftValue.toString() + " " + rightValue.toString()
@@ -480,12 +349,12 @@ public class OperationNode extends ExpressionNode {
 			}
 		case "/=":
 			variable = ((VariableDeclarationNode) leftValue);
-			switch (dataType) {
+			switch (type) {
 			case INTEGER:
-				variable.setValue(((int) variable.getValue()) / ((int) rightValue));
+				variable.setValue((Integer) variable.getValue() / (Integer) rightValue);
 				return variable.getValue();
 			case FLOAT:
-				variable.setValue(((float) variable.getValue()) / ((float) rightValue));
+				variable.setValue((Float) variable.getValue() / (Float) rightValue);
 				return variable.getValue();
 			case STRING:
 				new MontyException("Can't divide strings:\t" + leftValue.toString() + " " + rightValue.toString() + " "
@@ -495,13 +364,13 @@ public class OperationNode extends ExpressionNode {
 						+ operator.toString());
 			}
 		case "<<=":
-			switch (dataType) {
+			switch (type) {
 			case INTEGER:
 				variable = ((VariableDeclarationNode) leftValue);
-				variable.setValue(((int) variable.getValue()) << ((int) rightValue));
+				variable.setValue((Integer) variable.getValue() << (Integer) rightValue);
 				return variable.getValue();
 			case FLOAT:
-				new MontyException("Can't shift left floats:\t " + leftValue.toString() + " " + rightValue.toString()
+				new MontyException("Can't shift left Floats:\t " + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
 			case STRING:
 				new MontyException("Can't shift left strings:\t\"" + leftValue.toString() + "\" \""
@@ -511,13 +380,13 @@ public class OperationNode extends ExpressionNode {
 						+ " " + operator.toString());
 			}
 		case ">>=":
-			switch (dataType) {
+			switch (type) {
 			case INTEGER:
 				variable = ((VariableDeclarationNode) leftValue);
-				variable.setValue(((int) variable.getValue()) >> ((int) rightValue));
+				variable.setValue((Integer) variable.getValue() >> (Integer) rightValue);
 				return variable.getValue();
 			case FLOAT:
-				new MontyException("Can't shift right floats:\t" + leftValue.toString() + " " + rightValue.toString()
+				new MontyException("Can't shift right Floats:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
 			case STRING:
 				new MontyException("Can't shift right strings:\t\"" + leftValue.toString() + "\" \""
@@ -527,13 +396,13 @@ public class OperationNode extends ExpressionNode {
 						+ " " + operator.toString());
 			}
 		case "^=":
-			switch (dataType) {
+			switch (type) {
 			case INTEGER:
 				variable = ((VariableDeclarationNode) leftValue);
-				variable.setValue(((int) variable.getValue()) ^ ((int) rightValue));
+				variable.setValue((Integer) variable.getValue() ^ (Integer) rightValue);
 				return variable.getValue();
 			case FLOAT:
-				new MontyException("Can't xor floats:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+				new MontyException("Can't xor Floats:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 						+ operator.toString());
 			case STRING:
 				new MontyException("Can't xor strings:\t\"" + leftValue.toString() + "\" \"" + rightValue.toString()
@@ -543,14 +412,13 @@ public class OperationNode extends ExpressionNode {
 						+ operator.toString());
 			}
 		case "&=":
-			switch (dataType) {
+			switch (type) {
 			case INTEGER:
 				variable = ((VariableDeclarationNode) leftValue);
-				variable.setValue(((int) variable.getValue()) & ((int) rightValue));
-
+				variable.setValue((Integer) variable.getValue() & (Integer) rightValue);
 				return variable.getValue();
 			case FLOAT:
-				new MontyException("Can't and floats:\t\"" + leftValue.toString() + "\" \"" + rightValue.toString()
+				new MontyException("Can't and Floats:\t\"" + leftValue.toString() + "\" \"" + rightValue.toString()
 						+ "\" " + operator.toString());
 			case STRING:
 				new MontyException("Can't and strings:\t\"" + leftValue.toString() + "\" \"" + rightValue.toString()
@@ -560,11 +428,13 @@ public class OperationNode extends ExpressionNode {
 						+ operator.toString());
 			}
 		case "|=":
-			switch (dataType) {
+			switch (type) {
 			case INTEGER:
-				return ((int) leftValue) | ((int) rightValue);
+				variable = ((VariableDeclarationNode) leftValue);
+				variable.setValue((Integer) variable.getValue() | (Integer) rightValue);
+				return variable.getValue();
 			case FLOAT:
-				new MontyException("Can't or floats:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+				new MontyException("Can't or Floats:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 						+ operator.toString());
 			case STRING:
 				new MontyException("Can't or strings:\t\"" + leftValue.toString() + "\" \"" + rightValue.toString()
@@ -581,22 +451,49 @@ public class OperationNode extends ExpressionNode {
 		return left;
 	}
 
-	private Object getLiteral(Object expression, DataTypes dataType) {
-		switch (((Node) expression).getNodeType()) {
-		case VARIABLE:
-			return parent.getVariableByName(((VariableNode) expression).getName());
-		case FUNCTION_CALL:
-			var functionToCall = ((FunctionCallNode) expression);
-			var function = parent.getFunctionByName(functionToCall.getName());
-			return toDataType(
-					new ConstantNode(function.call(functionToCall.getArguments()).toString(), function.getType()),
-					dataType);
-		case CONSTANT:
-			var cn = ((ConstantNode) expression);
-			return toDataType(cn, dataType);
-		default:
-			return null;
-		}
+	private Object getLiteral(Object expression) {
+		if (expression instanceof Node)
+			switch (((Node) expression).getNodeType()) {
+			case VARIABLE:
+				return parent.getVariableByName(((VariableNode) expression).getName());
+			case FUNCTION_CALL:
+				var functionToCall = ((FunctionCallNode) expression);
+				var function = parent.getFunctionByName(functionToCall.getName());
+				return function.call(functionToCall.getArguments());
+			case CONSTANT:
+				var cn = ((ConstantNode) expression);
+				return cn.getValue();
+			default:
+				return null;
+			}
+		else
+			return expression;
+	}
+
+	private DataTypes getDataType(Object expression) {
+		if (expression instanceof Node)
+			switch (((Node) expression).getNodeType()) {
+			case VARIABLE:
+				return parent.getVariableByName(((VariableNode) expression).getName()).getType();
+			case FUNCTION_CALL:
+				var functionCall = ((FunctionCallNode) expression);
+				var function = parent.getFunctionByName(functionCall.getName());
+				return function.getType();
+			case CONSTANT:
+				var cn = ((ConstantNode) expression);
+				return cn.getType();
+			default:
+				return null;
+			}
+		else if (expression instanceof String)
+			return DataTypes.STRING;
+		else if (expression instanceof Integer)
+			return DataTypes.INTEGER;
+		else if (expression instanceof Float)
+			return DataTypes.FLOAT;
+		else if (expression instanceof Boolean)
+			return DataTypes.BOOLEAN;
+		return null;
 	}
 
 	public Object getOperand() {
@@ -616,13 +513,13 @@ public class OperationNode extends ExpressionNode {
 			var operand = getOperand();
 			var castedOperand = (Node) operand;
 			if (castedOperand.getNodeType().equals(NodeTypes.VARIABLE)) {
-				var variable = ((VariableDeclarationNode) getLiteral(operand, dataType));
-				return toDataType(new ConstantNode(variable.getValue().toString(), variable.getType()), dataType);
+				var variable = ((VariableDeclarationNode) getLiteral(operand));
+				return variable.getValue();
 			} else {
-				return getLiteral(operand, dataType);
+				return getLiteral(operand);
 			}
 		}
-		return solve(dataType);
+		return solve();
 	}
 
 	public void setLeftOperand(OperationNode left) {
@@ -633,13 +530,12 @@ public class OperationNode extends ExpressionNode {
 		this.right = right;
 	}
 
-	private Object solve(DataTypes dataType) {
+	private Object solve() {
 		if (!getOperand().getClass().equals(String.class))
 			return getOperand();
-		Object a = getLeftOperand().solve(dataType);
-		Object b = getRightOperand().solve(dataType);
-
-		return calculate(a, b, getOperand(), dataType);
+		Object a = getLeftOperand().solve();
+		Object b = getRightOperand().solve();
+		return calculate(a, b, getOperand(), getDataType(a));
 
 	}
 }
