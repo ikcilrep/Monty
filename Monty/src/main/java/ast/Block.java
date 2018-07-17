@@ -7,12 +7,10 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.FunctionCallNode;
 import ast.expressions.OperationNode;
-import ast.expressions.VariableNode;
 import ast.statements.IfStatementNode;
 import ast.statements.PrintStatementNode;
 import ast.statements.ReturnStatementNode;
 import ast.statements.WhileStatementNode;
-import parser.DataTypes;
 import parser.MontyException;
 
 public class Block extends Node {
@@ -86,9 +84,7 @@ public class Block extends Node {
 				var childCastedToVariable = ((OperationNode) child);
 				if (!(childCastedToVariable.getLeftOperand().getNodeType().equals(NodeTypes.VARIABLE)
 						&& childCastedToVariable.getRightOperand().getOperand().toString().contains("="))) {
-					var name = ((VariableNode) childCastedToVariable.getLeftOperand().getOperand()).getName();
-					var type = getVariableByName(name).getType();
-					childCastedToVariable.run(type);
+					childCastedToVariable.run();
 				} else if (childCastedToVariable.getOperand().equals(NodeTypes.FUNCTION_CALL)) {
 					var functionToCall = ((FunctionCallNode) child);
 					var function = getFunctionByName(functionToCall.getName());
@@ -103,7 +99,7 @@ public class Block extends Node {
 			case IF_STATEMENT:
 				var childCastedToIfStatement = ((IfStatementNode) child);
 				var elseBody = childCastedToIfStatement.getElseBody();
-				if ((boolean) childCastedToIfStatement.getCondition().run(DataTypes.BOOLEAN)) {
+				if ((boolean) childCastedToIfStatement.getCondition().run()) {
 					var result = childCastedToIfStatement.run();
 					if (result != null)
 						return result;
@@ -115,7 +111,7 @@ public class Block extends Node {
 				break;
 			case WHILE_STATEMENT:
 				var childCastedToWhileStatement = ((WhileStatementNode) child);
-				while ((boolean) childCastedToWhileStatement.getCondition().run(DataTypes.BOOLEAN)) {
+				while ((boolean) childCastedToWhileStatement.getCondition().run()) {
 					var result = childCastedToWhileStatement.getBody().run();
 					if (result != null)
 						return result;

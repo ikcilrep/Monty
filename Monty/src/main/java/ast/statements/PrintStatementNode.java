@@ -2,15 +2,12 @@ package ast.statements;
 
 import ast.NodeTypes;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 
 public class PrintStatementNode extends StatementNode {
 	private OperationNode expression;
-	private DataTypes dataType = DataTypes.STRING;
-	public PrintStatementNode(OperationNode expression, DataTypes dataType) {
+	public PrintStatementNode(OperationNode expression) {
 		this.expression = expression;
 		super.nodeType = NodeTypes.PRINT_STATEMENT;
-		this.dataType = dataType;
 	}
 	
 	public OperationNode getExpression() {
@@ -18,7 +15,7 @@ public class PrintStatementNode extends StatementNode {
 	}
 	
 	public void run() {
-		System.out.println(expression.run(dataType));
+		System.out.println(expression.run());
 	}
 }
 	

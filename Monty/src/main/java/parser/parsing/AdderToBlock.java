@@ -24,8 +24,7 @@ public abstract class AdderToBlock {
 	}
 
 	public static void addPrintStatement(Block block, List<MontyToken> tokens) {
-		block.addChild(new PrintStatementNode(ExpressionParser.parse(block, tokens.subList(2, tokens.size())),
-				Tokens.getDataType(tokens.get(1).getType())));
+		block.addChild(new PrintStatementNode(ExpressionParser.parse(block, tokens.subList(1, tokens.size()))));
 	}
 
 	public static void addReturnStatement(Block block, List<MontyToken> tokens) {

@@ -21,13 +21,15 @@ public class OperationNode extends ExpressionNode {
 		this.parent = parent;
 	}
 
-	private Object calculate(Object a, Object b, Object operator, DataTypes dataType) {
+	private Object calculate(Object a, Object b, Object operator) {
 		var isComparison = operator.toString().equals("==") || operator.toString().equals("!=")
 				|| operator.toString().equals("<=") || operator.toString().equals(">=")
 				|| operator.toString().equals(">") || operator.toString().equals("<");
 		Object leftValue = null;
 		Object rightValue = null;
 		DataTypes type = getDataType(a);
+		if (!type.equals(getDataType(b)))
+			new MontyException("Type mismatch:\t" + type + " and " + getDataType(b));
 		leftValue = getLiteral(a);
 		rightValue = getLiteral(b);
 		if (!operator.toString().contains("=") || (operator.toString().contains("=") && isComparison))
@@ -508,7 +510,7 @@ public class OperationNode extends ExpressionNode {
 		return right;
 	}
 
-	public Object run(DataTypes dataType) {
+	public Object run() {
 		if (!getOperand().getClass().equals(String.class)) {
 			var operand = getOperand();
 			var castedOperand = (Node) operand;
@@ -535,7 +537,7 @@ public class OperationNode extends ExpressionNode {
 			return getOperand();
 		Object a = getLeftOperand().solve();
 		Object b = getRightOperand().solve();
-		return calculate(a, b, getOperand(), getDataType(a));
+		return calculate(a, b, getOperand());
 
 	}
 }

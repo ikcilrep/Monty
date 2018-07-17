@@ -31,11 +31,11 @@ public class FunctionDeclarationNode extends DeclarationNode {
 			var dataType = parameters.get(i).getType();
 			if (!body.doesContainVariable(name))
 				body.addVariable(new VariableDeclarationNode(name, dataType));
-			body.getVariableByName(name).setValue(arguments.get(i).run(dataType));
+			body.getVariableByName(name).setValue(arguments.get(i).run());
 		}
 		var result = body.run();
 		if (result != null)
-			return ((OperationNode) result).run(getType());
+			return ((OperationNode) result).run();
 		return result;
 	}
 

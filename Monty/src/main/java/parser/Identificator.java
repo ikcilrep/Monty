@@ -43,16 +43,11 @@ public abstract class Identificator {
 		var isFirstTokenPrintKeyword = tokens.get(0).getType().equals(TokenTypes.PRINT_KEYWORD);
 		if (!isFirstTokenPrintKeyword)
 			return false;
-		var isSecondTokenDataTypeKeyword = tokens.size() > 1
-				&& (tokens.get(1).getType().equals(TokenTypes.INTEGER_KEYWORD)
-						|| tokens.get(1).getType().equals(TokenTypes.FLOAT_KEYWORD)
-						|| tokens.get(1).getType().equals(TokenTypes.STRING_KEYWORD)
-						|| tokens.get(1).getType().equals(TokenTypes.BOOLEAN_KEYWORD));
-		if (tokens.size() == 1 || !isSecondTokenDataTypeKeyword)
-			new MontyException("Expected data type declaration after \"print\" keyword:\t" + Tokens.getText(tokens));
+		if (tokens.size() == 1)
+			new MontyException("Expected expression after \"print\" keyword:\t" + Tokens.getText(tokens));
 		var expression = tokens.subList(2, tokens.size());
 		if (!isExpression(expression))
-			new MontyException("Wrong expression after data type declaration keyword:\t" + Tokens.getText(expression));
+			new MontyException("Wrong expression after \"print\" keyword keyword:\t" + Tokens.getText(expression));
 		return true;
 	}
 
