@@ -76,7 +76,6 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 
 	public void setText(String text) {
 		this.text = " " + text + " ";
-		System.out.println("TEXT:\n" + text + "\n:TEXT");
 	}
 
 	public void setKeyword(String keyword, T token) {

@@ -1,12 +1,15 @@
 
-func int addOne int a;
-return a 1 +;
+func int addTwo int a;
+	func int getTwo;
+		return 2;
+	end;
+	return a getTwo()  +;
 end;
 
 var int a 2 =;
 while a 20 <=;
 	if a 2 % 0 ==;
-	print int a;
+	print a;
 	end;
-	a addOne(a) =;
+	a addTwo(a) =;
 end;

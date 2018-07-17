@@ -63,6 +63,7 @@ public class ExpressionParser {
 				((OperationNode) node).setLeftOperand(stack.pop());
 				break;
 			case IDENTIFIER: // If token is identifier
+				System.out.println(Tokens.getText(tokens));
 				if (i + 1 < tokens.size() && tokens.get(i + 1).getType().equals(TokenTypes.BRACKET)) {
 					int j = 0;
 					int openBracketCounter = 1;
@@ -86,6 +87,8 @@ public class ExpressionParser {
 					}
 					var function = new FunctionCallNode(token.getText());
 					for (List<MontyToken> ts : split(TokenTypes.COMMA, tokens.subList(i + 2, j - 1))) {
+						if (ts.size() == 0)
+							break;
 						function.addArgument(parse(parent, ts));
 					}
 					node = new OperationNode(function, parent);
@@ -95,14 +98,16 @@ public class ExpressionParser {
 				break;
 			default:
 				var dataType = Tokens.getDataType(token.getType());
-				node = new OperationNode(new ConstantNode(toDataType(token.getText(),dataType),dataType),parent );
+				node = new OperationNode(new ConstantNode(toDataType(token.getText(), dataType), dataType), parent);
 				break;
 			}
 			stack.push(node);
 		}
 
-		if (stack.size() != 1)
+		if (stack.size() != 1) {
+			System.out.println(stack);
 			new MontyException("Ambiguous result for this operation:\t" + Tokens.getText(tokens));
+		}
 		return stack.pop();
 	}
 
