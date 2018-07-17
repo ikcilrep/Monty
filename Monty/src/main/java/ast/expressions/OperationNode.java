@@ -1,5 +1,7 @@
 package ast.expressions;
 
+import java.math.BigInteger;
+
 import ast.Block;
 import ast.Node;
 import ast.NodeTypes;
@@ -46,7 +48,7 @@ public class OperationNode extends ExpressionNode {
 		case "+":
 			switch (type) {
 			case INTEGER:
-				return ((Integer) leftValue) + ((Integer) rightValue);
+				return ((BigInteger) leftValue).add(((BigInteger) rightValue));
 			case FLOAT:
 				return ((Float) leftValue) + ((Float) rightValue);
 			case STRING:
@@ -58,7 +60,7 @@ public class OperationNode extends ExpressionNode {
 		case "-":
 			switch (type) {
 			case INTEGER:
-				return ((Integer) leftValue) - ((Integer) rightValue);
+				return ((BigInteger) leftValue).subtract(((BigInteger) rightValue));
 			case FLOAT:
 				return ((Float) leftValue) - ((Float) rightValue);
 			case STRING:
@@ -71,7 +73,7 @@ public class OperationNode extends ExpressionNode {
 		case "*":
 			switch (type) {
 			case INTEGER:
-				return ((Integer) leftValue) * ((Integer) rightValue);
+				return ((BigInteger) leftValue).multiply(((BigInteger) rightValue));
 			case FLOAT:
 				return ((Float) leftValue) * ((Float) rightValue);
 			case STRING:
@@ -84,7 +86,7 @@ public class OperationNode extends ExpressionNode {
 		case "/":
 			switch (type) {
 			case INTEGER:
-				return ((Integer) leftValue) / ((Integer) rightValue);
+				return ((BigInteger) leftValue).divide(((BigInteger) rightValue));
 			case FLOAT:
 				return ((Float) leftValue) / ((Float) rightValue);
 			case STRING:
@@ -97,7 +99,7 @@ public class OperationNode extends ExpressionNode {
 		case "%":
 			switch (type) {
 			case INTEGER:
-				return (Integer) leftValue % (Integer) rightValue;
+				return ((BigInteger) leftValue).mod(((BigInteger) rightValue));
 			case FLOAT:
 				return ((Float) leftValue) % ((Float) rightValue);
 			case STRING:
@@ -110,7 +112,7 @@ public class OperationNode extends ExpressionNode {
 		case "!":
 			switch (type) {
 			case INTEGER:
-				return 0 - (Integer) rightValue;
+				return BigInteger.valueOf(0).subtract((BigInteger) rightValue);
 			case FLOAT:
 				return 0 - (Float) rightValue;
 			case STRING:
@@ -121,7 +123,7 @@ public class OperationNode extends ExpressionNode {
 		case "<<":
 			switch (type) {
 			case INTEGER:
-				return ((Integer) leftValue) << ((Integer) rightValue);
+				return ((BigInteger) leftValue).shiftLeft(((BigInteger) rightValue).intValue());
 			case FLOAT:
 				new MontyException("Can't shift left Floats:\t " + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -135,7 +137,7 @@ public class OperationNode extends ExpressionNode {
 		case ">>":
 			switch (type) {
 			case INTEGER:
-				return ((Integer) leftValue) >> ((Integer) rightValue);
+				return ((BigInteger) leftValue).shiftRight(((BigInteger) rightValue).intValue());
 			case FLOAT:
 				new MontyException("Can't shift right Floats:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -149,7 +151,7 @@ public class OperationNode extends ExpressionNode {
 		case "^":
 			switch (type) {
 			case INTEGER:
-				return ((Integer) leftValue) ^ ((Integer) rightValue);
+				return ((BigInteger) leftValue).xor((BigInteger) rightValue);
 			case FLOAT:
 				new MontyException("Can't xor Floats:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 						+ operator.toString());
@@ -163,7 +165,7 @@ public class OperationNode extends ExpressionNode {
 		case "&":
 			switch (type) {
 			case INTEGER:
-				return ((Integer) leftValue) & ((Integer) rightValue);
+				return ((BigInteger) leftValue).and((BigInteger) rightValue);
 			case FLOAT:
 				new MontyException("Can't and Floats:\t\"" + leftValue.toString() + "\" \"" + rightValue.toString()
 						+ "\" " + operator.toString());
@@ -177,7 +179,7 @@ public class OperationNode extends ExpressionNode {
 		case "|":
 			switch (type) {
 			case INTEGER:
-				return ((Integer) leftValue) | ((Integer) rightValue);
+				return ((BigInteger) leftValue).or((BigInteger) rightValue);
 			case FLOAT:
 				new MontyException("Can't or Floats:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 						+ operator.toString());
@@ -219,7 +221,7 @@ public class OperationNode extends ExpressionNode {
 		case "==":
 			switch (type) {
 			case INTEGER:
-				return (Integer) leftValue == (Integer) rightValue;
+				return ((BigInteger) leftValue).equals((BigInteger) rightValue);
 			case FLOAT:
 				return (Float) leftValue == (Float) rightValue;
 			case BOOLEAN:
@@ -230,7 +232,7 @@ public class OperationNode extends ExpressionNode {
 		case ">":
 			switch (type) {
 			case INTEGER:
-				return (Integer) leftValue > (Integer) rightValue;
+				return ((BigInteger) leftValue).compareTo((BigInteger) rightValue) > 0;
 			case FLOAT:
 				return (Float) leftValue > (Float) rightValue;
 			case STRING:
@@ -243,7 +245,7 @@ public class OperationNode extends ExpressionNode {
 		case "<":
 			switch (type) {
 			case INTEGER:
-				return (Integer) leftValue < (Integer) rightValue;
+				return ((BigInteger) leftValue).compareTo((BigInteger) rightValue) < 0;
 			case FLOAT:
 				return (Float) leftValue < (Float) rightValue;
 			case STRING:
@@ -256,7 +258,7 @@ public class OperationNode extends ExpressionNode {
 		case "<=":
 			switch (type) {
 			case INTEGER:
-				return (Integer) leftValue <= (Integer) rightValue;
+				return ((BigInteger) leftValue).compareTo((BigInteger) rightValue) <= 0;
 			case FLOAT:
 				return (Float) leftValue <= (Float) rightValue;
 			case STRING:
@@ -269,7 +271,7 @@ public class OperationNode extends ExpressionNode {
 		case ">=":
 			switch (type) {
 			case INTEGER:
-				return (Integer) leftValue >= (Integer) rightValue;
+				return ((BigInteger) leftValue).compareTo((BigInteger) rightValue) >= 0;
 			case FLOAT:
 				return (Float) leftValue >= (Float) rightValue;
 			case STRING:
@@ -282,7 +284,7 @@ public class OperationNode extends ExpressionNode {
 		case "!=":
 			switch (type) {
 			case INTEGER:
-				return (Integer) leftValue != (Integer) rightValue;
+				return !((BigInteger) leftValue).equals((BigInteger) rightValue);
 			case FLOAT:
 				return (Float) leftValue != (Float) rightValue;
 			case BOOLEAN:
@@ -304,7 +306,7 @@ public class OperationNode extends ExpressionNode {
 			variable = ((VariableDeclarationNode) leftValue);
 			switch (type) {
 			case INTEGER:
-				variable.setValue((Integer) variable.getValue() + (Integer) rightValue);
+				variable.setValue(((BigInteger) leftValue).add((BigInteger) rightValue));
 				return variable.getValue();
 			case FLOAT:
 				variable.setValue((Float) variable.getValue() + (Float) rightValue);
@@ -321,7 +323,7 @@ public class OperationNode extends ExpressionNode {
 			variable = ((VariableDeclarationNode) leftValue);
 			switch (type) {
 			case INTEGER:
-				variable.setValue((Integer) variable.getValue() - (Integer) rightValue);
+				variable.setValue(((BigInteger) leftValue).subtract((BigInteger) rightValue));
 				return variable.getValue();
 			case FLOAT:
 				variable.setValue((Float) variable.getValue() - (Float) rightValue);
@@ -337,7 +339,7 @@ public class OperationNode extends ExpressionNode {
 			variable = ((VariableDeclarationNode) leftValue);
 			switch (type) {
 			case INTEGER:
-				variable.setValue((Integer) variable.getValue() * (Integer) rightValue);
+				variable.setValue(((BigInteger) leftValue).multiply((BigInteger) rightValue));
 				return variable.getValue();
 			case FLOAT:
 				variable.setValue((Float) variable.getValue() * (Float) rightValue);
@@ -353,7 +355,7 @@ public class OperationNode extends ExpressionNode {
 			variable = ((VariableDeclarationNode) leftValue);
 			switch (type) {
 			case INTEGER:
-				variable.setValue((Integer) variable.getValue() / (Integer) rightValue);
+				variable.setValue(((BigInteger) leftValue).divide((BigInteger) rightValue));
 				return variable.getValue();
 			case FLOAT:
 				variable.setValue((Float) variable.getValue() / (Float) rightValue);
@@ -369,7 +371,7 @@ public class OperationNode extends ExpressionNode {
 			switch (type) {
 			case INTEGER:
 				variable = ((VariableDeclarationNode) leftValue);
-				variable.setValue((Integer) variable.getValue() << (Integer) rightValue);
+				variable.setValue(((BigInteger) leftValue).shiftLeft(((BigInteger) rightValue).intValue()));
 				return variable.getValue();
 			case FLOAT:
 				new MontyException("Can't shift left Floats:\t " + leftValue.toString() + " " + rightValue.toString()
@@ -385,7 +387,7 @@ public class OperationNode extends ExpressionNode {
 			switch (type) {
 			case INTEGER:
 				variable = ((VariableDeclarationNode) leftValue);
-				variable.setValue((Integer) variable.getValue() >> (Integer) rightValue);
+				variable.setValue(((BigInteger) leftValue).shiftRight(((BigInteger) rightValue).intValue()));
 				return variable.getValue();
 			case FLOAT:
 				new MontyException("Can't shift right Floats:\t" + leftValue.toString() + " " + rightValue.toString()
@@ -401,7 +403,7 @@ public class OperationNode extends ExpressionNode {
 			switch (type) {
 			case INTEGER:
 				variable = ((VariableDeclarationNode) leftValue);
-				variable.setValue((Integer) variable.getValue() ^ (Integer) rightValue);
+				variable.setValue(((BigInteger) leftValue).xor((BigInteger) rightValue));
 				return variable.getValue();
 			case FLOAT:
 				new MontyException("Can't xor Floats:\t" + leftValue.toString() + " " + rightValue.toString() + " "
@@ -417,7 +419,7 @@ public class OperationNode extends ExpressionNode {
 			switch (type) {
 			case INTEGER:
 				variable = ((VariableDeclarationNode) leftValue);
-				variable.setValue((Integer) variable.getValue() & (Integer) rightValue);
+				variable.setValue(((BigInteger) leftValue).and(((BigInteger) rightValue)));
 				return variable.getValue();
 			case FLOAT:
 				new MontyException("Can't and Floats:\t\"" + leftValue.toString() + "\" \"" + rightValue.toString()
@@ -433,7 +435,7 @@ public class OperationNode extends ExpressionNode {
 			switch (type) {
 			case INTEGER:
 				variable = ((VariableDeclarationNode) leftValue);
-				variable.setValue((Integer) variable.getValue() | (Integer) rightValue);
+				variable.setValue(((BigInteger) leftValue).or(((BigInteger) rightValue)));
 				return variable.getValue();
 			case FLOAT:
 				new MontyException("Can't or Floats:\t" + leftValue.toString() + " " + rightValue.toString() + " "
@@ -489,7 +491,7 @@ public class OperationNode extends ExpressionNode {
 			}
 		else if (expression instanceof String)
 			return DataTypes.STRING;
-		else if (expression instanceof Integer)
+		else if (expression instanceof BigInteger)
 			return DataTypes.INTEGER;
 		else if (expression instanceof Float)
 			return DataTypes.FLOAT;

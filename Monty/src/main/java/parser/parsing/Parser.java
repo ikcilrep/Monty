@@ -61,6 +61,7 @@ public class Parser {
 				break;
 			block = parent;
 		}
+		AdderToBlock.addStdlib(block);
 		return block;
 
 	}

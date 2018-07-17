@@ -4,7 +4,7 @@ import java.util.List;
 
 import ast.Block;
 import ast.NodeTypes;
-import ast.declarations.FunctionDeclarationNode;
+import ast.declarations.CustomFunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.ExpressionNode;
 import ast.statements.IfStatementNode;
@@ -41,7 +41,7 @@ public abstract class AdderToBlock {
 	}
 
 	public static Block addFunctionDeclaration(Block block, List<MontyToken> tokens) {
-		var function = new FunctionDeclarationNode(tokens.get(2).getText(),
+		var function = new CustomFunctionDeclarationNode(tokens.get(2).getText(),
 				Tokens.getDataType(tokens.get(1).getType()));
 		var type = (DataTypes) null;
 		var name = (String) null;
@@ -81,6 +81,12 @@ public abstract class AdderToBlock {
 		whileStatement.setBody(new Block(block));
 		block.addChild(whileStatement);
 		return whileStatement.getBody();
+
+	}
+	
+	public static void addStdlib(Block block) {
+		block.addFunction(new stdlib.Input());
+		block.addFunction(new stdlib.Exit());
 
 	}
 }

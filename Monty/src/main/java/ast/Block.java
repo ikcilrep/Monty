@@ -82,13 +82,14 @@ public class Block extends Node {
 			switch (child.getNodeType()) {
 			case OPERATION:
 				var childCastedToVariable = ((OperationNode) child);
-				if (!(childCastedToVariable.getLeftOperand().getNodeType().equals(NodeTypes.VARIABLE)
-						&& childCastedToVariable.getRightOperand().getOperand().toString().contains("="))) {
-					childCastedToVariable.run();
-				} else if (childCastedToVariable.getOperand().equals(NodeTypes.FUNCTION_CALL)) {
+				if (childCastedToVariable.getOperand().equals(NodeTypes.FUNCTION_CALL)) {
 					var functionToCall = ((FunctionCallNode) child);
 					var function = getFunctionByName(functionToCall.getName());
 					function.call(functionToCall.getArguments());
+				} else if (!(childCastedToVariable.getRightOperand() != null
+						&& childCastedToVariable.getLeftOperand().getNodeType().equals(NodeTypes.VARIABLE)
+						&& childCastedToVariable.getRightOperand().getOperand().toString().contains("="))) {
+					childCastedToVariable.run();
 				} else
 					new MontyException("Some expression hasn't got any sense!!!");
 

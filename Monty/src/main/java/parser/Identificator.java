@@ -12,7 +12,7 @@ public abstract class Identificator {
 		for (MontyToken token : tokens) {
 			switch (token.getType()) {
 			case OPERATOR:
-				if (last.getType().equals(TokenTypes.COMMA) || last.equals(null))
+				if (last == null || last.getType().equals(TokenTypes.COMMA))
 					return false;
 				break;
 			case INTEGER_LITERAL:
@@ -22,11 +22,15 @@ public abstract class Identificator {
 			case IDENTIFIER:
 				break;
 			case BRACKET:
-				if (last.getType().equals(TokenTypes.COMMA) || last.equals(null))
+				if (last == null)
+					new MontyException("Unexpected bracket:\t" + Tokens.getText(tokens.subList(0, i + 1)));
+				if (last.getType().equals(TokenTypes.COMMA))
 					new MontyException("Unexpected comma before bracket:\t" + Tokens.getText(tokens.subList(0, i + 1)));
 				break;
 			case COMMA:
-				if ((last.getType().equals(TokenTypes.BRACKET) && last.getText().equals("(")) || last.equals(null))
+				if (last == null)
+					new MontyException("Unexpected comma:\t" + Tokens.getText(tokens.subList(0, i + 1)));
+				if ((last.getType().equals(TokenTypes.BRACKET) && last.getText().equals("(")))
 					new MontyException("Unexpected bracket before comma:\t" + Tokens.getText(tokens.subList(0, i + 1)));
 				break;
 			default:
@@ -45,7 +49,7 @@ public abstract class Identificator {
 			return false;
 		if (tokens.size() == 1)
 			new MontyException("Expected expression after \"print\" keyword:\t" + Tokens.getText(tokens));
-		var expression = tokens.subList(2, tokens.size());
+		var expression = tokens.subList(1, tokens.size());
 		if (!isExpression(expression))
 			new MontyException("Wrong expression after \"print\" keyword keyword:\t" + Tokens.getText(expression));
 		return true;

@@ -1,5 +1,6 @@
 package parser.parsing;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -36,7 +37,7 @@ public class ExpressionParser {
 	public static Object toDataType(String literal, DataTypes dataType) {
 		switch (dataType) {
 		case INTEGER:
-			return Integer.parseInt(literal);
+			return new BigInteger(literal);
 		case FLOAT:
 			return Float.parseFloat(literal);
 		case STRING:
@@ -63,7 +64,6 @@ public class ExpressionParser {
 				((OperationNode) node).setLeftOperand(stack.pop());
 				break;
 			case IDENTIFIER: // If token is identifier
-				System.out.println(Tokens.getText(tokens));
 				if (i + 1 < tokens.size() && tokens.get(i + 1).getType().equals(TokenTypes.BRACKET)) {
 					int j = 0;
 					int openBracketCounter = 1;

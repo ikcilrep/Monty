@@ -6,8 +6,8 @@ func int addTwo int a;
 	return a getTwo()  +;
 end;
 
-var int a 2 =;
-while a 20 <=;
+var int a 312321324324342 =;
+while a 20321 <=;
 	if a 2 % 0 ==;
 	print a;
 	end;
