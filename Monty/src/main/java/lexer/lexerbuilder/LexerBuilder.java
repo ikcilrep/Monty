@@ -85,9 +85,11 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 	public void setRegex(String regex, T token) {
 		regularExpressions.put(Pattern.compile(regex), token);
 	}
+
 	public String getIdentifierRegex() {
 		return "^[a-zA-Z_$][a-zA-Z_$0-9]*$";
 	}
+
 	public void removeKeyword(String keyword) {
 		if (keywords.containsKey(keyword))
 			keywords.remove(keyword);
@@ -322,7 +324,8 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 				tokens.add(copied);
 				keyword.setLength(0);
 
-			} else if ((tokenBinaryOperator != null || tokenAssignmentOperator != null)
+			} else if (((i + 1 < text.length() && !Character.isDigit(text.charAt(i + 1)) || i + 1 >= text.length()))
+					&& (tokenBinaryOperator != null || tokenAssignmentOperator != null)
 					&& binaryOperators.contains(thisChar) || thisChar == '=') {
 				try {
 					check();
