@@ -15,7 +15,7 @@ public class Main {
 		BufferedReader br = null;
 		var code = new StringBuilder();
 		try {
-			br = new BufferedReader(new FileReader(Main.class.getResource("Examples/sample.mt").getPath()));
+			br = new BufferedReader(new FileReader(args[0]));
 			String line;
 			while ((line = br.readLine()) != null) {
 				code.append(line + "\n");
