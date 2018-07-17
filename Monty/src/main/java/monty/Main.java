@@ -34,6 +34,6 @@ public class Main {
 		var lb = LexerConfig.getLexer(code.toString());
 
 		List<MontyToken> tokens = lb.getAllTokens();
-		Parser.parse(tokens);
+		Parser.parse(tokens).run();
 	}
 }

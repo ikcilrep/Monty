@@ -287,7 +287,7 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 				} catch (CloneNotSupportedException e) {
 					e.printStackTrace();
 				}
-				if (thisChar == '<' || thisChar == '>' && text.charAt(i + 1) != '=') {
+				if ((thisChar == '<' || thisChar == '>') && text.charAt(i + 1) != '=') {
 					copied.setText("" + thisChar);
 				} else {
 					copied.setText("" + thisChar + '=');

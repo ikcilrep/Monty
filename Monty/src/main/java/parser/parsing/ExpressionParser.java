@@ -43,7 +43,7 @@ public class ExpressionParser {
 			var node = (OperationNode) null;
 			switch (token.getType()) {
 			case OPERATOR: // If token is operator
-				node = new OperationNode(token.getText(),parent);
+				node = new OperationNode(token.getText(), parent);
 				if (!token.getText().equals("!"))
 					((OperationNode) node).setRightOperand(stack.pop());
 				((OperationNode) node).setLeftOperand(stack.pop());
@@ -75,7 +75,7 @@ public class ExpressionParser {
 						function.addArgument(parse(parent, ts));
 					}
 					node = new OperationNode(function, parent);
-					i = j + 1;
+					i = j - 1;
 				} else
 					node = new OperationNode(new VariableNode(token.getText()), parent);
 				break;

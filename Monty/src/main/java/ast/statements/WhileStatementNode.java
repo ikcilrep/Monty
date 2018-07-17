@@ -3,12 +3,13 @@ package ast.statements;
 import ast.Block;
 import ast.NodeTypes;
 import ast.expressions.ExpressionNode;
+import ast.expressions.OperationNode;
 
 public class WhileStatementNode extends StatementNode {
-	private ExpressionNode condition;
+	private OperationNode condition;
 	private Block body;
 
-	public WhileStatementNode(ExpressionNode condition) {
+	public WhileStatementNode(OperationNode condition) {
 		this.condition = condition;
 		super.nodeType = NodeTypes.WHILE_STATEMENT;
 	}
@@ -21,7 +22,7 @@ public class WhileStatementNode extends StatementNode {
 		this.body = body;
 	}
 
-	public ExpressionNode getCondition() {
+	public OperationNode getCondition() {
 		return condition;
 	}
 

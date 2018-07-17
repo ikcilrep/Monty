@@ -1,6 +1,7 @@
 package ast.expressions;
 
 import ast.NodeTypes;
+import parser.DataTypes;
 
 public class VariableNode extends ExpressionNode {
 	private String name;
@@ -13,5 +14,6 @@ public class VariableNode extends ExpressionNode {
 	public String getName() {
 		return name;
 	}
+
 
 }

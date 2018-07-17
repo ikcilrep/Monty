@@ -6,14 +6,14 @@ import ast.NodeTypes;
 
 public class FunctionCallNode extends ExpressionNode {
 	private String name;
-	private ArrayList<ExpressionNode> arguments = new ArrayList<>();
+	private ArrayList<OperationNode> arguments = new ArrayList<>();
 
 	public FunctionCallNode(String name) {
 		this.name = name;
 		super.nodeType = NodeTypes.FUNCTION_CALL;
 	}
 
-	public void addArgument(ExpressionNode argument) {
+	public void addArgument(OperationNode argument) {
 		arguments.add(argument);
 	}
 
@@ -21,7 +21,7 @@ public class FunctionCallNode extends ExpressionNode {
 		return name;
 	}
 
-	public ArrayList<ExpressionNode> getArguments() {
+	public ArrayList<OperationNode> getArguments() {
 		return arguments;
 	}
 }

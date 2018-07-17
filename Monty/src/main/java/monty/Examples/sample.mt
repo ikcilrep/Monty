@@ -1,23 +1,13 @@
-func int sum int a, float b;
-    return a b +;
+
+func int addOne int a;
+return a 1 +;
 end;
 
-
-var int a sum(sum(2,3),2) 2 + =;
-
-if a 9 == ;
-   a 8 =;
-else if a 8 ==;
-   a 7 =;
-else if a 7 ==;
-   a 7 =;
+var int a 2 =;
+print int a;
+while a 20 <=;
+	if a 2 % 0 ==;
+	print int a;
+	end;
+	a addOne(a) =;
 end;
-
-while a 20 <;
-	a 7 +=;
-end;
-
-print float 22 12 +;
-
-'This is comment.`
-
