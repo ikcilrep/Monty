@@ -51,7 +51,8 @@ public abstract class AdderToBlock {
 			else if (tokens.get(i).getType().equals(TokenTypes.INTEGER_KEYWORD)
 					|| tokens.get(i).getType().equals(TokenTypes.FLOAT_KEYWORD)
 					|| tokens.get(i).getType().equals(TokenTypes.STRING_KEYWORD)
-					|| tokens.get(i).getType().equals(TokenTypes.BOOLEAN_KEYWORD))
+					|| tokens.get(i).getType().equals(TokenTypes.BOOLEAN_KEYWORD)
+					|| tokens.get(i).getType().equals(TokenTypes.VOID_KEYWORD))
 				type = Tokens.getDataType(tokens.get(i).getType());
 			if (tokens.get(i).getType().equals(TokenTypes.COMMA) || i + 1 >= tokens.size())
 				function.addParameter(new VariableDeclarationNode(name, type));

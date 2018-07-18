@@ -14,6 +14,7 @@ public class LexerConfig {
 		lb.setKeyword("return", new MontyToken(TokenTypes.RETURN_KEYWORD));
 		lb.setKeyword("print", new MontyToken(TokenTypes.PRINT_KEYWORD));
 		lb.setKeyword("int", new MontyToken(TokenTypes.INTEGER_KEYWORD));
+		lb.setKeyword("void", new MontyToken(TokenTypes.VOID_KEYWORD));
 		lb.setKeyword("float", new MontyToken(TokenTypes.FLOAT_KEYWORD));
 		lb.setKeyword("string", new MontyToken(TokenTypes.STRING_KEYWORD));
 		lb.setKeyword("boolean", new MontyToken(TokenTypes.BOOLEAN_KEYWORD));

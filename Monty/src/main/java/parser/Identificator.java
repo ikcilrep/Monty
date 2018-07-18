@@ -94,7 +94,8 @@ public abstract class Identificator {
 				&& (tokens.get(1).getType().equals(TokenTypes.INTEGER_KEYWORD)
 						|| tokens.get(1).getType().equals(TokenTypes.FLOAT_KEYWORD)
 						|| tokens.get(1).getType().equals(TokenTypes.STRING_KEYWORD)
-						|| tokens.get(1).getType().equals(TokenTypes.BOOLEAN_KEYWORD));
+						|| tokens.get(1).getType().equals(TokenTypes.BOOLEAN_KEYWORD)
+						|| tokens.get(1).getType().equals(TokenTypes.VOID_KEYWORD));
 		var isThirdTokenIdentifier = tokens.size() > 2 && tokens.get(2).getType().equals(TokenTypes.IDENTIFIER);
 		if (!isFirstTokenFuncKeyword)
 			return false;
