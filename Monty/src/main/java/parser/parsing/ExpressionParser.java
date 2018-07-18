@@ -44,6 +44,8 @@ public class ExpressionParser {
 			return literal;
 		case BOOLEAN:
 			return Boolean.parseBoolean(literal);
+		case VOID:
+			return null;
 		}
 		return dataType;
 	}

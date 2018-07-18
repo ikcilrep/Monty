@@ -1,5 +1,6 @@
 package parser;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import lexer.MontyToken;
@@ -170,6 +171,22 @@ public abstract class Identificator {
 		if (!isExpression(tokens.subList(1, tokens.size())))
 			new MontyException("Wrong expression after \"while\" keyword:\t" + Tokens.getText(tokens));
 		return true;
+
+	}
+
+	public static DataTypes getDataType(Object value) {
+
+		if (value == null)
+			return DataTypes.VOID;
+		if (value instanceof BigInteger)
+			return DataTypes.INTEGER;
+		if (value instanceof Float)
+			return DataTypes.FLOAT;
+		if (value instanceof String)
+			return DataTypes.STRING;
+		if (value instanceof Boolean)
+			return DataTypes.BOOLEAN;
+		return null;
 
 	}
 

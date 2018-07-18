@@ -1,17 +1,17 @@
 package ast.statements;
 
 import ast.NodeTypes;
-import ast.expressions.ExpressionNode;
+import ast.expressions.OperationNode;
 
 public class ReturnStatementNode extends StatementNode {
-	private ExpressionNode expression;
+	private OperationNode expression;
 
-	public ReturnStatementNode(ExpressionNode expression) {
+	public ReturnStatementNode(OperationNode expression) {
 		this.expression = expression;
 		super.nodeType = NodeTypes.RETURN_STATEMENT;
 	}
 	
-	public ExpressionNode getExpression() {
+	public OperationNode getExpression() {
 		return expression;
 	}
 }

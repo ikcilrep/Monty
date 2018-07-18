@@ -1,4 +1,4 @@
-package stdlib;
+package stdlib.system;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -22,9 +22,9 @@ public class Argv extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
-		var index= ((BigInteger) getBody().getVariableByName("index").getValue()).intValue();
+		var index = ((BigInteger) getBody().getVariableByName("index").getValue()).intValue();
 		if (index >= Main.argv.length)
-			new MontyException("Index "+index+" is too large for length "+Main.argv.length+".");
+			new MontyException("Index " + index + " is too large for length " + Main.argv.length);
 		return Main.argv[index];
 	}
 

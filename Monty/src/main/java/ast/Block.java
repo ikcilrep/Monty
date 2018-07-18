@@ -74,8 +74,15 @@ public class Block extends Node {
 	}
 
 	public boolean doesContainVariable(String name) {
-		return variables.containsKey(name);
-	}
+		Block block = this;
+		while (true) {
+			if (block.functions.containsKey(name))
+				return true;
+			var parent = block.getParent();
+			if (parent == null)
+				return false;
+			block = parent;
+		}	}
 
 	public Object run() {
 		for (Node child : children) {
@@ -119,7 +126,7 @@ public class Block extends Node {
 				}
 				break;
 			case RETURN_STATEMENT:
-				return ((ReturnStatementNode) child).getExpression();
+				return ((ReturnStatementNode) child).getExpression().run();
 			default:
 				break;
 			}

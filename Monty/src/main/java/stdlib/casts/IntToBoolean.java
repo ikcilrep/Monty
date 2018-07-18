@@ -1,4 +1,4 @@
-package stdlib;
+package stdlib.casts;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -9,10 +9,10 @@ import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class IntToString extends FunctionDeclarationNode {
+public class IntToBoolean extends FunctionDeclarationNode {
 
-	public IntToString() {
-		super("intToString", DataTypes.INTEGER);
+	public IntToBoolean() {
+		super("intToBoolean", DataTypes.BOOLEAN);
 		setBody(new Block(null));
 		addParameter(new VariableDeclarationNode("integer", DataTypes.INTEGER));
 	}
@@ -20,7 +20,9 @@ public class IntToString extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
-		return ((BigInteger) getBody().getVariableByName("integer").getValue()).toString();
+		var toBoolean = (BigInteger)getBody().getVariableByName("integer").getValue();
+		
+		return (Boolean) (toBoolean.compareTo(BigInteger.valueOf(0)) > 0);
 	}
 
 }

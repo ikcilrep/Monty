@@ -1,4 +1,4 @@
-package stdlib;
+package stdlib.casts;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class StringToInt extends FunctionDeclarationNode {
 		else if (toInt.matches("[+-]?[0-9]+"))
 			return new BigInteger(toInt);
 		else
-			new MontyException("Unknown number format for integer type:\t" + toInt + ".");
+			new MontyException("Unknown number format for integer type:\t" + toInt);
 		return null;
 	}
 

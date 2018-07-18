@@ -4,5 +4,6 @@ public enum DataTypes {
 	BOOLEAN,
 	INTEGER,
 	FLOAT,
-	STRING
+	STRING,
+	VOID
 }

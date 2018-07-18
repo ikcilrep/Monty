@@ -1,4 +1,4 @@
-package stdlib;
+package stdlib.system;
 
 import java.util.ArrayList;
 import ast.declarations.FunctionDeclarationNode;

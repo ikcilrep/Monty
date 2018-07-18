@@ -6,7 +6,7 @@ import ast.Block;
 import ast.NodeTypes;
 import ast.declarations.CustomFunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
-import ast.expressions.ExpressionNode;
+import ast.expressions.OperationNode;
 import ast.statements.IfStatementNode;
 import ast.statements.PrintStatementNode;
 import ast.statements.ReturnStatementNode;
@@ -28,7 +28,7 @@ public abstract class AdderToBlock {
 	}
 
 	public static void addReturnStatement(Block block, List<MontyToken> tokens) {
-		var expression = (ExpressionNode) null;
+		var expression = (OperationNode) null;
 		if (tokens.size() > 1)
 			expression = ExpressionParser.parse(block, tokens.subList(1, tokens.size()));
 		block.addChild(new ReturnStatementNode(expression));
@@ -85,11 +85,28 @@ public abstract class AdderToBlock {
 	}
 	
 	public static void addStdlib(Block block) {
-		block.addFunction(new stdlib.Input());
-		block.addFunction(new stdlib.Exit());
-		block.addFunction(new stdlib.Argv());
-		block.addFunction(new stdlib.StringToInt());
-		block.addFunction(new stdlib.IntToString());
+		block.addFunction(new stdlib.io.Input());
+		block.addFunction(new stdlib.io.ReadFile());
+		
+		block.addFunction(new stdlib.system.Exit());
+		block.addFunction(new stdlib.system.Argv());
+		
+		block.addFunction(new stdlib.casts.StringToInt());
+		block.addFunction(new stdlib.casts.StringToBoolean());
+		block.addFunction(new stdlib.casts.StringToFloat());
 
+		block.addFunction(new stdlib.casts.IntToString());
+		block.addFunction(new stdlib.casts.IntToBoolean());
+		block.addFunction(new stdlib.casts.IntToFloat());
+		
+		block.addFunction(new stdlib.casts.FloatToInt());
+		block.addFunction(new stdlib.casts.FloatToString());
+		block.addFunction(new stdlib.casts.FloatToBoolean());
+		
+		block.addFunction(new stdlib.casts.BooleanToInt());
+		block.addFunction(new stdlib.casts.BooleanToString());
+		block.addFunction(new stdlib.casts.BooleanToFloat());
+
+		
 	}
 }

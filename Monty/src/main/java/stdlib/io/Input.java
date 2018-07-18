@@ -1,4 +1,4 @@
-package stdlib;
+package stdlib.io;
 
 import java.util.ArrayList;
 import java.util.Scanner;
