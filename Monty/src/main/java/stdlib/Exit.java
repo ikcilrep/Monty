@@ -13,6 +13,7 @@ public class Exit extends FunctionDeclarationNode {
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
+		setArguments(arguments);
 		System.exit(0);
 		return 0;
 	}

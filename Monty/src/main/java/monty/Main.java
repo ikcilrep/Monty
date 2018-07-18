@@ -11,7 +11,9 @@ import parser.parsing.Parser;
 
 
 public class Main {
-	public static void main(String[] args) throws FileNotFoundException {
+	public static String[] argv = null;
+ 	public static void main(String[] args) throws FileNotFoundException {
+ 		argv = args;
 		BufferedReader br = null;
 		var code = new StringBuilder();
 		try {

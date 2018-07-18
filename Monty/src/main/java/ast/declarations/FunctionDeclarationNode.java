@@ -6,7 +6,7 @@ import ast.Block;
 import ast.NodeTypes;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
-
+import parser.MontyException;
 
 public abstract class FunctionDeclarationNode extends DeclarationNode {
 	Block body;
@@ -20,8 +20,8 @@ public abstract class FunctionDeclarationNode extends DeclarationNode {
 	public void addParameter(VariableDeclarationNode parameter) {
 		parameters.add(parameter);
 	}
-	public abstract Object call(ArrayList<OperationNode> arguments);
 
+	public abstract Object call(ArrayList<OperationNode> arguments);
 
 	public Block getBody() {
 		return body;
@@ -33,5 +33,25 @@ public abstract class FunctionDeclarationNode extends DeclarationNode {
 
 	public void setBody(Block body) {
 		this.body = body;
+	}
+
+	public void setArguments(ArrayList<OperationNode> arguments) {
+		if (arguments.size() > parameters.size())
+			new MontyException("Too many arguments in " + name + " function call.");
+		else if (arguments.size() < parameters.size())
+			new MontyException("Too few arguments in " + name + " function call.");
+		for (int i = 0; i < arguments.size(); i++) {
+			var name = parameters.get(i).getName();
+			var dataType = parameters.get(i).getType();
+			var argument = arguments.get(i);
+			var argumentDataType = argument.getDataType();
+
+			if (!argumentDataType.equals(dataType))
+				new MontyException("Wrong data type for parameter with name\n\"" + name + "\" in " + getName() + " function call expected "
+						+ dataType.toString().toLowerCase() + " got " + argumentDataType.toString().toLowerCase() + ".");
+			if (!body.doesContainVariable(name))
+				body.addVariable(new VariableDeclarationNode(name, dataType));
+			body.getVariableByName(name).setValue(argument.run());
+		}
 	}
 }

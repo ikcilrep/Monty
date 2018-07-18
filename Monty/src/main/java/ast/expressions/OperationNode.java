@@ -23,6 +23,29 @@ public class OperationNode extends ExpressionNode {
 		this.parent = parent;
 	}
 
+	public DataTypes getDataType() {
+		var expression = (Node) null;
+		var operand = getOperand();
+		if (operand instanceof Node)
+			expression = (Node) operand;
+		else
+			expression = (Node) getLeftOperand().getOperand();
+		switch (expression.getNodeType()) {
+		case VARIABLE:
+			return parent.getVariableByName(((VariableNode) expression).getName()).getType();
+		case FUNCTION_CALL:
+			var functionCall = ((FunctionCallNode) expression);
+			var function = parent.getFunctionByName(functionCall.getName());
+			return function.getType();
+		case CONSTANT:
+			var cn = ((ConstantNode) expression);
+			return cn.getType();
+		default:
+			return null;
+		}
+
+	}
+
 	private Object calculate(Object a, Object b, Object operator) {
 		var isComparison = operator.toString().equals("==") || operator.toString().equals("!=")
 				|| operator.toString().equals("<=") || operator.toString().equals(">=")

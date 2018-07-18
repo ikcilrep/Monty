@@ -5,8 +5,8 @@ func int addTwo int a;
 	end;
 	return a getTwo()  +;
 end;
-
-var int a -12 =;
+print intToString("21");
+var int a stringToInt(input()) =;
 while a 20321 <=;
 	if a 2 % 0 ==;
 	print a;
