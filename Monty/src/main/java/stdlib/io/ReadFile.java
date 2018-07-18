@@ -18,6 +18,7 @@ public class ReadFile extends FunctionDeclarationNode {
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
+		setArguments(arguments);
 		return monty.FileIO.readFile((String) getBody().getVariableByName("path").getValue());
 	}
 

@@ -7,6 +7,7 @@ func int addTwo int a;
 end;
 print intToString(21);
 print booleanToString(true);
+print readFile("../Main.java");
 var int a stringToInt(input()) =;
 while a 1000000000 <=;
 	if a 2 % 0 ==;
