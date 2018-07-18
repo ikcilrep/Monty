@@ -86,7 +86,6 @@ public abstract class AdderToBlock {
 	
 	public static void addStdlib(Block block) {
 		block.addFunction(new stdlib.io.Input());
-		block.addFunction(new stdlib.io.ReadFile());
 		
 		block.addFunction(new stdlib.system.Exit());
 		block.addFunction(new stdlib.system.Argv());

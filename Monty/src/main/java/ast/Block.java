@@ -37,15 +37,17 @@ public class Block extends Node {
 
 	public void addVariable(VariableDeclarationNode variable) {
 		String name = variable.getName();
-		if (variables.containsKey(name))
-			new MontyException("Variable " + name + "already exists.");
+		if (variables.containsKey(name)) {
+			System.out.println(variables);
+			new MontyException("Variable " + name + " already exists");
+		}
 		variables.put(name, variable);
 	}
 
 	public void addFunction(FunctionDeclarationNode function) {
 		String name = function.getName();
 		if (variables.containsKey(name))
-			new MontyException("Function " + name + " already exists.");
+			new MontyException("Function " + name + " already exists");
 		functions.put(name, function);
 	}
 
@@ -74,15 +76,8 @@ public class Block extends Node {
 	}
 
 	public boolean doesContainVariable(String name) {
-		Block block = this;
-		while (true) {
-			if (block.functions.containsKey(name))
-				return true;
-			var parent = block.getParent();
-			if (parent == null)
-				return false;
-			block = parent;
-		}	}
+		return variables.containsKey(name);
+	}
 
 	public Object run() {
 		for (Node child : children) {
