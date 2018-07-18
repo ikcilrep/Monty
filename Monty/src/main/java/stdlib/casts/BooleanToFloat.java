@@ -19,8 +19,8 @@ public class BooleanToFloat extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
-		var toInt = ((Boolean) getBody().getVariableByName("bool").getValue());
-		if (toInt == true)
+		var bool = ((Boolean) getBody().getVariableByName("bool").getValue());
+		if (bool == true)
 			return (Float) 1f;
 		return (Float) 0f;
 	}

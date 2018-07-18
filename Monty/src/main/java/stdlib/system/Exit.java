@@ -8,14 +8,14 @@ import parser.DataTypes;
 public class Exit extends FunctionDeclarationNode {
 
 	public Exit() {
-		super("exit", DataTypes.INTEGER);
+		super("exit", DataTypes.VOID);
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
 		System.exit(0);
-		return 0;
+		return null;
 	}
 
 }

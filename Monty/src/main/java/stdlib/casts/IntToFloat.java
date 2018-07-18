@@ -20,9 +20,9 @@ public class IntToFloat extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
-		var toFloat = (BigInteger)getBody().getVariableByName("integer").getValue();
+		var integer = (BigInteger)getBody().getVariableByName("integer").getValue();
 		
-		return (Float)(float)toFloat.intValue();
+		return (Float)(float)integer.intValue();
 	}
 
 }

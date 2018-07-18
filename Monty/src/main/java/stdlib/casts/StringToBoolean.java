@@ -20,12 +20,12 @@ public class StringToBoolean extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
-		String toInt = (String) getBody().getVariableByName("str").getValue();
-		Boolean doesToIntEqualsTrue = toInt.equalsIgnoreCase("true");
-		if (doesToIntEqualsTrue || toInt.equalsIgnoreCase("false"))
-			return doesToIntEqualsTrue;
+		String str = (String) getBody().getVariableByName("str").getValue();
+		Boolean doesstrEqualsTrue = str.equalsIgnoreCase("true");
+		if (doesstrEqualsTrue || str.equalsIgnoreCase("false"))
+			return doesstrEqualsTrue;
 		else
-			new MontyException("Unknown format for boolean type:\t" + toInt);
+			new MontyException("Unknown format for boolean type:\t" + str);
 		return null;
 	}
 

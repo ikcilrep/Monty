@@ -20,9 +20,9 @@ public class IntToBoolean extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
-		var toBoolean = (BigInteger)getBody().getVariableByName("integer").getValue();
+		var integer = (BigInteger)getBody().getVariableByName("integer").getValue();
 		
-		return (Boolean) (toBoolean.compareTo(BigInteger.valueOf(0)) > 0);
+		return (Boolean) (integer.compareTo(BigInteger.valueOf(0)) > 0);
 	}
 
 }

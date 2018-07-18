@@ -21,13 +21,13 @@ public class StringToInt extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
-		String toInt = (String) getBody().getVariableByName("str").getValue();
-		if (toInt.matches("[+-]?[0-9]+\\.[0-9]+"))
-			return new BigInteger(toInt.split("\\.")[0]);
-		else if (toInt.matches("[+-]?[0-9]+"))
-			return new BigInteger(toInt);
+		String str = (String) getBody().getVariableByName("str").getValue();
+		if (str.matches("[+-]?[0-9]+\\.[0-9]+"))
+			return new BigInteger(str.split("\\.")[0]);
+		else if (str.matches("[+-]?[0-9]+"))
+			return new BigInteger(str);
 		else
-			new MontyException("Unknown number format for integer type:\t" + toInt);
+			new MontyException("Unknown number format for integer type:\t" + str);
 		return null;
 	}
 

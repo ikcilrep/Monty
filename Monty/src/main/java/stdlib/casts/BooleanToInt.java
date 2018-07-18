@@ -20,8 +20,8 @@ public class BooleanToInt extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
-		var toInt = ((Boolean) getBody().getVariableByName("bool").getValue());
-		if (toInt == true)
+		var bool = ((Boolean) getBody().getVariableByName("bool").getValue());
+		if (bool == true)
 			return BigInteger.valueOf(1);
 		return BigInteger.valueOf(0);
 	}
