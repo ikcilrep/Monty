@@ -1,6 +1,8 @@
 package ast.declarations;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import ast.expressions.OperationNode;
 import parser.DataTypes;
@@ -15,9 +17,18 @@ public class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
+		var variables = new HashMap<String, VariableDeclarationNode>();
+
+		for (Map.Entry<String, VariableDeclarationNode> entry : body.getVariables().entrySet()) {
+			String key = entry.getKey();
+			VariableDeclarationNode value = ((VariableDeclarationNode) entry.getValue());
+			variables.put(key, value.copy());
+		}
 		setArguments(arguments);
 		var result = body.run();
 		var resultDataType = Identificator.getDataType(result);
+		body.setVariables(variables);
+
 		if (!resultDataType.equals(getType()))
 			new MontyException("Function " + getName() + " should returns " + getType().toString().toLowerCase()
 					+ ",\nbut returns " + resultDataType.toString().toLowerCase());

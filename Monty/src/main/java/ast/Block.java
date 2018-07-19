@@ -114,8 +114,14 @@ public class Block extends Node {
 				break;
 			case WHILE_STATEMENT:
 				var childCastedToWhileStatement = ((WhileStatementNode) child);
-				while ((boolean) childCastedToWhileStatement.getCondition().run()) {
-					var result = childCastedToWhileStatement.getBody().run();
+				var condition = (boolean) childCastedToWhileStatement.getCondition().run();
+				while (condition) {
+					var body = childCastedToWhileStatement.getBody();
+					@SuppressWarnings("unchecked")
+					HashMap<String, VariableDeclarationNode> variables = (HashMap<String, VariableDeclarationNode>) body
+							.getVariables().clone();
+					var result = body.run();
+					body.setVariables(variables);
 					if (result != null)
 						return result;
 				}
@@ -127,5 +133,13 @@ public class Block extends Node {
 			}
 		}
 		return null;
+	}
+
+	public HashMap<String, VariableDeclarationNode> getVariables() {
+		return variables;
+	}
+
+	public void setVariables(HashMap<String, VariableDeclarationNode> variables) {
+		this.variables = variables;
 	}
 }
