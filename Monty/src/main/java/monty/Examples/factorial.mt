@@ -1,0 +1,10 @@
+func int factorial int n;
+	if n 1 ==;
+		return 1;
+	end;
+	return n factorial(n 1 -) *;
+end;
+var int n;
+print "Podaj liczbê z której ma byæ obliczona silnia:\t";
+n stringToInt(input()) =;
+println intToString(factorial(n));

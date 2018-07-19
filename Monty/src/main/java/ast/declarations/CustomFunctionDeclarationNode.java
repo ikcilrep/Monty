@@ -25,7 +25,12 @@ public class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
 			variables.put(key, value.copy());
 		}
 		setArguments(arguments);
-		var result = body.run();
+		Object result = null;
+		try {
+			result = body.run();
+		} catch (StackOverflowError e) {
+			new MontyException("Stack overflow at " + name + " function call");
+		}
 		var resultDataType = Identificator.getDataType(result);
 		body.setVariables(variables);
 
