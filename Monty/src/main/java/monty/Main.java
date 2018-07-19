@@ -10,7 +10,7 @@ import parser.parsing.Parser;
 public class Main {
 	public static String[] argv = null;
  	public static void main(String[] args) throws FileNotFoundException {
- 		argv = args;
+ 		argv = args;	
 		var lb = LexerConfig.getLexer(FileIO.readFile(Main.class.getResource("Examples/fibonacci.mt").getPath()));
 
 		List<MontyToken> tokens = lb.getAllTokens();
