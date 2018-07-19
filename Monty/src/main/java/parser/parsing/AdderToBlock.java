@@ -24,7 +24,8 @@ public abstract class AdderToBlock {
 	}
 
 	public static void addPrintStatement(Block block, List<MontyToken> tokens) {
-		block.addChild(new PrintStatementNode(ExpressionParser.parse(block, tokens.subList(1, tokens.size())), tokens.get(0).getText().equals("println")));
+		block.addChild(new PrintStatementNode(ExpressionParser.parse(block, tokens.subList(1, tokens.size())),
+				tokens.get(0).getText().equals("println")));
 	}
 
 	public static void addReturnStatement(Block block, List<MontyToken> tokens) {
@@ -106,6 +107,9 @@ public abstract class AdderToBlock {
 		block.addFunction(new stdlib.casts.BooleanToInt());
 		block.addFunction(new stdlib.casts.BooleanToString());
 		block.addFunction(new stdlib.casts.BooleanToFloat());
+
+		block.addFunction(new stdlib.casts.IntToChar());
+		block.addFunction(new stdlib.casts.CharToInt());
 
 		block.addFunction(new stdlib.math.PowerFloat());
 		block.addFunction(new stdlib.math.PowerInt());

@@ -114,14 +114,9 @@ public class Block extends Node {
 				break;
 			case WHILE_STATEMENT:
 				var childCastedToWhileStatement = ((WhileStatementNode) child);
-				var condition = (boolean) childCastedToWhileStatement.getCondition().run();
-				while (condition) {
+				while ((boolean) childCastedToWhileStatement.getCondition().run()) {
 					var body = childCastedToWhileStatement.getBody();
-					@SuppressWarnings("unchecked")
-					HashMap<String, VariableDeclarationNode> variables = (HashMap<String, VariableDeclarationNode>) body
-							.getVariables().clone();
 					var result = body.run();
-					body.setVariables(variables);
 					if (result != null)
 						return result;
 				}

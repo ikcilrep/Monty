@@ -7,10 +7,9 @@ end;
 
 
 var int a stringToInt(input()) =;
-while a 1000000 <=;
+while a 100 <;
 	if a 2 % 0 ==;
-		print a;
-		print sqrtFloat(intToFloat(a));
+		println a;
 	end;
-	a addTwo(a) =;
+	a 2 +=;
 end;
