@@ -2,6 +2,7 @@ package ast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
@@ -15,24 +16,23 @@ import parser.MontyException;
 
 public class Block extends Node {
 	private ArrayList<Node> children = new ArrayList<>();
+	HashMap<String, FunctionDeclarationNode> functions = new HashMap<>();
 	private Block parent;
 	HashMap<String, VariableDeclarationNode> variables = new HashMap<>();
-	HashMap<String, FunctionDeclarationNode> functions = new HashMap<>();
 
 	public Block(Block parent) {
 		this.parent = parent;
 	}
 
-	public Block getParent() {
-		return parent;
-	}
-
-	public ArrayList<Node> getChildren() {
-		return children;
-	}
-
 	public void addChild(Node child) {
 		children.add(child);
+	}
+
+	public void addFunction(FunctionDeclarationNode function) {
+		String name = function.getName();
+		if (variables.containsKey(name))
+			new MontyException("Function " + name + " already exists");
+		functions.put(name, function);
 	}
 
 	public void addVariable(VariableDeclarationNode variable) {
@@ -44,23 +44,29 @@ public class Block extends Node {
 		variables.put(name, variable);
 	}
 
-	public void addFunction(FunctionDeclarationNode function) {
-		String name = function.getName();
-		if (variables.containsKey(name))
-			new MontyException("Function " + name + " already exists");
-		functions.put(name, function);
+	public void concat(Block block) {
+		var variablesSet = block.getVariables().entrySet();
+		for (Map.Entry<String, VariableDeclarationNode> entry : variablesSet) {
+			addVariable((VariableDeclarationNode) entry.getValue());
+		}
+
+		var functionsSet = block.getFunctions().entrySet();
+		for (Map.Entry<String, FunctionDeclarationNode> entry : functionsSet) {
+			addFunction(((FunctionDeclarationNode) entry.getValue()));
+		}
+
+		var children = block.getChildren();
+		for (Node child : children) {
+			addChild(child);
+		}
 	}
 
-	public VariableDeclarationNode getVariableByName(String name) {
-		Block block = this;
-		while (true) {
-			if (block.variables.containsKey(name))
-				return block.variables.get(name);
-			var parent = block.getParent();
-			if (parent == null)
-				new MontyException("There isn't variable with name:\t" + name);
-			block = parent;
-		}
+	public boolean doesContainVariable(String name) {
+		return variables.containsKey(name);
+	}
+
+	public ArrayList<Node> getChildren() {
+		return children;
 	}
 
 	public FunctionDeclarationNode getFunctionByName(String name) {
@@ -75,8 +81,28 @@ public class Block extends Node {
 		}
 	}
 
-	public boolean doesContainVariable(String name) {
-		return variables.containsKey(name);
+	private HashMap<String, FunctionDeclarationNode> getFunctions() {
+		return functions;
+	}
+
+	public Block getParent() {
+		return parent;
+	}
+
+	public VariableDeclarationNode getVariableByName(String name) {
+		Block block = this;
+		while (true) {
+			if (block.variables.containsKey(name))
+				return block.variables.get(name);
+			var parent = block.getParent();
+			if (parent == null)
+				new MontyException("There isn't variable with name:\t" + name);
+			block = parent;
+		}
+	}
+
+	public HashMap<String, VariableDeclarationNode> getVariables() {
+		return variables;
 	}
 
 	public Object run() {
@@ -94,7 +120,7 @@ public class Block extends Node {
 					childCastedToVariable.run();
 				} else
 					new MontyException("Some expression hasn't got any sense!!!");
-
+				
 				break;
 			case PRINT_STATEMENT:
 				((PrintStatementNode) child).run();
@@ -128,10 +154,6 @@ public class Block extends Node {
 			}
 		}
 		return null;
-	}
-
-	public HashMap<String, VariableDeclarationNode> getVariables() {
-		return variables;
 	}
 
 	public void setVariables(HashMap<String, VariableDeclarationNode> variables) {

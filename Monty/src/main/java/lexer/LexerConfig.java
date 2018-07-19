@@ -20,6 +20,7 @@ public class LexerConfig {
 		lb.setKeyword("string", new MontyToken(TokenTypes.STRING_KEYWORD));
 		lb.setKeyword("boolean", new MontyToken(TokenTypes.BOOLEAN_KEYWORD));
 		lb.setKeyword("while", new MontyToken(TokenTypes.WHILE_KEYWORD));
+		lb.setKeyword("import", new MontyToken(TokenTypes.IMPORT_KEYWORD));
 		lb.setOnAssignmentOperator(new MontyToken(TokenTypes.OPERATOR));
 		lb.setOnBinaryOperator(new MontyToken(TokenTypes.OPERATOR));
 		lb.setOnComparisonOperator(new MontyToken(TokenTypes.OPERATOR));

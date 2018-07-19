@@ -6,9 +6,29 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething<T> {
+public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething<T> implements Cloneable{
+
+	final ArrayList<Character> binaryOperators = new ArrayList<Character>();
+
+	private boolean canIAddQuotes = false;
+
+	final ArrayList<Character> comparisonOperators = new ArrayList<Character>();
+
+	private T copied;
+
+	final Pattern floatLiteralIdentifier = Pattern.compile("[+-]?[0-9]+\\.[0-9]+");
+
+	final Pattern integerLiteralIdentifier = Pattern.compile("[+-]?[0-9]+");
+
+	final StringBuilder keyword = new StringBuilder();
 
 	final private HashMap<String, T> keywords = new HashMap<String, T>();
+
+	final ArrayList<Character> logicalOperators = new ArrayList<Character>();
+
+	private T matchedValue;
+
+	final Pattern regexIdentifier = Pattern.compile("^[a-zA-Z_$][a-zA-Z_$0-9]*$");
 
 	final private HashMap<Pattern, T> regularExpressions = new HashMap<Pattern, T>();
 
@@ -16,27 +36,7 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 
 	private int tokenCounter = -1;
 
-	private boolean canIAddQuotes = false;
-
-	private T matchedValue;
-
-	private T copied;
-
-	final Pattern regexIdentifier = Pattern.compile("^[a-zA-Z_$][a-zA-Z_$0-9]*$");
-
-	final Pattern integerLiteralIdentifier = Pattern.compile("[+-]?[0-9]+");
-
-	final Pattern floatLiteralIdentifier = Pattern.compile("[+-]?[0-9]+\\.[0-9]+");
-
-	final ArrayList<Character> binaryOperators = new ArrayList<Character>();
-
-	final ArrayList<Character> comparisonOperators = new ArrayList<Character>();
-
-	final ArrayList<Character> logicalOperators = new ArrayList<Character>();
-
 	final ArrayList<T> tokens = new ArrayList<T>();
-
-	final StringBuilder keyword = new StringBuilder();
 
 	public LexerBuilder(String text) {
 		this.setText(text);
@@ -60,49 +60,8 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 		logicalOperators.add('!');
 	}
 
-	private T matched(String str) {
-		for (Entry<Pattern, T> entry : regularExpressions.entrySet()) {
-			Matcher keyMatcher = entry.getKey().matcher(str);
-			T value = entry.getValue();
-			if (keyMatcher.matches())
-				return value;
-		}
-		return null;
-	}
-
 	public void addQuotesToStringText(boolean canIAddQuotes) {
 		this.canIAddQuotes = canIAddQuotes;
-	}
-
-	public void setText(String text) {
-		this.text = " " + text + " ";
-	}
-
-	public void setKeyword(String keyword, T token) {
-		keywords.put(keyword, token);
-	}
-
-	public void setRegex(String regex, T token) {
-		regularExpressions.put(Pattern.compile(regex), token);
-	}
-
-	public String getIdentifierRegex() {
-		return "^[a-zA-Z_$][a-zA-Z_$0-9]*$";
-	}
-
-	public void removeKeyword(String keyword) {
-		if (keywords.containsKey(keyword))
-			keywords.remove(keyword);
-		else
-			System.out.println("Keyword " + keyword + " wasn't set.");
-	}
-
-	public void removeRegex(String regex) {
-		Pattern compiledRegex = Pattern.compile(regex);
-		if (regularExpressions.containsKey(compiledRegex))
-			regularExpressions.remove(compiledRegex);
-		else
-			System.out.println("Regex " + regex + " wasn't set.");
 	}
 
 	private void check() throws CloneNotSupportedException {
@@ -128,37 +87,6 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 			copied.setText(keywordToString);
 			tokens.add(copied);
 		}
-	}
-
-	private boolean isIntegerLiteral(String str) {
-		return integerLiteralIdentifier.matcher(str).matches();
-	}
-
-	private boolean isFloatLiteral(String str) {
-		return floatLiteralIdentifier.matcher(str).matches();
-	}
-
-	/*
-	 * isIdentifier(String str) returns true if str can be identifier
-	 */
-	private boolean isIdentifier(String str) {
-		return regexIdentifier.matcher(str).matches();
-	}
-
-	private String replaceEscapeChars(String toReplace) {
-		var result = toReplace;
-		result = result.replaceAll("\\\\n", "\n");
-		result = result.replaceAll("\\\\t", "\t");
-		result = result.replaceAll("\\\\'", "\'");
-		result = result.replaceAll("\\\\\"", "\"");
-		result = result.replaceAll("\\\\'", "\\");
-		result = result.replaceAll("\\\\r", "\r");
-		result = result.replaceAll("\\\\b'", "\b");
-		result = result.replaceAll("\\\\f", "\f");
-		result = result.replaceAll("\\\\'", "\'");
-		result = result.replaceAll("\\\\0", "\0");
-
-		return result;
 	}
 
 	public ArrayList<T> getAllTokens() {
@@ -420,6 +348,16 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 
 	}
 
+	public T getCurrentToken() {
+		if (tokenCounter >= 0)
+			return tokens.get(tokenCounter);
+		return null;
+	}
+
+	public String getIdentifierRegex() {
+		return "^[a-zA-Z_$][a-zA-Z_$0-9]*$";
+	}
+
 	/*
 	 * If you want to change options between the tokens.
 	 */
@@ -430,9 +368,81 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 		return null;
 	}
 
-	public T getCurrentToken() {
-		if (tokenCounter >= 0)
-			return tokens.get(tokenCounter);
+	private boolean isFloatLiteral(String str) {
+		return floatLiteralIdentifier.matcher(str).matches();
+	}
+
+	/*
+	 * isIdentifier(String str) returns true if str can be identifier
+	 */
+	private boolean isIdentifier(String str) {
+		return regexIdentifier.matcher(str).matches();
+	}
+
+	private boolean isIntegerLiteral(String str) {
+		return integerLiteralIdentifier.matcher(str).matches();
+	}
+
+	private T matched(String str) {
+		for (Entry<Pattern, T> entry : regularExpressions.entrySet()) {
+			Matcher keyMatcher = entry.getKey().matcher(str);
+			T value = entry.getValue();
+			if (keyMatcher.matches())
+				return value;
+		}
 		return null;
 	}
-}
+
+	public void removeKeyword(String keyword) {
+		if (keywords.containsKey(keyword))
+			keywords.remove(keyword);
+		else
+			System.out.println("Keyword " + keyword + " wasn't set.");
+	}
+
+	public void removeRegex(String regex) {
+		Pattern compiledRegex = Pattern.compile(regex);
+		if (regularExpressions.containsKey(compiledRegex))
+			regularExpressions.remove(compiledRegex);
+		else
+			System.out.println("Regex " + regex + " wasn't set.");
+	}
+
+	private String replaceEscapeChars(String toReplace) {
+		var result = toReplace;
+		result = result.replaceAll("\\\\n", "\n");
+		result = result.replaceAll("\\\\t", "\t");
+		result = result.replaceAll("\\\\'", "\'");
+		result = result.replaceAll("\\\\\"", "\"");
+		result = result.replaceAll("\\\\'", "\\");
+		result = result.replaceAll("\\\\r", "\r");
+		result = result.replaceAll("\\\\b'", "\b");
+		//result = result.replaceAll("\\\\f", "\f");
+		result = result.replaceAll("\\\\'", "\'");
+		result = result.replaceAll("\\\\0", "\0");
+
+		return result;
+	}
+
+	public void setKeyword(String keyword, T token) {
+		keywords.put(keyword, token);
+	}
+
+	public void setRegex(String regex, T token) {
+		regularExpressions.put(Pattern.compile(regex), token);
+	}
+
+	public void setText(String text) {
+		this.text = " " + text + " ";
+	}
+	
+	@SuppressWarnings("unchecked")
+	public LexerBuilder<T> copy() {
+		try {
+			return (LexerBuilder<T>) clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+ }

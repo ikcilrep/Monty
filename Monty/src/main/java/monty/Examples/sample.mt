@@ -7,9 +7,9 @@ end;
 
 
 var int a stringToInt(input()) =;
-while a 100 <;
+while a 100000000 <=;
 	if a 2 % 0 ==;
 		println a;
 	end;
-	a 2 +=;
+	a 2 *=;
 end;

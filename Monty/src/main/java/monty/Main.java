@@ -11,7 +11,7 @@ public class Main {
 	public static String[] argv = null;
  	public static void main(String[] args) throws FileNotFoundException {
  		argv = args;	
-		var lb = LexerConfig.getLexer(FileIO.readFile(Main.class.getResource("Examples/sample.mt").getPath()));
+		var lb = LexerConfig.getLexer(FileIO.readFile(Main.class.getResource("Examples/factorial.mt").getPath()));
 
 		List<MontyToken> tokens = lb.getAllTokens();
 		Parser.parse(tokens).run();

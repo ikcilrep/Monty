@@ -1,11 +1,14 @@
 package parser.parsing;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import ast.Block;
+import lexer.LexerConfig;
 import lexer.MontyToken;
 import lexer.TokenTypes;
+import monty.FileIO;
 import parser.Identificator;
 import parser.MontyException;
 
@@ -19,32 +22,38 @@ public class Parser {
 				if (tokensBeforeSemicolon.size() == 0)
 					continue;
 				if (Identificator.isExpression(tokensBeforeSemicolon)) {
-					//System.out.println("EXPRESSION!");
+					// System.out.println("EXPRESSION!");
 					AdderToBlock.addExpression(block, tokensBeforeSemicolon);
 				} else if (Identificator.isPrintStatement(tokensBeforeSemicolon)) {
-					//System.out.println("PRINT STATEMENT!");
+					// System.out.println("PRINT STATEMENT!");
 					AdderToBlock.addPrintStatement(block, tokensBeforeSemicolon);
 				} else if (Identificator.isVariableDeclaration(tokensBeforeSemicolon)) {
-					//System.out.println("VARIABLE DECLARATION!");
+					// System.out.println("VARIABLE DECLARATION!");
 					AdderToBlock.addVariableDeclaration(block, tokensBeforeSemicolon);
 				} else if (Identificator.isReturnStatement(tokensBeforeSemicolon)) {
-					//System.out.println("RETURN STATEMENT!");
+					// System.out.println("RETURN STATEMENT!");
 					AdderToBlock.addReturnStatement(block, tokensBeforeSemicolon);
 				} else if (Identificator.isFunctionDeclaration(tokensBeforeSemicolon)) {
-					//System.out.println("FUNCTION DECLARTION!");
+					// System.out.println("FUNCTION DECLARTION!");
 					block = AdderToBlock.addFunctionDeclaration(block, tokensBeforeSemicolon);
 				} else if (Identificator.isIfStatement(tokensBeforeSemicolon)) {
-					//System.out.println("IF STATEMENT!");
+					// System.out.println("IF STATEMENT!");
 					block = AdderToBlock.addIfStatement(block, tokensBeforeSemicolon);
 				} else if (Identificator.isElseStatement(tokensBeforeSemicolon)) {
-					//System.out.println("ELSE STATEMENT!");
+					// System.out.println("ELSE STATEMENT!");
 					block = AdderToBlock.addElseStatement(block, tokensBeforeSemicolon);
 					if (tokensBeforeSemicolon.size() > 1)
 						block = AdderToBlock.addIfStatement(block,
 								tokensBeforeSemicolon.subList(1, tokensBeforeSemicolon.size()));
 				} else if (Identificator.isWhileStatement(tokensBeforeSemicolon)) {
-					//System.out.println("WHILE STATEMENT!");
+					// System.out.println("WHILE STATEMENT!");
 					block = AdderToBlock.addWhileStatement(block, tokensBeforeSemicolon);
+				} else if (Identificator.isImport(tokensBeforeSemicolon)) {
+					var path = ExpressionParser.parse(block, tokensBeforeSemicolon.subList(1, tokensBeforeSemicolon.size())).run().toString();
+					var text = FileIO.readFile(new File(path).getAbsolutePath());
+					var importedTokens = LexerConfig.getLexer(text).getAllTokens();
+					var parsed = Parser.parse(importedTokens);
+					block.concat(parsed);
 				} else if (Identificator.isEndKeyword(tokensBeforeSemicolon)) {
 					var parent = block.getParent();
 					if (parent == null)

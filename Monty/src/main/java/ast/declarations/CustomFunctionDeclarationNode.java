@@ -6,7 +6,6 @@ import java.util.Map;
 
 import ast.expressions.OperationNode;
 import parser.DataTypes;
-import parser.Identificator;
 import parser.MontyException;
 
 public class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
@@ -18,8 +17,8 @@ public class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
 		var variables = new HashMap<String, VariableDeclarationNode>();
-
-		for (Map.Entry<String, VariableDeclarationNode> entry : body.getVariables().entrySet()) {
+		var variablesSet = body.getVariables().entrySet();
+		for (Map.Entry<String, VariableDeclarationNode> entry : variablesSet) {
 			String key = entry.getKey();
 			VariableDeclarationNode value = ((VariableDeclarationNode) entry.getValue());
 			variables.put(key, value.copy());
@@ -31,7 +30,7 @@ public class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
 		} catch (StackOverflowError e) {
 			new MontyException("Stack overflow at " + name + " function call");
 		}
-		var resultDataType = Identificator.getDataType(result);
+		var resultDataType = DataTypes.getDataType(result);
 		body.setVariables(variables);
 
 		if (!resultDataType.equals(getType()))

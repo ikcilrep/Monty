@@ -6,7 +6,6 @@ import ast.Block;
 import ast.NodeTypes;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
-import parser.Identificator;
 import parser.MontyException;
 
 public abstract class FunctionDeclarationNode extends DeclarationNode {
@@ -46,7 +45,7 @@ public abstract class FunctionDeclarationNode extends DeclarationNode {
 			var dataType = parameters.get(i).getType();
 			var argument = arguments.get(i);
 			var value =  argument.run();
-			var argumentDataType = Identificator.getDataType(value);
+			var argumentDataType = DataTypes.getDataType(value);
 			if (!argumentDataType.equals(dataType))
 				new MontyException("Wrong data type for parameter with name\n\"" + name + "\" in " + getName() + " function call expected "
 						+ dataType.toString().toLowerCase() + " got " + argumentDataType.toString().toLowerCase());

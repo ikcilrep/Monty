@@ -1,12 +1,28 @@
 package parser;
 
-import java.math.BigInteger;
 import java.util.List;
 
 import lexer.MontyToken;
 import lexer.TokenTypes;
 
 public abstract class Identificator {
+	public static boolean isElseStatement(List<MontyToken> tokens) {
+		if (!tokens.get(0).getType().equals(TokenTypes.ELSE_KEYWORD))
+			return false;
+		if (tokens.size() > 1 && !isIfStatement(tokens.subList(1, tokens.size())))
+			new MontyException("Expected if statement or nothing after \"else\" keyword:\t" + Tokens.getText(tokens));
+		return true;
+
+	}
+
+	public static boolean isEndKeyword(List<MontyToken> tokens) {
+		if (!tokens.get(0).getType().equals(TokenTypes.END_KEYWORD))
+			return false;
+		if (tokens.size() > 1)
+			new MontyException("Nothing expected after \"end\" keyword:\t" + Tokens.getText(tokens));
+		return true;
+	}
+
 	public static boolean isExpression(List<MontyToken> tokens) {
 		MontyToken last = null;
 		int i = 0;
@@ -42,50 +58,6 @@ public abstract class Identificator {
 		}
 		return true;
 
-	}
-
-	public static boolean isPrintStatement(List<MontyToken> tokens) {
-		var isFirstTokenPrintKeyword = tokens.get(0).getType().equals(TokenTypes.PRINT_KEYWORD);
-		if (!isFirstTokenPrintKeyword)
-			return false;
-		if (tokens.size() == 1)
-			new MontyException("Expected expression after \"print\" keyword:\t" + Tokens.getText(tokens));
-		var expression = tokens.subList(1, tokens.size());
-		if (!isExpression(expression))
-			new MontyException("Wrong expression after \"print\" keyword keyword:\t" + Tokens.getText(expression));
-		return true;
-	}
-
-	public static boolean isReturnStatement(List<MontyToken> tokens) {
-		var isFirstTokenReturnKeyword = tokens.get(0).getType().equals(TokenTypes.RETURN_KEYWORD);
-
-		if (!isFirstTokenReturnKeyword)
-			return false;
-		if (tokens.size() > 1 && !isExpression(tokens.subList(1, tokens.size())))
-			new MontyException("Wrong expression after return keyword:\t" + Tokens.getText(tokens));
-		return true;
-	}
-
-	public static boolean isVariableDeclaration(List<MontyToken> tokens) {
-		var isFirstTokenVarKeyword = tokens.get(0).getType().equals(TokenTypes.VAR_KEYWORD);
-		var isSecondTokenDataTypeKeyword = tokens.size() > 1
-				&& (tokens.get(1).getType().equals(TokenTypes.INTEGER_KEYWORD)
-						|| tokens.get(1).getType().equals(TokenTypes.FLOAT_KEYWORD)
-						|| tokens.get(1).getType().equals(TokenTypes.STRING_KEYWORD)
-						|| tokens.get(1).getType().equals(TokenTypes.BOOLEAN_KEYWORD));
-		if (!isFirstTokenVarKeyword)
-			return false;
-		if (!isSecondTokenDataTypeKeyword)
-			new MontyException("Expected data type declaration after \"var\" keyword:\t" + Tokens.getText(tokens));
-		if (isSecondTokenDataTypeKeyword && tokens.size() == 2)
-			new MontyException("Expected expression after data type declaration:\t" + Tokens.getText(tokens));
-		var expression = tokens.subList(2, tokens.size());
-		if (!isExpression(expression))
-			new MontyException("Wrong expression after data type declaration:\t" + Tokens.getText(expression));
-		if (!tokens.get(2).getType().equals(TokenTypes.IDENTIFIER))
-			new MontyException("Expected identifier after data type declaration:\t" + Tokens.getText(expression));
-
-		return true;
 	}
 
 	public static boolean isFunctionDeclaration(List<MontyToken> tokens) {
@@ -136,14 +108,6 @@ public abstract class Identificator {
 
 	}
 
-	public static boolean isEndKeyword(List<MontyToken> tokens) {
-		if (!tokens.get(0).getType().equals(TokenTypes.END_KEYWORD))
-			return false;
-		if (tokens.size() > 1)
-			new MontyException("Nothing expected after \"end\" keyword:\t" + Tokens.getText(tokens));
-		return true;
-	}
-
 	public static boolean isIfStatement(List<MontyToken> tokens) {
 		if (!tokens.get(0).getType().equals(TokenTypes.IF_KEYWORD))
 			return false;
@@ -155,13 +119,59 @@ public abstract class Identificator {
 
 	}
 
-	public static boolean isElseStatement(List<MontyToken> tokens) {
-		if (!tokens.get(0).getType().equals(TokenTypes.ELSE_KEYWORD))
+	public static boolean isImport(List<MontyToken> tokens) {
+		if (!tokens.get(0).getType().equals(TokenTypes.IMPORT_KEYWORD))
 			return false;
-		if (tokens.size() > 1 && !isIfStatement(tokens.subList(1, tokens.size())))
-			new MontyException("Expected if statement or nothing after \"else\" keyword:\t" + Tokens.getText(tokens));
+		if (tokens.size() == 1)
+			new MontyException("Expected expression after \"import\" keyword:\t" + Tokens.getText(tokens));
+		if (!isExpression(tokens.subList(1, tokens.size())))
+			new MontyException("Wrong expression after \"import\" keyword:\t" + Tokens.getText(tokens));
 		return true;
 
+	}
+
+	public static boolean isPrintStatement(List<MontyToken> tokens) {
+		var isFirstTokenPrintKeyword = tokens.get(0).getType().equals(TokenTypes.PRINT_KEYWORD);
+		if (!isFirstTokenPrintKeyword)
+			return false;
+		if (tokens.size() == 1)
+			new MontyException("Expected expression after \"print\" keyword:\t" + Tokens.getText(tokens));
+		var expression = tokens.subList(1, tokens.size());
+		if (!isExpression(expression))
+			new MontyException("Wrong expression after \"print\" keyword keyword:\t" + Tokens.getText(expression));
+		return true;
+	}
+
+	public static boolean isReturnStatement(List<MontyToken> tokens) {
+		var isFirstTokenReturnKeyword = tokens.get(0).getType().equals(TokenTypes.RETURN_KEYWORD);
+
+		if (!isFirstTokenReturnKeyword)
+			return false;
+		if (tokens.size() > 1 && !isExpression(tokens.subList(1, tokens.size())))
+			new MontyException("Wrong expression after return keyword:\t" + Tokens.getText(tokens));
+		return true;
+	}
+
+	public static boolean isVariableDeclaration(List<MontyToken> tokens) {
+		var isFirstTokenVarKeyword = tokens.get(0).getType().equals(TokenTypes.VAR_KEYWORD);
+		var isSecondTokenDataTypeKeyword = tokens.size() > 1
+				&& (tokens.get(1).getType().equals(TokenTypes.INTEGER_KEYWORD)
+						|| tokens.get(1).getType().equals(TokenTypes.FLOAT_KEYWORD)
+						|| tokens.get(1).getType().equals(TokenTypes.STRING_KEYWORD)
+						|| tokens.get(1).getType().equals(TokenTypes.BOOLEAN_KEYWORD));
+		if (!isFirstTokenVarKeyword)
+			return false;
+		if (!isSecondTokenDataTypeKeyword)
+			new MontyException("Expected data type declaration after \"var\" keyword:\t" + Tokens.getText(tokens));
+		if (isSecondTokenDataTypeKeyword && tokens.size() == 2)
+			new MontyException("Expected expression after data type declaration:\t" + Tokens.getText(tokens));
+		var expression = tokens.subList(2, tokens.size());
+		if (!isExpression(expression))
+			new MontyException("Wrong expression after data type declaration:\t" + Tokens.getText(expression));
+		if (!tokens.get(2).getType().equals(TokenTypes.IDENTIFIER))
+			new MontyException("Expected identifier after data type declaration:\t" + Tokens.getText(expression));
+
+		return true;
 	}
 
 	public static boolean isWhileStatement(List<MontyToken> tokens) {
@@ -172,22 +182,6 @@ public abstract class Identificator {
 		if (!isExpression(tokens.subList(1, tokens.size())))
 			new MontyException("Wrong expression after \"while\" keyword:\t" + Tokens.getText(tokens));
 		return true;
-
-	}
-
-	public static DataTypes getDataType(Object value) {
-
-		if (value == null)
-			return DataTypes.VOID;
-		if (value instanceof BigInteger)
-			return DataTypes.INTEGER;
-		if (value instanceof Float)
-			return DataTypes.FLOAT;
-		if (value instanceof String)
-			return DataTypes.STRING;
-		if (value instanceof Boolean)
-			return DataTypes.BOOLEAN;
-		return null;
 
 	}
 
