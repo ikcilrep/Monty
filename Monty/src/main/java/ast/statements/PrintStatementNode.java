@@ -15,7 +15,8 @@ public class PrintStatementNode extends StatementNode {
 	}
 	
 	public void run() {
-		System.out.println(expression.run());
+		var toPrint = expression.run().toString();
+		System.out.println(String.valueOf(toPrint));
 	}
 }
 	

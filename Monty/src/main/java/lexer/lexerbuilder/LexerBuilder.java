@@ -145,6 +145,22 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 		return regexIdentifier.matcher(str).matches();
 	}
 
+	private String replaceEscapeChars(String toReplace) {
+		var result = toReplace;
+		result = result.replaceAll("\\\\n", "\n");
+		result = result.replaceAll("\\\\t", "\t");
+		result = result.replaceAll("\\\\'", "\'");
+		result = result.replaceAll("\\\\\"", "\"");
+		result = result.replaceAll("\\\\'", "\\");
+		result = result.replaceAll("\\\\r", "\r");
+		result = result.replaceAll("\\\\b'", "\b");
+		result = result.replaceAll("\\\\f", "\f");
+		result = result.replaceAll("\\\\'", "\'");
+		result = result.replaceAll("\\\\0", "\0");
+
+		return result;
+	}
+
 	public ArrayList<T> getAllTokens() {
 		tokens.clear();
 		keyword.setLength(0);
@@ -164,15 +180,16 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 				if (writeNextEscapeChar) {
 					keyword.append(thisChar);
 					writeNextEscapeChar = false;
-				} else if (thisChar == '\\')
+				} else if (thisChar == '\\') {
+					keyword.append(thisChar);
 					writeNextEscapeChar = true;
-				else if (thisChar == '\"') {
+				} else if (thisChar == '\"') {
 					try {
 						copied = tokenString.copy();
 					} catch (CloneNotSupportedException e) {
 						e.printStackTrace();
 					}
-					copied.setText(keyword.toString());
+					copied.setText(replaceEscapeChars(keyword.toString()));
 					if (canIAddQuotes)
 						copied.setText("\"" + copied.getText() + "\"");
 					tokens.add(copied);

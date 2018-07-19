@@ -8,4 +8,4 @@ func int fib int n;
 	return fib(n 1-) fib (n 2 -) +;
 end;
 
-print fib(7);
+print fib(20);
