@@ -108,9 +108,6 @@ public abstract class AdderToBlock {
 		block.addFunction(new stdlib.casts.BooleanToString());
 		block.addFunction(new stdlib.casts.BooleanToFloat());
 
-		block.addFunction(new stdlib.casts.IntToChar());
-		block.addFunction(new stdlib.casts.CharToInt());
-
 		block.addFunction(new stdlib.math.PowerFloat());
 		block.addFunction(new stdlib.math.PowerInt());
 		block.addFunction(new stdlib.math.SqrtInt());
