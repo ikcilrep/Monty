@@ -86,32 +86,5 @@ public abstract class AdderToBlock {
 
 	}
 
-	public static void addStdlib(Block block) {
-		block.addFunction(new stdlib.io.Input());
 
-		block.addFunction(new stdlib.system.Exit());
-		block.addFunction(new stdlib.system.Argv());
-
-		block.addFunction(new stdlib.casts.StringToInt());
-		block.addFunction(new stdlib.casts.StringToBoolean());
-		block.addFunction(new stdlib.casts.StringToFloat());
-
-		block.addFunction(new stdlib.casts.IntToString());
-		block.addFunction(new stdlib.casts.IntToBoolean());
-		block.addFunction(new stdlib.casts.IntToFloat());
-
-		block.addFunction(new stdlib.casts.FloatToInt());
-		block.addFunction(new stdlib.casts.FloatToString());
-		block.addFunction(new stdlib.casts.FloatToBoolean());
-
-		block.addFunction(new stdlib.casts.BooleanToInt());
-		block.addFunction(new stdlib.casts.BooleanToString());
-		block.addFunction(new stdlib.casts.BooleanToFloat());
-
-		block.addFunction(new stdlib.math.PowerFloat());
-		block.addFunction(new stdlib.math.PowerInt());
-		block.addFunction(new stdlib.math.SqrtInt());
-		block.addFunction(new stdlib.math.SqrtFloat());
-
-	}
 }

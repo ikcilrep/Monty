@@ -15,11 +15,12 @@ public class Tokens {
 			if (i + 1 < tokens.size())
 				next = tokens.get(i + 1);
 			if (!(token.getType().equals(TokenTypes.BRACKET) || token.getType().equals(TokenTypes.COMMA)
-					|| token.getType().equals(TokenTypes.DOT))
-					&& (!(next.getType().equals(TokenTypes.BRACKET) || next.getType().equals(TokenTypes.COMMA)
-							|| next.getType().equals(TokenTypes.DOT))))
+					|| token.getType().equals(TokenTypes.DOT) || next == null
+					|| next.getType().equals(TokenTypes.BRACKET) || next.getType().equals(TokenTypes.COMMA)
+					|| next.getType().equals(TokenTypes.DOT)))
 				result.append(' ');
 			i++;
+			next = null;
 		}
 		return result.toString();
 	}

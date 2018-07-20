@@ -1,3 +1,5 @@
+import stdlib.casts.stringToInt;
+import stdlib.io.input;
 import math.fibonacci;
 func int printr int toPrint;
 	println toPrint;

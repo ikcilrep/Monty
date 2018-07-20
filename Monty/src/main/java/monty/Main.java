@@ -15,6 +15,7 @@ public class Main {
 		var lb = LexerConfig.getLexer( FileIO.readFile(path));
 
 		List<MontyToken> tokens = lb.getAllTokens();
+		Parser.setStdlib();
 		Parser.parse(tokens).run();
 	}
 }
