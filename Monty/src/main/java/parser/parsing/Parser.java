@@ -29,6 +29,7 @@ public class Parser {
 		stdlib.put("math", new HashMap<>());
 		stdlib.put("io", new HashMap<>());
 		stdlib.put("system", new HashMap<>());
+		stdlib.put("data", new HashMap<>());
 
 		var casts = (HashMap) stdlib.get("casts");
 		casts.put("booleanToFloat", new stdlib.casts.BooleanToFloat());
@@ -45,6 +46,11 @@ public class Parser {
 		casts.put("stringToBoolean", new stdlib.casts.StringToBoolean());
 		casts.put("stringToFloat", new stdlib.casts.StringToFloat());
 		casts.put("stringToInt", new stdlib.casts.StringToInt());
+
+		var data = (HashMap) stdlib.get("data");
+		data.put("array", new HashMap<>());
+		var array = (HashMap) data.get("array");
+		array.put("arrayOf", new stdlib.data.array.ArrayOf());
 
 		var io = (HashMap) stdlib.get("io");
 		io.put("input", new stdlib.io.Input());

@@ -7,7 +7,7 @@ public enum DataTypes {
 	INTEGER,
 	FLOAT,
 	STRING,
-	VOID;
+	VOID, ARRAY;
 
 	public static DataTypes getDataType(Object value) {
 	

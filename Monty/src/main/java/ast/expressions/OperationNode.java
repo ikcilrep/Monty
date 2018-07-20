@@ -1,6 +1,7 @@
 package ast.expressions;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 
 import ast.Block;
 import ast.Node;
@@ -23,6 +24,7 @@ public class OperationNode extends ExpressionNode {
 		this.parent = parent;
 	}
 
+	@SuppressWarnings("unchecked")
 	private Object calculate(Object a, Object b, Object operator) {
 		var isComparison = operator.toString().equals("==") || operator.toString().equals("!=")
 				|| operator.toString().equals("<=") || operator.toString().equals(">=")
@@ -30,7 +32,7 @@ public class OperationNode extends ExpressionNode {
 		Object leftValue = null;
 		Object rightValue = null;
 		DataTypes type = getDataType(a);
-		if (!type.equals(getDataType(b)))
+		if (!(type.equals(DataTypes.ARRAY) || type.equals(getDataType(b))))
 			new MontyException("Type mismatch:\t" + type + " and " + getDataType(b));
 		leftValue = getLiteral(a);
 		rightValue = getLiteral(b);
@@ -57,6 +59,8 @@ public class OperationNode extends ExpressionNode {
 			case BOOLEAN:
 				new MontyException("Can't add booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 						+ operator.toString());
+			case ARRAY:
+				return ((ArrayList<Object>) leftValue).add(rightValue);
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -73,6 +77,9 @@ public class OperationNode extends ExpressionNode {
 			case BOOLEAN:
 				new MontyException("Can't subtract booleans:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
+			case ARRAY:
+				new MontyException("Can't subtract array:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+						+ operator.toString());
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -89,6 +96,9 @@ public class OperationNode extends ExpressionNode {
 			case BOOLEAN:
 				new MontyException("Can't multiply booleans:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
+			case ARRAY:
+				new MontyException("Can't multiply array:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+						+ operator.toString());
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -104,6 +114,9 @@ public class OperationNode extends ExpressionNode {
 						+ "\" " + operator.toString());
 			case BOOLEAN:
 				new MontyException("Can't divide booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+						+ operator.toString());
+			case ARRAY:
+				new MontyException("Can't multiply array:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 						+ operator.toString());
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
@@ -121,6 +134,9 @@ public class OperationNode extends ExpressionNode {
 			case BOOLEAN:
 				new MontyException("Can't modulo booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 						+ operator.toString());
+			case ARRAY:
+				new MontyException("Can't multiply array:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+						+ operator.toString());
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -132,9 +148,19 @@ public class OperationNode extends ExpressionNode {
 			case FLOAT:
 				return 0 - (Float) rightValue;
 			case STRING:
-				new MontyException("There isn't opposite of \"" + rightValue.toString() + "\".");
+				var result = new StringBuilder();
+				var string = rightValue.toString();
+				for (int j = string.length() - 1, i = 0; j >= 0; j--, i++)
+					result.append(string.charAt(i));
+				return result.toString();
 			case BOOLEAN:
 				return !(boolean) rightValue;
+			case ARRAY:
+				var resultArray = new ArrayList<Object>();
+				var array = (ArrayList<Object>) rightValue;
+				for (int j = array.size() - 1, i = 0; j >= 0; j--, i++)
+					resultArray.add(array.get(i));
+				return resultArray;
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -151,6 +177,9 @@ public class OperationNode extends ExpressionNode {
 						+ rightValue.toString() + "\" " + operator.toString());
 			case BOOLEAN:
 				new MontyException("Can't shift left booleans:\t" + leftValue.toString() + " " + rightValue.toString()
+						+ " " + operator.toString());
+			case ARRAY:
+				new MontyException("Can't shift left array:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
@@ -169,6 +198,9 @@ public class OperationNode extends ExpressionNode {
 			case BOOLEAN:
 				new MontyException("Can't shift right booleans:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
+			case ARRAY:
+				new MontyException("Can't shift right array:\t" + leftValue.toString() + " " + rightValue.toString()
+						+ " " + operator.toString());
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -185,6 +217,9 @@ public class OperationNode extends ExpressionNode {
 						+ rightValue.toString() + "\" " + operator.toString());
 			case BOOLEAN:
 				new MontyException("Can't do \"xor\" operation with booleans:\t" + leftValue.toString() + " "
+						+ rightValue.toString() + " " + operator.toString());
+			case ARRAY:
+				new MontyException("Can't do \"xor\" operation with array:\t" + leftValue.toString() + " "
 						+ rightValue.toString() + " " + operator.toString());
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
@@ -203,6 +238,9 @@ public class OperationNode extends ExpressionNode {
 			case BOOLEAN:
 				new MontyException("Can't do \"and\" operation with booleans:\t" + leftValue.toString() + " "
 						+ rightValue.toString() + " " + operator.toString());
+			case ARRAY:
+				new MontyException("Can't do \"and\" operation with array:\t" + leftValue.toString() + " "
+						+ rightValue.toString() + " " + operator.toString());
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -219,6 +257,9 @@ public class OperationNode extends ExpressionNode {
 						+ rightValue.toString() + "\" " + operator.toString());
 			case BOOLEAN:
 				new MontyException("Can't do \"or\" operation with booleans:\t" + leftValue.toString() + " "
+						+ rightValue.toString() + " " + operator.toString());
+			case ARRAY:
+				new MontyException("Can't do \"or\" operation with array:\t" + leftValue.toString() + " "
 						+ rightValue.toString() + " " + operator.toString());
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
@@ -237,6 +278,9 @@ public class OperationNode extends ExpressionNode {
 						+ rightValue.toString() + "\" " + operator.toString());
 			case BOOLEAN:
 				return ((boolean) leftValue) && ((boolean) rightValue);
+			case ARRAY:
+				new MontyException("Can't do \"and\" operation with array:\t" + leftValue.toString() + " "
+						+ rightValue.toString() + " " + operator.toString());
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -254,6 +298,9 @@ public class OperationNode extends ExpressionNode {
 						+ rightValue.toString() + "\" " + operator.toString());
 			case BOOLEAN:
 				return ((boolean) leftValue) || ((boolean) rightValue);
+			case ARRAY:
+				new MontyException("Can't do \"or\" operation with array:\t" + leftValue.toString() + " "
+						+ rightValue.toString() + " " + operator.toString());
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -265,8 +312,10 @@ public class OperationNode extends ExpressionNode {
 			case FLOAT:
 				return ((Float) leftValue).compareTo((Float) rightValue) == 0;
 			case BOOLEAN:
-				return ((Boolean) leftValue).compareTo( (Boolean) rightValue) == 0;
+				return ((Boolean) leftValue).compareTo((Boolean) rightValue) == 0;
 			case STRING:
+				return leftValue.equals(rightValue);
+			case ARRAY:
 				return leftValue.equals(rightValue);
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
@@ -284,6 +333,9 @@ public class OperationNode extends ExpressionNode {
 			case BOOLEAN:
 				new MontyException("One boolean can't be greater than other string:\t" + leftValue.toString() + " "
 						+ rightValue.toString() + " " + operator.toString());
+			case ARRAY:
+				new MontyException("Array hasn't got any value to compare:\t" + leftValue.toString() + " "
+						+ rightValue.toString() + " " + operator.toString());
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -299,6 +351,9 @@ public class OperationNode extends ExpressionNode {
 						+ rightValue.toString() + " " + operator.toString());
 			case BOOLEAN:
 				new MontyException("One boolean can't be lower than other string:\t" + leftValue.toString() + " "
+						+ rightValue.toString() + " " + operator.toString());
+			case ARRAY:
+				new MontyException("Array hasn't got any value to compare:\t" + leftValue.toString() + " "
 						+ rightValue.toString() + " " + operator.toString());
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
@@ -316,6 +371,9 @@ public class OperationNode extends ExpressionNode {
 			case BOOLEAN:
 				new MontyException("One boolean can't be lower than other string:\t" + leftValue.toString() + " "
 						+ rightValue.toString() + " " + operator.toString());
+			case ARRAY:
+				new MontyException("Array hasn't got any value to compare:\t" + leftValue.toString() + " "
+						+ rightValue.toString() + " " + operator.toString());
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -332,6 +390,9 @@ public class OperationNode extends ExpressionNode {
 			case BOOLEAN:
 				new MontyException("One boolean can't be greater than other string:\t" + leftValue.toString() + " "
 						+ rightValue.toString() + " " + operator.toString());
+			case ARRAY:
+				new MontyException("Array hasn't got any value to compare:\t" + leftValue.toString() + " "
+						+ rightValue.toString() + " " + operator.toString());
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -344,8 +405,10 @@ public class OperationNode extends ExpressionNode {
 				return ((Float) leftValue).compareTo((Float) rightValue) != 0;
 			case BOOLEAN:
 				return ((Boolean) leftValue).compareTo((Boolean) rightValue) != 0;
+			case ARRAY:
 			case STRING:
 				return !leftValue.equals(rightValue);
+
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -357,6 +420,7 @@ public class OperationNode extends ExpressionNode {
 			case FLOAT:
 			case STRING:
 			case BOOLEAN:
+			case ARRAY:
 				variable.setValue(rightValue);
 				return variable.getValue();
 			case VOID:
@@ -378,6 +442,9 @@ public class OperationNode extends ExpressionNode {
 			case BOOLEAN:
 				new MontyException("Can't add booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 						+ operator.toString());
+			case ARRAY:
+				variable.setValue(((ArrayList<Object>) variable.getValue()).add(rightValue));
+				return variable.getValue();
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -398,6 +465,9 @@ public class OperationNode extends ExpressionNode {
 			case BOOLEAN:
 				new MontyException("Can't subtract booleans:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
+			case ARRAY:
+				new MontyException("Can't subtract array:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+						+ operator.toString());
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -417,6 +487,9 @@ public class OperationNode extends ExpressionNode {
 			case BOOLEAN:
 				new MontyException("Can't multiply booleans:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
+			case ARRAY:
+				new MontyException("Can't multiply array:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+						+ operator.toString());
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -435,6 +508,9 @@ public class OperationNode extends ExpressionNode {
 						+ operator.toString());
 			case BOOLEAN:
 				new MontyException("Can't divide booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+						+ operator.toString());
+			case ARRAY:
+				new MontyException("Can't divide array:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 						+ operator.toString());
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
@@ -455,6 +531,9 @@ public class OperationNode extends ExpressionNode {
 			case BOOLEAN:
 				new MontyException("Can't shift left booleans:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
+			case ARRAY:
+				new MontyException("Can't shift left array:\t" + leftValue.toString() + " " + rightValue.toString()
+						+ " " + operator.toString());
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -473,6 +552,9 @@ public class OperationNode extends ExpressionNode {
 						+ rightValue.toString() + "\" " + operator.toString());
 			case BOOLEAN:
 				new MontyException("Can't shift right booleans:\t" + leftValue.toString() + " " + rightValue.toString()
+						+ " " + operator.toString());
+			case ARRAY:
+				new MontyException("Can't shift right array:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
@@ -493,6 +575,9 @@ public class OperationNode extends ExpressionNode {
 			case BOOLEAN:
 				new MontyException("Can't do \"xor\" operation with booleans:\t" + leftValue.toString() + " "
 						+ rightValue.toString() + " " + operator.toString());
+			case ARRAY:
+				new MontyException("Can't do \"xor\" operation with array:\t" + leftValue.toString() + " "
+						+ rightValue.toString() + " " + operator.toString());
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -512,6 +597,9 @@ public class OperationNode extends ExpressionNode {
 			case BOOLEAN:
 				new MontyException("Can't do \"and\" operation with booleans:\t" + leftValue.toString() + " "
 						+ rightValue.toString() + " " + operator.toString());
+			case ARRAY:
+				new MontyException("Can't do \"and\" operation with array:\t" + leftValue.toString() + " "
+						+ rightValue.toString() + " " + operator.toString());
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -530,6 +618,9 @@ public class OperationNode extends ExpressionNode {
 						+ rightValue.toString() + "\" " + operator.toString());
 			case BOOLEAN:
 				new MontyException("Can't do \"or\" operation with booleans:\t" + leftValue.toString() + " "
+						+ rightValue.toString() + " " + operator.toString());
+			case ARRAY:
+				new MontyException("Can't do \"or\" operation with array:\t" + leftValue.toString() + " "
 						+ rightValue.toString() + " " + operator.toString());
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
@@ -587,6 +678,8 @@ public class OperationNode extends ExpressionNode {
 			return DataTypes.FLOAT;
 		else if (expression instanceof Boolean)
 			return DataTypes.BOOLEAN;
+		else if (expression instanceof ArrayList) 
+			return DataTypes.ARRAY;
 		return null;
 	}
 

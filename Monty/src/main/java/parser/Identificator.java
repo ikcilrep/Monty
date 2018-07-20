@@ -7,7 +7,7 @@ import lexer.MontyToken;
 import lexer.TokenTypes;
 
 public abstract class Identificator {
-	public static final Pattern importRegex = Pattern.compile("^IMPORT_KEYWORD IDENTIFIER (DOT IDENTIFIER )*$");
+	public static final Pattern importRegex = Pattern.compile("^IMPORT_KEYWORD [A-Z_]+ (DOT [A-Z_]+ )*$");
 
 	public static boolean isElseStatement(List<MontyToken> tokens) {
 		if (!tokens.get(0).getType().equals(TokenTypes.ELSE_KEYWORD))
@@ -65,12 +65,11 @@ public abstract class Identificator {
 
 	public static boolean isFunctionDeclaration(List<MontyToken> tokens) {
 		var isFirstTokenFuncKeyword = tokens.get(0).getType().equals(TokenTypes.FUNC_KEYWORD);
-		var isSecondTokenDataTypeKeyword = tokens.size() > 1
-				&& (tokens.get(1).getType().equals(TokenTypes.INTEGER_KEYWORD)
-						|| tokens.get(1).getType().equals(TokenTypes.FLOAT_KEYWORD)
-						|| tokens.get(1).getType().equals(TokenTypes.STRING_KEYWORD)
-						|| tokens.get(1).getType().equals(TokenTypes.BOOLEAN_KEYWORD)
-						|| tokens.get(1).getType().equals(TokenTypes.VOID_KEYWORD));
+		var secondTokenType = tokens.get(1).getType();
+		var isSecondTokenDataTypeKeyword = tokens.size() > 1 && (secondTokenType.equals(TokenTypes.INTEGER_KEYWORD)
+				|| secondTokenType.equals(TokenTypes.FLOAT_KEYWORD) || secondTokenType.equals(TokenTypes.STRING_KEYWORD)
+				|| secondTokenType.equals(TokenTypes.BOOLEAN_KEYWORD) || secondTokenType.equals(TokenTypes.VOID_KEYWORD)
+				|| secondTokenType.equals(TokenTypes.ARRAY_KEYWORD));
 		var isThirdTokenIdentifier = tokens.size() > 2 && tokens.get(2).getType().equals(TokenTypes.IDENTIFIER);
 		if (!isFirstTokenFuncKeyword)
 			return false;
@@ -123,6 +122,7 @@ public abstract class Identificator {
 	}
 
 	public static boolean isImport(List<MontyToken> tokens) {
+		System.out.println(Tokens.getTypesToString(tokens));
 		return importRegex.matcher(Tokens.getTypesToString(tokens)).matches();
 	}
 
@@ -163,7 +163,8 @@ public abstract class Identificator {
 						|| secondTokenType.equals(TokenTypes.STATIC_KEYWORD));
 		var isThirdTokenDataTypeKeyword = thirdTokenType != null && (thirdTokenType.equals(TokenTypes.INTEGER_KEYWORD)
 				|| thirdTokenType.equals(TokenTypes.FLOAT_KEYWORD) || thirdTokenType.equals(TokenTypes.STRING_KEYWORD)
-				|| thirdTokenType.equals(TokenTypes.BOOLEAN_KEYWORD));
+				|| thirdTokenType.equals(TokenTypes.BOOLEAN_KEYWORD)
+				|| thirdTokenType.equals(TokenTypes.ARRAY_KEYWORD));
 		if (!isFirstTokenVarKeyword)
 			return false;
 		if (!isSecondTokenTypeDynamicOrStaticKeyword)

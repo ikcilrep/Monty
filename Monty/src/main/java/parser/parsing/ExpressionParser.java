@@ -45,8 +45,8 @@ public class ExpressionParser {
 			return literal;
 		case BOOLEAN:
 			return Boolean.parseBoolean(literal);
-		case VOID:
-			return null;
+		default:
+			new MontyException("There isn't constant of " + dataType.toString().toLowerCase());
 		}
 		return dataType;
 	}

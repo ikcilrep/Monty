@@ -78,8 +78,8 @@ public class Block extends Node {
 			if (block.functions.containsKey(name))
 				return block.functions.get(name);
 			var parent = block.getParent();
-			if (parent == null)
-				new MontyException("There isn't function with name:\t" + name);
+			if (parent == null) {
+				new MontyException("There isn't function with name:\t" + name);}
 			block = parent;
 		}
 	}

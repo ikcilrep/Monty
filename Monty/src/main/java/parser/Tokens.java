@@ -48,6 +48,8 @@ public class Tokens {
 		case STRING_LITERAL:
 		case STRING_KEYWORD:
 			return DataTypes.STRING;
+		case ARRAY_KEYWORD:
+			return DataTypes.ARRAY;
 		default:
 			return null;
 		}

@@ -5,7 +5,7 @@ import lexer.lexerbuilder.LexerBuilder;
 public class LexerConfig {
 	public static LexerBuilder<MontyToken> getLexer(String code) {
 		var lb = new LexerBuilder<MontyToken>(code);
-		lb.setCommentChar('\'', '`');
+
 		lb.setKeyword("var", new MontyToken(TokenTypes.VAR_KEYWORD));
 		lb.setKeyword("if", new MontyToken(TokenTypes.IF_KEYWORD));
 		lb.setKeyword("else", new MontyToken(TokenTypes.ELSE_KEYWORD));
@@ -19,6 +19,7 @@ public class LexerConfig {
 		lb.setKeyword("float", new MontyToken(TokenTypes.FLOAT_KEYWORD));
 		lb.setKeyword("string", new MontyToken(TokenTypes.STRING_KEYWORD));
 		lb.setKeyword("boolean", new MontyToken(TokenTypes.BOOLEAN_KEYWORD));
+		lb.setKeyword("array", new MontyToken(TokenTypes.ARRAY_KEYWORD));
 		lb.setKeyword("while", new MontyToken(TokenTypes.WHILE_KEYWORD));
 		lb.setKeyword("import", new MontyToken(TokenTypes.IMPORT_KEYWORD));
 		lb.setKeyword("dynamic", new MontyToken(TokenTypes.DYNAMIC_KEYWORD));
@@ -26,17 +27,21 @@ public class LexerConfig {
 		lb.setKeyword("change", new MontyToken(TokenTypes.CHANGE_KEYWORD));
 		lb.setKeyword("to", new MontyToken(TokenTypes.TO_KEYWORD));
 
-		
+		lb.setOnIdentifier(new MontyToken(TokenTypes.IDENTIFIER));
+
+		lb.setCommentChar('\'', '`');
+
 		lb.setOnAssignmentOperator(new MontyToken(TokenTypes.OPERATOR));
 		lb.setOnBinaryOperator(new MontyToken(TokenTypes.OPERATOR));
 		lb.setOnComparisonOperator(new MontyToken(TokenTypes.OPERATOR));
 		lb.setOnLogicalOperator(new MontyToken(TokenTypes.OPERATOR));
+
 		lb.setOnComma(new MontyToken(TokenTypes.COMMA));
 		lb.setOnDot(new MontyToken(TokenTypes.DOT));
-
 		lb.setOnBracket(new MontyToken(TokenTypes.BRACKET));
-		lb.setOnIdentifier(new MontyToken(TokenTypes.IDENTIFIER));
+		lb.setOnSquareBracket(new MontyToken(TokenTypes.SQUARE_BRACKET));
 		lb.setOnSemicolon(new MontyToken(TokenTypes.SEMICOLON));
+
 		lb.setOnFloatLiteral(new MontyToken(TokenTypes.FLOAT_LITERAL));
 		lb.setOnIntegerLiteral(new MontyToken(TokenTypes.INTEGER_LITERAL));
 		lb.setOnStringLiteral(new MontyToken(TokenTypes.STRING_LITERAL));
