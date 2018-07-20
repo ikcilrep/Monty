@@ -41,7 +41,6 @@ public class Block extends Node {
 	public void addVariable(VariableDeclarationNode variable) {
 		String name = variable.getName();
 		if (variables.containsKey(name)) {
-			System.out.println(variables);
 			new MontyException("Variable " + name + " already exists");
 		}
 		variables.put(name, variable);

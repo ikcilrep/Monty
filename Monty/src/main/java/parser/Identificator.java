@@ -122,7 +122,6 @@ public abstract class Identificator {
 	}
 
 	public static boolean isImport(List<MontyToken> tokens) {
-		System.out.println(Tokens.getTypesToString(tokens));
 		return importRegex.matcher(Tokens.getTypesToString(tokens)).matches();
 	}
 

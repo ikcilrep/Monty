@@ -36,6 +36,7 @@ public class OperationNode extends ExpressionNode {
 			new MontyException("Type mismatch:\t" + type + " and " + getDataType(b));
 		leftValue = getLiteral(a);
 		rightValue = getLiteral(b);
+
 		if (!operator.toString().contains("=") || (operator.toString().contains("=") && isComparison))
 			if (a instanceof Node && ((Node) a).getNodeType().equals(NodeTypes.VARIABLE)) {
 				var variable = parent.getVariableByName(((VariableNode) a).getName());
@@ -60,7 +61,9 @@ public class OperationNode extends ExpressionNode {
 				new MontyException("Can't add booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 						+ operator.toString());
 			case ARRAY:
-				return ((ArrayList<Object>) leftValue).add(rightValue);
+				var array = (ArrayList<Object>) leftValue;
+				array.add(rightValue);
+				return array;
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -443,7 +446,9 @@ public class OperationNode extends ExpressionNode {
 				new MontyException("Can't add booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 						+ operator.toString());
 			case ARRAY:
-				variable.setValue(((ArrayList<Object>) variable.getValue()).add(rightValue));
+				var array = (ArrayList<Object>) variable.getValue();
+				array.add(rightValue);
+				variable.setValue(array);
 				return variable.getValue();
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
@@ -678,7 +683,7 @@ public class OperationNode extends ExpressionNode {
 			return DataTypes.FLOAT;
 		else if (expression instanceof Boolean)
 			return DataTypes.BOOLEAN;
-		else if (expression instanceof ArrayList) 
+		else if (expression instanceof ArrayList)
 			return DataTypes.ARRAY;
 		return null;
 	}
