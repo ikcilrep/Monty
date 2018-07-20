@@ -17,12 +17,16 @@ public class IntToBoolean extends FunctionDeclarationNode {
 		addParameter(new VariableDeclarationNode("integer", DataTypes.INTEGER));
 	}
 
+	public static Boolean intToBoolean(BigInteger integer) {
+		return (Boolean) (integer.compareTo(BigInteger.valueOf(0)) > 0);
+	}
+
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
-		var integer = (BigInteger)getBody().getVariableByName("integer").getValue();
-		
-		return (Boolean) (integer.compareTo(BigInteger.valueOf(0)) > 0);
+		var integer = (BigInteger) getBody().getVariableByName("integer").getValue();
+
+		return intToBoolean(integer);
 	}
 
 }

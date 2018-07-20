@@ -18,10 +18,7 @@ public class StringToInt extends FunctionDeclarationNode {
 		addParameter(new VariableDeclarationNode("str", DataTypes.STRING));
 	}
 
-	@Override
-	public Object call(ArrayList<OperationNode> arguments) {
-		setArguments(arguments);
-		String str = (String) getBody().getVariableByName("str").getValue();
+	public static BigInteger stringToInt(String str) {
 		if (str.matches("[+-]?[0-9]+\\.[0-9]+"))
 			return new BigInteger(str.split("\\.")[0]);
 		else if (str.matches("[+-]?[0-9]+"))
@@ -29,6 +26,13 @@ public class StringToInt extends FunctionDeclarationNode {
 		else
 			new MontyException("Unknown number format for integer type:\t" + str);
 		return null;
+	}
+
+	@Override
+	public Object call(ArrayList<OperationNode> arguments) {
+		setArguments(arguments);
+		String str = (String) getBody().getVariableByName("str").getValue();
+		return stringToInt(str);
 	}
 
 }

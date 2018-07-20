@@ -13,8 +13,8 @@ func int factorial int n;
 end;
 
 func int fastFactorial int n;
-	var int result 1 =;
-	var int i 1 =;
+	var static int result 1 =;
+	var static int i 1 =;
 	while i n <=;
 		result i *=;  
 		println result;
@@ -22,5 +22,5 @@ func int fastFactorial int n;
 	end;
 	return result;
 end;
-print "Podaj numer liczby w ci¹gu fibonacciego z której bêdzie obliczona silnia: ";
+print "Podaj numer liczby w ciï¿½gu fibonacciego z ktï¿½rej bï¿½dzie obliczona silnia: ";
 fastFactorial(fib(stringToInt(input())));

@@ -17,13 +17,17 @@ public class BooleanToInt extends FunctionDeclarationNode {
 		addParameter(new VariableDeclarationNode("bool", DataTypes.BOOLEAN));
 	}
 
+	public static BigInteger booleanToInt(Boolean bool) {
+		if (bool == true)
+			return BigInteger.valueOf(1);
+		return BigInteger.valueOf(0);
+	}
+
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
 		var bool = ((Boolean) getBody().getVariableByName("bool").getValue());
-		if (bool == true)
-			return BigInteger.valueOf(1);
-		return BigInteger.valueOf(0);
+		return booleanToInt(bool);
 	}
 
 }

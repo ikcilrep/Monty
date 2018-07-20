@@ -16,10 +16,14 @@ public class FloatToBoolean extends FunctionDeclarationNode {
 		addParameter(new VariableDeclarationNode("floating", DataTypes.FLOAT));
 	}
 
+	public static Boolean floatToBoolean(Float floating) {
+		return floating > 0;
+	}
+	
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
-		return (Boolean)(((Float) getBody().getVariableByName("floating").getValue()) > 0);
+		return floatToBoolean((Float) getBody().getVariableByName("floating").getValue());
 	}
 
 }

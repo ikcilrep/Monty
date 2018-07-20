@@ -17,16 +17,20 @@ public class StringToBoolean extends FunctionDeclarationNode {
 		addParameter(new VariableDeclarationNode("str", DataTypes.STRING));
 	}
 
-	@Override
-	public Object call(ArrayList<OperationNode> arguments) {
-		setArguments(arguments);
-		String str = (String) getBody().getVariableByName("str").getValue();
+	public static Boolean stringToBoolean(String str) {
 		Boolean doesstrEqualsTrue = str.equalsIgnoreCase("true");
 		if (doesstrEqualsTrue || str.equalsIgnoreCase("false"))
 			return doesstrEqualsTrue;
 		else
 			new MontyException("Unknown format for boolean type:\t" + str);
 		return null;
+	}
+
+	@Override
+	public Object call(ArrayList<OperationNode> arguments) {
+		setArguments(arguments);
+		String str = (String) getBody().getVariableByName("str").getValue();
+		return stringToBoolean(str);
 	}
 
 }

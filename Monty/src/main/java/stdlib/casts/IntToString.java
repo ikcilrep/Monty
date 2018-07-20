@@ -17,10 +17,14 @@ public class IntToString extends FunctionDeclarationNode {
 		addParameter(new VariableDeclarationNode("integer", DataTypes.INTEGER));
 	}
 
+	public static String intToString(BigInteger integer) {
+		return integer.toString();
+	}
+
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
-		return ((BigInteger) getBody().getVariableByName("integer").getValue()).toString();
+		return intToString(((BigInteger) getBody().getVariableByName("integer").getValue()));
 	}
 
 }

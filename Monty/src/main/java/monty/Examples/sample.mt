@@ -1,3 +1,6 @@
 import stdlib.io.input;
+import stdlib.casts.stringToInt;
 
-input();
+var dynamic int n stringToInt(input()) =;
+change n to float;
+println n;

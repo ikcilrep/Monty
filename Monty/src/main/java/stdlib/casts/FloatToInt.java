@@ -17,10 +17,15 @@ public class FloatToInt extends FunctionDeclarationNode {
 		addParameter(new VariableDeclarationNode("floating", DataTypes.FLOAT));
 	}
 
+	public static BigInteger floatToInt(Float floating) {
+		return new BigInteger(floating.toString());
+
+	}
+
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
-		return new BigInteger(((Float) getBody().getVariableByName("floating").getValue()).toString());
+		return floatToInt((Float) getBody().getVariableByName("floating").getValue());
 	}
 
 }

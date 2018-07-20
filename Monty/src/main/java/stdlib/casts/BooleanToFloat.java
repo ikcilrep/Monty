@@ -15,14 +15,16 @@ public class BooleanToFloat extends FunctionDeclarationNode {
 		setBody(new Block(null));
 		addParameter(new VariableDeclarationNode("bool", DataTypes.BOOLEAN));
 	}
-
+	public static Float booleanToFloat(Boolean bool) {
+		if (bool == true)
+			return (Float) 1f;
+		return (Float) 0f;
+	}
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
 		var bool = ((Boolean) getBody().getVariableByName("bool").getValue());
-		if (bool == true)
-			return (Float) 1f;
-		return (Float) 0f;
+		return booleanToFloat(bool);
 	}
 
 }

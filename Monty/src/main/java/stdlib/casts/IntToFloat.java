@@ -17,12 +17,17 @@ public class IntToFloat extends FunctionDeclarationNode {
 		addParameter(new VariableDeclarationNode("integer", DataTypes.INTEGER));
 	}
 
+	public static Float intToFloat(BigInteger integer) {
+		return (Float) (float) integer.intValue();
+
+	}
+
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
-		var integer = (BigInteger)getBody().getVariableByName("integer").getValue();
-		
-		return (Float)(float)integer.intValue();
+		var integer = (BigInteger) getBody().getVariableByName("integer").getValue();
+
+		return intToFloat(integer);
 	}
 
 }

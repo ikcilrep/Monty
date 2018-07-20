@@ -16,10 +16,15 @@ public class FloatToString extends FunctionDeclarationNode {
 		addParameter(new VariableDeclarationNode("floating", DataTypes.FLOAT));
 	}
 
+	public static String floatToString(Float floating) {
+		return floating.toString();
+
+	}
+
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
-		return ((Float) getBody().getVariableByName("floating").getValue()).toString();
+		return floatToString(((Float) getBody().getVariableByName("floating").getValue()));
 	}
 
 }

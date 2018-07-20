@@ -7,6 +7,8 @@ import ast.NodeTypes;
 import ast.declarations.CustomFunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
+import ast.expressions.VariableNode;
+import ast.statements.ChangeToStatement;
 import ast.statements.IfStatementNode;
 import ast.statements.PrintStatementNode;
 import ast.statements.ReturnStatementNode;
@@ -36,9 +38,11 @@ public abstract class AdderToBlock {
 	}
 
 	public static void addVariableDeclaration(Block block, List<MontyToken> tokens) {
-		block.addVariable(
-				new VariableDeclarationNode(tokens.get(2).getText(), Tokens.getDataType(tokens.get(1).getType())));
-		addExpression(block, tokens.subList(2, tokens.size()));
+		var variable = new VariableDeclarationNode(tokens.get(3).getText(),
+				Tokens.getDataType(tokens.get(2).getType()));
+		variable.setDynamic(true);
+		block.addVariable(variable);
+		addExpression(block, tokens.subList(3, tokens.size()));
 	}
 
 	public static Block addFunctionDeclaration(Block block, List<MontyToken> tokens) {
@@ -86,5 +90,9 @@ public abstract class AdderToBlock {
 
 	}
 
+	public static void addChangeToStatement(Block block, List<MontyToken> tokens) {
+		block.addChild(new ChangeToStatement(new VariableNode(tokens.get(1).getText()),
+				Tokens.getDataType(tokens.get(3).getType())));
+	}
 
 }

@@ -16,10 +16,14 @@ public class BooleanToString extends FunctionDeclarationNode {
 		addParameter(new VariableDeclarationNode("bool", DataTypes.BOOLEAN));
 	}
 
+	public static String booleanToString(Boolean bool) {
+		return bool.toString();
+	}
+
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
-		return ((Boolean) getBody().getVariableByName("bool").getValue()).toString();
+		return booleanToString(((Boolean) getBody().getVariableByName("bool").getValue()));
 	}
 
 }

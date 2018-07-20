@@ -17,10 +17,7 @@ public class StringToFloat extends FunctionDeclarationNode {
 		addParameter(new VariableDeclarationNode("str", DataTypes.STRING));
 	}
 
-	@Override
-	public Object call(ArrayList<OperationNode> arguments) {
-		setArguments(arguments);
-		String str = (String) getBody().getVariableByName("str").getValue();
+	public static Float stringToFloat(String str) {
 		if (str.matches("[+-]?[0-9]+\\.[0-9]+"))
 			return Float.parseFloat(str);
 		else if (str.matches("[+-]?[0-9]+"))
@@ -28,6 +25,13 @@ public class StringToFloat extends FunctionDeclarationNode {
 		else
 			new MontyException("Unknown number format for float type:\t" + str);
 		return null;
+	}
+
+	@Override
+	public Object call(ArrayList<OperationNode> arguments) {
+		setArguments(arguments);
+		String str = (String) getBody().getVariableByName("str").getValue();
+		return stringToFloat(str);
 	}
 
 }

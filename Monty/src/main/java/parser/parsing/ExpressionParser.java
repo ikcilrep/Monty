@@ -13,6 +13,7 @@ import ast.expressions.VariableNode;
 import lexer.MontyToken;
 import lexer.TokenTypes;
 import parser.DataTypes;
+import parser.Identificator;
 import parser.MontyException;
 import parser.Tokens;
 
@@ -91,6 +92,9 @@ public class ExpressionParser {
 					for (List<MontyToken> ts : split(TokenTypes.COMMA, tokens.subList(i + 2, j - 1))) {
 						if (ts.size() == 0)
 							break;
+						if (!Identificator.isExpression(ts))
+							new MontyException("Expected expression as function " + token.getText()
+									+ " call's argument:\t" + Tokens.getText(ts));
 						function.addArgument(parse(parent, ts));
 					}
 					node = new OperationNode(function, parent);
