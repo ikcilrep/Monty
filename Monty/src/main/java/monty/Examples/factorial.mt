@@ -1,4 +1,4 @@
-import "Examples/fibonacci.mt";
+import math.fibonacci;
 func int printr int toPrint;
 	println toPrint;
 	return toPrint;

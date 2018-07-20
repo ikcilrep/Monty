@@ -1,11 +1,14 @@
 package parser;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import lexer.MontyToken;
 import lexer.TokenTypes;
 
 public abstract class Identificator {
+	public static final Pattern importRegex = Pattern.compile("^IMPORT_KEYWORD IDENTIFIER (DOT IDENTIFIER )*$");
+
 	public static boolean isElseStatement(List<MontyToken> tokens) {
 		if (!tokens.get(0).getType().equals(TokenTypes.ELSE_KEYWORD))
 			return false;
@@ -120,25 +123,17 @@ public abstract class Identificator {
 	}
 
 	public static boolean isImport(List<MontyToken> tokens) {
-		if (!tokens.get(0).getType().equals(TokenTypes.IMPORT_KEYWORD))
-			return false;
-		if (tokens.size() == 1)
-			new MontyException("Expected expression after \"import\" keyword:\t" + Tokens.getText(tokens));
-		if (!isExpression(tokens.subList(1, tokens.size())))
-			new MontyException("Wrong expression after \"import\" keyword:\t" + Tokens.getText(tokens));
-		return true;
-
+		return importRegex.matcher(Tokens.getTypesToString(tokens)).matches();
 	}
 
 	public static boolean isPrintStatement(List<MontyToken> tokens) {
-		var isFirstTokenPrintKeyword = tokens.get(0).getType().equals(TokenTypes.PRINT_KEYWORD);
-		if (!isFirstTokenPrintKeyword)
+		if (!tokens.get(0).getType().equals(TokenTypes.PRINT_KEYWORD))
 			return false;
 		if (tokens.size() == 1)
 			new MontyException("Expected expression after \"print\" keyword:\t" + Tokens.getText(tokens));
 		var expression = tokens.subList(1, tokens.size());
-		if (!isExpression(expression))
-			new MontyException("Wrong expression after \"print\" keyword keyword:\t" + Tokens.getText(expression));
+		if (!isExpression(tokens.subList(1, tokens.size())))
+			new MontyException("Wrong expression after \"print\" keyword:\t" + Tokens.getText(expression));
 		return true;
 	}
 

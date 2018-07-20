@@ -26,6 +26,8 @@ public class LexerConfig {
 		lb.setOnComparisonOperator(new MontyToken(TokenTypes.OPERATOR));
 		lb.setOnLogicalOperator(new MontyToken(TokenTypes.OPERATOR));
 		lb.setOnComma(new MontyToken(TokenTypes.COMMA));
+		lb.setOnDot(new MontyToken(TokenTypes.DOT));
+
 		lb.setOnBracket(new MontyToken(TokenTypes.BRACKET));
 		lb.setOnIdentifier(new MontyToken(TokenTypes.IDENTIFIER));
 		lb.setOnSemicolon(new MontyToken(TokenTypes.SEMICOLON));
