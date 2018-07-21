@@ -76,34 +76,6 @@ public class Array implements Iterable<Object>, Cloneable {
 	/*
 	 * Description.
 	 */
-	public Array subArray(int begin) {
-		int length = array.length - begin + 1;
-		Array newArray = new Array(length);
-		for (int i = 0; i < length; i++)
-			newArray.set(i, array[i]);
-
-		return newArray;
-	}
-
-	/*
-	 * Description.
-	 */
-	public Array setLength(int length) {
-		Object[] newArray = new Object[length];
-		int i = 0;
-		while (i < newArray.length && i < array.length)
-			newArray[i] = array[i++];
-
-		while (i < length)
-			newArray[i++] = null;
-
-		array = newArray;
-		return this;
-	}
-
-	/*
-	 * Description.
-	 */
 	public Array append(Object element) {
 		var newArray = new Object[array.length + 1];
 		newArray[array.length] = element;
@@ -111,22 +83,6 @@ public class Array implements Iterable<Object>, Cloneable {
 		for (Object e : array)
 			newArray[i++] = e;
 		array = newArray;
-		return this;
-	}
-
-	/*
-	 * Description.
-	 */
-	public Array append(Object[] elements) {
-		var newArray = new Object[array.length + elements.length];
-		int i = 0;
-		for (Object e : array)
-			newArray[i++] = e;
-
-		for (Object e : elements)
-			newArray[i++] = e;
-		array = newArray;
-
 		return this;
 	}
 
@@ -156,20 +112,6 @@ public class Array implements Iterable<Object>, Cloneable {
 	/*
 	 * Description.
 	 */
-	public int lastIndex() {
-		return array.length - 1;
-	}
-
-	/*
-	 * Description.
-	 */
-	public Object lastElement() {
-		return array[array.length - 1];
-	}
-
-	/*
-	 * Description.
-	 */
 	public Object get(int index) {
 		if (index >= array.length)
 			new MontyException("Index " + index + " is too large for length " + array.length);
@@ -181,14 +123,6 @@ public class Array implements Iterable<Object>, Cloneable {
 	 */
 	public Array set(int index, Object element) {
 		array[index] = element;
-		return this;
-	}
-
-	/*
-	 * Description.
-	 */
-	public Array set(Object[] elements) {
-		array = elements;
 		return this;
 	}
 

@@ -9,9 +9,9 @@ import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class getFromArray extends FunctionDeclarationNode {
+public class GetFromArray extends FunctionDeclarationNode {
 
-	public getFromArray() {
+	public GetFromArray() {
 		super("getFromArray", DataTypes.ANY);
 		setBody(new Block(null));
 		addParameter(new VariableDeclarationNode("arr", DataTypes.ARRAY));
