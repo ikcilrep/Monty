@@ -167,22 +167,6 @@ public class Array implements Iterable<Object>, Cloneable {
 		return this;
 	}
 
-	/*
-	 * Description.
-	 */
-
-	public Array fit() {
-		int i = array.length;
-		while (array[--i] == null)
-			;
-		var newArray = new Object[++i];
-		while (--i >= 0)
-			newArray[i] = array[i];
-
-		array = newArray;
-		return this;
-
-	}
 
 	/*
 	 * Description.

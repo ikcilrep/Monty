@@ -49,7 +49,12 @@ public class Parser {
 		array.put("lengthOfArray", new stdlib.data.array.LengthOfArray());
 		array.put("subArray", new stdlib.data.array.Subarray());
 		array.put("doesArrayContain", new stdlib.data.array.DoesArrayContain());
+		array.put("replaceAllInArray", new stdlib.data.array.ReplaceAllInArray());
+		array.put("replaceFirstInArray", new stdlib.data.array.ReplaceFirstInArray());
+		array.put("replaceLastInArray", new stdlib.data.array.ReplaceLastInArray());
 
+		
+		
 		var io = (HashMap) stdlib.get("io");
 		io.put("input", new stdlib.io.Input());
 
