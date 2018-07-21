@@ -14,9 +14,9 @@ public class ArrayOf extends FunctionDeclarationNode {
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
-		var result = new ArrayList<Object>();
+		var result = new Array();
 		for (OperationNode argument : arguments)
-			result.add(argument.run());
+			result.append(argument.run());
 		return result;
 	}
 

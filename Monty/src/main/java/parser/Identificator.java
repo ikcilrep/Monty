@@ -65,11 +65,13 @@ public abstract class Identificator {
 
 	public static boolean isFunctionDeclaration(List<MontyToken> tokens) {
 		var isFirstTokenFuncKeyword = tokens.get(0).getType().equals(TokenTypes.FUNC_KEYWORD);
-		var secondTokenType = tokens.get(1).getType();
+		TokenTypes secondTokenType = null;
+		if (tokens.size() >= 2)
+			secondTokenType = tokens.get(1).getType();
 		var isSecondTokenDataTypeKeyword = tokens.size() > 1 && (secondTokenType.equals(TokenTypes.INTEGER_KEYWORD)
 				|| secondTokenType.equals(TokenTypes.FLOAT_KEYWORD) || secondTokenType.equals(TokenTypes.STRING_KEYWORD)
 				|| secondTokenType.equals(TokenTypes.BOOLEAN_KEYWORD) || secondTokenType.equals(TokenTypes.VOID_KEYWORD)
-				|| secondTokenType.equals(TokenTypes.ARRAY_KEYWORD));
+				|| secondTokenType.equals(TokenTypes.ARRAY_KEYWORD) || secondTokenType.equals(TokenTypes.ANY_KEYWORD));
 		var isThirdTokenIdentifier = tokens.size() > 2 && tokens.get(2).getType().equals(TokenTypes.IDENTIFIER);
 		if (!isFirstTokenFuncKeyword)
 			return false;

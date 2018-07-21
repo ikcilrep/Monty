@@ -1,7 +1,6 @@
 package ast.expressions;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 
 import ast.Block;
 import ast.Node;
@@ -9,6 +8,7 @@ import ast.NodeTypes;
 import ast.declarations.VariableDeclarationNode;
 import parser.DataTypes;
 import parser.MontyException;
+import stdlib.data.array.Array;
 
 public class OperationNode extends ExpressionNode {
 
@@ -24,7 +24,6 @@ public class OperationNode extends ExpressionNode {
 		this.parent = parent;
 	}
 
-	@SuppressWarnings("unchecked")
 	private Object calculate(Object a, Object b, Object operator) {
 		var isComparison = operator.toString().equals("==") || operator.toString().equals("!=")
 				|| operator.toString().equals("<=") || operator.toString().equals(">=")
@@ -61,9 +60,9 @@ public class OperationNode extends ExpressionNode {
 				new MontyException("Can't add booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 						+ operator.toString());
 			case ARRAY:
-				var array = (ArrayList<Object>) leftValue;
-				array.add(rightValue);
-				return array;
+				return ((Array) leftValue).copy().append(rightValue);
+			case ANY:
+				new MontyException("Can't do any operations with \"any\" data type");
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -83,6 +82,8 @@ public class OperationNode extends ExpressionNode {
 			case ARRAY:
 				new MontyException("Can't subtract array:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 						+ operator.toString());
+			case ANY:
+				new MontyException("Can't do any operations with \"any\" data type");
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -102,6 +103,8 @@ public class OperationNode extends ExpressionNode {
 			case ARRAY:
 				new MontyException("Can't multiply array:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 						+ operator.toString());
+			case ANY:
+				new MontyException("Can't do any operations with \"any\" data type");
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -121,6 +124,8 @@ public class OperationNode extends ExpressionNode {
 			case ARRAY:
 				new MontyException("Can't multiply array:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 						+ operator.toString());
+			case ANY:
+				new MontyException("Can't do any operations with \"any\" data type");
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -140,6 +145,8 @@ public class OperationNode extends ExpressionNode {
 			case ARRAY:
 				new MontyException("Can't multiply array:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 						+ operator.toString());
+			case ANY:
+				new MontyException("Can't do any operations with \"any\" data type");
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -159,11 +166,13 @@ public class OperationNode extends ExpressionNode {
 			case BOOLEAN:
 				return !(boolean) rightValue;
 			case ARRAY:
-				var resultArray = new ArrayList<Object>();
-				var array = (ArrayList<Object>) rightValue;
-				for (int j = array.size() - 1, i = 0; j >= 0; j--, i++)
-					resultArray.add(array.get(i));
+				var resultArray = new Array();
+				var array = (Array) rightValue;
+				for (int j = array.length() - 1, i = 0; j >= 0; j--, i++)
+					resultArray.append(array.get(i));
 				return resultArray;
+			case ANY:
+				new MontyException("Can't do any operations with \"any\" data type");
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -184,6 +193,8 @@ public class OperationNode extends ExpressionNode {
 			case ARRAY:
 				new MontyException("Can't shift left array:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
+			case ANY:
+				new MontyException("Can't do any operations with \"any\" data type");
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -204,6 +215,8 @@ public class OperationNode extends ExpressionNode {
 			case ARRAY:
 				new MontyException("Can't shift right array:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
+			case ANY:
+				new MontyException("Can't do any operations with \"any\" data type");
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -224,6 +237,8 @@ public class OperationNode extends ExpressionNode {
 			case ARRAY:
 				new MontyException("Can't do \"xor\" operation with array:\t" + leftValue.toString() + " "
 						+ rightValue.toString() + " " + operator.toString());
+			case ANY:
+				new MontyException("Can't do any operations with \"any\" data type");
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -244,6 +259,8 @@ public class OperationNode extends ExpressionNode {
 			case ARRAY:
 				new MontyException("Can't do \"and\" operation with array:\t" + leftValue.toString() + " "
 						+ rightValue.toString() + " " + operator.toString());
+			case ANY:
+				new MontyException("Can't do any operations with \"any\" data type");
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -264,6 +281,8 @@ public class OperationNode extends ExpressionNode {
 			case ARRAY:
 				new MontyException("Can't do \"or\" operation with array:\t" + leftValue.toString() + " "
 						+ rightValue.toString() + " " + operator.toString());
+			case ANY:
+				new MontyException("Can't do any operations with \"any\" data type");
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -284,6 +303,8 @@ public class OperationNode extends ExpressionNode {
 			case ARRAY:
 				new MontyException("Can't do \"and\" operation with array:\t" + leftValue.toString() + " "
 						+ rightValue.toString() + " " + operator.toString());
+			case ANY:
+				new MontyException("Can't do any operations with \"any\" data type");
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -304,6 +325,8 @@ public class OperationNode extends ExpressionNode {
 			case ARRAY:
 				new MontyException("Can't do \"or\" operation with array:\t" + leftValue.toString() + " "
 						+ rightValue.toString() + " " + operator.toString());
+			case ANY:
+				new MontyException("Can't do any operations with \"any\" data type");
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -320,6 +343,8 @@ public class OperationNode extends ExpressionNode {
 				return leftValue.equals(rightValue);
 			case ARRAY:
 				return leftValue.equals(rightValue);
+			case ANY:
+				new MontyException("Can't do any operations with \"any\" data type");
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -339,6 +364,8 @@ public class OperationNode extends ExpressionNode {
 			case ARRAY:
 				new MontyException("Array hasn't got any value to compare:\t" + leftValue.toString() + " "
 						+ rightValue.toString() + " " + operator.toString());
+			case ANY:
+				new MontyException("Can't do any operations with \"any\" data type");
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -358,6 +385,8 @@ public class OperationNode extends ExpressionNode {
 			case ARRAY:
 				new MontyException("Array hasn't got any value to compare:\t" + leftValue.toString() + " "
 						+ rightValue.toString() + " " + operator.toString());
+			case ANY:
+				new MontyException("Can't do any operations with \"any\" data type");
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -377,6 +406,8 @@ public class OperationNode extends ExpressionNode {
 			case ARRAY:
 				new MontyException("Array hasn't got any value to compare:\t" + leftValue.toString() + " "
 						+ rightValue.toString() + " " + operator.toString());
+			case ANY:
+				new MontyException("Can't do any operations with \"any\" data type");
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -396,6 +427,8 @@ public class OperationNode extends ExpressionNode {
 			case ARRAY:
 				new MontyException("Array hasn't got any value to compare:\t" + leftValue.toString() + " "
 						+ rightValue.toString() + " " + operator.toString());
+			case ANY:
+				new MontyException("Can't do any operations with \"any\" data type");
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -411,7 +444,8 @@ public class OperationNode extends ExpressionNode {
 			case ARRAY:
 			case STRING:
 				return !leftValue.equals(rightValue);
-
+			case ANY:
+				new MontyException("Can't do any operations with \"any\" data type");
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -426,6 +460,8 @@ public class OperationNode extends ExpressionNode {
 			case ARRAY:
 				variable.setValue(rightValue);
 				return variable.getValue();
+			case ANY:
+				new MontyException("Can't do any operations with \"any\" data type");
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -446,10 +482,11 @@ public class OperationNode extends ExpressionNode {
 				new MontyException("Can't add booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 						+ operator.toString());
 			case ARRAY:
-				var array = (ArrayList<Object>) variable.getValue();
-				array.add(rightValue);
-				variable.setValue(array);
+				var array = (Array) variable.getValue();
+				array.append(rightValue);
 				return variable.getValue();
+			case ANY:
+				new MontyException("Can't do any operations with \"any\" data type");
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -473,6 +510,8 @@ public class OperationNode extends ExpressionNode {
 			case ARRAY:
 				new MontyException("Can't subtract array:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 						+ operator.toString());
+			case ANY:
+				new MontyException("Can't do any operations with \"any\" data type");
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -495,6 +534,8 @@ public class OperationNode extends ExpressionNode {
 			case ARRAY:
 				new MontyException("Can't multiply array:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 						+ operator.toString());
+			case ANY:
+				new MontyException("Can't do any operations with \"any\" data type");
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -517,6 +558,8 @@ public class OperationNode extends ExpressionNode {
 			case ARRAY:
 				new MontyException("Can't divide array:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 						+ operator.toString());
+			case ANY:
+				new MontyException("Can't do any operations with \"any\" data type");
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -539,6 +582,8 @@ public class OperationNode extends ExpressionNode {
 			case ARRAY:
 				new MontyException("Can't shift left array:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
+			case ANY:
+				new MontyException("Can't do any operations with \"any\" data type");
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -561,6 +606,8 @@ public class OperationNode extends ExpressionNode {
 			case ARRAY:
 				new MontyException("Can't shift right array:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
+			case ANY:
+				new MontyException("Can't do any operations with \"any\" data type");
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -583,6 +630,8 @@ public class OperationNode extends ExpressionNode {
 			case ARRAY:
 				new MontyException("Can't do \"xor\" operation with array:\t" + leftValue.toString() + " "
 						+ rightValue.toString() + " " + operator.toString());
+			case ANY:
+				new MontyException("Can't do any operations with \"any\" data type");
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -605,6 +654,8 @@ public class OperationNode extends ExpressionNode {
 			case ARRAY:
 				new MontyException("Can't do \"and\" operation with array:\t" + leftValue.toString() + " "
 						+ rightValue.toString() + " " + operator.toString());
+			case ANY:
+				new MontyException("Can't do any operations with \"any\" data type");
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -627,6 +678,8 @@ public class OperationNode extends ExpressionNode {
 			case ARRAY:
 				new MontyException("Can't do \"or\" operation with array:\t" + leftValue.toString() + " "
 						+ rightValue.toString() + " " + operator.toString());
+			case ANY:
+				new MontyException("Can't do any operations with \"any\" data type");
 			case VOID:
 				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
 						+ " " + operator.toString());
@@ -683,8 +736,6 @@ public class OperationNode extends ExpressionNode {
 			return DataTypes.FLOAT;
 		else if (expression instanceof Boolean)
 			return DataTypes.BOOLEAN;
-		else if (expression instanceof ArrayList)
-			return DataTypes.ARRAY;
 		return null;
 	}
 

@@ -2,15 +2,13 @@ package parser;
 
 import java.math.BigInteger;
 
+import stdlib.data.array.Array;
+
 public enum DataTypes {
-	BOOLEAN,
-	INTEGER,
-	FLOAT,
-	STRING,
-	VOID, ARRAY;
+	BOOLEAN, INTEGER, FLOAT, STRING, VOID, ARRAY, ANY;
 
 	public static DataTypes getDataType(Object value) {
-	
+
 		if (value == null)
 			return DataTypes.VOID;
 		if (value instanceof BigInteger)
@@ -21,7 +19,9 @@ public enum DataTypes {
 			return DataTypes.STRING;
 		if (value instanceof Boolean)
 			return DataTypes.BOOLEAN;
+		if (value instanceof Array)
+			return DataTypes.ARRAY;
 		return null;
-	
+
 	}
 }

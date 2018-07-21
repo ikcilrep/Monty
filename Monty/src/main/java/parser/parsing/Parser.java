@@ -51,6 +51,9 @@ public class Parser {
 		data.put("array", new HashMap<>());
 		var array = (HashMap) data.get("array");
 		array.put("arrayOf", new stdlib.data.array.ArrayOf());
+		array.put("extendArray", new stdlib.data.array.ExtendArray());
+		array.put("getFromArray", new stdlib.data.array.getFromArray());
+		array.put("lengthOfArray", new stdlib.data.array.LengthOfArray());
 
 		var io = (HashMap) stdlib.get("io");
 		io.put("input", new stdlib.io.Input());

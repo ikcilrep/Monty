@@ -51,15 +51,13 @@ public abstract class AdderToBlock {
 		var type = (DataTypes) null;
 		var name = (String) null;
 		for (int i = 3; i < tokens.size(); i++) {
-			if (tokens.get(i).getType().equals(TokenTypes.IDENTIFIER))
+			var tokenType = tokens.get(i).getType();
+			var isTokenTypeEqualsComma = tokens.get(i).getType().equals(TokenTypes.COMMA);
+			if (tokenType.equals(TokenTypes.IDENTIFIER))
 				name = tokens.get(i).getText();
-			else if (tokens.get(i).getType().equals(TokenTypes.INTEGER_KEYWORD)
-					|| tokens.get(i).getType().equals(TokenTypes.FLOAT_KEYWORD)
-					|| tokens.get(i).getType().equals(TokenTypes.STRING_KEYWORD)
-					|| tokens.get(i).getType().equals(TokenTypes.BOOLEAN_KEYWORD)
-					|| tokens.get(i).getType().equals(TokenTypes.VOID_KEYWORD))
-				type = Tokens.getDataType(tokens.get(i).getType());
-			if (tokens.get(i).getType().equals(TokenTypes.COMMA) || i + 1 >= tokens.size())
+			else if (!isTokenTypeEqualsComma)
+				type = Tokens.getDataType(tokenType);
+			if (isTokenTypeEqualsComma || i + 1 >= tokens.size())
 				function.addParameter(new VariableDeclarationNode(name, type));
 		}
 		function.setBody(new Block(block));
