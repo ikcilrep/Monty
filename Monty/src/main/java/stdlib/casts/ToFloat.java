@@ -23,6 +23,8 @@ public class ToFloat extends FunctionDeclarationNode {
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
 		var a = getBody().getVariableByName("a").getValue();
+		if (a == null)
+			new MontyException("Can't cast void to float");
 		if (a instanceof BigInteger)
 			return IntToFloat.intToFloat((BigInteger) a);
 		if (a instanceof Boolean)
@@ -31,8 +33,8 @@ public class ToFloat extends FunctionDeclarationNode {
 			return (Float) a;
 		if (a instanceof String)
 			return StringToFloat.stringToFloat((String) a);
-		if (a instanceof Array || a == null)
-			new MontyException("Can't cast this expression to integer:\t" + a.toString());
+		if (a instanceof Array)
+			new MontyException("Can't cast array to float:\t" + a.toString());
 		return null;
 	}
 

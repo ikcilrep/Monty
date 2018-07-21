@@ -170,7 +170,7 @@ public class Block extends Node {
 						variable.setValue(IntToFloat.intToFloat((BigInteger) variableValue));
 						break;
 					case STRING:
-						variable.setValue(IntToString.intToString((BigInteger) variableValue));
+						variable.setValue(variableValue.toString());
 						break;
 					default:
 						break;
@@ -185,7 +185,7 @@ public class Block extends Node {
 						variable.setValue(BooleanToFloat.booleanToFloat((Boolean) variableValue));
 						break;
 					case STRING:
-						variable.setValue(BooleanToString.booleanToString((Boolean) variableValue));
+						variable.setValue(variableValue.toString());
 						break;
 					default:
 						break;
@@ -200,7 +200,7 @@ public class Block extends Node {
 						variable.setValue(FloatToBoolean.floatToBoolean((Float) variableValue));
 						break;
 					case STRING:
-						variable.setValue(FloatToString.floatToString((Float) variableValue));
+						variable.setValue(variableValue.toString());
 						break;
 					default:
 						break;

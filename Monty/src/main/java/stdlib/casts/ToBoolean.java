@@ -23,6 +23,8 @@ public class ToBoolean extends FunctionDeclarationNode {
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
 		var a = getBody().getVariableByName("a").getValue();
+		if (a == null)
+			new MontyException("Can't cast void to boolean");
 		if (a instanceof BigInteger)
 			return IntToBoolean.intToBoolean((BigInteger) a);
 		if (a instanceof Float)
@@ -31,8 +33,8 @@ public class ToBoolean extends FunctionDeclarationNode {
 			return (Boolean) a;
 		if (a instanceof String)
 			return StringToBoolean.stringToBoolean((String) a);
-		if (a instanceof Array || a == null)
-			new MontyException("Can't cast this expression to integer:\t" + a.toString());
+		if (a instanceof Array)
+			new MontyException("Can't cast array to boolean:\t" + a.toString());
 		return null;
 	}
 
