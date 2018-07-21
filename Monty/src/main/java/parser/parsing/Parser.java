@@ -32,25 +32,11 @@ public class Parser {
 		stdlib.put("data", new HashMap<>());
 
 		var casts = (HashMap) stdlib.get("casts");
-		casts.put("booleanToFloat", new stdlib.casts.BooleanToFloat());
-		casts.put("booleanToInt", new stdlib.casts.BooleanToInt());
-		casts.put("booleanToString", new stdlib.casts.BooleanToString());
 
-		casts.put("floatToBoolean", new stdlib.casts.FloatToBoolean());
-		casts.put("floatToInt", new stdlib.casts.FloatToInt());
-		casts.put("floatToString", new stdlib.casts.FloatToString());
-
-		casts.put("intToBoolean", new stdlib.casts.IntToBoolean());
-		casts.put("intToFloat", new stdlib.casts.IntToFloat());
-		casts.put("intToString", new stdlib.casts.IntToString());
-		casts.put("stringToBoolean", new stdlib.casts.StringToBoolean());
-		casts.put("stringToFloat", new stdlib.casts.StringToFloat());
-		casts.put("stringToInt", new stdlib.casts.StringToInt());
-
-		casts.put("anyToBoolean", new stdlib.casts.AnyToBoolean());
-		casts.put("anyToFloat", new stdlib.casts.AnyToFloat());
-		casts.put("anyToInt", new stdlib.casts.AnyToInt());
-		casts.put("anyToString", new stdlib.casts.AnyToString());
+		casts.put("toBoolean", new stdlib.casts.ToBoolean());
+		casts.put("toFloat", new stdlib.casts.ToFloat());
+		casts.put("toInt", new stdlib.casts.ToInt());
+		casts.put("toString", new stdlib.casts.ToString());
 
 		var data = (HashMap) stdlib.get("data");
 		data.put("array", new HashMap<>());

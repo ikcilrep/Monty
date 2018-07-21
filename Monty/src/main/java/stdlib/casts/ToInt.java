@@ -11,29 +11,26 @@ import parser.DataTypes;
 import parser.MontyException;
 import stdlib.data.array.Array;
 
-public class AnyToFloat extends FunctionDeclarationNode {
+public class ToInt extends FunctionDeclarationNode {
 
-	public AnyToFloat() {
-		super("anyToFloat", DataTypes.BOOLEAN);
+	public ToInt() {
+		super("toInt", DataTypes.INTEGER);
 		setBody(new Block(null));
 		addParameter(new VariableDeclarationNode("a", DataTypes.ANY));
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
-		if (arguments.size() > 1)
-			new MontyException("Too many arguments in " + name + " function call");
-		else if (arguments.size() < 1)
-			new MontyException("Too few arguments in " + name + " function call");
-		var a = arguments.get(0).run();
+		setArguments(arguments);
+		var a = getBody().getVariableByName("a").getValue();
 		if (a instanceof BigInteger)
-			return IntToFloat.intToFloat((BigInteger) a);
-		if (a instanceof Boolean)
-			return BooleanToFloat.booleanToFloat((Boolean) a);
+			return (BigInteger) a;
 		if (a instanceof Float)
-			return (Float) a;
+			return FloatToInt.floatToInt((Float) a);
+		if (a instanceof Boolean)
+			return BooleanToInt.booleanToInt((Boolean) a);
 		if (a instanceof String)
-			return StringToFloat.stringToFloat((String) a);
+			return StringToInt.stringToInt((String) a);
 		if (a instanceof Array || a == null)
 			new MontyException("Can't cast this expression to integer:\t" + a.toString());
 		return null;

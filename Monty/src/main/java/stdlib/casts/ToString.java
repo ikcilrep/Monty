@@ -5,33 +5,31 @@ import java.util.ArrayList;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
+import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.MontyException;
 import stdlib.data.array.Array;
 
-public class AnyToInt extends FunctionDeclarationNode {
+public class ToString extends FunctionDeclarationNode {
 
-	public AnyToInt() {
-		super("anyToInt", DataTypes.INTEGER);
+	public ToString() {
+		super("toString", DataTypes.STRING);
 		setBody(new Block(null));
+		addParameter(new VariableDeclarationNode("a", DataTypes.ANY));
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
-		if (arguments.size() > 1)
-			new MontyException("Too many arguments in " + name + " function call");
-		else if (arguments.size() < 1)
-			new MontyException("Too few arguments in " + name + " function call");
-		var a = arguments.get(0).run();
+		var a = getBody().getVariableByName("a").getValue();
 		if (a instanceof BigInteger)
-			return (BigInteger) a;
+			return IntToString.intToString((BigInteger) a);
 		if (a instanceof Float)
-			return FloatToInt.floatToInt((Float) a);
+			return FloatToString.floatToString((Float) a);
 		if (a instanceof Boolean)
-			return BooleanToInt.booleanToInt((Boolean) a);
+			return BooleanToString.booleanToString((Boolean) a);
 		if (a instanceof String)
-			return StringToInt.stringToInt((String) a);
+			return a.toString();
 		if (a instanceof Array || a == null)
 			new MontyException("Can't cast this expression to integer:\t" + a.toString());
 		return null;

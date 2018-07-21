@@ -90,6 +90,8 @@ public abstract class Identificator {
 			case FLOAT_KEYWORD:
 			case STRING_KEYWORD:
 			case BOOLEAN_KEYWORD:
+			case ARRAY_KEYWORD:
+			case ANY_KEYWORD:
 				isLastTokenDataTypeDeclaration = true;
 				break;
 			case IDENTIFIER:

@@ -1,22 +1,11 @@
 package stdlib.casts;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
-import ast.declarations.VariableDeclarationNode;
-import ast.expressions.OperationNode;
-import parser.DataTypes;
 import parser.MontyException;
 
-public class StringToInt extends FunctionDeclarationNode {
+public class StringToInt {
 
-	public StringToInt() {
-		super("stringToInt", DataTypes.INTEGER);
-		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("str", DataTypes.STRING));
-	}
 
 	public static BigInteger stringToInt(String str) {
 		if (str.matches("[+-]?[0-9]+\\.[0-9]+"))
@@ -28,11 +17,5 @@ public class StringToInt extends FunctionDeclarationNode {
 		return null;
 	}
 
-	@Override
-	public Object call(ArrayList<OperationNode> arguments) {
-		setArguments(arguments);
-		String str = (String) getBody().getVariableByName("str").getValue();
-		return stringToInt(str);
-	}
 
 }
