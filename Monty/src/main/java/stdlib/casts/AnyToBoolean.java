@@ -21,7 +21,11 @@ public class AnyToBoolean extends FunctionDeclarationNode {
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
-		var a = getBody().getVariableByName("a").getValue();
+		if (arguments.size() > 1)
+			new MontyException("Too many arguments in " + name + " function call");
+		else if (arguments.size() < 1)
+			new MontyException("Too few arguments in " + name + " function call");
+		var a = arguments.get(0).run();
 		if (a instanceof BigInteger)
 			return IntToBoolean.intToBoolean((BigInteger) a);
 		if (a instanceof Float)
