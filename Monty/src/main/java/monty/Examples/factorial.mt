@@ -1,4 +1,4 @@
-import stdlib.casts.stringToInt;
+import stdlib.casts.toInt;
 import stdlib.io.input;
 import math.fibonacci;
 func int printr int toPrint;
@@ -23,4 +23,4 @@ func int fastFactorial int n;
 	return result;
 end;
 print "Podaj numer liczby w ci�gu fibonacciego z kt�rej b�dzie obliczona silnia: ";
-fastFactorial(fib(stringToInt(input())));
+fastFactorial(fib(toInt(input())));
