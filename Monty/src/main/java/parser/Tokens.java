@@ -52,6 +52,8 @@ public class Tokens {
 			return DataTypes.ARRAY;
 		case ANY_KEYWORD:
 			return DataTypes.ANY;
+		case VOID_KEYWORD:
+			return DataTypes.VOID;
 		default:
 			return null;
 		}
