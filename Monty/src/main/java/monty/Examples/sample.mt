@@ -25,3 +25,4 @@ change c to array;
 println c;
 
 println isArray(c);
+println nothing();

@@ -712,8 +712,6 @@ public class OperationNode extends ExpressionNode {
 	}
 
 	private DataTypes getDataType(Object expression) {
-		if (expression == null)
-			return DataTypes.VOID;
 		if (expression instanceof Node)
 			switch (((Node) expression).getNodeType()) {
 			case VARIABLE:
@@ -728,15 +726,8 @@ public class OperationNode extends ExpressionNode {
 			default:
 				return null;
 			}
-		else if (expression instanceof String)
-			return DataTypes.STRING;
-		else if (expression instanceof BigInteger)
-			return DataTypes.INTEGER;
-		else if (expression instanceof Float)
-			return DataTypes.FLOAT;
-		else if (expression instanceof Boolean)
-			return DataTypes.BOOLEAN;
-		return null;
+
+		return DataTypes.getDataType(expression);
 	}
 
 	public Object getOperand() {

@@ -2,6 +2,8 @@ package parser;
 
 import java.math.BigInteger;
 
+import com.sun.jdi.VoidType;
+
 import stdlib.data.array.Array;
 
 public enum DataTypes {
@@ -9,7 +11,7 @@ public enum DataTypes {
 
 	public static DataTypes getDataType(Object value) {
 
-		if (value == null)
+		if (value instanceof VoidType)
 			return DataTypes.VOID;
 		if (value instanceof BigInteger)
 			return DataTypes.INTEGER;

@@ -18,6 +18,8 @@ public class Main {
 
 		List<MontyToken> tokens = lb.getAllTokens();
 		Parser.setStdlib();
-		Parser.parse(tokens).run();
+		var block = Parser.parse(tokens);
+		block.addFunction(new stdlib.data.returning.Nothing());
+		block.run();
 	}
 }
