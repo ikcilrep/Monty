@@ -4,11 +4,11 @@ import ast.NodeTypes;
 import ast.expressions.VariableNode;
 import parser.DataTypes;
 
-public class ChangeToStatement extends StatementNode {
+public class ChangeToStatementNode extends StatementNode {
 	private VariableNode toChangeType;
 	private DataTypes dataType;
 
-	public ChangeToStatement(VariableNode toChangeType, DataTypes dataType) {
+	public ChangeToStatementNode(VariableNode toChangeType, DataTypes dataType) {
 		this.toChangeType = toChangeType;
 		this.dataType = dataType;
 		super.nodeType = NodeTypes.CHANGE_TO_STATEMENT;

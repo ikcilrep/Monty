@@ -19,10 +19,7 @@ public class ToInt extends FunctionDeclarationNode {
 		addParameter(new VariableDeclarationNode("a", DataTypes.ANY));
 	}
 
-	@Override
-	public Object call(ArrayList<OperationNode> arguments) {
-		setArguments(arguments);
-		var a = getBody().getVariableByName("a").getValue();
+	public static BigInteger toInt(Object a) {
 		if (a == null)
 			new MontyException("Can't cast void to integer");
 		if (a instanceof BigInteger)
@@ -36,6 +33,13 @@ public class ToInt extends FunctionDeclarationNode {
 		if (a instanceof Array)
 			new MontyException("Can't cast array to integer:\t" + a.toString());
 		return null;
+	}
+
+	@Override
+	public Object call(ArrayList<OperationNode> arguments) {
+		setArguments(arguments);
+		var a = getBody().getVariableByName("a").getValue();
+		return toInt(a);
 	}
 
 }

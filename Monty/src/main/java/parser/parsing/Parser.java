@@ -40,6 +40,8 @@ public class Parser {
 
 		var data = (HashMap) stdlib.get("data");
 		data.put("array", new HashMap<>());
+		data.put("checking", new HashMap<>());
+
 		var array = (HashMap) data.get("array");
 		array.put("arrayOf", new stdlib.data.array.ArrayOf());
 		array.put("extendArray", new stdlib.data.array.ExtendArray());
@@ -48,13 +50,17 @@ public class Parser {
 
 		array.put("lengthOfArray", new stdlib.data.array.LengthOfArray());
 		array.put("subArray", new stdlib.data.array.Subarray());
-		array.put("doesArrayContain", new stdlib.data.array.DoesArrayContain());
+		array.put("isInArray", new stdlib.data.array.isInArray());
 		array.put("replaceAllInArray", new stdlib.data.array.ReplaceAllInArray());
 		array.put("replaceFirstInArray", new stdlib.data.array.ReplaceFirstInArray());
 		array.put("replaceLastInArray", new stdlib.data.array.ReplaceLastInArray());
 
-		
-		
+		var checking = (HashMap) data.get("checking");
+		checking.put("isInt", new stdlib.data.checking.IsInt());
+		checking.put("isFloat", new stdlib.data.checking.IsFloat());
+		checking.put("isString", new stdlib.data.checking.IsString());
+		checking.put("isArray", new stdlib.data.checking.IsArray());
+
 		var io = (HashMap) stdlib.get("io");
 		io.put("input", new stdlib.io.Input());
 

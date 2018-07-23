@@ -8,10 +8,10 @@ import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class DoesArrayContain extends FunctionDeclarationNode {
+public class isInArray extends FunctionDeclarationNode {
 
-	public DoesArrayContain() {
-		super("doesArrayContain", DataTypes.BOOLEAN);
+	public isInArray() {
+		super("isInArray", DataTypes.BOOLEAN);
 		setBody(new Block(null));
 		addParameter(new VariableDeclarationNode("arr", DataTypes.ARRAY));
 		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));

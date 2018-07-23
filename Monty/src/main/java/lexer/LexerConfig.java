@@ -21,7 +21,7 @@ public class LexerConfig {
 		lb.setKeyword("boolean", new MontyToken(TokenTypes.BOOLEAN_KEYWORD));
 		lb.setKeyword("array", new MontyToken(TokenTypes.ARRAY_KEYWORD));
 		lb.setKeyword("any", new MontyToken(TokenTypes.ANY_KEYWORD));
-
+		lb.setKeyword("is", new MontyToken(TokenTypes.IS_KEYWORD));
 		lb.setKeyword("while", new MontyToken(TokenTypes.WHILE_KEYWORD));
 		lb.setKeyword("import", new MontyToken(TokenTypes.IMPORT_KEYWORD));
 		lb.setKeyword("dynamic", new MontyToken(TokenTypes.DYNAMIC_KEYWORD));

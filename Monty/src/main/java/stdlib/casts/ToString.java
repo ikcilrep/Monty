@@ -16,13 +16,15 @@ public class ToString extends FunctionDeclarationNode {
 		setBody(new Block(null));
 		addParameter(new VariableDeclarationNode("a", DataTypes.ANY));
 	}
-
+	public static String toString(Object a) {
+		if (a == null)
+			new MontyException("Can't cast void to string.");
+		return a.toString();
+	}
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
 		var a = getBody().getVariableByName("a").getValue();
-		if (a == null)
-			new MontyException("Can't cast void to integer.");
-		return a.toString();
+		return toString(a);
 	}
 
 }

@@ -206,12 +206,15 @@ public abstract class Identificator {
 			new MontyException("Expected identifier after \"change\" keyword:\t" + Tokens.getText(tokens));
 		if (!(tokensSize >= 3 && tokens.get(2).getType().equals(TokenTypes.TO_KEYWORD)))
 			new MontyException("Expected \"to\" keyword after identifier:\t" + Tokens.getText(tokens));
-		if (!(tokensSize >= 4 && (tokens.get(3).getType().equals(TokenTypes.INTEGER_KEYWORD)
-				|| tokens.get(3).getType().equals(TokenTypes.FLOAT_KEYWORD)
-				|| tokens.get(3).getType().equals(TokenTypes.BOOLEAN_KEYWORD)
-				|| tokens.get(3).getType().equals(TokenTypes.STRING_KEYWORD))))
-			new MontyException("Expected data type declaration after \"to\" keyword\t" + Tokens.getText(tokens));
+		if (tokensSize >= 4) {
+			TokenTypes fourthTokenType = tokens.get(3).getType();
+			if (!((tokens.get(3).getType().equals(TokenTypes.INTEGER_KEYWORD)
+					|| fourthTokenType.equals(TokenTypes.FLOAT_KEYWORD)
+					|| fourthTokenType.equals(TokenTypes.BOOLEAN_KEYWORD)
+					|| fourthTokenType.equals(TokenTypes.STRING_KEYWORD)
+					|| fourthTokenType.equals(TokenTypes.ARRAY_KEYWORD))))
+				new MontyException("Expected data type declaration after \"to\" keyword\t" + Tokens.getText(tokens));
+		}
 		return true;
 	}
-
 }

@@ -8,7 +8,7 @@ import ast.declarations.CustomFunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import ast.expressions.VariableNode;
-import ast.statements.ChangeToStatement;
+import ast.statements.ChangeToStatementNode;
 import ast.statements.IfStatementNode;
 import ast.statements.PrintStatementNode;
 import ast.statements.ReturnStatementNode;
@@ -89,7 +89,7 @@ public abstract class AdderToBlock {
 	}
 
 	public static void addChangeToStatement(Block block, List<MontyToken> tokens) {
-		block.addChild(new ChangeToStatement(new VariableNode(tokens.get(1).getText()),
+		block.addChild(new ChangeToStatementNode(new VariableNode(tokens.get(1).getText()),
 				Tokens.getDataType(tokens.get(3).getType())));
 	}
 

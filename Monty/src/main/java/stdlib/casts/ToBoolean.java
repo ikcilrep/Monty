@@ -19,10 +19,7 @@ public class ToBoolean extends FunctionDeclarationNode {
 		addParameter(new VariableDeclarationNode("a", DataTypes.ANY));
 	}
 
-	@Override
-	public Object call(ArrayList<OperationNode> arguments) {
-		setArguments(arguments);
-		var a = getBody().getVariableByName("a").getValue();
+	public static Object toBoolean(Object a) {
 		if (a == null)
 			new MontyException("Can't cast void to boolean");
 		if (a instanceof BigInteger)
@@ -36,6 +33,13 @@ public class ToBoolean extends FunctionDeclarationNode {
 		if (a instanceof Array)
 			new MontyException("Can't cast array to boolean:\t" + a.toString());
 		return null;
+	}
+
+	@Override
+	public Object call(ArrayList<OperationNode> arguments) {
+		setArguments(arguments);
+		var a = getBody().getVariableByName("a").getValue();
+		return toBoolean(a);
 	}
 
 }

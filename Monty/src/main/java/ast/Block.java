@@ -1,6 +1,5 @@
 package ast;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +8,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.FunctionCallNode;
 import ast.expressions.OperationNode;
-import ast.statements.ChangeToStatement;
+import ast.statements.ChangeToStatementNode;
 import ast.statements.IfStatementNode;
 import ast.statements.PrintStatementNode;
 import ast.statements.ReturnStatementNode;
@@ -78,7 +77,8 @@ public class Block extends Node {
 				return block.functions.get(name);
 			var parent = block.getParent();
 			if (parent == null) {
-				new MontyException("There isn't function with name:\t" + name);}
+				new MontyException("There isn't function with name:\t" + name);
+			}
 			block = parent;
 		}
 	}
@@ -150,75 +150,29 @@ public class Block extends Node {
 				}
 				break;
 			case CHANGE_TO_STATEMENT:
-				var childCastedToChangeToStatement = ((ChangeToStatement) child);
+				var childCastedToChangeToStatement = ((ChangeToStatementNode) child);
 				var newVariableType = childCastedToChangeToStatement.getDataType();
 				var variable = getVariableByName(childCastedToChangeToStatement.getToChangeType().getName());
 				if (!variable.isDynamic())
 					new MontyException("Can't change type of static variable:\tchange " + variable.getName() + " to "
 							+ newVariableType.toString().toLowerCase());
-				var variableValue = variable.getValue();
-				var variableType = variable.getType();
 
 				variable.setType(newVariableType);
-				switch (variableType) {
+				switch (newVariableType) {
 				case INTEGER:
-					switch (newVariableType) {
-					case BOOLEAN:
-						variable.setValue(IntToBoolean.intToBoolean((BigInteger) variableValue));
-						break;
-					case FLOAT:
-						variable.setValue(IntToFloat.intToFloat((BigInteger) variableValue));
-						break;
-					case STRING:
-						variable.setValue(variableValue.toString());
-						break;
-					default:
-						break;
-					}
+					variable.setValue(ToInt.toInt(variable.getValue()));
 					break;
 				case BOOLEAN:
-					switch (newVariableType) {
-					case INTEGER:
-						variable.setValue(BooleanToInt.booleanToInt((Boolean) variableValue));
-						break;
-					case FLOAT:
-						variable.setValue(BooleanToFloat.booleanToFloat((Boolean) variableValue));
-						break;
-					case STRING:
-						variable.setValue(variableValue.toString());
-						break;
-					default:
-						break;
-					}
+					variable.setValue(ToBoolean.toBoolean(variable.getValue()));
 					break;
 				case FLOAT:
-					switch (newVariableType) {
-					case INTEGER:
-						variable.setValue(FloatToInt.floatToInt((Float) variableValue));
-						break;
-					case BOOLEAN:
-						variable.setValue(FloatToBoolean.floatToBoolean((Float) variableValue));
-						break;
-					case STRING:
-						variable.setValue(variableValue.toString());
-						break;
-					default:
-						break;
-					}
+					variable.setValue(ToFloat.toFloat(variable.getValue()));
+					break;
 				case STRING:
-					switch (newVariableType) {
-					case INTEGER:
-						variable.setValue(StringToFloat.stringToFloat((String) variableValue));
-						break;
-					case BOOLEAN:
-						variable.setValue(StringToBoolean.stringToBoolean((String) variableValue));
-						break;
-					case FLOAT:
-						variable.setValue(StringToFloat.stringToFloat((String) variableValue));
-						break;
-					default:
-						break;
-					}
+					variable.setValue(ToString.toString(variable.getValue()));
+					break;
+				case ARRAY:
+					variable.setValue(ToArray.toArray(variable.getValue()));
 					break;
 				default:
 					break;
