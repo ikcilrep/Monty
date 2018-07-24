@@ -14,7 +14,7 @@ import stdlib.data.array.Array;
 public class ToFloat extends FunctionDeclarationNode {
 
 	public ToFloat() {
-		super("toFloat", DataTypes.BOOLEAN);
+		super("toFloat", DataTypes.FLOAT);
 		setBody(new Block(null));
 		addParameter(new VariableDeclarationNode("a", DataTypes.ANY));
 	}

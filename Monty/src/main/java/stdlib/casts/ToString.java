@@ -23,6 +23,7 @@ public class ToString extends FunctionDeclarationNode {
 	}
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
+		setArguments(arguments);
 		var a = getBody().getVariableByName("a").getValue();
 		return toString(a);
 	}

@@ -12,7 +12,7 @@ import stdlib.data.array.Array;
 public class ToArray extends FunctionDeclarationNode {
 
 	public ToArray() {
-		super("toArray", DataTypes.BOOLEAN);
+		super("toArray", DataTypes.ARRAY);
 		setBody(new Block(null));
 		addParameter(new VariableDeclarationNode("a", DataTypes.ANY));
 	}
