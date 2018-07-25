@@ -76,9 +76,11 @@ public class Parser {
 		io.put("input", new stdlib.io.Input());
 
 		var math = (HashMap) stdlib.get("math");
+		math.put("absFloat", new stdlib.math.AbsFloat());
+		math.put("absInt", new stdlib.math.AbsInt());
+		math.put("PI", new stdlib.math.PI());
 		math.put("powerFloat", new stdlib.math.PowerFloat());
 		math.put("powerInt", new stdlib.math.PowerInt());
-
 		math.put("sqrtFloat", new stdlib.math.SqrtFloat());
 		math.put("sqrtInt", new stdlib.math.SqrtInt());
 
