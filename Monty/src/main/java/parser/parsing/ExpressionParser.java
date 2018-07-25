@@ -18,15 +18,18 @@ import parser.MontyException;
 import parser.Tokens;
 
 public class ExpressionParser {
-	public static List<ArrayList<MontyToken>> split(TokenTypes splitOnIt, List<MontyToken> list) {
+	private static List<ArrayList<MontyToken>> splitArguments(List<MontyToken> list) {
 		ArrayList<ArrayList<MontyToken>> newList = new ArrayList<>();
 		newList.add(new ArrayList<MontyToken>());
 		int i = 0;
-		int bracketCounter = 1;
+		int openBracketCounter = 1;
+		int closeBracketCounter = 0;
 		for (MontyToken t : list) {
-			if (t.getType().equals(TokenTypes.BRACKET))
-				bracketCounter++;
-			if (t.getType().equals(splitOnIt) && bracketCounter % 2 != 0) {
+			if (t.getText().equals("("))
+				openBracketCounter++;
+			else if (t.getText().equals(")"))
+				closeBracketCounter++;
+			if (t.getType().equals(TokenTypes.COMMA) && openBracketCounter - 1 == closeBracketCounter) {
 				newList.add(new ArrayList<MontyToken>());
 				i++;
 			} else
@@ -35,7 +38,7 @@ public class ExpressionParser {
 		return newList;
 	}
 
-	public static Object toDataType(String literal, DataTypes dataType) {
+	private static Object toDataType(String literal, DataTypes dataType) {
 		switch (dataType) {
 		case INTEGER:
 			return new BigInteger(literal);
@@ -71,11 +74,12 @@ public class ExpressionParser {
 					int j = 0;
 					int openBracketCounter = 1;
 					int closeBracketCounter = 0;
-					for (j = i + 2; openBracketCounter > closeBracketCounter && j < tokens.size(); j++) {
+					for (j = i + 2; openBracketCounter > closeBracketCounter; j++) {
 						if (j >= tokens.size()) {
 							if (openBracketCounter > closeBracketCounter)
 								new MontyException("Expected closing bracket:\t"
 										+ Tokens.getText(tokens.subList(i + 1, tokens.size())));
+							break;
 						}
 						switch (tokens.get(j).getText()) {
 						case "(":
@@ -89,7 +93,8 @@ public class ExpressionParser {
 						}
 					}
 					var function = new FunctionCallNode(token.getText());
-					for (List<MontyToken> ts : split(TokenTypes.COMMA, tokens.subList(i + 2, j - 1))) {
+					var splited = splitArguments(tokens.subList(i + 2, j - 1));
+					for (List<MontyToken> ts : splited) {
 						if (ts.size() == 0)
 							break;
 						if (!Identificator.isExpression(ts))
