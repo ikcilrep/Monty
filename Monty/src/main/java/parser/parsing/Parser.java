@@ -90,30 +90,66 @@ public class Parser {
 		system.put("exit", new stdlib.system.Exit());
 	}
 
-	@SuppressWarnings("unchecked")
-	public static void importFile(Block block, List<MontyToken> tokens) {
+	private static void addFunctionFromFile(Block block, String path) {
+		var text = FileIO.readFile(new File(path).getAbsolutePath());
+		var importedTokens = LexerConfig.getLexer(text).getAllTokens();
+		block.concat(Parser.parse(importedTokens));
+	}
+
+	private static void addFunctionsFromDirectory(Block block, File folder) {
+		for (File fileEntry : folder.listFiles()) {
+			if (fileEntry.isDirectory()) {
+				addFunctionsFromDirectory(block, fileEntry);
+			} else {
+				addFunctionFromFile(block, fileEntry.getAbsolutePath());
+			}
+		}
+	}
+
+	private static void importFile(Block block, List<MontyToken> tokens) {
 		var partOfPath = Tokens.getText(tokens.subList(1, tokens.size()));
 		var path = new File(Main.path).getParent() + File.separatorChar + partOfPath.replace('.', File.separatorChar)
 				+ ".mt";
-		if (new File(path).exists()) {
-			var text = FileIO.readFile(new File(path).getAbsolutePath());
-			var importedTokens = LexerConfig.getLexer(text).getAllTokens();
-			var parsed = Parser.parse(importedTokens);
-			block.concat(parsed);
+		var file = new File(path);
+		if (file.exists()) {
+			if (file.isDirectory())
+				addFunctionsFromDirectory(block, file);
+			addFunctionFromFile(block, path);
 		} else {
 			var splited = partOfPath.split("\\.");
-			var toSearch = libraries;
-			Object function = null;
-			for (String toImport : splited) {
-				if (!toSearch.containsKey(toImport)) {
-					new MontyException("There isn't file to import:\t" + partOfPath);
-				} else if ((function = toSearch.get(toImport)) instanceof FunctionDeclarationNode) {
-					block.addFunction((FunctionDeclarationNode) function);
-					break;
-				} else {
-					toSearch = (HashMap<String, Object>) function;
-				}
+			findAndAddFunctions(block, splited, partOfPath, libraries);
+		}
+	}
 
+	@SuppressWarnings("unchecked")
+	private static void findAndAddFunctions(Block block, String[] splited, String partOfPath,
+			HashMap<String, Object> toSearch) {
+		var toSearch1 = toSearch;
+		Object function = null;
+		int i = 0;
+		for (String toImport : splited) {
+			if (!toSearch1.containsKey(toImport)) {
+				System.out.println(toImport);
+				new MontyException("There isn't file to import:\t" + partOfPath);
+			} else if ((function = toSearch1.get(toImport)) instanceof FunctionDeclarationNode) {
+				block.addFunction((FunctionDeclarationNode) function);
+				break;
+			} else if (i + 1 >= splited.length) {
+				addAllFunction(block, toSearch1);
+			} else {
+				toSearch1 = (HashMap<String, Object>) function;
+			}
+			i++;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private static void addAllFunction(Block block, HashMap<String, Object> addFrom) {
+		for (Object value : addFrom.values()) {
+			if (value instanceof FunctionDeclarationNode)
+				block.addFunction((FunctionDeclarationNode) value);
+			else {
+				addAllFunction(block, (HashMap<String, Object>) value);
 			}
 		}
 	}

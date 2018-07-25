@@ -1,14 +1,5 @@
 
-import stdlib.data.array.arrayOf;
-import stdlib.data.array.extendArray;
-import stdlib.data.array.getFromArray;
-import stdlib.data.array.lengthOfArray;
-import stdlib.data.array.subArray;
-import stdlib.data.array.isInArray;
-import stdlib.data.array.setInArray;
-import stdlib.data.array.replaceAllInArray;
-import stdlib.data.checking.isArray;
-import stdlib.casts.toInt;
+import stdlib.data;
 
 'var static array a arrayOf(1,2,3) =;
 println a arrayOf(1,2,3) +;
