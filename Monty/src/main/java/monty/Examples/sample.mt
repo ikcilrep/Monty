@@ -1,5 +1,5 @@
 
-import stdlib.data;
+import sml.data;
 
 'var static array a arrayOf(1,2,3) =;
 println a arrayOf(1,2,3) +;

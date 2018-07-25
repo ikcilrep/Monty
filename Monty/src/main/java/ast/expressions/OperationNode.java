@@ -8,7 +8,7 @@ import ast.NodeTypes;
 import ast.declarations.VariableDeclarationNode;
 import parser.DataTypes;
 import parser.MontyException;
-import stdlib.data.array.Array;
+import sml.data.array.Array;
 
 public class OperationNode extends ExpressionNode {
 

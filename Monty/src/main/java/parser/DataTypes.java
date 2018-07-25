@@ -4,7 +4,7 @@ import java.math.BigInteger;
 
 import com.sun.jdi.VoidType;
 
-import stdlib.data.array.Array;
+import sml.data.array.Array;
 
 public enum DataTypes {
 	BOOLEAN, INTEGER, FLOAT, STRING, VOID, ARRAY, ANY;
