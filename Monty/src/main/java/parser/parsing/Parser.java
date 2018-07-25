@@ -41,6 +41,7 @@ public class Parser {
 		var data = (HashMap) stdlib.get("data");
 		data.put("array", new HashMap<>());
 		data.put("checking", new HashMap<>());
+		data.put("string", new HashMap<>());
 
 		var array = (HashMap) data.get("array");
 		array.put("arrayOf", new stdlib.data.array.ArrayOf());
@@ -60,6 +61,16 @@ public class Parser {
 		checking.put("isFloat", new stdlib.data.checking.IsFloat());
 		checking.put("isString", new stdlib.data.checking.IsString());
 		checking.put("isArray", new stdlib.data.checking.IsArray());
+
+		var string = (HashMap) data.get("string");
+		string.put("charAt", new stdlib.data.string.CharAt());
+		string.put("endsWith", new stdlib.data.string.EndsWith());
+		string.put("equalsIgnoreCase", new stdlib.data.string.EqualsIgnoreCase());
+		string.put("replaceAllInString", new stdlib.data.string.ReplaceAllInString());
+		string.put("startsWith", new stdlib.data.string.StartsWith());
+		string.put("substring", new stdlib.data.string.Substring());
+		string.put("toLowerCase", new stdlib.data.string.ToLowerCase());
+		string.put("toUpperCase", new stdlib.data.string.ToUpperCase());
 
 		var io = (HashMap) stdlib.get("io");
 		io.put("input", new stdlib.io.Input());
