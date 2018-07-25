@@ -17,7 +17,6 @@ end;
 
 print "Podaj tekst do zaszyfrowania: ";
 var static string plain input() =; 
-println "";
 print "Podaj has³o: ";
 var static string key input() =;
 println encryptDecrypt(plain,key);
