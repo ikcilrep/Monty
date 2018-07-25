@@ -26,6 +26,8 @@ public class Sml extends Library {
 		casts.put("toFloat", new sml.casts.ToFloat());
 		casts.put("toInt", new sml.casts.ToInt());
 		casts.put("toString", new sml.casts.ToString());
+		casts.put("toChar", new sml.casts.ToChar());
+		casts.put("ord", new sml.casts.Ord());
 
 		var data = (HashMap<String, Object>) children.get("data");
 		data.put("array", new HashMap<>());
@@ -55,6 +57,7 @@ public class Sml extends Library {
 		string.put("charAt", new sml.data.string.CharAt());
 		string.put("endsWith", new sml.data.string.EndsWith());
 		string.put("equalsIgnoreCase", new sml.data.string.EqualsIgnoreCase());
+		string.put("lengthOfString", new sml.data.string.LengthOfString());
 		string.put("replaceAllInString", new sml.data.string.ReplaceAllInString());
 		string.put("startsWith", new sml.data.string.StartsWith());
 		string.put("substring", new sml.data.string.Substring());

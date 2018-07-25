@@ -22,6 +22,11 @@ public class Importing {
 		return newArray;
 	}
 
+	public static void setLibraries() {
+		Parser.libraries = new HashMap<>();
+		Parser.libraries.put("sml", new sml.Sml("sml"));
+	}
+
 	@SuppressWarnings("unchecked")
 	private static void addAllFunctions(Block block, HashMap<String, Object> addFrom) {
 		for (Object value : addFrom.values()) {

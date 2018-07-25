@@ -15,10 +15,6 @@ import parser.MontyException;
 public class Parser {
 	public static HashMap<String, Library> libraries;
 
-	public static void setLibraries() {
-		libraries = new HashMap<>();
-		libraries.put("sml", new sml.Sml("sml"));
-	}
 
 	public static Block parse(List<MontyToken> tokens) {
 		var tokensBeforeSemicolon = new ArrayList<MontyToken>();

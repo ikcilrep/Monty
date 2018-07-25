@@ -12,12 +12,12 @@ public class Main {
 
 	public static void main(String[] args) throws FileNotFoundException {
 		argv = args;
-		 path = Main.class.getResource("Examples/sample.mt").getPath();
-		//path = args[0];
+		path = Main.class.getResource("Examples/xorEncryption.mt").getPath();
+		// path = args[0];
 		var lb = LexerConfig.getLexer(FileIO.readFile(path));
 
 		List<MontyToken> tokens = lb.getAllTokens();
-		Parser.setLibraries();
+		Importing.setLibraries();
 		var block = Parser.parse(tokens);
 		block.addFunction(new sml.data.returning.Nothing());
 		block.run();

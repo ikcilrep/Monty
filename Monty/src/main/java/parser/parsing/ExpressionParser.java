@@ -71,7 +71,7 @@ public class ExpressionParser {
 					int j = 0;
 					int openBracketCounter = 1;
 					int closeBracketCounter = 0;
-					for (j = i + 2; openBracketCounter > closeBracketCounter; j++) {
+					for (j = i + 2; openBracketCounter > closeBracketCounter && j < tokens.size(); j++) {
 						if (j >= tokens.size()) {
 							if (openBracketCounter > closeBracketCounter)
 								new MontyException("Expected closing bracket:\t"

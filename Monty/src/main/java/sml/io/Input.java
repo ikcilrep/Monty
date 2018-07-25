@@ -20,7 +20,6 @@ public class Input extends FunctionDeclarationNode {
 		setArguments(arguments);
 		Scanner scanner = new Scanner(System.in);
 		String line = scanner.nextLine();
-		scanner.close();
 		return line;
 	}
 

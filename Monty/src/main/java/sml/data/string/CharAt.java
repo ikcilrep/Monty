@@ -16,7 +16,7 @@ public class CharAt extends FunctionDeclarationNode {
 		super("charAt", DataTypes.STRING);
 		setBody(new Block(null));
 		addParameter(new VariableDeclarationNode("str", DataTypes.STRING));
-		addParameter(new VariableDeclarationNode("index", DataTypes.STRING));
+		addParameter(new VariableDeclarationNode("index", DataTypes.INTEGER));
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class CharAt extends FunctionDeclarationNode {
 		var length= str.length();
 		if (index >= length)
 			new MontyException("Index " + index + " is too large for length " + length);
-		return str.charAt(index);
+		return String.valueOf(str.charAt(index));
 	}
 
 }
