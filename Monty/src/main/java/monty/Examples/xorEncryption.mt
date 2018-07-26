@@ -19,3 +19,4 @@ var static string plain input() =;
 print "Podaj has³o: ";
 var static string key input() =;
 println encryptDecrypt(plain,key);
+var static int abc.a 0 =;

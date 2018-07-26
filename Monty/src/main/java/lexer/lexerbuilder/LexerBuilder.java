@@ -1,3 +1,4 @@
+package lexer.lexerbuilder;
 /*
 Copyright 2018 Szymon Perlicki
 
@@ -13,8 +14,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package lexer.lexerbuilder;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -133,7 +132,7 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 					} catch (CloneNotSupportedException e) {
 						e.printStackTrace();
 					}
-					copied.setText(org.apache.commons.text.StringEscapeUtils.escapeJava(keyword.toString()));
+					copied.setText(org.apache.commons.text.StringEscapeUtils.unescapeJava(keyword.toString()));
 					if (canIAddQuotes)
 						copied.setText("\"" + copied.getText() + "\"");
 					tokens.add(copied);
@@ -424,21 +423,6 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 			System.out.println("Regex " + regex + " wasn't set.");
 	}
 
-	private String replaceEscapeChars(String toReplace) {
-		var result = toReplace;
-		result = result.replaceAll("\\\\n", "\n");
-		result = result.replaceAll("\\\\t", "\t");
-		result = result.replaceAll("\\\\'", "\'");
-		result = result.replaceAll("\\\\\"", "\"");
-		result = result.replaceAll("\\\\'", "\\");
-		result = result.replaceAll("\\\\r", "\r");
-		result = result.replaceAll("\\\\b'", "\b");
-		// result = result.replaceAll("\\\\f", "\f");
-		result = result.replaceAll("\\\\'", "\'");
-		result = result.replaceAll("\\\\0", "\0");
-
-		return result;
-	}
 
 	public void setKeyword(String keyword, T token) {
 		keywords.put(keyword, token);

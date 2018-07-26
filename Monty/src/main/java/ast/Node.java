@@ -1,3 +1,5 @@
+
+package ast;
 /*
 Copyright 2018 Szymon Perlicki
 
@@ -13,9 +15,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-
-package ast;
-
 public class Node {
 	protected NodeTypes nodeType;
 

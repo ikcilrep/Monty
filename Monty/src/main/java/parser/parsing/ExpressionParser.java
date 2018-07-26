@@ -1,3 +1,4 @@
+package parser.parsing;
 /*
 Copyright 2018 Szymon Perlicki
 
@@ -13,8 +14,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package parser.parsing;
-
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -124,6 +123,7 @@ public class ExpressionParser {
 				break;
 			default:
 				var dataType = Tokens.getDataType(token.getType());
+
 				node = new OperationNode(new ConstantNode(toDataType(token.getText(), dataType), dataType), parent);
 				break;
 			}

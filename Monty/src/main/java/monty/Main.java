@@ -1,3 +1,5 @@
+
+package monty;
 /*
 Copyright 2018 Szymon Perlicki
 
@@ -13,8 +15,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package monty;
-
 import java.io.FileNotFoundException;
 import java.util.List;
 import lexer.LexerConfig;
@@ -27,8 +27,8 @@ public class Main {
 
 	public static void main(String[] args) throws FileNotFoundException {
 		argv = args;
-		//path = Main.class.getResource("Examples/xorEncryption.mt").getPath();
-		path = args[0];
+		path = Main.class.getResource("Examples/xorEncryption.mt").getPath();
+		//path = args[0];
 		var lb = LexerConfig.getLexer(FileIO.readFile(path));
 
 		List<MontyToken> tokens = lb.getAllTokens();
