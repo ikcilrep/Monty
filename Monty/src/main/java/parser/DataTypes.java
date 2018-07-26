@@ -2,9 +2,9 @@ package parser;
 
 import java.math.BigInteger;
 
-import com.sun.jdi.VoidType;
 
 import sml.data.array.Array;
+import sml.data.returning.VoidType;
 
 public enum DataTypes {
 	BOOLEAN, INTEGER, FLOAT, STRING, VOID, ARRAY, ANY;

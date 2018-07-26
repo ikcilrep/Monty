@@ -9,7 +9,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 
 public class Input extends FunctionDeclarationNode {
-
+	public static Scanner scanner = new Scanner(System.in);
 	public Input() {
 		super("input", DataTypes.STRING);
 		setBody(new Block(null));
@@ -18,7 +18,6 @@ public class Input extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
-		Scanner scanner = new Scanner(System.in);
 		String line = scanner.nextLine();
 		return line;
 	}

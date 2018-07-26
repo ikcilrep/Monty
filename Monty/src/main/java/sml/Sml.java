@@ -6,8 +6,8 @@ import monty.Library;
 
 public class Sml extends Library {
 
-	public Sml(String name) {
-		super(name);
+	public Sml() {
+		super("sml");
 	}
 
 	@SuppressWarnings("unchecked")
