@@ -14,7 +14,7 @@ func string encryptDecrypt string plain, string key;
 	return encrypted;
 end;
 
-print "Podaj tekst do zaszyfrowania: ";
+print "Podaj tekst do zaszyfrowania:\t";
 var static string plain input() =; 
 print "Podaj has³o: ";
 var static string key input() =;
