@@ -1,4 +1,5 @@
 package sml.casts;
+
 /*
 Copyright 2018 Szymon Perlicki
 
@@ -16,7 +17,6 @@ limitations under the License.
 */
 import java.math.BigInteger;
 import java.util.ArrayList;
-
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
@@ -39,7 +39,7 @@ public class Ord extends FunctionDeclarationNode {
 		var chr = (String) getBody().getVariableByName("chr").getValue();
 		if (chr.length() != 1)
 			new MontyException("Expected one character, but got " + chr.length() + ":\t" + chr);
-		return BigInteger.valueOf(Character.getNumericValue(chr.charAt(0)));
+		return BigInteger.valueOf(chr.charAt(0));
 	}
 
 }

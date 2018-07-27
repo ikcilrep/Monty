@@ -1,4 +1,5 @@
 package parser.parsing;
+
 /*
 Copyright 2018 Szymon Perlicki
 
@@ -130,10 +131,9 @@ public class ExpressionParser {
 			stack.push(node);
 		}
 
-		if (stack.size() != 1) {
-			System.out.println(stack);
+		if (stack.size() != 1)
 			new MontyException("Ambiguous result for this operation:\t" + Tokens.getText(tokens));
-		}
+
 		return stack.pop();
 	}
 

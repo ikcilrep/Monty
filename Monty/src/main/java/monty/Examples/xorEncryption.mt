@@ -16,7 +16,6 @@ end;
 
 print "Podaj tekst do zaszyfrowania:\t";
 var static string plain input() =; 
-print "Podaj has≥o: ";
+print "Podaj has≈Ço: ";
 var static string key input() =;
 println encryptDecrypt(plain,key);
-var static int abc.a 0 =;
