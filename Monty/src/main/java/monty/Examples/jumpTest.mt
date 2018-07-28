@@ -1,4 +1,5 @@
 import sml.io.println;
+
 label a;
 	println("a");
 	jump a;

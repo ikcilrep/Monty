@@ -48,11 +48,11 @@ public abstract class AdderToBlock {
 	}
 
 	public static void addVariableDeclaration(Block block, List<MontyToken> tokens) {
-		var variable = new VariableDeclarationNode(tokens.get(3).getText(),
-				Tokens.getDataType(tokens.get(2).getType()));
+		var variable = new VariableDeclarationNode(tokens.get(2).getText(),
+				Tokens.getDataType(tokens.get(1).getType()));
 		variable.setDynamic(true);
 		block.addVariable(variable);
-		addExpression(block, tokens.subList(3, tokens.size()));
+		addExpression(block, tokens.subList(2, tokens.size()));
 	}
 
 	public static Block addFunctionDeclaration(Block block, List<MontyToken> tokens) {

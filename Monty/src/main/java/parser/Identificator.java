@@ -160,36 +160,28 @@ public abstract class Identificator {
 	}
 
 	public static boolean isVariableDeclaration(List<MontyToken> tokens) {
-		var isFirstTokenVarKeyword = tokens.get(0).getType().equals(TokenTypes.VAR_KEYWORD);
+		var firstTokenType = tokens.get(0).getType();
+		var isFirstTokenStaticOrDynamicKeyword = firstTokenType.equals(TokenTypes.STATIC_KEYWORD) || firstTokenType.equals(TokenTypes.DYNAMIC_KEYWORD);
 		var tokensSize = tokens.size();
 		TokenTypes secondTokenType = null;
-		TokenTypes thirdTokenType = null;
 
 		if (tokensSize >= 2)
 			secondTokenType = tokens.get(1).getType();
-		if (tokensSize >= 3)
-			thirdTokenType = tokens.get(2).getType();
 
-		var isSecondTokenTypeDynamicOrStaticKeyword = secondTokenType != null
-				&& (secondTokenType.equals(TokenTypes.DYNAMIC_KEYWORD)
-						|| secondTokenType.equals(TokenTypes.STATIC_KEYWORD));
-		var isThirdTokenDataTypeKeyword = thirdTokenType != null && (thirdTokenType.equals(TokenTypes.INTEGER_KEYWORD)
-				|| thirdTokenType.equals(TokenTypes.FLOAT_KEYWORD) || thirdTokenType.equals(TokenTypes.STRING_KEYWORD)
-				|| thirdTokenType.equals(TokenTypes.BOOLEAN_KEYWORD)
-				|| thirdTokenType.equals(TokenTypes.ARRAY_KEYWORD));
-		if (!isFirstTokenVarKeyword)
+		var isSecondTokenTypeDataTypeKeyword = secondTokenType != null && (secondTokenType.equals(TokenTypes.INTEGER_KEYWORD)
+				|| secondTokenType.equals(TokenTypes.FLOAT_KEYWORD) || secondTokenType.equals(TokenTypes.STRING_KEYWORD)
+				|| secondTokenType.equals(TokenTypes.BOOLEAN_KEYWORD)
+				|| secondTokenType.equals(TokenTypes.ARRAY_KEYWORD));
+		if (!isFirstTokenStaticOrDynamicKeyword)
 			return false;
-		if (!isSecondTokenTypeDynamicOrStaticKeyword)
+		if (!isSecondTokenTypeDataTypeKeyword)
 			new MontyException(
-					"Expected  \"dynamic\" or \"static\" keyword after \"var\" keyword:\t" + Tokens.getText(tokens));
-		if (!isThirdTokenDataTypeKeyword)
-			new MontyException("Expected data type declaration after \"dynamic\" or \"static\" keyword:\t"
-					+ Tokens.getText(tokens));
-		if (tokensSize == 3)
+					"Expected data type declaration after  \"dynamic\" or \"static\" keyword:\t" + Tokens.getText(tokens));
+		if (tokensSize == 2)
 			new MontyException("Expected expression after data type declaration:\t" + Tokens.getText(tokens));
-		if (!tokens.get(3).getType().equals(TokenTypes.IDENTIFIER))
+		if (!tokens.get(2).getType().equals(TokenTypes.IDENTIFIER))
 			new MontyException("Expected identifier after data type declaration:\t" + Tokens.getText(tokens));
-		var expression = tokens.subList(3, tokens.size());
+		var expression = tokens.subList(2, tokens.size());
 		if (!isExpression(expression))
 			new MontyException("Wrong expression after data type declaration:\t" + Tokens.getText(expression));
 

@@ -5,12 +5,11 @@ import sml.data.string.charAt;
 import sml.io.input;
 import sml.io.print;
 import sml.io.println;
-
 label encrypt;
 
 func string encryptDecrypt string plain, string key;
-	var static string encrypted "" =;
-	var static int i 0 =;
+	static string encrypted "" =;
+	static int i 0 =;
 	while i lengthOfString(plain) <;
 		encrypted toChar(ord(charAt(plain, i)) ord(charAt(key,i lengthOfString(key) %)) ^) +=;
 		i 1 +=;
@@ -19,9 +18,9 @@ func string encryptDecrypt string plain, string key;
 end;
 
 print("Podaj tekst do zaszyfrowania:\t");
-var static string plain input() =; 
+static string plain input() =; 
 print("Podaj hasło: ");
-var static string key input() =;
+static string key input() =;
 println(encryptDecrypt(plain,key));
-
+end;
 jump encrypt;

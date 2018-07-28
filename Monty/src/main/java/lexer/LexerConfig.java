@@ -20,7 +20,6 @@ public class LexerConfig {
 	public static LexerBuilder<MontyToken> getLexer(String code) {
 		var lb = new LexerBuilder<MontyToken>(code);
 
-		lb.setKeyword("var", new MontyToken(TokenTypes.VAR_KEYWORD));
 		lb.setKeyword("if", new MontyToken(TokenTypes.IF_KEYWORD));
 		lb.setKeyword("else", new MontyToken(TokenTypes.ELSE_KEYWORD));
 		lb.setKeyword("end", new MontyToken(TokenTypes.END_KEYWORD));
