@@ -18,6 +18,7 @@ limitations under the License.
 import java.util.List;
 import java.util.regex.Pattern;
 
+
 import lexer.MontyToken;
 import lexer.TokenTypes;
 
@@ -225,4 +226,27 @@ public abstract class Identificator {
 		}
 		return true;
 	}
+
+	public static boolean isLabelStatement(List<MontyToken> tokens) {
+		if (!tokens.get(0).getType().equals(TokenTypes.LABEL_KEYWORD))
+			return false;
+		if (!(tokens.size() == 1 || (tokens.size() >= 2 && tokens.get(1).getType().equals(TokenTypes.IDENTIFIER))))
+			new MontyException("Expected identifier after \"label\" keyword:\t" + Tokens.getText(tokens));
+		if (tokens.size() > 2)
+			new MontyException("Nothing expected after identifier:\t" + Tokens.getText(tokens));
+
+		return true;
+	}
+	
+	public static boolean isJumpStatement(List<MontyToken> tokens) {
+		if (!tokens.get(0).getType().equals(TokenTypes.JUMP_KEYWORD))
+			return false;
+		if (!(tokens.size() == 1 || (tokens.size() >= 2 && tokens.get(1).getType().equals(TokenTypes.IDENTIFIER))))
+			new MontyException("Expected identifier after \"jump\" keyword:\t" + Tokens.getText(tokens));
+		if (tokens.size() > 2)
+			new MontyException("Nothing expected after identifier:\t" + Tokens.getText(tokens));
+
+		return true;
+	}
+	
 }

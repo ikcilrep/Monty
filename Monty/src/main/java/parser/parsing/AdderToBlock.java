@@ -1,4 +1,5 @@
 package parser.parsing;
+
 /*
 Copyright 2018 Szymon Perlicki
 
@@ -24,6 +25,7 @@ import ast.expressions.OperationNode;
 import ast.expressions.VariableNode;
 import ast.statements.ChangeToStatementNode;
 import ast.statements.IfStatementNode;
+import ast.statements.JumpStatement;
 import ast.statements.ReturnStatementNode;
 import ast.statements.WhileStatementNode;
 import lexer.MontyToken;
@@ -99,6 +101,17 @@ public abstract class AdderToBlock {
 	public static void addChangeToStatement(Block block, List<MontyToken> tokens) {
 		block.addChild(new ChangeToStatementNode(new VariableNode(tokens.get(1).getText()),
 				Tokens.getDataType(tokens.get(3).getType())));
+	}
+
+	public static Block addLabelStatement(Block block, List<MontyToken> tokens) {
+		var blockToAdd = new Block(block);
+		blockToAdd.setName(tokens.get(1).getText());
+		block.addBlock(blockToAdd);
+		return blockToAdd;
+	}
+
+	public static void addJumpStatement(Block block, List<MontyToken> tokens) {
+		block.addChild(new JumpStatement(tokens.get(1).getText()));
 	}
 
 }

@@ -6,7 +6,7 @@ import sml.io.input;
 import sml.io.print;
 import sml.io.println;
 
-
+label encrypt;
 
 func string encryptDecrypt string plain, string key;
 	var static string encrypted "" =;
@@ -23,3 +23,5 @@ var static string plain input() =;
 print("Podaj hasło: ");
 var static string key input() =;
 println(encryptDecrypt(plain,key));
+
+jump encrypt;

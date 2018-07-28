@@ -40,7 +40,11 @@ public class LexerConfig {
 		lb.setKeyword("static", new MontyToken(TokenTypes.STATIC_KEYWORD));
 		lb.setKeyword("change", new MontyToken(TokenTypes.CHANGE_KEYWORD));
 		lb.setKeyword("to", new MontyToken(TokenTypes.TO_KEYWORD));
+		lb.setKeyword("jump", new MontyToken(TokenTypes.JUMP_KEYWORD));
+		lb.setKeyword("label", new MontyToken(TokenTypes.LABEL_KEYWORD));
 
+
+		
 		lb.setOnIdentifier(new MontyToken(TokenTypes.IDENTIFIER));
 
 		lb.setCommentChar('\'', '`');

@@ -1,4 +1,5 @@
 package ast;
+
 /*
 Copyright 2018 Szymon Perlicki
 
@@ -24,21 +25,29 @@ import ast.expressions.FunctionCallNode;
 import ast.expressions.OperationNode;
 import ast.statements.ChangeToStatementNode;
 import ast.statements.IfStatementNode;
+import ast.statements.JumpStatement;
 import ast.statements.ReturnStatementNode;
 import ast.statements.WhileStatementNode;
 import parser.MontyException;
 import sml.casts.*;
 
-
-
 public class Block extends Node {
+	private final HashMap<String, Block> blocks = new HashMap<>();
 	private ArrayList<Node> children = new ArrayList<>();
-	HashMap<String, FunctionDeclarationNode> functions = new HashMap<>();
+	private final HashMap<String, FunctionDeclarationNode> functions = new HashMap<>();
+	private String name = "";
 	private Block parent;
-	HashMap<String, VariableDeclarationNode> variables = new HashMap<>();
+	private HashMap<String, VariableDeclarationNode> variables = new HashMap<>();
 
 	public Block(Block parent) {
 		this.parent = parent;
+	}
+
+	public void addBlock(Block block) {
+		String name = block.getName();
+		if (blocks.containsKey(name))
+			new MontyException("Block with this label " + name + " already exists");
+		blocks.put(name, block);
 	}
 
 	public void addChild(Node child) {
@@ -81,6 +90,20 @@ public class Block extends Node {
 		return variables.containsKey(name);
 	}
 
+	public Block getBlockByName(String name) {
+		Block block = this;
+		while (true) {
+			if (block.blocks.containsKey(name))
+				return block.blocks.get(name);
+			var parent = block.getParent();
+			if (parent == null) {
+				new MontyException("There isn't block with name:\t" + name);
+			}
+			block = parent;
+		}
+
+	}
+
 	public ArrayList<Node> getChildren() {
 		return children;
 	}
@@ -100,6 +123,10 @@ public class Block extends Node {
 
 	private HashMap<String, FunctionDeclarationNode> getFunctions() {
 		return functions;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public Block getParent() {
@@ -193,11 +220,23 @@ public class Block extends Node {
 				break;
 			case RETURN_STATEMENT:
 				return ((ReturnStatementNode) child).getExpression().run();
+			case JUMP_STATEMENT:
+				var name = ((JumpStatement) child).getName();
+				try {
+					getBlockByName(name).run();
+				} catch (StackOverflowError e) {
+					new MontyException("\nStack overflow at jump to:\t" + name);
+				}
+				break;
 			default:
 				break;
 			}
 		}
 		return null;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public void setVariables(HashMap<String, VariableDeclarationNode> variables) {
