@@ -24,7 +24,6 @@ import ast.expressions.OperationNode;
 import ast.expressions.VariableNode;
 import ast.statements.ChangeToStatementNode;
 import ast.statements.IfStatementNode;
-import ast.statements.PrintStatementNode;
 import ast.statements.ReturnStatementNode;
 import ast.statements.WhileStatementNode;
 import lexer.MontyToken;
@@ -37,11 +36,6 @@ public abstract class AdderToBlock {
 
 	public static void addExpression(Block block, List<MontyToken> tokens) {
 		block.addChild(ExpressionParser.parse(block, tokens));
-	}
-
-	public static void addPrintStatement(Block block, List<MontyToken> tokens) {
-		block.addChild(new PrintStatementNode(ExpressionParser.parse(block, tokens.subList(1, tokens.size())),
-				tokens.get(0).getText().equals("println")));
 	}
 
 	public static void addReturnStatement(Block block, List<MontyToken> tokens) {

@@ -34,6 +34,7 @@ import parser.Tokens;
 
 public class ExpressionParser {
 	private static List<ArrayList<MontyToken>> splitArguments(List<MontyToken> list) {
+		// Splits function arguments into two dimensional array.
 		ArrayList<ArrayList<MontyToken>> newList = new ArrayList<>();
 		newList.add(new ArrayList<MontyToken>());
 		int i = 0;
@@ -44,6 +45,8 @@ public class ExpressionParser {
 				openBracketCounter++;
 			else if (t.getText().equals(")"))
 				closeBracketCounter++;
+			// If every pair of bracket except last is closed and actual token type is comma
+			// adds new arguments.
 			if (t.getType().equals(TokenTypes.COMMA) && openBracketCounter - 1 == closeBracketCounter) {
 				newList.add(new ArrayList<MontyToken>());
 				i++;
@@ -54,6 +57,7 @@ public class ExpressionParser {
 	}
 
 	private static Object toDataType(String literal, DataTypes dataType) {
+		// Returns values with proper data type.
 		switch (dataType) {
 		case INTEGER:
 			return new BigInteger(literal);
@@ -80,8 +84,13 @@ public class ExpressionParser {
 			switch (token.getType()) {
 			case OPERATOR: // If token is operator
 				node = new OperationNode(token.getText(), parent);
-				if (!token.getText().equals("!"))
+				if (!token.getText().equals("!")) {
+					if (stack.isEmpty())
+						new MontyException("There isn't right operand.");
 					((OperationNode) node).setRightOperand(stack.pop());
+				}
+				if (stack.isEmpty())
+					new MontyException("There isn't left operand.");
 				((OperationNode) node).setLeftOperand(stack.pop());
 				break;
 			case IDENTIFIER: // If token is identifier
@@ -89,6 +98,7 @@ public class ExpressionParser {
 					int j = 0;
 					int openBracketCounter = 1;
 					int closeBracketCounter = 0;
+					// Separates function arguments from identifier.
 					for (j = i + 2; openBracketCounter > closeBracketCounter; j++) {
 						if (j >= tokens.size()) {
 							if (openBracketCounter > closeBracketCounter)
@@ -109,7 +119,9 @@ public class ExpressionParser {
 					}
 					var function = new FunctionCallNode(token.getText());
 					var splited = splitArguments(tokens.subList(i + 2, j - 1));
+					// Adds parsed function arguments to object.
 					for (List<MontyToken> ts : splited) {
+						// If there isn't any arguments breaks loop.
 						if (ts.size() == 0)
 							break;
 						if (!Identificator.isExpression(ts))
@@ -118,11 +130,13 @@ public class ExpressionParser {
 						function.addArgument(parse(parent, ts));
 					}
 					node = new OperationNode(function, parent);
+					// I is after function arguments.
 					i = j - 1;
 				} else
 					node = new OperationNode(new VariableNode(token.getText()), parent);
 				break;
 			default:
+				// Otherwise token in expression can be only constant.
 				var dataType = Tokens.getDataType(token.getType());
 
 				node = new OperationNode(new ConstantNode(toDataType(token.getText(), dataType), dataType), parent);
@@ -130,7 +144,6 @@ public class ExpressionParser {
 			}
 			stack.push(node);
 		}
-
 		if (stack.size() != 1)
 			new MontyException("Ambiguous result for this operation:\t" + Tokens.getText(tokens));
 

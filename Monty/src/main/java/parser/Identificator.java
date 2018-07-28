@@ -148,17 +148,6 @@ public abstract class Identificator {
 		return importRegex.matcher(Tokens.getTypesToString(tokens)).matches();
 	}
 
-	public static boolean isPrintStatement(List<MontyToken> tokens) {
-		if (!tokens.get(0).getType().equals(TokenTypes.PRINT_KEYWORD))
-			return false;
-		if (tokens.size() == 1)
-			new MontyException("Expected expression after \"print\" keyword:\t" + Tokens.getText(tokens));
-		var expression = tokens.subList(1, tokens.size());
-		if (!isExpression(tokens.subList(1, tokens.size())))
-			new MontyException("Wrong expression after \"print\" keyword:\t" + Tokens.getText(expression));
-		return true;
-	}
-
 	public static boolean isReturnStatement(List<MontyToken> tokens) {
 		var isFirstTokenReturnKeyword = tokens.get(0).getType().equals(TokenTypes.RETURN_KEYWORD);
 

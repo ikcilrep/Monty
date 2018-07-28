@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
+import sml.data.returning.Nothing;
 
 public class Exit extends FunctionDeclarationNode {
 
@@ -30,7 +31,7 @@ public class Exit extends FunctionDeclarationNode {
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
 		System.exit(0);
-		return null;
+		return Nothing.nothing;
 	}
 
 }

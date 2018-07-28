@@ -1,4 +1,5 @@
 package ast.expressions;
+
 /*
 Copyright 2018 Szymon Perlicki
 
@@ -38,28 +39,8 @@ public class OperationNode extends ExpressionNode {
 		this.parent = parent;
 	}
 
-	private Object calculate(Object a, Object b, Object operator) {
-		var isComparison = operator.toString().equals("==") || operator.toString().equals("!=")
-				|| operator.toString().equals("<=") || operator.toString().equals(">=")
-				|| operator.toString().equals(">") || operator.toString().equals("<");
-		Object leftValue = null;
-		Object rightValue = null;
-		DataTypes type = getDataType(a);
-		if (!(type.equals(DataTypes.ARRAY) || type.equals(getDataType(b))))
-			new MontyException("Type mismatch:\t" + type + " and " + getDataType(b));
-		leftValue = getLiteral(a);
-		rightValue = getLiteral(b);
-
-		if (!operator.toString().contains("=") || (operator.toString().contains("=") && isComparison))
-			if (a instanceof Node && ((Node) a).getNodeType().equals(NodeTypes.VARIABLE)) {
-				var variable = parent.getVariableByName(((VariableNode) a).getName());
-				leftValue = variable.getValue();
-
-			}
-		if (b instanceof Node && ((Node) b).getNodeType().equals(NodeTypes.VARIABLE)) {
-			var variable = parent.getVariableByName(((VariableNode) b).getName());
-			rightValue = variable.getValue();
-		}
+	private Object calculate(Object leftValue, Object rightValue, Object operator, DataTypes type) {
+		// Calculates the result of math operation.
 
 		switch (operator.toString()) {
 		case "+":
@@ -423,8 +404,24 @@ public class OperationNode extends ExpressionNode {
 			case ANY:
 				new MontyException("Can't do any operations with \"any\" data type");
 			case VOID:
-				new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
-						+ " " + operator.toString());
+				new MontyException("Voi// Calculates the result of math operation.\n"
+						+ "		var isComparison = operator.toString().equals(\"==\") || operator.toString().equals(\"!=\")\n"
+						+ "				|| operator.toString().equals(\"<=\") || operator.toString().equals(\">=\")\n"
+						+ "				|| operator.toString().equals(\">\") || operator.toString().equals(\"<\");\n"
+						+ "		Object leftValue = null;\n" + "		Object rightValue = null;\n"
+						+ "		DataTypes type = getDataType(a);\n"
+						+ "		// If type isn't array and type of a and b aren't equals.\n"
+						+ "		if (!(type.equals(DataTypes.ARRAY) || type.equals(getDataType(b))))\n"
+						+ "			new MontyException(\"Type mismatch:\\t\" + type + \" and \" + getDataType(b));\n"
+						+ "		leftValue = getLiteral(a);\n" + "		rightValue = getLiteral(b);\n" + "\n"
+						+ "		if (!operator.toString().contains(\"=\") || (operator.toString().contains(\"=\") && isComparison))\n"
+						+ "			if (a instanceof Node && ((Node) a).getNodeType().equals(NodeTypes.VARIABLE)) {\n"
+						+ "				var variable = parent.getVariableByName(((VariableNode) a).getName());\n"
+						+ "				leftValue = variable.getValue();\n" + "\n" + "			}\n"
+						+ "		if (b instanceof Node && ((Node) b).getNodeType().equals(NodeTypes.VARIABLE)) {\n"
+						+ "			var variable = parent.getVariableByName(((VariableNode) b).getName());\n"
+						+ "			rightValue = variable.getValue();\n" + "		}d hasn't got any value:\t"
+						+ leftValue.toString() + " " + rightValue.toString() + " " + operator.toString());
 			}
 		case ">=":
 			switch (type) {
@@ -707,6 +704,7 @@ public class OperationNode extends ExpressionNode {
 	}
 
 	private Object getLiteral(Object expression) {
+		// Returns value of expression.
 		if (expression instanceof Node)
 			switch (((Node) expression).getNodeType()) {
 			case VARIABLE:
@@ -726,6 +724,7 @@ public class OperationNode extends ExpressionNode {
 	}
 
 	private DataTypes getDataType(Object expression) {
+		// Returns data type of expression.
 		if (expression instanceof Node)
 			switch (((Node) expression).getNodeType()) {
 			case VARIABLE:
@@ -757,6 +756,7 @@ public class OperationNode extends ExpressionNode {
 	}
 
 	public Object run() {
+		// Returns calculated value.
 		if (!getOperand().getClass().equals(String.class)) {
 			var operand = getOperand();
 			var castedOperand = (Node) operand;
@@ -783,7 +783,30 @@ public class OperationNode extends ExpressionNode {
 			return getOperand();
 		Object a = getLeftOperand().solve();
 		Object b = getRightOperand().solve();
-		return calculate(a, b, getOperand());
+		Object operator = getOperand();
+		var isComparison = operator.toString().equals("==") || operator.toString().equals("!=")
+				|| operator.toString().equals("<=") || operator.toString().equals(">=")
+				|| operator.toString().equals(">") || operator.toString().equals("<");
+		Object leftValue = null;
+		Object rightValue = null;
+		DataTypes type = getDataType(a);
+		// If type isn't array and type of a and b aren't equals.
+		if (!(type.equals(DataTypes.ARRAY) || type.equals(getDataType(b))))
+			new MontyException("Type mismatch:\t" + type + " and " + getDataType(b));
+		leftValue = getLiteral(a);
+		rightValue = getLiteral(b);
+
+		if (!operator.toString().contains("=") || (operator.toString().contains("=") && isComparison))
+			if (a instanceof Node && ((Node) a).getNodeType().equals(NodeTypes.VARIABLE)) {
+				var variable = parent.getVariableByName(((VariableNode) a).getName());
+				leftValue = variable.getValue();
+
+			}
+		if (b instanceof Node && ((Node) b).getNodeType().equals(NodeTypes.VARIABLE)) {
+			var variable = parent.getVariableByName(((VariableNode) b).getName());
+			rightValue = variable.getValue();
+		}
+		return calculate(leftValue, rightValue, getOperand(), type);
 
 	}
 }

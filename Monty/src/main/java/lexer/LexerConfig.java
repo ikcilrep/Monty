@@ -26,8 +26,6 @@ public class LexerConfig {
 		lb.setKeyword("end", new MontyToken(TokenTypes.END_KEYWORD));
 		lb.setKeyword("func", new MontyToken(TokenTypes.FUNC_KEYWORD));
 		lb.setKeyword("return", new MontyToken(TokenTypes.RETURN_KEYWORD));
-		lb.setKeyword("print", new MontyToken(TokenTypes.PRINT_KEYWORD));
-		lb.setKeyword("println", new MontyToken(TokenTypes.PRINT_KEYWORD));
 		lb.setKeyword("int", new MontyToken(TokenTypes.INTEGER_KEYWORD));
 		lb.setKeyword("void", new MontyToken(TokenTypes.VOID_KEYWORD));
 		lb.setKeyword("float", new MontyToken(TokenTypes.FLOAT_KEYWORD));

@@ -1,4 +1,5 @@
 package sml;
+
 /*
 Copyright 2018 Szymon Perlicki
 
@@ -80,6 +81,8 @@ public class Sml extends Library {
 
 		var io = (HashMap<String, Object>) children.get("io");
 		io.put("input", new sml.io.Input());
+		io.put("print", new sml.io.Print());
+		io.put("println", new sml.io.Println());
 
 		var math = (HashMap<String, Object>) children.get("math");
 		math.put("absFloat", new sml.math.AbsFloat());

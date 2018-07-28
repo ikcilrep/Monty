@@ -24,7 +24,6 @@ import ast.expressions.FunctionCallNode;
 import ast.expressions.OperationNode;
 import ast.statements.ChangeToStatementNode;
 import ast.statements.IfStatementNode;
-import ast.statements.PrintStatementNode;
 import ast.statements.ReturnStatementNode;
 import ast.statements.WhileStatementNode;
 import parser.MontyException;
@@ -139,9 +138,6 @@ public class Block extends Node {
 				} else
 					new MontyException("Some expression hasn't got any sense!!!");
 
-				break;
-			case PRINT_STATEMENT:
-				((PrintStatementNode) child).run();
 				break;
 			case IF_STATEMENT:
 				var childCastedToIfStatement = ((IfStatementNode) child);

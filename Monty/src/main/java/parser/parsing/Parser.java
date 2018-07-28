@@ -1,4 +1,5 @@
 package parser.parsing;
+
 /*
 Copyright 2018 Szymon Perlicki
 
@@ -29,7 +30,6 @@ import parser.MontyException;
 public class Parser {
 	public static HashMap<String, Library> libraries;
 
-
 	public static Block parse(List<MontyToken> tokens) {
 		var tokensBeforeSemicolon = new ArrayList<MontyToken>();
 		var block = new Block(null);
@@ -39,8 +39,6 @@ public class Parser {
 					continue;
 				if (Identificator.isExpression(tokensBeforeSemicolon)) {
 					AdderToBlock.addExpression(block, tokensBeforeSemicolon);
-				} else if (Identificator.isPrintStatement(tokensBeforeSemicolon)) {
-					AdderToBlock.addPrintStatement(block, tokensBeforeSemicolon);
 				} else if (Identificator.isVariableDeclaration(tokensBeforeSemicolon)) {
 					AdderToBlock.addVariableDeclaration(block, tokensBeforeSemicolon);
 				} else if (Identificator.isReturnStatement(tokensBeforeSemicolon)) {
