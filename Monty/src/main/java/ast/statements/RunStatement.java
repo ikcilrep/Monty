@@ -2,7 +2,7 @@ package ast.statements;
 
 import ast.NodeTypes;
 
-public class JumpStatement extends StatementNode {
+public class RunStatement extends StatementNode {
 	private String name;
 
 	public String getName() {
@@ -10,9 +10,9 @@ public class JumpStatement extends StatementNode {
 	}
 
 
-	public JumpStatement(String name) {
+	public RunStatement(String name) {
 		this.name = name;
-		super.nodeType = NodeTypes.JUMP_STATEMENT;
+		super.nodeType = NodeTypes.RUN_STATEMENT;
 	}
 
 }

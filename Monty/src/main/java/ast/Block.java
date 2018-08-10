@@ -25,7 +25,7 @@ import ast.expressions.FunctionCallNode;
 import ast.expressions.OperationNode;
 import ast.statements.ChangeToStatementNode;
 import ast.statements.IfStatementNode;
-import ast.statements.JumpStatement;
+import ast.statements.RunStatement;
 import ast.statements.ReturnStatementNode;
 import ast.statements.WhileStatementNode;
 import parser.MontyException;
@@ -220,8 +220,8 @@ public class Block extends Node {
 				break;
 			case RETURN_STATEMENT:
 				return ((ReturnStatementNode) child).getExpression().run();
-			case JUMP_STATEMENT:
-				var name = ((JumpStatement) child).getName();
+			case RUN_STATEMENT:
+				var name = ((RunStatement) child).getName();
 				try {
 					getBlockByName(name).run();
 				} catch (StackOverflowError e) {

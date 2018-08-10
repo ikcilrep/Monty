@@ -2,8 +2,8 @@ import sml.io.println;
 
 label a;
 	println("a");
-	jump a;
+	run a;
 end;
 
 
-jump a;
+run a;

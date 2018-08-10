@@ -23,4 +23,4 @@ print("Podaj hasło: ");
 static string key input() =;
 println(encryptDecrypt(plain,key));
 end;
-jump encrypt;
+run encrypt;

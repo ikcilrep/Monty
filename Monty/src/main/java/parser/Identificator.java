@@ -231,7 +231,7 @@ public abstract class Identificator {
 	}
 	
 	public static boolean isJumpStatement(List<MontyToken> tokens) {
-		if (!tokens.get(0).getType().equals(TokenTypes.JUMP_KEYWORD))
+		if (!tokens.get(0).getType().equals(TokenTypes.RUN_KEYWORD))
 			return false;
 		if (!(tokens.size() == 1 || (tokens.size() >= 2 && tokens.get(1).getType().equals(TokenTypes.IDENTIFIER))))
 			new MontyException("Expected identifier after \"jump\" keyword:\t" + Tokens.getText(tokens));
