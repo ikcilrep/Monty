@@ -34,7 +34,9 @@ public class Sml extends Library {
 		children.put("io", new HashMap<>());
 		children.put("system", new HashMap<>());
 		children.put("data", new HashMap<>());
+		children.put("threading", new HashMap<>());
 
+		
 		var casts = (HashMap<String, Object>) children.get("casts");
 
 		casts.put("toBoolean", new sml.casts.ToBoolean());
@@ -95,8 +97,12 @@ public class Sml extends Library {
 
 		var system = (HashMap<String, Object>) children.get("system");
 		system.put("argv", new sml.system.Argv());
-
 		system.put("exit", new sml.system.Exit());
+		
+		var threading = (HashMap<String, Object>) children.get("threading");
+		threading.put("sleep", new sml.threading.Sleep());
+		threading.put("join", new sml.threading.Join());
+
 	}
 
 }

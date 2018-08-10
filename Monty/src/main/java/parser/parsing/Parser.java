@@ -39,19 +39,19 @@ public class Parser {
 					continue;
 				if (Identificator.isExpression(tokensBeforeSemicolon)) {
 					AdderToBlock.addExpression(block, tokensBeforeSemicolon);
-					
+
 				} else if (Identificator.isVariableDeclaration(tokensBeforeSemicolon)) {
 					AdderToBlock.addVariableDeclaration(block, tokensBeforeSemicolon);
-					
+
 				} else if (Identificator.isReturnStatement(tokensBeforeSemicolon)) {
 					AdderToBlock.addReturnStatement(block, tokensBeforeSemicolon);
-					
+
 				} else if (Identificator.isFunctionDeclaration(tokensBeforeSemicolon)) {
 					block = AdderToBlock.addFunctionDeclaration(block, tokensBeforeSemicolon);
-					
+
 				} else if (Identificator.isIfStatement(tokensBeforeSemicolon)) {
 					block = AdderToBlock.addIfStatement(block, tokensBeforeSemicolon);
-					
+
 				} else if (Identificator.isElseStatement(tokensBeforeSemicolon)) {
 					block = AdderToBlock.addElseStatement(block, tokensBeforeSemicolon);
 					if (tokensBeforeSemicolon.size() > 1)
@@ -59,18 +59,20 @@ public class Parser {
 								tokensBeforeSemicolon.subList(1, tokensBeforeSemicolon.size()));
 				} else if (Identificator.isWhileStatement(tokensBeforeSemicolon)) {
 					block = AdderToBlock.addWhileStatement(block, tokensBeforeSemicolon);
-					
+
 				} else if (Identificator.isImport(tokensBeforeSemicolon)) {
 					Importing.importFile(block, tokensBeforeSemicolon);
-					
+
 				} else if (Identificator.isChangeToStatement(tokensBeforeSemicolon)) {
 					AdderToBlock.addChangeToStatement(block, tokensBeforeSemicolon);
-					
+
 				} else if (Identificator.isLabelStatement(tokensBeforeSemicolon)) {
 					block = AdderToBlock.addLabelStatement(block, tokensBeforeSemicolon);
-					
-				} else if (Identificator.isJumpStatement(tokensBeforeSemicolon)) {
-					AdderToBlock.addJumpStatement(block, tokensBeforeSemicolon);
+
+				} else if (Identificator.isRunStatement(tokensBeforeSemicolon)) {
+					AdderToBlock.addRunStatement(block, tokensBeforeSemicolon);
+				} else if (Identificator.isThreadStatement(tokensBeforeSemicolon)) {
+					AdderToBlock.addThreadStatement(block, tokensBeforeSemicolon);
 				} else if (Identificator.isEndKeyword(tokensBeforeSemicolon)) {
 					var parent = block.getParent();
 					if (parent == null)

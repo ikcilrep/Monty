@@ -26,10 +26,12 @@ import ast.expressions.OperationNode;
 import ast.statements.ChangeToStatementNode;
 import ast.statements.IfStatementNode;
 import ast.statements.RunStatement;
+import ast.statements.ThreadStatement;
 import ast.statements.ReturnStatementNode;
 import ast.statements.WhileStatementNode;
 import parser.MontyException;
 import sml.casts.*;
+import sml.threading.MontyThread;
 
 public class Block extends Node {
 	private final HashMap<String, Block> blocks = new HashMap<>();
@@ -227,6 +229,9 @@ public class Block extends Node {
 				} catch (StackOverflowError e) {
 					new MontyException("\nStack overflow at jump to:\t" + name);
 				}
+				break;
+			case THREAD_STATEMENT:
+				new MontyThread(((ThreadStatement) child).getExpression());
 				break;
 			default:
 				break;

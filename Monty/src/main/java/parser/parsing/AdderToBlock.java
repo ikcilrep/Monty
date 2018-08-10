@@ -26,6 +26,7 @@ import ast.expressions.VariableNode;
 import ast.statements.ChangeToStatementNode;
 import ast.statements.IfStatementNode;
 import ast.statements.RunStatement;
+import ast.statements.ThreadStatement;
 import ast.statements.ReturnStatementNode;
 import ast.statements.WhileStatementNode;
 import lexer.MontyToken;
@@ -110,8 +111,12 @@ public abstract class AdderToBlock {
 		return blockToAdd;
 	}
 
-	public static void addJumpStatement(Block block, List<MontyToken> tokens) {
+	public static void addRunStatement(Block block, List<MontyToken> tokens) {
 		block.addChild(new RunStatement(tokens.get(1).getText()));
+	}
+
+	public static void addThreadStatement(Block block, List<MontyToken> tokens) {
+		block.addChild(new ThreadStatement(ExpressionParser.parse(block, tokens.subList(1, tokens.size()))));
 	}
 
 }

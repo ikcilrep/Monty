@@ -18,7 +18,6 @@ limitations under the License.
 import java.util.List;
 import java.util.regex.Pattern;
 
-
 import lexer.MontyToken;
 import lexer.TokenTypes;
 
@@ -161,22 +160,25 @@ public abstract class Identificator {
 
 	public static boolean isVariableDeclaration(List<MontyToken> tokens) {
 		var firstTokenType = tokens.get(0).getType();
-		var isFirstTokenStaticOrDynamicKeyword = firstTokenType.equals(TokenTypes.STATIC_KEYWORD) || firstTokenType.equals(TokenTypes.DYNAMIC_KEYWORD);
+		var isFirstTokenStaticOrDynamicKeyword = firstTokenType.equals(TokenTypes.STATIC_KEYWORD)
+				|| firstTokenType.equals(TokenTypes.DYNAMIC_KEYWORD);
 		var tokensSize = tokens.size();
 		TokenTypes secondTokenType = null;
 
 		if (tokensSize >= 2)
 			secondTokenType = tokens.get(1).getType();
 
-		var isSecondTokenTypeDataTypeKeyword = secondTokenType != null && (secondTokenType.equals(TokenTypes.INTEGER_KEYWORD)
-				|| secondTokenType.equals(TokenTypes.FLOAT_KEYWORD) || secondTokenType.equals(TokenTypes.STRING_KEYWORD)
-				|| secondTokenType.equals(TokenTypes.BOOLEAN_KEYWORD)
-				|| secondTokenType.equals(TokenTypes.ARRAY_KEYWORD));
+		var isSecondTokenTypeDataTypeKeyword = secondTokenType != null
+				&& (secondTokenType.equals(TokenTypes.INTEGER_KEYWORD)
+						|| secondTokenType.equals(TokenTypes.FLOAT_KEYWORD)
+						|| secondTokenType.equals(TokenTypes.STRING_KEYWORD)
+						|| secondTokenType.equals(TokenTypes.BOOLEAN_KEYWORD)
+						|| secondTokenType.equals(TokenTypes.ARRAY_KEYWORD));
 		if (!isFirstTokenStaticOrDynamicKeyword)
 			return false;
 		if (!isSecondTokenTypeDataTypeKeyword)
-			new MontyException(
-					"Expected data type declaration after  \"dynamic\" or \"static\" keyword:\t" + Tokens.getText(tokens));
+			new MontyException("Expected data type declaration after  \"dynamic\" or \"static\" keyword:\t"
+					+ Tokens.getText(tokens));
 		if (tokensSize == 2)
 			new MontyException("Expected expression after data type declaration:\t" + Tokens.getText(tokens));
 		if (!tokens.get(2).getType().equals(TokenTypes.IDENTIFIER))
@@ -229,8 +231,8 @@ public abstract class Identificator {
 
 		return true;
 	}
-	
-	public static boolean isJumpStatement(List<MontyToken> tokens) {
+
+	public static boolean isRunStatement(List<MontyToken> tokens) {
 		if (!tokens.get(0).getType().equals(TokenTypes.RUN_KEYWORD))
 			return false;
 		if (!(tokens.size() == 1 || (tokens.size() >= 2 && tokens.get(1).getType().equals(TokenTypes.IDENTIFIER))))
@@ -240,5 +242,14 @@ public abstract class Identificator {
 
 		return true;
 	}
-	
+
+	public static boolean isThreadStatement(List<MontyToken> tokens) {
+		if (!tokens.get(0).getType().equals(TokenTypes.THREAD_KEYWORD))
+			return false;
+		if (!(tokens.size() == 1 || isExpression(tokens.subList(1, tokens.size()))))
+			new MontyException("Expected expression after \"jump\" keyword:\t" + Tokens.getText(tokens));
+
+		return true;
+	}
+
 }
