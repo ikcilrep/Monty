@@ -5,7 +5,6 @@ import sml.data.string.charAt;
 import sml.io.input;
 import sml.io.print;
 import sml.io.println;
-label encrypt;
 
 func string encryptDecrypt string plain, string key;
 	static string encrypted "" =;
@@ -22,5 +21,3 @@ static string plain input() =;
 print("Podaj hasło: ");
 static string key input() =;
 println(encryptDecrypt(plain,key));
-end;
-run encrypt;

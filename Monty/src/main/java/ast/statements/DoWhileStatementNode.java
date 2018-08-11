@@ -1,5 +1,4 @@
-package ast;
-
+package ast.statements;
 /*
 Copyright 2018 Szymon Perlicki
 
@@ -15,6 +14,29 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-public enum NodeTypes {
-	OPERATION, FUNCTION_DECLARATION, VARIABLE, VARIABLE_DECLARATION, RETURN_STATEMENT, CONSTANT, IF_STATEMENT, WHILE_STATEMENT, FUNCTION_CALL, PRINT_STATEMENT, CHANGE_TO_STATEMENT, IS_STATEMENT, RUN_STATEMENT, THREAD_STATEMENT, DO_WHILE_STATEMENT;
+import ast.Block;
+import ast.NodeTypes;
+import ast.expressions.OperationNode;
+
+public class DoWhileStatementNode extends StatementNode {
+	private OperationNode condition;
+	private Block body;
+
+	public DoWhileStatementNode(OperationNode condition) {
+		this.condition = condition;
+		super.nodeType = NodeTypes.DO_WHILE_STATEMENT;
+	}
+
+	public Block getBody() {
+		return body;
+	}
+
+	public void setBody(Block body) {
+		this.body = body;
+	}
+
+	public OperationNode getCondition() {
+		return condition;
+	}
+
 }

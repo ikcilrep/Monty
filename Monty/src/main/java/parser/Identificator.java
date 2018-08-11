@@ -201,6 +201,19 @@ public abstract class Identificator {
 
 	}
 
+	public static boolean isDoWhileStatement(List<MontyToken> tokens) {
+		if (!tokens.get(0).getType().equals(TokenTypes.DO_KEYWORD))
+			return false;
+		if ((!(tokens.size() > 1 && tokens.get(1).getType().equals(TokenTypes.WHILE_KEYWORD)) || tokens.size() == 1))
+			new MontyException("Expected \"while\" keyword after \"do\" keyword:\t" + Tokens.getText(tokens));
+		if (tokens.size() == 1)
+			new MontyException("Expected expression after \"do\" keyword:\t" + Tokens.getText(tokens));
+		if (!isExpression(tokens.subList(2, tokens.size())))
+			new MontyException("Wrong expression after \"do\" keyword:\t" + Tokens.getText(tokens));
+		return true;
+
+	}
+
 	public static boolean isChangeToStatement(List<MontyToken> tokens) {
 		var tokensSize = tokens.size();
 		if (!tokens.get(0).getType().equals(TokenTypes.CHANGE_KEYWORD))
@@ -218,28 +231,6 @@ public abstract class Identificator {
 					|| fourthTokenType.equals(TokenTypes.ARRAY_KEYWORD))))
 				new MontyException("Expected data type declaration after \"to\" keyword\t" + Tokens.getText(tokens));
 		}
-		return true;
-	}
-
-	public static boolean isLabelStatement(List<MontyToken> tokens) {
-		if (!tokens.get(0).getType().equals(TokenTypes.LABEL_KEYWORD))
-			return false;
-		if (!(tokens.size() == 1 || (tokens.size() >= 2 && tokens.get(1).getType().equals(TokenTypes.IDENTIFIER))))
-			new MontyException("Expected identifier after \"label\" keyword:\t" + Tokens.getText(tokens));
-		if (tokens.size() > 2)
-			new MontyException("Nothing expected after identifier:\t" + Tokens.getText(tokens));
-
-		return true;
-	}
-
-	public static boolean isRunStatement(List<MontyToken> tokens) {
-		if (!tokens.get(0).getType().equals(TokenTypes.RUN_KEYWORD))
-			return false;
-		if (!(tokens.size() == 1 || (tokens.size() >= 2 && tokens.get(1).getType().equals(TokenTypes.IDENTIFIER))))
-			new MontyException("Expected identifier after \"jump\" keyword:\t" + Tokens.getText(tokens));
-		if (tokens.size() > 2)
-			new MontyException("Nothing expected after identifier:\t" + Tokens.getText(tokens));
-
 		return true;
 	}
 

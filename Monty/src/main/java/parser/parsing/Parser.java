@@ -60,17 +60,15 @@ public class Parser {
 				} else if (Identificator.isWhileStatement(tokensBeforeSemicolon)) {
 					block = AdderToBlock.addWhileStatement(block, tokensBeforeSemicolon);
 
+				} else if (Identificator.isDoWhileStatement(tokensBeforeSemicolon)) {
+					block = AdderToBlock.addDoWhileStatement(block, tokensBeforeSemicolon);
+
 				} else if (Identificator.isImport(tokensBeforeSemicolon)) {
 					Importing.importFile(block, tokensBeforeSemicolon);
 
 				} else if (Identificator.isChangeToStatement(tokensBeforeSemicolon)) {
 					AdderToBlock.addChangeToStatement(block, tokensBeforeSemicolon);
 
-				} else if (Identificator.isLabelStatement(tokensBeforeSemicolon)) {
-					block = AdderToBlock.addLabelStatement(block, tokensBeforeSemicolon);
-
-				} else if (Identificator.isRunStatement(tokensBeforeSemicolon)) {
-					AdderToBlock.addRunStatement(block, tokensBeforeSemicolon);
 				} else if (Identificator.isThreadStatement(tokensBeforeSemicolon)) {
 					AdderToBlock.addThreadStatement(block, tokensBeforeSemicolon);
 				} else if (Identificator.isEndKeyword(tokensBeforeSemicolon)) {

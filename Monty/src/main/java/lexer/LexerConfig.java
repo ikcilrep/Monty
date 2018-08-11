@@ -38,10 +38,10 @@ public class LexerConfig {
 		lb.setKeyword("dynamic", new MontyToken(TokenTypes.DYNAMIC_KEYWORD));
 		lb.setKeyword("static", new MontyToken(TokenTypes.STATIC_KEYWORD));
 		lb.setKeyword("change", new MontyToken(TokenTypes.CHANGE_KEYWORD));
+		lb.setKeyword("do", new MontyToken(TokenTypes.DO_KEYWORD));
+
 		lb.setKeyword("to", new MontyToken(TokenTypes.TO_KEYWORD));
-		lb.setKeyword("run", new MontyToken(TokenTypes.RUN_KEYWORD));
 		lb.setKeyword("thread", new MontyToken(TokenTypes.THREAD_KEYWORD));
-		lb.setKeyword("label", new MontyToken(TokenTypes.LABEL_KEYWORD));
 
 
 		

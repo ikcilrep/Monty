@@ -24,8 +24,8 @@ import ast.declarations.VariableDeclarationNode;
 import ast.expressions.FunctionCallNode;
 import ast.expressions.OperationNode;
 import ast.statements.ChangeToStatementNode;
+import ast.statements.DoWhileStatementNode;
 import ast.statements.IfStatementNode;
-import ast.statements.RunStatement;
 import ast.statements.ThreadStatement;
 import ast.statements.ReturnStatementNode;
 import ast.statements.WhileStatementNode;
@@ -190,6 +190,15 @@ public class Block extends Node {
 						return result;
 				}
 				break;
+			case DO_WHILE_STATEMENT:
+				var childCastedToDoWhileStatement = ((DoWhileStatementNode) child);
+				do {
+					var body = childCastedToDoWhileStatement.getBody();
+					var result = body.run();	
+					if (result != null)
+						return result;
+				} while ((boolean) childCastedToDoWhileStatement.getCondition().run());
+				break;
 			case CHANGE_TO_STATEMENT:
 				var childCastedToChangeToStatement = ((ChangeToStatementNode) child);
 				var newVariableType = childCastedToChangeToStatement.getDataType();
@@ -222,14 +231,6 @@ public class Block extends Node {
 				break;
 			case RETURN_STATEMENT:
 				return ((ReturnStatementNode) child).getExpression().run();
-			case RUN_STATEMENT:
-				var name = ((RunStatement) child).getName();
-				try {
-					getBlockByName(name).run();
-				} catch (StackOverflowError e) {
-					new MontyException("\nStack overflow at jump to:\t" + name);
-				}
-				break;
 			case THREAD_STATEMENT:
 				new MontyThread(((ThreadStatement) child).getExpression());
 				break;

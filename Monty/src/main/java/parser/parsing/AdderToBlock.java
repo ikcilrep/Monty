@@ -24,8 +24,8 @@ import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import ast.expressions.VariableNode;
 import ast.statements.ChangeToStatementNode;
+import ast.statements.DoWhileStatementNode;
 import ast.statements.IfStatementNode;
-import ast.statements.RunStatement;
 import ast.statements.ThreadStatement;
 import ast.statements.ReturnStatementNode;
 import ast.statements.WhileStatementNode;
@@ -99,20 +99,16 @@ public abstract class AdderToBlock {
 
 	}
 
+	public static Block addDoWhileStatement(Block block, List<MontyToken> tokens) {
+		var whileStatement = new DoWhileStatementNode(ExpressionParser.parse(block, tokens.subList(2, tokens.size())));
+		whileStatement.setBody(new Block(block));
+		block.addChild(whileStatement);
+		return whileStatement.getBody();
+
+	}
 	public static void addChangeToStatement(Block block, List<MontyToken> tokens) {
 		block.addChild(new ChangeToStatementNode(new VariableNode(tokens.get(1).getText()),
 				Tokens.getDataType(tokens.get(3).getType())));
-	}
-
-	public static Block addLabelStatement(Block block, List<MontyToken> tokens) {
-		var blockToAdd = new Block(block);
-		blockToAdd.setName(tokens.get(1).getText());
-		block.addBlock(blockToAdd);
-		return blockToAdd;
-	}
-
-	public static void addRunStatement(Block block, List<MontyToken> tokens) {
-		block.addChild(new RunStatement(tokens.get(1).getText()));
 	}
 
 	public static void addThreadStatement(Block block, List<MontyToken> tokens) {
