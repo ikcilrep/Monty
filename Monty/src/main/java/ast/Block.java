@@ -24,6 +24,7 @@ import ast.declarations.VariableDeclarationNode;
 import ast.expressions.FunctionCallNode;
 import ast.expressions.OperationNode;
 import ast.statements.ChangeToStatementNode;
+import ast.statements.ContinueStatementNode;
 import ast.statements.DoWhileStatementNode;
 import ast.statements.IfStatementNode;
 import ast.statements.ThreadStatement;
@@ -190,6 +191,8 @@ public class Block extends Node {
 					var result = body.run();
 					if (result instanceof BreakType)
 						break loop;
+					if (result instanceof ContinueStatementNode)
+						continue;
 					if (result != null)
 						return result;
 				}
@@ -201,6 +204,8 @@ public class Block extends Node {
 					var result = body.run();
 					if (result instanceof BreakType)
 						break loop;
+					if (result instanceof ContinueStatementNode)
+						continue;
 					if (result != null)
 						return result;
 				} while ((boolean) childCastedToDoWhileStatement.getCondition().run());
@@ -235,13 +240,14 @@ public class Block extends Node {
 
 				}
 				break;
-			case BREAK_STATEMENET:
+			case BREAK_STATEMENT:
 				return Nothing.breakType;
+			case CONTINUE_STATEMENT:
+				return Nothing.continueType;
 			case RETURN_STATEMENT:
 				return ((ReturnStatementNode) child).getExpression().run();
 			case THREAD_STATEMENT:
 				new MontyThread(((ThreadStatement) child).getExpression());
-				break;
 			default:
 				break;
 			}

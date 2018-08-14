@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ast.expressions.OperationNode;
+import ast.statements.ContinueStatementNode;
 import parser.DataTypes;
 import parser.MontyException;
 import sml.data.returning.BreakType;
@@ -47,6 +48,8 @@ public class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
 		}
 		if (result instanceof BreakType)
 			new MontyException("Trying to break function " + getName());
+		if (result instanceof ContinueStatementNode)
+			new MontyException("Trying to continue function " + getName());
 		body.setVariables(variables);
 		var resultDataType = DataTypes.getDataType(result);
 

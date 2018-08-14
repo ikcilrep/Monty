@@ -26,6 +26,7 @@ import ast.expressions.OperationNode;
 import ast.expressions.VariableNode;
 import ast.statements.BreakStatementNode;
 import ast.statements.ChangeToStatementNode;
+import ast.statements.ContinueStatementNode;
 import ast.statements.DoWhileStatementNode;
 import ast.statements.IfStatementNode;
 import ast.statements.ThreadStatement;
@@ -124,4 +125,7 @@ public abstract class AdderToBlock {
 		block.addChild(new BreakStatementNode());
 	}
 
+	public static void addContinueStatement(Block block) {
+		block.addChild(new ContinueStatementNode());
+	}
 }

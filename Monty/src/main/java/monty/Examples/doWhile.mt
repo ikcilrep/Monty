@@ -4,7 +4,7 @@ static int a 1 =;
 
 do while a 2 ==;
 	if a 2 ==;
-		break;
+		continue;
 	end;
 	println("Aweqw");
 	println(a);
