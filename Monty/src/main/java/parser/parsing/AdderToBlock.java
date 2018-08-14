@@ -21,6 +21,7 @@ import ast.Block;
 import ast.NodeTypes;
 import ast.declarations.CustomFunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
+import ast.expressions.FunctionCallNode;
 import ast.expressions.OperationNode;
 import ast.expressions.VariableNode;
 import ast.statements.ChangeToStatementNode;
@@ -45,6 +46,8 @@ public abstract class AdderToBlock {
 		var expression = (OperationNode) null;
 		if (tokens.size() > 1)
 			expression = ExpressionParser.parse(block, tokens.subList(1, tokens.size()));
+		else
+			expression = new OperationNode(new FunctionCallNode("nothing"), block);
 		block.addChild(new ReturnStatementNode(expression));
 	}
 
@@ -106,6 +109,7 @@ public abstract class AdderToBlock {
 		return whileStatement.getBody();
 
 	}
+
 	public static void addChangeToStatement(Block block, List<MontyToken> tokens) {
 		block.addChild(new ChangeToStatementNode(new VariableNode(tokens.get(1).getText()),
 				Tokens.getDataType(tokens.get(3).getType())));
