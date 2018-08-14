@@ -1,4 +1,5 @@
 package lexer;
+
 /*
 Copyright 2018 Szymon Perlicki
 
@@ -34,6 +35,8 @@ public class LexerConfig {
 		lb.setKeyword("any", new MontyToken(TokenTypes.ANY_KEYWORD));
 		lb.setKeyword("is", new MontyToken(TokenTypes.IS_KEYWORD));
 		lb.setKeyword("while", new MontyToken(TokenTypes.WHILE_KEYWORD));
+		lb.setKeyword("break", new MontyToken(TokenTypes.BREAK_KEYWORD));
+
 		lb.setKeyword("import", new MontyToken(TokenTypes.IMPORT_KEYWORD));
 		lb.setKeyword("dynamic", new MontyToken(TokenTypes.DYNAMIC_KEYWORD));
 		lb.setKeyword("static", new MontyToken(TokenTypes.STATIC_KEYWORD));
@@ -43,8 +46,6 @@ public class LexerConfig {
 		lb.setKeyword("to", new MontyToken(TokenTypes.TO_KEYWORD));
 		lb.setKeyword("thread", new MontyToken(TokenTypes.THREAD_KEYWORD));
 
-
-		
 		lb.setOnIdentifier(new MontyToken(TokenTypes.IDENTIFIER));
 
 		lb.setCommentChar('\'', '`');

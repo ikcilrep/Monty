@@ -21,6 +21,7 @@ import java.util.Map;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.MontyException;
+import sml.data.returning.BreakType;
 
 public class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
 	public CustomFunctionDeclarationNode(String name, DataTypes type) {
@@ -44,8 +45,10 @@ public class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
 		} catch (StackOverflowError e) {
 			new MontyException("Stack overflow at " + name + " function call");
 		}
-		var resultDataType = DataTypes.getDataType(result);
+		if (result instanceof BreakType)
+			new MontyException("Trying to break function " + getName());
 		body.setVariables(variables);
+		var resultDataType = DataTypes.getDataType(result);
 
 		if (!resultDataType.equals(getType()))
 			new MontyException("Function " + getName() + " should returns " + getType().toString().toLowerCase()

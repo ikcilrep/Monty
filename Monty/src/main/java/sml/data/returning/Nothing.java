@@ -23,6 +23,8 @@ import parser.DataTypes;
 
 public class Nothing extends FunctionDeclarationNode {
 	public static VoidType nothing = new VoidType();
+	public static BreakType breakType = new BreakType();
+
 	public Nothing() {
 		super("nothing", DataTypes.VOID);
 	}

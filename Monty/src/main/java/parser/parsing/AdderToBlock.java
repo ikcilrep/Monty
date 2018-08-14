@@ -24,6 +24,7 @@ import ast.declarations.VariableDeclarationNode;
 import ast.expressions.FunctionCallNode;
 import ast.expressions.OperationNode;
 import ast.expressions.VariableNode;
+import ast.statements.BreakStatementNode;
 import ast.statements.ChangeToStatementNode;
 import ast.statements.DoWhileStatementNode;
 import ast.statements.IfStatementNode;
@@ -117,6 +118,10 @@ public abstract class AdderToBlock {
 
 	public static void addThreadStatement(Block block, List<MontyToken> tokens) {
 		block.addChild(new ThreadStatement(ExpressionParser.parse(block, tokens.subList(1, tokens.size()))));
+	}
+
+	public static void addBreakStatement(Block block) {
+		block.addChild(new BreakStatementNode());
 	}
 
 }

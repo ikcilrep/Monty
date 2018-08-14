@@ -243,4 +243,13 @@ public abstract class Identificator {
 		return true;
 	}
 
+	public static boolean isBreakStatement(List<MontyToken> tokens) {
+		if (!tokens.get(0).getType().equals(TokenTypes.BREAK_KEYWORD))
+			return false;
+		if (tokens.size() > 1)
+			new MontyException("Nothing expected after break keyword");
+		return true;
+		
+	}
+
 }

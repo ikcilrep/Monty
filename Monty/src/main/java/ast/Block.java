@@ -31,6 +31,8 @@ import ast.statements.ReturnStatementNode;
 import ast.statements.WhileStatementNode;
 import parser.MontyException;
 import sml.casts.*;
+import sml.data.returning.BreakType;
+import sml.data.returning.Nothing;
 import sml.threading.MontyThread;
 
 public class Block extends Node {
@@ -183,18 +185,22 @@ public class Block extends Node {
 				break;
 			case WHILE_STATEMENT:
 				var childCastedToWhileStatement = ((WhileStatementNode) child);
-				while ((boolean) childCastedToWhileStatement.getCondition().run()) {
+				loop: while ((boolean) childCastedToWhileStatement.getCondition().run()) {
 					var body = childCastedToWhileStatement.getBody();
 					var result = body.run();
+					if (result instanceof BreakType)
+						break loop;
 					if (result != null)
 						return result;
 				}
 				break;
 			case DO_WHILE_STATEMENT:
 				var childCastedToDoWhileStatement = ((DoWhileStatementNode) child);
-				do {
+				loop: do {
 					var body = childCastedToDoWhileStatement.getBody();
-					var result = body.run();	
+					var result = body.run();
+					if (result instanceof BreakType)
+						break loop;
 					if (result != null)
 						return result;
 				} while ((boolean) childCastedToDoWhileStatement.getCondition().run());
@@ -229,6 +235,8 @@ public class Block extends Node {
 
 				}
 				break;
+			case BREAK_STATEMENET:
+				return Nothing.breakType;
 			case RETURN_STATEMENT:
 				return ((ReturnStatementNode) child).getExpression().run();
 			case THREAD_STATEMENT:
