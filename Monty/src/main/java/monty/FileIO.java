@@ -1,4 +1,5 @@
 package monty;
+
 /*
 Copyright 2018 Szymon Perlicki
 
@@ -15,8 +16,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import parser.MontyException;
@@ -45,9 +48,23 @@ public abstract class FileIO {
 					br.close();
 				}
 			} catch (IOException ex) {
-				ex.printStackTrace();
+				new MontyException("Failed to read file " + path);
 			}
 		}
 		return text.toString();
+	}
+
+	public static void writeFile(String path, String text, boolean isAppend) {
+		try {
+			File file = new File(path);
+			FileWriter fileWriter = new FileWriter(file,isAppend);
+			fileWriter.write(text);
+			fileWriter.flush();
+			fileWriter.close();
+		} catch (IOException e) {
+			new MontyException("Failed to write file " + path);
+			e.printStackTrace();
+		}
+
 	}
 }

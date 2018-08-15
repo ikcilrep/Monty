@@ -10,3 +10,4 @@ do while a 2 ==;
 	println(a);
 	a 1 +=;
 end;
+	

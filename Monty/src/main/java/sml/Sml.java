@@ -36,7 +36,6 @@ public class Sml extends Library {
 		children.put("data", new HashMap<>());
 		children.put("threading", new HashMap<>());
 
-		
 		var casts = (HashMap<String, Object>) children.get("casts");
 
 		casts.put("toBoolean", new sml.casts.ToBoolean());
@@ -85,6 +84,8 @@ public class Sml extends Library {
 		io.put("input", new sml.io.Input());
 		io.put("print", new sml.io.Print());
 		io.put("println", new sml.io.Println());
+		io.put("readFile", new sml.io.ReadFile());
+		io.put("writeFile", new sml.io.WriteFile());
 
 		var math = (HashMap<String, Object>) children.get("math");
 		math.put("absFloat", new sml.math.AbsFloat());
@@ -98,7 +99,7 @@ public class Sml extends Library {
 		var system = (HashMap<String, Object>) children.get("system");
 		system.put("argv", new sml.system.Argv());
 		system.put("exit", new sml.system.Exit());
-		
+
 		var threading = (HashMap<String, Object>) children.get("threading");
 		threading.put("sleep", new sml.threading.Sleep());
 		threading.put("join", new sml.threading.Join());
