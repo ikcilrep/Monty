@@ -13,6 +13,11 @@ import sml.data.returning.Nothing;
 
 public class Sleep extends FunctionDeclarationNode {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8040321011869157333L;
+
 	public Sleep() {
 		super("sleep", DataTypes.VOID);
 		setBody(new Block(null));

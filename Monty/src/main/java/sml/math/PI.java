@@ -23,6 +23,11 @@ import parser.DataTypes;
 
 public class PI extends FunctionDeclarationNode {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1695823382473171651L;
+
 	public PI() {
 		super("PI", DataTypes.FLOAT);
 	}

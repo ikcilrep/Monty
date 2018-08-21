@@ -26,6 +26,10 @@ import parser.MontyException;
 
 public class ToString extends FunctionDeclarationNode {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2725148737303045967L;
 	public ToString() {
 		super("toString", DataTypes.STRING);
 		setBody(new Block(null));

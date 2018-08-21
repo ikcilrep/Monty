@@ -27,6 +27,10 @@ import sml.data.array.Array;
 
 public class OperationNode extends ExpressionNode {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2708343059798065830L;
 	private Object operand;
 	private OperationNode left = null;
 	private OperationNode right = null;

@@ -26,6 +26,11 @@ import parser.DataTypes;
 
 public class SetInArray extends FunctionDeclarationNode {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4263197015723594960L;
+
 	public SetInArray() {
 		super("setInArray", DataTypes.ARRAY);
 		setBody(new Block(null));

@@ -25,6 +25,11 @@ import parser.DataTypes;
 
 public class IsString extends FunctionDeclarationNode {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2424260947118012450L;
+
 	public IsString() {
 		super("isString", DataTypes.BOOLEAN);
 		setBody(new Block(null));

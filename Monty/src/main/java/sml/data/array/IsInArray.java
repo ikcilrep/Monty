@@ -25,6 +25,11 @@ import parser.DataTypes;
 
 public class IsInArray extends FunctionDeclarationNode {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7038852480570338076L;
+
 	public IsInArray() {
 		super("isInArray", DataTypes.BOOLEAN);
 		setBody(new Block(null));

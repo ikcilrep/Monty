@@ -25,6 +25,11 @@ import parser.DataTypes;
 
 public class IsFloat extends FunctionDeclarationNode {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5724302546364631891L;
+
 	public IsFloat() {
 		super("isFloat", DataTypes.BOOLEAN);
 		setBody(new Block(null));

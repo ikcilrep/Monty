@@ -28,6 +28,11 @@ import sml.data.array.Array;
 
 public class ToBoolean extends FunctionDeclarationNode {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7799331880685421047L;
+
 	public ToBoolean() {
 		super("toBoolean", DataTypes.BOOLEAN);
 		setBody(new Block(null));

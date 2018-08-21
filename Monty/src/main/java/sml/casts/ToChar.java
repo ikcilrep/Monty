@@ -26,6 +26,11 @@ import parser.DataTypes;
 
 public class ToChar extends FunctionDeclarationNode {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3653198626582765893L;
+
 	public ToChar() {
 		super("toChar", DataTypes.STRING);
 		setBody(new Block(null));

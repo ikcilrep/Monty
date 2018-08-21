@@ -22,6 +22,10 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 
 public class Nothing extends FunctionDeclarationNode {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1016665906573389526L;
 	public static VoidType nothing = new VoidType();
 	public static BreakType breakType = new BreakType();
 	public static ContinueType continueType = new ContinueType();

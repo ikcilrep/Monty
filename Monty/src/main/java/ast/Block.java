@@ -1,5 +1,6 @@
 package ast;
 
+import java.io.Serializable;
 /*
 Copyright 2018 Szymon Perlicki
 
@@ -36,7 +37,11 @@ import sml.data.returning.BreakType;
 import sml.data.returning.Nothing;
 import sml.threading.MontyThread;
 
-public class Block extends Node {
+public class Block extends Node implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1974629623424063560L;
 	private final HashMap<String, Block> blocks = new HashMap<>();
 	private ArrayList<Node> children = new ArrayList<>();
 	private final HashMap<String, FunctionDeclarationNode> functions = new HashMap<>();

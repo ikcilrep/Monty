@@ -25,6 +25,11 @@ import parser.DataTypes;
 
 public class SqrtFloat extends FunctionDeclarationNode {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1177841166102779963L;
+
 	public SqrtFloat() {
 		super("sqrtFloat", DataTypes.FLOAT);
 		setBody(new Block(null));

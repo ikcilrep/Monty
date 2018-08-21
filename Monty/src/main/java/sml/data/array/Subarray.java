@@ -26,6 +26,11 @@ import parser.DataTypes;
 
 public class Subarray extends FunctionDeclarationNode {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9201866361416331207L;
+
 	public Subarray() {
 		super("subArray", DataTypes.ARRAY);
 		setBody(new Block(null));

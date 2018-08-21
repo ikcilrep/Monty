@@ -25,6 +25,11 @@ import parser.DataTypes;
 
 public class ExtendArray extends FunctionDeclarationNode {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4407198079905020979L;
+
 	public ExtendArray() {
 		super("extendArray", DataTypes.VOID);
 		setBody(new Block(null));

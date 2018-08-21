@@ -13,6 +13,11 @@ import sml.data.returning.Nothing;
 
 public class Join extends FunctionDeclarationNode {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3282748749591627447L;
+
 	public Join() {
 		super("join", DataTypes.VOID);
 		setBody(new Block(null));

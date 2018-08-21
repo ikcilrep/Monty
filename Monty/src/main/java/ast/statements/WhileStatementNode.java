@@ -19,6 +19,10 @@ import ast.NodeTypes;
 import ast.expressions.OperationNode;
 
 public class WhileStatementNode extends StatementNode {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5277131626875647624L;
 	private OperationNode condition;
 	private Block body;
 

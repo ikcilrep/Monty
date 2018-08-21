@@ -17,6 +17,10 @@ limitations under the License.
 import ast.NodeTypes;
 
 public class VariableNode extends ExpressionNode {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8300892680278895019L;
 	private String name;
 
 	public VariableNode(String name) {

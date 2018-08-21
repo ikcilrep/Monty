@@ -25,6 +25,10 @@ import sml.data.array.Array;
 
 public class ToArray extends FunctionDeclarationNode {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3165880297105294653L;
 	public ToArray() {
 		super("toArray", DataTypes.ARRAY);
 		setBody(new Block(null));

@@ -25,6 +25,11 @@ import parser.DataTypes;
 
 public class ToUpperCase extends FunctionDeclarationNode {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1072392544738283546L;
+
 	public ToUpperCase() {
 		super("toUpperCase", DataTypes.STRING);
 		setBody(new Block(null));

@@ -23,6 +23,11 @@ import sml.data.returning.Nothing;
 
 public class Exit extends FunctionDeclarationNode {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1603351508408158479L;
+
 	public Exit() {
 		super("exit", DataTypes.VOID);
 	}

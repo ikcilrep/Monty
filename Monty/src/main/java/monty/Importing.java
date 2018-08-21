@@ -43,10 +43,10 @@ public class Importing {
 		return newArray;
 	}
 
-	public static void setLibraries() {
+	public static void setLibraries(int from) {
 		Parser.libraries = new HashMap<>();
 		Parser.libraries.put("sml", new sml.Sml());
-		for (int i = 1; i < Main.argv.length; i++) {
+		for (int i = from; i < Main.argv.length; i++) {
 			try {
 				File pathToJar = new File(Main.argv[i]);
 

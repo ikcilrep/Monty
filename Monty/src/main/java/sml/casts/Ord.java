@@ -27,6 +27,11 @@ import parser.MontyException;
 
 public class Ord extends FunctionDeclarationNode {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5405205633667903720L;
+
 	public Ord() {
 		super("ord", DataTypes.INTEGER);
 		setBody(new Block(null));

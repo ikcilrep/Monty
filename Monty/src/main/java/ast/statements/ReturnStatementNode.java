@@ -18,6 +18,10 @@ import ast.NodeTypes;
 import ast.expressions.OperationNode;
 
 public class ReturnStatementNode extends StatementNode {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4318012897239560301L;
 	private OperationNode expression;
 
 	public ReturnStatementNode(OperationNode expression) {

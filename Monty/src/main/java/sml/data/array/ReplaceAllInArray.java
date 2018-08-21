@@ -25,6 +25,11 @@ import parser.DataTypes;
 
 public class ReplaceAllInArray extends FunctionDeclarationNode{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4514206011012649301L;
+
 	public ReplaceAllInArray() {
 		super("replaceAllInArray", DataTypes.ARRAY);
 		setBody(new Block(null));

@@ -26,6 +26,11 @@ import parser.DataTypes;
 
 public class SqrtInt extends FunctionDeclarationNode {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5795604166253733391L;
+
 	public SqrtInt() {
 		super("sqrtInt", DataTypes.INTEGER);
 		setBody(new Block(null));

@@ -25,6 +25,11 @@ import parser.DataTypes;
 
 public class LengthOfArray extends FunctionDeclarationNode {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4759997709261414161L;
+
 	public LengthOfArray() {
 		super("lengthOfArray", DataTypes.INTEGER);
 		setBody(new Block(null));

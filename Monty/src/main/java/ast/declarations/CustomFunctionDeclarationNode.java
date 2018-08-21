@@ -25,6 +25,11 @@ import parser.MontyException;
 import sml.data.returning.BreakType;
 
 public class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1475119303503798509L;
+
 	public CustomFunctionDeclarationNode(String name, DataTypes type) {
 		super(name, type);
 

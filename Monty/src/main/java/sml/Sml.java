@@ -1,5 +1,6 @@
 package sml;
 
+import java.io.Serializable;
 /*
 Copyright 2018 Szymon Perlicki
 
@@ -19,7 +20,12 @@ import java.util.HashMap;
 
 import monty.Library;
 
-public class Sml extends Library {
+public class Sml extends Library implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9055473117351035776L;
 
 	public Sml() {
 		super("sml");

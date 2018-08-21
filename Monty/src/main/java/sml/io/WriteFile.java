@@ -28,6 +28,11 @@ import sml.data.returning.Nothing;
 
 public class WriteFile extends FunctionDeclarationNode {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3412784350867342486L;
+
 	public WriteFile() {
 		super("writeFile", DataTypes.VOID);
 		setBody(new Block(null));
@@ -47,10 +52,10 @@ public class WriteFile extends FunctionDeclarationNode {
 
 		var file = new File(path);
 		if (file.isAbsolute())
-			monty.FileIO.writeFile(file.getAbsolutePath(), text,isAppend);
+			monty.FileIO.writeFile(file.getAbsolutePath(), text, isAppend);
 		else
 			monty.FileIO.writeFile(new File(Main.path).getParent() + File.separatorChar + new File(path).getName(),
-					text,isAppend);
+					text, isAppend);
 
 		return Nothing.nothing;
 	}

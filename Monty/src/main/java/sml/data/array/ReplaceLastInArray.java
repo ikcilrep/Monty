@@ -25,6 +25,11 @@ import parser.DataTypes;
 
 public class ReplaceLastInArray extends FunctionDeclarationNode {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 268032436604437625L;
+
 	public ReplaceLastInArray() {
 		super("replaceFirstInArray", DataTypes.ARRAY);
 		setBody(new Block(null));

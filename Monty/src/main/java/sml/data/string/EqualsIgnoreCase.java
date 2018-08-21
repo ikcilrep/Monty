@@ -25,6 +25,11 @@ import parser.DataTypes;
 
 public class EqualsIgnoreCase extends FunctionDeclarationNode {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1998915635092962970L;
+
 	public EqualsIgnoreCase() {
 		super("equalsIgnoreCase", DataTypes.STRING);
 		setBody(new Block(null));

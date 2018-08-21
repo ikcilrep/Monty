@@ -24,6 +24,11 @@ import parser.DataTypes;
 
 public class PowerFloat extends FunctionDeclarationNode {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5781816647553463460L;
+
 	public PowerFloat() {
 		super("powerFloat", DataTypes.FLOAT);
 		setBody(new Block(null));

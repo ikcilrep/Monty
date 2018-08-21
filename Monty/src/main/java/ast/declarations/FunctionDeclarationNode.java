@@ -23,6 +23,10 @@ import parser.DataTypes;
 import parser.MontyException;
 
 public abstract class FunctionDeclarationNode extends DeclarationNode {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3950386734423560272L;
 	Block body;
 	public ArrayList<VariableDeclarationNode> parameters = new ArrayList<>();
 

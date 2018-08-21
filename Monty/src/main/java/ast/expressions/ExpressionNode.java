@@ -17,4 +17,9 @@ limitations under the License.
 import ast.Node;
 
 public abstract class ExpressionNode extends Node {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4265022491334955632L;
 }

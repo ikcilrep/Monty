@@ -28,6 +28,11 @@ import parser.MontyException;
 
 public class Argv extends FunctionDeclarationNode {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3955613798131108880L;
+
 	public Argv() {
 		super("argv", DataTypes.STRING);
 		setBody(new Block(null));

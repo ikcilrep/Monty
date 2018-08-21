@@ -19,6 +19,10 @@ import java.util.ArrayList;
 import ast.NodeTypes;
 
 public class FunctionCallNode extends ExpressionNode {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6176257179629588339L;
 	private String name;
 	private ArrayList<OperationNode> arguments = new ArrayList<>();
 

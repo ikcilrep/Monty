@@ -18,6 +18,10 @@ import ast.Node;
 import parser.DataTypes;
 
 public abstract class DeclarationNode extends Node {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -716539150530166792L;
 	protected String name;
 	protected DataTypes type;
 
