@@ -69,6 +69,7 @@ public class Sml extends Library implements Serializable {
 		array.put("replaceFirstInArray", new sml.data.array.ReplaceFirstInArray());
 		array.put("replaceLastInArray", new sml.data.array.ReplaceLastInArray());
 
+		
 		var checking = (HashMap<String, Object>) data.get("checking");
 		checking.put("isInt", new sml.data.checking.IsInt());
 		checking.put("isFloat", new sml.data.checking.IsFloat());

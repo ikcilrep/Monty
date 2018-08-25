@@ -28,6 +28,8 @@ import lexer.LexerConfig;
 import lexer.MontyToken;
 import parser.MontyException;
 import parser.parsing.Parser;
+import sml.data.list.LinkList;
+
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 public class Main {
@@ -35,6 +37,13 @@ public class Main {
 	public static String path;
 
 	public static void main(String[] args) throws FileNotFoundException {
+		LinkList a = new LinkList(1);
+		a.append(2);
+		a.append(3);
+		System.out.println("Length:\t"+a.length());
+		System.out.println("Length:\t"+a.sublist(1, a.length()).length());
+		System.out.println(a.toString());
+
 		argv = args;
 
 		// path = Main.class.getResource("Examples/files.mt").getPath();
