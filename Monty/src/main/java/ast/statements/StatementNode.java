@@ -1,4 +1,3 @@
-package ast.statements;
 /*
 Copyright 2018 Szymon Perlicki
 
@@ -14,6 +13,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
+package ast.statements;
+
 import ast.Node;
 
 public abstract class StatementNode extends Node{

@@ -1,5 +1,3 @@
-package ast;
-
 /*
 Copyright 2018 Szymon Perlicki
 
@@ -15,6 +13,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
+package ast;
+
 public enum NodeTypes {
 	OPERATION, FUNCTION_DECLARATION, VARIABLE, VARIABLE_DECLARATION, RETURN_STATEMENT, CONSTANT, IF_STATEMENT, WHILE_STATEMENT, FUNCTION_CALL, PRINT_STATEMENT, CHANGE_TO_STATEMENT, IS_STATEMENT, RUN_STATEMENT, THREAD_STATEMENT, DO_WHILE_STATEMENT, BREAK_STATEMENT, CONTINUE_STATEMENT;
 }
