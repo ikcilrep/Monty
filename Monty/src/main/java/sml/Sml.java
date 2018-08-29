@@ -57,7 +57,7 @@ public class Sml extends Library implements Serializable {
 		children.put("system", new HashMap<>());
 		children.put("data", new HashMap<>());
 		children.put("threading", new HashMap<>());
-
+		children.put("time", new HashMap<>());
 		var casts = (HashMap<String, Object>) children.get("casts");
 
 		casts.put("toBoolean", new sml.casts.ToBoolean());
@@ -125,6 +125,11 @@ public class Sml extends Library implements Serializable {
 		var threading = (HashMap<String, Object>) children.get("threading");
 		threading.put("sleep", new sml.threading.Sleep());
 		threading.put("join", new sml.threading.Join());
+		
+		var time = (HashMap<String, Object>) children.get("time");
+		time.put("unixTime", new sml.time.UnixTime());
+		time.put("unixTimeMillis", new sml.time.UnixTimeMillis());
+
 
 	}
 
