@@ -20,6 +20,8 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 
 public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething<T> implements Cloneable {
 
@@ -132,7 +134,7 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 					} catch (CloneNotSupportedException e) {
 						e.printStackTrace();
 					}
-					copied.setText(org.apache.commons.text.StringEscapeUtils.unescapeJava(keyword.toString()));
+					copied.setText(StringEscapeUtils.unescapeJava(keyword.toString()));
 					if (canIAddQuotes)
 						copied.setText("\"" + copied.getText() + "\"");
 					tokens.add(copied);

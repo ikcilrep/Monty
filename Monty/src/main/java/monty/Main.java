@@ -1,7 +1,3 @@
-
-package monty;
-
-import java.io.FileInputStream;
 /*
 Copyright 2018 Szymon Perlicki
 
@@ -17,6 +13,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
+package monty;
+
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -28,47 +28,46 @@ import lexer.LexerConfig;
 import lexer.MontyToken;
 import parser.MontyException;
 import parser.parsing.Parser;
-import sml.data.list.LinkList;
 
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
+
 public class Main {
 	public static String[] argv = null;
 	public static String path;
 
 	public static void main(String[] args) throws FileNotFoundException {
-		LinkList a = new LinkList(1);
-		a.append(2);
-		a.append(3);
-		System.out.println("Length:\t"+a.length());
-		System.out.println("Length:\t"+a.sublist(1, a.length()).length());
-		System.out.println(a.toString());
+		if (args.length == 0 || args[0] == "-h") {
+			System.out.println("To run:\tjava -jar Monty.jar [file_name.(mt|mtc)]");
+			System.out.println("To compile:\tjava -jar Monty.jar [input_file_name.mt] -o [output_file_name.mtc]");
 
-		argv = args;
+		} else {
+			argv = args;
 
-		// path = Main.class.getResource("Examples/files.mt").getPath();
-		path = args[0];
+			// path = Main.class.getResource("Examples/files.mt").getPath();
+			path = args[0];
 
-		int from = argv.length > 1 && argv[1].equals("-o") ? 3 : 1;
-		var block = getBlock(from);
-		if (from == 1)
-			block.run();
-		else {
-			FileOutputStream fos = new FileOutputStream(argv[2]);
-			GZIPOutputStream gos = null;
-			try {
-				gos = new GZIPOutputStream(fos);
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
+			int from = argv.length > 1 && argv[1].equals("-o") ? 3 : 1;
+			var block = getBlock(from);
+			if (from == 1)
+				block.run();
+			else {
+				FileOutputStream fos = new FileOutputStream(argv[2]);
+				GZIPOutputStream gos = null;
+				try {
+					gos = new GZIPOutputStream(fos);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 
-			try {
-				ObjectOutputStream oos = new ObjectOutputStream(gos);
-				oos.writeObject(block);
-				oos.flush();
-				oos.close();
-			} catch (IOException e) {
-				e.printStackTrace();
+				try {
+					ObjectOutputStream oos = new ObjectOutputStream(gos);
+					oos.writeObject(block);
+					oos.flush();
+					oos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 
