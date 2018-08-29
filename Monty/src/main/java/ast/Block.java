@@ -43,10 +43,12 @@ import ast.expressions.OperationNode;
 import ast.statements.ChangeToStatementNode;
 import ast.statements.ContinueStatementNode;
 import ast.statements.DoWhileStatementNode;
+import ast.statements.ForStatementNode;
 import ast.statements.IfStatementNode;
 import ast.statements.ThreadStatement;
 import ast.statements.ReturnStatementNode;
 import ast.statements.WhileStatementNode;
+import parser.DataTypes;
 import parser.MontyException;
 import sml.casts.*;
 import sml.data.returning.BreakType;
@@ -230,6 +232,30 @@ public class Block extends Node implements Serializable {
 					if (result != null)
 						return result;
 				} while ((boolean) childCastedToDoWhileStatement.getCondition().run());
+				break;
+			case FOR_STATEMENT:
+				var childCastedToForStatement = ((ForStatementNode) child);
+				var name = childCastedToForStatement.getVariableName();
+				var toIter = childCastedToForStatement.getArray().run();
+				if (!(toIter instanceof Iterable<?>))
+					new MontyException("Can't iterate over:\t" + toIter.getClass().getName());
+				var iterable = (Iterable<?>) toIter;
+				loop: for (Object e : iterable) {
+					var body = childCastedToForStatement.getBody();
+					if (body.doesContainVariable(name))
+						body.getVariableByName(name).setValue(e);
+					else {
+						body.addVariable(new VariableDeclarationNode(name, DataTypes.ANY));
+						body.getVariableByName(name).setValue(e);
+					}
+					var result = body.run();
+					if (result instanceof BreakType)
+						break loop;
+					if (result instanceof ContinueStatementNode)
+						continue;
+					if (result != null)
+						return result;
+				}
 				break;
 			case CHANGE_TO_STATEMENT:
 				var childCastedToChangeToStatement = ((ChangeToStatementNode) child);

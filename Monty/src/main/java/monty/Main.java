@@ -70,7 +70,6 @@ public class Main {
 				}
 			}
 		}
-
 	}
 
 	public static Block getBlock(int from) {

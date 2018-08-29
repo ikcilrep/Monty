@@ -76,6 +76,8 @@ public class Parser {
 					AdderToBlock.addBreakStatement(block);
 				} else if (Identificator.isContinueStatement(tokensBeforeSemicolon)) {
 					AdderToBlock.addContinueStatement(block);
+				} else if (Identificator.isForStatement(tokensBeforeSemicolon)) {
+					block = AdderToBlock.addForStatement(block, tokensBeforeSemicolon);
 				} else if (Identificator.isEndKeyword(tokensBeforeSemicolon)) {
 					var parent = block.getParent();
 					if (parent == null)

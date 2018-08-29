@@ -225,7 +225,7 @@ public class Array implements Iterable<Object>, Cloneable {
 	public Iterator<Object> iterator() {
 		return new Iterator<Object>() {
 			int counter = 0;
-
+			
 			@Override
 			public boolean hasNext() {
 				return counter < array.length;

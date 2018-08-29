@@ -29,6 +29,7 @@ import ast.statements.BreakStatementNode;
 import ast.statements.ChangeToStatementNode;
 import ast.statements.ContinueStatementNode;
 import ast.statements.DoWhileStatementNode;
+import ast.statements.ForStatementNode;
 import ast.statements.IfStatementNode;
 import ast.statements.ThreadStatement;
 import ast.statements.ReturnStatementNode;
@@ -128,5 +129,14 @@ public abstract class AdderToBlock {
 
 	public static void addContinueStatement(Block block) {
 		block.addChild(new ContinueStatementNode());
+	}
+
+	public static Block addForStatement(Block block, List<MontyToken> tokens) {
+		var forStatement = new ForStatementNode(tokens.get(1).getText(),
+				ExpressionParser.parse(block, tokens.subList(3, tokens.size())));
+		forStatement.setBody(new Block(block));
+		
+		block.addChild(forStatement);
+		return forStatement.getBody();
 	}
 }

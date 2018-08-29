@@ -205,14 +205,25 @@ public abstract class Identificator {
 	public static boolean isDoWhileStatement(List<MontyToken> tokens) {
 		if (!tokens.get(0).getType().equals(TokenTypes.DO_KEYWORD))
 			return false;
-		if ((!(tokens.size() > 1 && tokens.get(1).getType().equals(TokenTypes.WHILE_KEYWORD)) || tokens.size() == 1))
+		if (!(tokens.size() > 1 && tokens.get(1).getType().equals(TokenTypes.WHILE_KEYWORD)) || tokens.size() == 1)
 			new MontyException("Expected \"while\" keyword after \"do\" keyword:\t" + Tokens.getText(tokens));
-		if (tokens.size() == 1)
-			new MontyException("Expected expression after \"do\" keyword:\t" + Tokens.getText(tokens));
 		if (!isExpression(tokens.subList(2, tokens.size())))
 			new MontyException("Wrong expression after \"do\" keyword:\t" + Tokens.getText(tokens));
 		return true;
 
+	}
+
+	public static boolean isForStatement(List<MontyToken> tokens) {
+		if (!tokens.get(0).getType().equals(TokenTypes.FOR_KEYWORD))
+			return false;
+
+		if (!(tokens.size() > 1 && tokens.get(1).getType().equals(TokenTypes.IDENTIFIER)) || tokens.size() == 1)
+			new MontyException("Expected identifier after \"for\" keyword:\t" + Tokens.getText(tokens));
+		if ((!(tokens.size() > 2 && tokens.get(2).getType().equals(TokenTypes.IN_KEYWORD)) || tokens.size() == 2))
+			new MontyException("Expected \"in\" keyword after \"for\" keyword:\t" + Tokens.getText(tokens));
+		if ((!(tokens.size() > 3 && isExpression(tokens.subList(3, tokens.size() - 1)) || tokens.size() == 3)))
+			new MontyException("Expected expression after \"in\" keyword:\t" + Tokens.getText(tokens));
+		return true;
 	}
 
 	public static boolean isChangeToStatement(List<MontyToken> tokens) {
