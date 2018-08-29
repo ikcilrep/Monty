@@ -57,7 +57,7 @@ public abstract class FileIO {
 	public static void writeFile(String path, String text, boolean isAppend) {
 		try {
 			File file = new File(path);
-			FileWriter fileWriter = new FileWriter(file,isAppend);
+			FileWriter fileWriter = new FileWriter(file, isAppend);
 			fileWriter.write(text);
 			fileWriter.flush();
 			fileWriter.close();

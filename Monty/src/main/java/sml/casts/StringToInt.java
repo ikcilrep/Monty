@@ -22,7 +22,6 @@ import parser.MontyException;
 
 public class StringToInt {
 
-
 	public static BigInteger stringToInt(String str) {
 		if (str.matches("[+-]?[0-9]+\\.[0-9]+"))
 			return new BigInteger(str.split("\\.")[0]);
@@ -32,6 +31,5 @@ public class StringToInt {
 			new MontyException("Unknown number format for integer type:\t" + str);
 		return null;
 	}
-
 
 }

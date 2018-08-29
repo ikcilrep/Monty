@@ -41,8 +41,8 @@ public class LengthOfString extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
-		var str = (String)getBody().getVariableByName("str").getValue();
-		return new BigInteger(((Integer)str.length()).toString());
+		var str = (String) getBody().getVariableByName("str").getValue();
+		return new BigInteger(((Integer) str.length()).toString());
 	}
 
 }

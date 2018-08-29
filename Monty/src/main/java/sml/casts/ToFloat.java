@@ -39,6 +39,7 @@ public class ToFloat extends FunctionDeclarationNode {
 		setBody(new Block(null));
 		addParameter(new VariableDeclarationNode("a", DataTypes.ANY));
 	}
+
 	public static Object toFloat(Object a) {
 		if (a == null)
 			new MontyException("Can't cast void to float");
@@ -54,7 +55,7 @@ public class ToFloat extends FunctionDeclarationNode {
 			new MontyException("Can't cast array to float:\t" + a.toString());
 		return null;
 	}
-	
+
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);

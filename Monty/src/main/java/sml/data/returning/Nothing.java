@@ -31,7 +31,6 @@ public class Nothing extends FunctionDeclarationNode {
 	public static BreakType breakType = new BreakType();
 	public static ContinueType continueType = new ContinueType();
 
-	
 	public Nothing() {
 		super("nothing", DataTypes.VOID);
 	}
@@ -40,5 +39,5 @@ public class Nothing extends FunctionDeclarationNode {
 	public Object call(ArrayList<OperationNode> arguments) {
 		return nothing;
 	}
-	
+
 }

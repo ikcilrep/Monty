@@ -18,7 +18,7 @@ package ast.statements;
 
 import ast.NodeTypes;
 
-public class BreakStatementNode extends StatementNode{
+public class BreakStatementNode extends StatementNode {
 	/**
 	 * 
 	 */

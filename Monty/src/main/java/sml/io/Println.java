@@ -25,7 +25,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.returning.Nothing;
 
-public class Println extends FunctionDeclarationNode{
+public class Println extends FunctionDeclarationNode {
 	/**
 	 * 
 	 */

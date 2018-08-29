@@ -25,7 +25,7 @@ public class VariableDeclarationNode extends DeclarationNode implements Cloneabl
 	 */
 	private static final long serialVersionUID = 1726024535086196828L;
 
-	private boolean isDynamic= false;
+	private boolean isDynamic = false;
 
 	private Object value;
 

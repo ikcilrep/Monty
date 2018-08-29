@@ -33,7 +33,6 @@ public class ConstantNode extends ExpressionNode {
 		super.nodeType = NodeTypes.CONSTANT;
 	}
 
-
 	public Object getValue() {
 		return value;
 	}
@@ -41,5 +40,5 @@ public class ConstantNode extends ExpressionNode {
 	public DataTypes getType() {
 		return type;
 	}
-	
+
 }

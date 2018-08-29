@@ -27,7 +27,7 @@ public class IfStatementNode extends Block {
 	private static final long serialVersionUID = -2857473091602756554L;
 	private OperationNode condition;
 	private Block elseBody;
-	
+
 	public IfStatementNode(Block parent, OperationNode condition) {
 		super(parent);
 		this.condition = condition;
@@ -37,9 +37,11 @@ public class IfStatementNode extends Block {
 	public Block getElseBody() {
 		return elseBody;
 	}
+
 	public void setElseBody(Block elseBody) {
 		this.elseBody = elseBody;
 	}
+
 	public OperationNode getCondition() {
 		return condition;
 	}

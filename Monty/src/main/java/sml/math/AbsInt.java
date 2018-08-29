@@ -40,7 +40,7 @@ public class AbsInt extends FunctionDeclarationNode {
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
-		var integer = (BigInteger)getBody().getVariableByName("integer").getValue();
+		var integer = (BigInteger) getBody().getVariableByName("integer").getValue();
 		return integer.abs();
 	}
 

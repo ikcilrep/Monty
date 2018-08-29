@@ -44,7 +44,7 @@ public class ExtendArray extends FunctionDeclarationNode {
 		setArguments(arguments);
 		var arrayToBeExtended = (Array) getBody().getVariableByName("arrayToBeExtended").getValue();
 		var arrayToExtend = (Array) getBody().getVariableByName("arrayToExtend").getValue();
-		
+
 		return arrayToBeExtended.copy().append(arrayToExtend);
 	}
 

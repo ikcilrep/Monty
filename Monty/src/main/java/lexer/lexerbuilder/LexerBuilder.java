@@ -24,7 +24,6 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.text.StringEscapeUtils;
 
-
 public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething<T> implements Cloneable {
 
 	final ArrayList<Character> binaryOperators = new ArrayList<Character>();
@@ -426,7 +425,6 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 		else
 			System.out.println("Regex " + regex + " wasn't set.");
 	}
-
 
 	public void setKeyword(String keyword, T token) {
 		keywords.put(keyword, token);

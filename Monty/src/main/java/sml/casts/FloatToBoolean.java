@@ -15,13 +15,10 @@ limitations under the License.
 */
 package sml.casts;
 
-
-public class FloatToBoolean{
-
+public class FloatToBoolean {
 
 	public static Boolean floatToBoolean(Float floating) {
 		return floating > 0;
 	}
-	
 
 }

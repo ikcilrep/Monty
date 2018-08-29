@@ -45,7 +45,7 @@ public class CharAt extends FunctionDeclarationNode {
 		var body = getBody();
 		var str = (String) body.getVariableByName("str").getValue();
 		var index = ((BigInteger) body.getVariableByName("index").getValue()).intValue();
-		var length= str.length();
+		var length = str.length();
 		if (index >= length)
 			new MontyException("Index " + index + " is too large for length " + length);
 		return String.valueOf(str.charAt(index));

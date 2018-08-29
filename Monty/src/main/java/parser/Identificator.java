@@ -250,16 +250,16 @@ public abstract class Identificator {
 		if (tokens.size() > 1)
 			new MontyException("Nothing expected after \"break\" keyword");
 		return true;
-		
+
 	}
-	
+
 	public static boolean isContinueStatement(List<MontyToken> tokens) {
 		if (!tokens.get(0).getType().equals(TokenTypes.CONTINUE_KEYWORD))
 			return false;
 		if (tokens.size() > 1)
 			new MontyException("Nothing expected after \"continue\" keyword");
 		return true;
-		
+
 	}
 
 }

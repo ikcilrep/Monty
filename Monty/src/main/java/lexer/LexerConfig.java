@@ -39,7 +39,6 @@ public class LexerConfig {
 		lb.setKeyword("break", new MontyToken(TokenTypes.BREAK_KEYWORD));
 		lb.setKeyword("continue", new MontyToken(TokenTypes.CONTINUE_KEYWORD));
 
-
 		lb.setKeyword("import", new MontyToken(TokenTypes.IMPORT_KEYWORD));
 		lb.setKeyword("dynamic", new MontyToken(TokenTypes.DYNAMIC_KEYWORD));
 		lb.setKeyword("static", new MontyToken(TokenTypes.STATIC_KEYWORD));

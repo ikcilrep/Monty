@@ -16,7 +16,6 @@ limitations under the License.
 
 package sml.data.string;
 
-
 import java.util.ArrayList;
 
 import ast.Block;

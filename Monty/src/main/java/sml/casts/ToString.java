@@ -31,16 +31,19 @@ public class ToString extends FunctionDeclarationNode {
 	 * 
 	 */
 	private static final long serialVersionUID = -2725148737303045967L;
+
 	public ToString() {
 		super("toString", DataTypes.STRING);
 		setBody(new Block(null));
 		addParameter(new VariableDeclarationNode("a", DataTypes.ANY));
 	}
+
 	public static String toString(Object a) {
 		if (a == null)
 			new MontyException("Can't cast void to string.");
 		return a.toString();
 	}
+
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);

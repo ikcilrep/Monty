@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 package sml.casts;
+
 public class BooleanToFloat {
 
 	public static Float booleanToFloat(Boolean bool) {

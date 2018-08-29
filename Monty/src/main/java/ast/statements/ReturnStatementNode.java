@@ -30,9 +30,8 @@ public class ReturnStatementNode extends StatementNode {
 		this.expression = expression;
 		super.nodeType = NodeTypes.RETURN_STATEMENT;
 	}
-	
+
 	public OperationNode getExpression() {
 		return expression;
 	}
 }
-	

@@ -38,10 +38,8 @@ public class ChangeToStatementNode extends StatementNode {
 		return toChangeType;
 	}
 
-
 	public DataTypes getDataType() {
 		return dataType;
 	}
 
-	
 }
