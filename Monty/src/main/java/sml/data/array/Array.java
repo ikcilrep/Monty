@@ -19,6 +19,7 @@ package sml.data.array;
 import java.util.Iterator;
 
 import parser.MontyException;
+import sml.data.list.LinkedList;
 
 public class Array implements Iterable<Object>, Cloneable {
 	protected Object[] array;
@@ -207,20 +208,27 @@ public class Array implements Iterable<Object>, Cloneable {
 	}
 
 	public String toString() {
-		var stringBuilder = new StringBuilder();
+		var stringBuilder = new StringBuilder((array.length<<1)+1);
 		stringBuilder.append('[');
 		int i = 0;
 		for (Object e : array) {
 			stringBuilder.append(e.toString());
-			if (i + 1 < array.length)
+			if (++i < array.length)
 				stringBuilder.append(',');
-			i++;
 		}
 		stringBuilder.append(']');
 		return stringBuilder.toString();
 
 	}
 
+	public LinkedList toList() {
+		var list = new LinkedList(array[0]);
+		for (Object e : array)
+			list.append(e);
+		return list.getNext();
+		
+	}
+	
 	@Override
 	public Iterator<Object> iterator() {
 		return new Iterator<Object>() {
