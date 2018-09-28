@@ -14,9 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sml.data.array;
+package sml.data.list;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 
 import ast.Block;
@@ -25,19 +24,19 @@ import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class Subarray extends FunctionDeclarationNode {
+public class ReplaceAllInList extends FunctionDeclarationNode {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -9201866361416331207L;
+	private static final long serialVersionUID = -4514206011012649301L;
 
-	public Subarray() {
-		super("subArray", DataTypes.ARRAY);
+	public ReplaceAllInList() {
+		super("replaceAllInList", DataTypes.ARRAY);
 		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("arr", DataTypes.ARRAY));
-		addParameter(new VariableDeclarationNode("begin", DataTypes.INTEGER));
-		addParameter(new VariableDeclarationNode("end", DataTypes.INTEGER));
+		addParameter(new VariableDeclarationNode("lst", DataTypes.LIST));
+		addParameter(new VariableDeclarationNode("toBeReplaced", DataTypes.ANY));
+		addParameter(new VariableDeclarationNode("replacement", DataTypes.ANY));
 
 	}
 
@@ -45,10 +44,11 @@ public class Subarray extends FunctionDeclarationNode {
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
 		var body = getBody();
-		var arr = (Array) body.getVariableByName("arr").getValue();
-		var begin = ((BigInteger) body.getVariableByName("begin").getValue()).intValue();
-		var end = ((BigInteger) body.getVariableByName("end").getValue()).intValue();
-		return arr.subarray(begin, end);
+		var lst = (LinkedList) body.getVariableByName("lst").getValue();
+		var toBeReplaced = body.getVariableByName("toBeReplaced").getValue();
+		var replacement = body.getVariableByName("replacement").getValue();
+
+		return lst.replaceAll(toBeReplaced, replacement);
 	}
 
 }

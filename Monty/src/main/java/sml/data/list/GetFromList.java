@@ -14,28 +14,37 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sml.data.array;
+package sml.data.list;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
+import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
+import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class ArrayOf extends FunctionDeclarationNode {
+public class GetFromList extends FunctionDeclarationNode {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -2800567535503129630L;
+	private static final long serialVersionUID = 1255006650808150230L;
 
-	public ArrayOf() {
-		super("arrayOf", DataTypes.ARRAY);
+	public GetFromList() {
+		super("getFromList", DataTypes.ANY);
+		setBody(new Block(null));
+		addParameter(new VariableDeclarationNode("lst", DataTypes.LIST));
+		addParameter(new VariableDeclarationNode("index", DataTypes.INTEGER));
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
-		return new Array(arguments.toArray());
+		setArguments(arguments);
+		var lst = (LinkedList) getBody().getVariableByName("lst").getValue();
+		var index = (BigInteger) getBody().getVariableByName("index").getValue();
+		return lst.get(index.intValue());
 	}
 
 }

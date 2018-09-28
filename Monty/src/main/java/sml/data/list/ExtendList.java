@@ -14,28 +14,38 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sml.data.array;
+package sml.data.list;
 
 import java.util.ArrayList;
 
+import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
+import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class ArrayOf extends FunctionDeclarationNode {
+public class ExtendList extends FunctionDeclarationNode {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -2800567535503129630L;
+	private static final long serialVersionUID = -4407198079905020979L;
 
-	public ArrayOf() {
-		super("arrayOf", DataTypes.ARRAY);
+	public ExtendList() {
+		super("extendList", DataTypes.VOID);
+		setBody(new Block(null));
+		addParameter(new VariableDeclarationNode("listToBeExtended", DataTypes.LIST));
+		addParameter(new VariableDeclarationNode("listToExtend", DataTypes.LIST));
+
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
-		return new Array(arguments.toArray());
+		setArguments(arguments);
+		var listToBeExtended = (LinkedList) getBody().getVariableByName("listToBeExtended").getValue();
+		var listToExtend = (LinkedList) getBody().getVariableByName("listToExtend").getValue();
+
+		return listToBeExtended.copy().append(listToExtend);
 	}
 
 }

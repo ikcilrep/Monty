@@ -209,10 +209,10 @@ public class OperatorOverloading {
 					+ " " + operator.toString());
 		case ARRAY:
 			var arr = ((Array) leftValue);
-			return arr.subArray(0, arr.length() - ((BigInteger) rightValue).intValue());
+			return arr.subarray(0, arr.length() - ((BigInteger) rightValue).intValue());
 		case LIST:
 			var lst = ((LinkedList) leftValue);
-			return lst.subList(0, lst.length() - ((BigInteger) rightValue).intValue());
+			return lst.sublist(0, lst.length() - ((BigInteger) rightValue).intValue());
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -238,10 +238,10 @@ public class OperatorOverloading {
 					+ " " + operator.toString());
 		case ARRAY:
 			var arr = ((Array) leftValue);
-			return arr.copy().subArray(((BigInteger) rightValue).intValue(), arr.length());
+			return arr.copy().subarray(((BigInteger) rightValue).intValue(), arr.length());
 		case LIST:
 			var lst = ((LinkedList) leftValue);
-			return lst.copy().subList(((BigInteger) rightValue).intValue(), lst.length());
+			return lst.copy().sublist(((BigInteger) rightValue).intValue(), lst.length());
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -660,10 +660,10 @@ public class OperatorOverloading {
 					+ " " + operator.toString());
 		case ARRAY:
 			var arr = ((Array) leftValue);
-			return arr.subArray(0, arr.length() - ((BigInteger) rightValue).intValue());
+			return arr.subarray(0, arr.length() - ((BigInteger) rightValue).intValue());
 		case LIST:
 			var lst = ((LinkedList) leftValue);
-			return lst.subList(0, lst.length() - ((BigInteger) rightValue).intValue());
+			return lst.sublist(0, lst.length() - ((BigInteger) rightValue).intValue());
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -691,10 +691,10 @@ public class OperatorOverloading {
 					+ " " + operator.toString());
 		case ARRAY:
 			var arr = ((Array) leftValue);
-			return arr.subArray(((BigInteger) rightValue).intValue(), arr.length());
+			return arr.subarray(((BigInteger) rightValue).intValue(), arr.length());
 		case LIST:
 			var lst = ((LinkedList) leftValue);
-			return lst.subList(((BigInteger) rightValue).intValue(), lst.length());
+			return lst.sublist(((BigInteger) rightValue).intValue(), lst.length());
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:

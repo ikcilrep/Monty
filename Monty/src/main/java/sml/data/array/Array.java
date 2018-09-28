@@ -81,7 +81,7 @@ public class Array implements Iterable<Object>, Cloneable {
 	/*
 	 * Description.
 	 */
-	public Array subArray(int begin, int end) {
+	public Array subarray(int begin, int end) {
 		int length = end - begin + 1;
 		Array newArray = new Array(length);
 		for (int i = 0; i < length; i++)

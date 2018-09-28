@@ -14,28 +14,39 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sml.data.array;
+package sml.data.list;
 
 import java.util.ArrayList;
 
+import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
+import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class ArrayOf extends FunctionDeclarationNode {
+public class IsInList extends FunctionDeclarationNode {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -2800567535503129630L;
+	private static final long serialVersionUID = -7038852480570338076L;
 
-	public ArrayOf() {
-		super("arrayOf", DataTypes.ARRAY);
+	public IsInList() {
+		super("isInList", DataTypes.BOOLEAN);
+		setBody(new Block(null));
+		addParameter(new VariableDeclarationNode("lst", DataTypes.LIST));
+		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
+
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
-		return new Array(arguments.toArray());
+		setArguments(arguments);
+		var body = getBody();
+		var lst = (LinkedList) body.getVariableByName("lst").getValue();
+		var element = body.getVariableByName("element").getValue();
+
+		return lst.contains(element);
 	}
 
 }

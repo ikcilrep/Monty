@@ -103,16 +103,16 @@ public class LinkedList implements Iterable<Object>, Cloneable {
 		return reversed().replaceFirst(toBeReplaced, replacement).reversed();
 	}
 
-	public LinkedList subList(int begin) {
+	public LinkedList sublist(int begin) {
 		if (begin == 0)
 			return this;
 		else if (getNext() == null)
 			new MontyException("Index went away from range");
-		return getNext().subList(begin - 1);
+		return getNext().sublist(begin - 1);
 	}
 
-	public LinkedList subList(int begin, int end) {
-		return subList(begin).reversed().subList(length() - end).reversed();
+	public LinkedList sublist(int begin, int end) {
+		return sublist(begin).reversed().sublist(length() - end).reversed();
 	}
 
 	public String toString() {

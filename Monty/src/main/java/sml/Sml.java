@@ -79,12 +79,26 @@ public class Sml extends Library implements Serializable {
 		array.put("setInArray", new sml.data.array.SetInArray());
 
 		array.put("lengthOfArray", new sml.data.array.LengthOfArray());
-		array.put("subArray", new sml.data.array.Subarray());
+		array.put("subarray", new sml.data.array.Subarray());
 		array.put("isInArray", new sml.data.array.IsInArray());
 		array.put("replaceAllInArray", new sml.data.array.ReplaceAllInArray());
 		array.put("replaceFirstInArray", new sml.data.array.ReplaceFirstInArray());
 		array.put("replaceLastInArray", new sml.data.array.ReplaceLastInArray());
 
+		var list = (HashMap<String, Object>) data.get("list");
+		list.put("listOf", new sml.data.list.ListOf());
+		list.put("extendList", new sml.data.list.ExtendList());
+		list.put("getFromList", new sml.data.list.GetFromList());
+		list.put("setInList", new sml.data.list.SetInList());
+		
+		list.put("lengthOfList", new sml.data.list.LengthOfList());
+		list.put("sublist", new sml.data.list.Sublist());
+		list.put("isInList", new sml.data.list.IsInList());
+		list.put("replaceAllInList", new sml.data.list.ReplaceAllInList());
+		list.put("replaceFirstInList", new sml.data.list.ReplaceAllInList());
+		list.put("replaceLastInList", new sml.data.list.ReplaceAllInList());
+
+		
 		var checking = (HashMap<String, Object>) data.get("checking");
 		checking.put("isInt", new sml.data.checking.IsInt());
 		checking.put("isFloat", new sml.data.checking.IsFloat());

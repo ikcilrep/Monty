@@ -13,29 +13,34 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-
-package sml.data.array;
+package sml.data.list;
 
 import java.util.ArrayList;
 
+import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
+import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class ArrayOf extends FunctionDeclarationNode {
+public class LengthOfList extends FunctionDeclarationNode {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -2800567535503129630L;
+	private static final long serialVersionUID = -4759997709261414161L;
 
-	public ArrayOf() {
-		super("arrayOf", DataTypes.ARRAY);
+	public LengthOfList() {
+		super("lengthOfList", DataTypes.INTEGER);
+		setBody(new Block(null));
+		addParameter(new VariableDeclarationNode("lst", DataTypes.LIST));
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
-		return new Array(arguments.toArray());
+		setArguments(arguments);
+		var lst = (LinkedList) getBody().getVariableByName("lst").getValue();
+		return lst.length();
 	}
 
 }

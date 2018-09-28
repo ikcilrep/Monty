@@ -91,7 +91,8 @@ public abstract class Identificator {
 		var isSecondTokenDataTypeKeyword = tokens.size() > 1 && (secondTokenType.equals(TokenTypes.INTEGER_KEYWORD)
 				|| secondTokenType.equals(TokenTypes.FLOAT_KEYWORD) || secondTokenType.equals(TokenTypes.STRING_KEYWORD)
 				|| secondTokenType.equals(TokenTypes.BOOLEAN_KEYWORD) || secondTokenType.equals(TokenTypes.VOID_KEYWORD)
-				|| secondTokenType.equals(TokenTypes.ARRAY_KEYWORD) || secondTokenType.equals(TokenTypes.ANY_KEYWORD));
+				|| secondTokenType.equals(TokenTypes.ARRAY_KEYWORD) || secondTokenType.equals(TokenTypes.ANY_KEYWORD)
+				|| secondTokenType.equals(TokenTypes.LIST_KEYWORD));
 		var isThirdTokenIdentifier = tokens.size() > 2 && tokens.get(2).getType().equals(TokenTypes.IDENTIFIER);
 		if (!isFirstTokenFuncKeyword)
 			return false;
@@ -111,6 +112,7 @@ public abstract class Identificator {
 			case STRING_KEYWORD:
 			case BOOLEAN_KEYWORD:
 			case ARRAY_KEYWORD:
+			case LIST_KEYWORD:
 			case ANY_KEYWORD:
 				isLastTokenDataTypeDeclaration = true;
 				break;
@@ -174,7 +176,8 @@ public abstract class Identificator {
 						|| secondTokenType.equals(TokenTypes.FLOAT_KEYWORD)
 						|| secondTokenType.equals(TokenTypes.STRING_KEYWORD)
 						|| secondTokenType.equals(TokenTypes.BOOLEAN_KEYWORD)
-						|| secondTokenType.equals(TokenTypes.ARRAY_KEYWORD));
+						|| secondTokenType.equals(TokenTypes.ARRAY_KEYWORD)
+						|| secondTokenType.equals(TokenTypes.LIST_KEYWORD));
 		if (!isFirstTokenStaticOrDynamicKeyword)
 			return false;
 		if (!isSecondTokenTypeDataTypeKeyword)
@@ -236,11 +239,12 @@ public abstract class Identificator {
 			new MontyException("Expected \"to\" keyword after identifier:\t" + Tokens.getText(tokens));
 		if (tokensSize >= 4) {
 			TokenTypes fourthTokenType = tokens.get(3).getType();
-			if (!((tokens.get(3).getType().equals(TokenTypes.INTEGER_KEYWORD)
+			if (!(tokens.get(3).getType().equals(TokenTypes.INTEGER_KEYWORD)
 					|| fourthTokenType.equals(TokenTypes.FLOAT_KEYWORD)
 					|| fourthTokenType.equals(TokenTypes.BOOLEAN_KEYWORD)
 					|| fourthTokenType.equals(TokenTypes.STRING_KEYWORD)
-					|| fourthTokenType.equals(TokenTypes.ARRAY_KEYWORD))))
+					|| fourthTokenType.equals(TokenTypes.ARRAY_KEYWORD)
+					|| fourthTokenType.equals(TokenTypes.LIST_KEYWORD)))
 				new MontyException("Expected data type declaration after \"to\" keyword\t" + Tokens.getText(tokens));
 		}
 		return true;

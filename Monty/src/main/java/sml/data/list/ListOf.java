@@ -14,9 +14,30 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package lexer;
+package sml.data.list;
 
-public enum TokenTypes {
-	BOOLEAN_KEYWORD, BOOLEAN_LITERAL, BRACKET, COMMA, ELSE_KEYWORD, END_KEYWORD, FLOAT_KEYWORD, FLOAT_LITERAL, FUNC_KEYWORD, IDENTIFIER, IF_KEYWORD, IMPORT_KEYWORD, INTEGER_KEYWORD, INTEGER_LITERAL, OPERATOR, RETURN_KEYWORD, SEMICOLON, STRING_KEYWORD, STRING_LITERAL, VOID_KEYWORD, WHILE_KEYWORD, DOT, DYNAMIC_KEYWORD, STATIC_KEYWORD, CHANGE_KEYWORD, TO_KEYWORD, SQUARE_BRACKET, ARRAY_KEYWORD, ANY_KEYWORD, IS_KEYWORD, THREAD_KEYWORD, DO_KEYWORD, BREAK_KEYWORD, CONTINUE_KEYWORD, FOR_KEYWORD, IN_KEYWORD, LIST_KEYWORD;
+import java.util.ArrayList;
+
+import ast.declarations.FunctionDeclarationNode;
+import ast.expressions.OperationNode;
+import parser.DataTypes;
+import sml.data.array.Array;
+
+public class ListOf extends FunctionDeclarationNode {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2800567535503129630L;
+
+	public ListOf() {
+		super("listOf", DataTypes.LIST);
+	}
+
+	@Override
+	public Object call(ArrayList<OperationNode> arguments) {
+		return new Array(arguments.toArray()).toList();
+
+	}
 
 }
