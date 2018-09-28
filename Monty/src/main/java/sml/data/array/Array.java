@@ -229,6 +229,12 @@ public class Array implements Iterable<Object>, Cloneable {
 		
 	}
 	
+	public Array reversed() {
+		var arr = new Array(array.length);
+		for (int i = 0; i < array.length; i++)
+			arr.set(array.length-i, get(i));
+		return arr;
+	}
 	@Override
 	public Iterator<Object> iterator() {
 		return new Iterator<Object>() {

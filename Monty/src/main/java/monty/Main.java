@@ -28,7 +28,6 @@ import lexer.LexerConfig;
 import lexer.MontyToken;
 import parser.MontyException;
 import parser.parsing.Parser;
-import sml.data.list.LinkedList;
 
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -38,14 +37,6 @@ public class Main {
 	public static String path;
 
 	public static void main(String[] args) throws FileNotFoundException {
-		LinkedList a = new LinkedList(0);
-		a.append(1);
-		a.append(2);
-		for (Object e : a)
-			System.out.println(e);
-		System.out.println(a.subList(0,3).toArray().toList());
-		System.out.println(a.length());
-		System.out.println(a.getNext());
  		if (args.length == 0 || args[0] == "-h") {
 			System.out.println("To run:\tjava -jar Monty.jar [file_name.(mt|mtc)]");
 			System.out.println("To compile:\tjava -jar Monty.jar [input_file_name.mt] -o [output_file_name.mtc]");

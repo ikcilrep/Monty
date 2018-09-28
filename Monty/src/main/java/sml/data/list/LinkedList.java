@@ -98,15 +98,9 @@ public class LinkedList implements Iterable<Object>, Cloneable {
 		return getNext() == null ? new LinkedList(value) : getNext().reversed().append(value);
 	}
 
-	public LinkedList reverse() {
-		var rd = reversed();
-		value = rd.value;
-		setNext(rd.getNext());
-		return rd;
-	}
 
 	public LinkedList replaceLast(Object toBeReplaced, Object replacement) {
-		return reverse().replaceFirst(toBeReplaced, replacement).reverse();
+		return reversed().replaceFirst(toBeReplaced, replacement).reversed();
 	}
 
 	public LinkedList subList(int begin) {
@@ -161,5 +155,14 @@ public class LinkedList implements Iterable<Object>, Cloneable {
 
 	public void setNext(LinkedList next) {
 		this.next = next;
+	}
+
+	public LinkedList copy() {
+		try {
+			return (LinkedList)clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

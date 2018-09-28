@@ -19,10 +19,11 @@ package parser;
 import java.math.BigInteger;
 
 import sml.data.array.Array;
+import sml.data.list.LinkedList;
 import sml.data.returning.VoidType;
 
 public enum DataTypes {
-	BOOLEAN, INTEGER, FLOAT, STRING, VOID, ARRAY, ANY;
+	BOOLEAN, INTEGER, FLOAT, STRING, VOID, ARRAY, ANY,LIST;
 
 	public static DataTypes getDataType(Object value) {
 
@@ -38,6 +39,8 @@ public enum DataTypes {
 			return DataTypes.BOOLEAN;
 		if (value instanceof Array)
 			return DataTypes.ARRAY;
+		if (value instanceof LinkedList)
+			return DataTypes.LIST;
 		return null;
 
 	}
