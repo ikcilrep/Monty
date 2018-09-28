@@ -135,7 +135,7 @@ public abstract class AdderToBlock {
 		var forStatement = new ForStatementNode(tokens.get(1).getText(),
 				ExpressionParser.parse(block, tokens.subList(3, tokens.size())));
 		forStatement.setBody(new Block(block));
-		
+
 		block.addChild(forStatement);
 		return forStatement.getBody();
 	}

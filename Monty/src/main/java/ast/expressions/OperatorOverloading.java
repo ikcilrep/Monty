@@ -193,20 +193,20 @@ public class OperatorOverloading {
 			return null;
 		}
 	}
-	
+
 	public static Object shiftLeftOperator(Object leftValue, Object rightValue, Object operator, DataTypes type) {
 		switch (type) {
 		case INTEGER:
 			return ((BigInteger) leftValue).shiftLeft(((BigInteger) rightValue).intValue());
 		case FLOAT:
-			new MontyException("Can't shift left Floats:\t " + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Can't shift left Floats:\t " + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		case STRING:
-			new MontyException("Can't shift left strings:\t\"" + leftValue.toString() + "\" \""
-					+ rightValue.toString() + "\" " + operator.toString());
+			new MontyException("Can't shift left strings:\t\"" + leftValue.toString() + "\" \"" + rightValue.toString()
+					+ "\" " + operator.toString());
 		case BOOLEAN:
-			new MontyException("Can't shift left booleans:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Can't shift left booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		case ARRAY:
 			var arr = ((Array) leftValue);
 			return arr.subarray(0, arr.length() - ((BigInteger) rightValue).intValue());
@@ -216,23 +216,23 @@ public class OperatorOverloading {
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		default:
 			return null;
 		}
 	}
-	
+
 	public static Object shiftRightOperator(Object leftValue, Object rightValue, Object operator, DataTypes type) {
 		switch (type) {
 		case INTEGER:
 			return ((BigInteger) leftValue).shiftRight(((BigInteger) rightValue).intValue());
 		case FLOAT:
-			new MontyException("Can't shift right Floats:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Can't shift right Floats:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		case STRING:
-			new MontyException("Can't shift right strings:\t\"" + leftValue.toString() + "\" \""
-					+ rightValue.toString() + "\" " + operator.toString());
+			new MontyException("Can't shift right strings:\t\"" + leftValue.toString() + "\" \"" + rightValue.toString()
+					+ "\" " + operator.toString());
 		case BOOLEAN:
 			new MontyException("Can't shift right booleans:\t" + leftValue.toString() + " " + rightValue.toString()
 					+ " " + operator.toString());
@@ -245,13 +245,13 @@ public class OperatorOverloading {
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		default:
 			return null;
 		}
 	}
-	
+
 	public static Object xorOperator(Object leftValue, Object rightValue, Object operator, DataTypes type) {
 		switch (type) {
 		case INTEGER:
@@ -274,12 +274,13 @@ public class OperatorOverloading {
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		default:
 			return null;
 		}
 	}
+
 	public static Object andOperator(Object leftValue, Object rightValue, Object operator, DataTypes type) {
 		switch (type) {
 		case INTEGER:
@@ -301,13 +302,13 @@ public class OperatorOverloading {
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		default:
 			return null;
 		}
 	}
-	
+
 	public static Object orOperator(Object leftValue, Object rightValue, Object operator, DataTypes type) {
 		switch (type) {
 		case INTEGER:
@@ -329,13 +330,13 @@ public class OperatorOverloading {
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		default:
 			return null;
 		}
 	}
-	
+
 	public static Object equalsOperator(Object leftValue, Object rightValue, Object operator, DataTypes type) {
 		switch (type) {
 		case INTEGER:
@@ -351,12 +352,13 @@ public class OperatorOverloading {
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		default:
-			return null;	
+			return null;
 		}
 	}
+
 	public static Object greaterOperator(Object leftValue, Object rightValue, Object operator, DataTypes type) {
 		switch (type) {
 		case INTEGER:
@@ -378,13 +380,13 @@ public class OperatorOverloading {
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		default:
 			return null;
 		}
 	}
-	
+
 	public static Object lowerOperator(Object leftValue, Object rightValue, Object operator, DataTypes type) {
 		switch (type) {
 		case INTEGER:
@@ -406,13 +408,13 @@ public class OperatorOverloading {
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		default:
 			return null;
 		}
 	}
-	
+
 	public static Object greaterEqualsOperator(Object leftValue, Object rightValue, Object operator, DataTypes type) {
 		switch (type) {
 		case INTEGER:
@@ -434,13 +436,13 @@ public class OperatorOverloading {
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		default:
 			return null;
 		}
 	}
-	
+
 	public static Object lowerEqualsOperator(Object leftValue, Object rightValue, Object operator, DataTypes type) {
 		switch (type) {
 		case INTEGER:
@@ -462,13 +464,13 @@ public class OperatorOverloading {
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		default:
 			return null;
 		}
 	}
-	
+
 	public static Object notEqualsOperator(Object leftValue, Object rightValue, Object operator, DataTypes type) {
 		switch (type) {
 		case INTEGER:
@@ -490,13 +492,13 @@ public class OperatorOverloading {
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		default:
 			return null;
 		}
 	}
-	
+
 	public static Object assignmentOperator(Object leftValue, Object rightValue, Object operator, DataTypes type) {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
@@ -511,14 +513,15 @@ public class OperatorOverloading {
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		default:
 			return null;
 		}
 	}
-	
-	public static Object assignmentAdditionOperator(Object leftValue, Object rightValue, Object operator, DataTypes type) {
+
+	public static Object assignmentAdditionOperator(Object leftValue, Object rightValue, Object operator,
+			DataTypes type) {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
 		case INTEGER:
@@ -544,13 +547,15 @@ public class OperatorOverloading {
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		default:
 			return null;
 		}
 	}
-	public static Object assignmentSubtractionOperator(Object leftValue, Object rightValue, Object operator, DataTypes type) {
+
+	public static Object assignmentSubtractionOperator(Object leftValue, Object rightValue, Object operator,
+			DataTypes type) {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
 		case INTEGER:
@@ -560,11 +565,11 @@ public class OperatorOverloading {
 			variable.setValue((Float) variable.getValue() - (Float) rightValue);
 			return variable.getValue();
 		case STRING:
-			new MontyException("Can't subtract strings:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Can't subtract strings:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		case BOOLEAN:
-			new MontyException("Can't subtract booleans:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Can't subtract booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		case ARRAY:
 			new MontyException("Can't subtract array:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
@@ -574,14 +579,15 @@ public class OperatorOverloading {
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		default:
 			return null;
 		}
 	}
-	
-	public static Object assignmentMultiplicationOperator(Object leftValue, Object rightValue, Object operator, DataTypes type) {
+
+	public static Object assignmentMultiplicationOperator(Object leftValue, Object rightValue, Object operator,
+			DataTypes type) {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
 		case INTEGER:
@@ -591,11 +597,11 @@ public class OperatorOverloading {
 			variable.setValue((Float) variable.getValue() * (Float) rightValue);
 			return variable.getValue();
 		case STRING:
-			new MontyException("Can't multiply strings:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Can't multiply strings:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		case BOOLEAN:
-			new MontyException("Can't multiply booleans:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Can't multiply booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		case ARRAY:
 			new MontyException("Can't multiply array:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
@@ -605,14 +611,15 @@ public class OperatorOverloading {
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		default:
 			return null;
 		}
 	}
-	
-	public static Object assignmentDivisionOperator(Object leftValue, Object rightValue, Object operator, DataTypes type) {
+
+	public static Object assignmentDivisionOperator(Object leftValue, Object rightValue, Object operator,
+			DataTypes type) {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
 		case INTEGER:
@@ -636,28 +643,29 @@ public class OperatorOverloading {
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		default:
 			return null;
 		}
 	}
-	
-	public static Object assignmentShiftLeftOperator(Object leftValue, Object rightValue, Object operator, DataTypes type) {
+
+	public static Object assignmentShiftLeftOperator(Object leftValue, Object rightValue, Object operator,
+			DataTypes type) {
 		switch (type) {
 		case INTEGER:
 			var variable = ((VariableDeclarationNode) leftValue);
 			variable.setValue(((BigInteger) variable.getValue()).shiftLeft(((BigInteger) rightValue).intValue()));
 			return variable.getValue();
 		case FLOAT:
-			new MontyException("Can't shift left Floats:\t " + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Can't shift left Floats:\t " + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		case STRING:
-			new MontyException("Can't shift left strings:\t\"" + leftValue.toString() + "\" \""
-					+ rightValue.toString() + "\" " + operator.toString());
+			new MontyException("Can't shift left strings:\t\"" + leftValue.toString() + "\" \"" + rightValue.toString()
+					+ "\" " + operator.toString());
 		case BOOLEAN:
-			new MontyException("Can't shift left booleans:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Can't shift left booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		case ARRAY:
 			var arr = ((Array) leftValue);
 			return arr.subarray(0, arr.length() - ((BigInteger) rightValue).intValue());
@@ -667,25 +675,26 @@ public class OperatorOverloading {
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		default:
 			return null;
 		}
 	}
-	
-	public static Object assignmentShiftRightOperator(Object leftValue, Object rightValue, Object operator, DataTypes type) {
+
+	public static Object assignmentShiftRightOperator(Object leftValue, Object rightValue, Object operator,
+			DataTypes type) {
 		switch (type) {
 		case INTEGER:
 			var variable = ((VariableDeclarationNode) leftValue);
 			variable.setValue(((BigInteger) variable.getValue()).shiftRight(((BigInteger) rightValue).intValue()));
 			return variable.getValue();
 		case FLOAT:
-			new MontyException("Can't shift right Floats:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Can't shift right Floats:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		case STRING:
-			new MontyException("Can't shift right strings:\t\"" + leftValue.toString() + "\" \""
-					+ rightValue.toString() + "\" " + operator.toString());
+			new MontyException("Can't shift right strings:\t\"" + leftValue.toString() + "\" \"" + rightValue.toString()
+					+ "\" " + operator.toString());
 		case BOOLEAN:
 			new MontyException("Can't shift right booleans:\t" + leftValue.toString() + " " + rightValue.toString()
 					+ " " + operator.toString());
@@ -698,8 +707,8 @@ public class OperatorOverloading {
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		default:
 			return null;
 		}
@@ -729,13 +738,13 @@ public class OperatorOverloading {
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		default:
 			return null;
 		}
 	}
-	
+
 	public static Object assignmentAndOperator(Object leftValue, Object rightValue, Object operator, DataTypes type) {
 		switch (type) {
 		case INTEGER:
@@ -760,13 +769,13 @@ public class OperatorOverloading {
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		default:
 			return null;
 		}
 	}
-	
+
 	public static Object assignmentOrOperator(Object leftValue, Object rightValue, Object operator, DataTypes type) {
 		switch (type) {
 		case INTEGER:
@@ -791,8 +800,8 @@ public class OperatorOverloading {
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+					+ operator.toString());
 		default:
 			return null;
 		}

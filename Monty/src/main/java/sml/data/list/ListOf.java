@@ -36,7 +36,7 @@ public class ListOf extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
 		var lst = new LinkedList(null);
-		for(Object argument: arguments)
+		for (Object argument : arguments)
 			lst.append(argument);
 		return lst.getNext();
 	}

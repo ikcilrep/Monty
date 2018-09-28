@@ -63,7 +63,6 @@ public class LexerConfig {
 		lb.setOnComma(new MontyToken(TokenTypes.COMMA));
 		lb.setOnDot(new MontyToken(TokenTypes.DOT));
 		lb.setOnBracket(new MontyToken(TokenTypes.BRACKET));
-		lb.setOnSquareBracket(new MontyToken(TokenTypes.SQUARE_BRACKET));
 		lb.setOnSemicolon(new MontyToken(TokenTypes.SEMICOLON));
 
 		lb.setOnFloatLiteral(new MontyToken(TokenTypes.FLOAT_LITERAL));

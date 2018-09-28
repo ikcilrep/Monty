@@ -209,7 +209,7 @@ public class Array implements Iterable<Object>, Cloneable {
 
 	@Override
 	public String toString() {
-		var stringBuilder = new StringBuilder((array.length<<1)+1);
+		var stringBuilder = new StringBuilder((array.length << 1) + 1);
 		stringBuilder.append('[');
 		int i = 0;
 		for (Object e : array) {
@@ -227,20 +227,21 @@ public class Array implements Iterable<Object>, Cloneable {
 		for (Object e : array)
 			list.append(e);
 		return list.getNext();
-		
+
 	}
-	
+
 	public Array reversed() {
 		var arr = new Array(array.length);
 		for (int i = 0; i < array.length; i++)
-			arr.set(array.length-i, get(i));
+			arr.set(array.length - i, get(i));
 		return arr;
 	}
+
 	@Override
 	public Iterator<Object> iterator() {
 		return new Iterator<Object>() {
 			int counter = 0;
-			
+
 			@Override
 			public boolean hasNext() {
 				return counter < array.length;

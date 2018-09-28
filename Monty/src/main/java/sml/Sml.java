@@ -91,7 +91,7 @@ public class Sml extends Library implements Serializable {
 		list.put("extendList", new sml.data.list.ExtendList());
 		list.put("getFromList", new sml.data.list.GetFromList());
 		list.put("setInList", new sml.data.list.SetInList());
-		
+
 		list.put("lengthOfList", new sml.data.list.LengthOfList());
 		list.put("sublist", new sml.data.list.Sublist());
 		list.put("isInList", new sml.data.list.IsInList());
@@ -99,7 +99,6 @@ public class Sml extends Library implements Serializable {
 		list.put("replaceFirstInList", new sml.data.list.ReplaceAllInList());
 		list.put("replaceLastInList", new sml.data.list.ReplaceAllInList());
 
-		
 		var checking = (HashMap<String, Object>) data.get("checking");
 		checking.put("isInt", new sml.data.checking.IsInt());
 		checking.put("isFloat", new sml.data.checking.IsFloat());
@@ -140,11 +139,10 @@ public class Sml extends Library implements Serializable {
 		var threading = (HashMap<String, Object>) children.get("threading");
 		threading.put("sleep", new sml.threading.Sleep());
 		threading.put("join", new sml.threading.Join());
-		
+
 		var time = (HashMap<String, Object>) children.get("time");
 		time.put("unixTime", new sml.time.UnixTime());
 		time.put("unixTimeMillis", new sml.time.UnixTimeMillis());
-
 
 	}
 

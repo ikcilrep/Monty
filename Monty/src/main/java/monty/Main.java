@@ -37,7 +37,7 @@ public class Main {
 	public static String path;
 
 	public static void main(String[] args) throws FileNotFoundException {
- 		if (args.length == 0 || args[0] == "-h") {
+		if (args.length == 0 || args[0] == "-h") {
 			System.out.println("To run:\tjava -jar Monty.jar [file_name.(mt|mtc)]");
 			System.out.println("To compile:\tjava -jar Monty.jar [input_file_name.mt] -o [output_file_name.mtc]");
 
@@ -71,7 +71,7 @@ public class Main {
 			}
 		}
 	}
-	
+
 	public static Block getBlock(int from) {
 		Block block = null;
 		Importing.setLibraries(from);

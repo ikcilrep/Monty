@@ -330,16 +330,7 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 					}
 				}
 				if (!isAssignmentOperator && tokenBinaryOperator != null) {
-					if (i <= text.length() - 3 && text.substring(i, i + 3).equals(">>>")) {
-						try {
-							copied = tokenBinaryOperator.copy();
-						} catch (CloneNotSupportedException e) {
-							e.printStackTrace();
-						}
-						copied.setText(text.substring(i, i + 3));
-						i += 2;
-
-					} else if (i <= text.length() - 2 && text.substring(i, i + 2).equals("<<")
+					if (i <= text.length() - 2 && text.substring(i, i + 2).equals("<<")
 							|| text.substring(i, i + 2).equals(">>")) {
 						try {
 							copied = tokenBinaryOperator.copy();
