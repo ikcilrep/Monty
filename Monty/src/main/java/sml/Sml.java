@@ -69,6 +69,7 @@ public class Sml extends Library implements Serializable {
 
 		var data = (HashMap<String, Object>) children.get("data");
 		data.put("array", new HashMap<>());
+		data.put("list", new HashMap<>());
 		data.put("checking", new HashMap<>());
 		data.put("string", new HashMap<>());
 

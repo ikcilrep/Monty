@@ -102,7 +102,7 @@ public abstract class Identificator {
 		if (!isThirdTokenIdentifier)
 			new MontyException("Expected identifier after data type declaration keyword:\t"
 					+ Tokens.getText(tokens.subList(2, tokens.size())));
-		var last = (TokenTypes) null;
+		var last = (TokenTypes)null;
 		var isLastTokenDataTypeDeclaration = false;
 		for (int i = 3; i < tokens.size(); i++) {
 			var t = tokens.get(i);

@@ -36,7 +36,7 @@ public class PI extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
-		return (Float) 3.14159265359f;
+		return 3.14159265359f;
 	}
 
 }

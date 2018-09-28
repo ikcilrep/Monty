@@ -44,7 +44,7 @@ public class PowerFloat extends FunctionDeclarationNode {
 		var body = getBody();
 		var base = (Float) body.getVariableByName("base").getValue();
 		var exponent = (Float) body.getVariableByName("exponent").getValue();
-		return (Float) (float) Math.pow(base, exponent);
+		return (float) Math.pow(base, exponent);
 	}
 
 }

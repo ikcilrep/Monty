@@ -21,7 +21,7 @@ import java.math.BigInteger;
 public class IntToFloat {
 
 	public static Float intToFloat(BigInteger integer) {
-		return (Float) (float) integer.intValue();
+		return (float) integer.intValue();
 
 	}
 

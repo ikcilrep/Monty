@@ -93,15 +93,15 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 			copied.setText(keywordToString);
 			tokens.add(copied);
 		} else if (tokenFloat != null && isFloatLiteral(keywordToString)) {
-			copied = (T) tokenFloat.copy();
+			copied = tokenFloat.copy();
 			copied.setText(keywordToString);
 			tokens.add(copied);
 		} else if (tokenInteger != null && isIntegerLiteral(keywordToString)) {
-			copied = (T) tokenInteger.copy();
+			copied = tokenInteger.copy();
 			copied.setText(keywordToString);
 			tokens.add(copied);
 		} else if (tokenIdentifier != null && isIdentifier(keywordToString)) {
-			copied = (T) tokenIdentifier.copy();
+			copied = tokenIdentifier.copy();
 			copied.setText(keywordToString);
 			tokens.add(copied);
 		}

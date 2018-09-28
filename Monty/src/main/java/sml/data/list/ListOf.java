@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
-import sml.data.array.Array;
 
 public class ListOf extends FunctionDeclarationNode {
 
@@ -36,8 +35,10 @@ public class ListOf extends FunctionDeclarationNode {
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
-		return new Array(arguments.toArray()).toList();
-
+		var lst = new LinkedList(null);
+		for(Object argument: arguments)
+			lst.append(argument);
+		return lst.getNext();
 	}
 
 }

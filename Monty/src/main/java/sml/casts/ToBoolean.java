@@ -48,7 +48,7 @@ public class ToBoolean extends FunctionDeclarationNode {
 		if (a instanceof Float)
 			return FloatToBoolean.floatToBoolean((Float) a);
 		if (a instanceof Boolean)
-			return (Boolean) a;
+			return a;
 		if (a instanceof String)
 			return StringToBoolean.stringToBoolean((String) a);
 		if (a instanceof Array)

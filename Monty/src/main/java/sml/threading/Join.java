@@ -45,7 +45,7 @@ public class Join extends FunctionDeclarationNode {
 		setArguments(arguments);
 		var millis = ((BigInteger) getBody().getVariableByName("millis").getValue()).intValue();
 		try {
-			Thread.currentThread().join((long) millis);
+			Thread.currentThread().join(millis);
 		} catch (InterruptedException e) {
 			new MontyException("Join for " + millis + " was interrupted");
 		}

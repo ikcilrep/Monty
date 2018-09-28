@@ -81,18 +81,18 @@ public class ExpressionParser {
 		var stack = new Stack<OperationNode>();
 		for (int i = 0; i < tokens.size(); i++) {
 			MontyToken token = tokens.get(i);
-			var node = (OperationNode) null;
+			OperationNode node = null;
 			switch (token.getType()) {
 			case OPERATOR: // If token is operator
 				node = new OperationNode(token.getText(), parent);
 				if (!token.getText().equals("!")) {
 					if (stack.isEmpty())
 						new MontyException("There isn't right operand.");
-					((OperationNode) node).setRightOperand(stack.pop());
+					node.setRightOperand(stack.pop());
 				}
 				if (stack.isEmpty())
 					new MontyException("There isn't left operand.");
-				((OperationNode) node).setLeftOperand(stack.pop());
+				node.setLeftOperand(stack.pop());
 				break;
 			case IDENTIFIER: // If token is identifier
 				if (i + 1 < tokens.size() && tokens.get(i + 1).getType().equals(TokenTypes.BRACKET)) {

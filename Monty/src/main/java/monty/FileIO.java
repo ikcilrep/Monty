@@ -29,7 +29,7 @@ public abstract class FileIO {
 		BufferedReader br = null;
 		var text = new StringBuilder();
 		try {
-			var fr = (FileReader) null;
+			FileReader fr = null;
 			try {
 				fr = new FileReader(path);
 			} catch (FileNotFoundException e) {

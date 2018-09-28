@@ -207,6 +207,7 @@ public class Array implements Iterable<Object>, Cloneable {
 		return null;
 	}
 
+	@Override
 	public String toString() {
 		var stringBuilder = new StringBuilder((array.length<<1)+1);
 		stringBuilder.append('[');

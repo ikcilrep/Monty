@@ -45,7 +45,7 @@ public class Sleep extends FunctionDeclarationNode {
 		setArguments(arguments);
 		var millis = ((BigInteger) getBody().getVariableByName("millis").getValue()).intValue();
 		try {
-			Thread.sleep((long) millis);
+			Thread.sleep(millis);
 		} catch (InterruptedException e) {
 			new MontyException("Sleep for " + millis + " was interrupted");
 		}

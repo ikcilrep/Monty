@@ -43,7 +43,7 @@ public class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
 		var variablesSet = body.getVariables().entrySet();
 		for (Map.Entry<String, VariableDeclarationNode> entry : variablesSet) {
 			String key = entry.getKey();
-			VariableDeclarationNode value = ((VariableDeclarationNode) entry.getValue());
+			VariableDeclarationNode value = (entry.getValue());
 			variables.put(key, value.copy());
 		}
 		setArguments(arguments);

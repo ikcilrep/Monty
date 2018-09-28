@@ -47,7 +47,7 @@ public abstract class AdderToBlock {
 	}
 
 	public static void addReturnStatement(Block block, List<MontyToken> tokens) {
-		var expression = (OperationNode) null;
+		OperationNode expression = null;
 		if (tokens.size() > 1)
 			expression = ExpressionParser.parse(block, tokens.subList(1, tokens.size()));
 		else
@@ -66,8 +66,8 @@ public abstract class AdderToBlock {
 	public static Block addFunctionDeclaration(Block block, List<MontyToken> tokens) {
 		var function = new CustomFunctionDeclarationNode(tokens.get(2).getText(),
 				Tokens.getDataType(tokens.get(1).getType()));
-		var type = (DataTypes) null;
-		var name = (String) null;
+		DataTypes type = null;
+		String name = null;
 		for (int i = 3; i < tokens.size(); i++) {
 			var tokenType = tokens.get(i).getType();
 			var isTokenTypeEqualsComma = tokens.get(i).getType().equals(TokenTypes.COMMA);

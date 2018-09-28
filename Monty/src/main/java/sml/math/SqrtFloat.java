@@ -42,7 +42,7 @@ public class SqrtFloat extends FunctionDeclarationNode {
 		setArguments(arguments);
 		var body = getBody();
 		var n = (Float) body.getVariableByName("n").getValue();
-		return (Float) (float) Math.sqrt(n);
+		return (float) Math.sqrt(n);
 	}
 
 }

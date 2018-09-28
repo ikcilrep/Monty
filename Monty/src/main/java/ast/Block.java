@@ -85,12 +85,12 @@ public class Block extends Node implements Serializable {
 	public void concat(Block block) {
 		var variablesSet = block.getVariables().entrySet();
 		for (Map.Entry<String, VariableDeclarationNode> entry : variablesSet) {
-			addVariable((VariableDeclarationNode) entry.getValue());
+			addVariable(entry.getValue());
 		}
 
 		var functionsSet = block.getFunctions().entrySet();
 		for (Map.Entry<String, FunctionDeclarationNode> entry : functionsSet) {
-			addFunction(((FunctionDeclarationNode) entry.getValue()));
+			addFunction((entry.getValue()));
 		}
 
 		var children = block.getChildren();

@@ -115,6 +115,7 @@ public class LinkedList implements Iterable<Object>, Cloneable {
 		return sublist(begin).reversed().sublist(length() - end).reversed();
 	}
 
+	@Override
 	public String toString() {
 		var stringBuilder = new StringBuilder((length() << 1) + 1);
 		stringBuilder.append('[');
