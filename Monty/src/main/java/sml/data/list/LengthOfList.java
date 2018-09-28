@@ -39,7 +39,7 @@ public class LengthOfList extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
-		var lst = (LinkedList) getBody().getVariableByName("lst").getValue();
+		var lst = (List) getBody().getVariableByName("lst").getValue();
 		return lst.length();
 	}
 

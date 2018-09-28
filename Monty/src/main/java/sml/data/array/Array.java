@@ -19,7 +19,7 @@ package sml.data.array;
 import java.util.Iterator;
 
 import parser.MontyException;
-import sml.data.list.LinkedList;
+import sml.data.list.List;
 
 public class Array implements Iterable<Object>, Cloneable {
 	protected Object[] array;
@@ -222,8 +222,8 @@ public class Array implements Iterable<Object>, Cloneable {
 
 	}
 
-	public LinkedList toList() {
-		var list = new LinkedList(array[0]);
+	public List toList() {
+		var list = new List(array[0]);
 		for (Object e : array)
 			list.append(e);
 		return list.getNext();

@@ -45,7 +45,7 @@ public class Sublist extends FunctionDeclarationNode {
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
 		var body = getBody();
-		var arr = (LinkedList) body.getVariableByName("lst").getValue();
+		var arr = (List) body.getVariableByName("lst").getValue();
 		var begin = ((BigInteger) body.getVariableByName("begin").getValue()).intValue();
 		var end = ((BigInteger) body.getVariableByName("end").getValue()).intValue();
 		return arr.sublist(begin, end);

@@ -44,7 +44,7 @@ public class SetInList extends FunctionDeclarationNode {
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
 		var body = getBody();
-		var lst = (LinkedList) body.getVariableByName("lst").getValue();
+		var lst = (List) body.getVariableByName("lst").getValue();
 		var index = ((BigInteger) body.getVariableByName("index").getValue()).intValue();
 		var element = body.getVariableByName("element").getValue();
 		return lst.set(index, element);

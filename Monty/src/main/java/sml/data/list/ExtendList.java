@@ -42,8 +42,8 @@ public class ExtendList extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
-		var listToBeExtended = (LinkedList) getBody().getVariableByName("listToBeExtended").getValue();
-		var listToExtend = (LinkedList) getBody().getVariableByName("listToExtend").getValue();
+		var listToBeExtended = (List) getBody().getVariableByName("listToBeExtended").getValue();
+		var listToExtend = (List) getBody().getVariableByName("listToExtend").getValue();
 
 		return listToBeExtended.copy().append(listToExtend);
 	}

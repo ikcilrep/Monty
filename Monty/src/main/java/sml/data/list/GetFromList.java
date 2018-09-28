@@ -42,7 +42,7 @@ public class GetFromList extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
-		var lst = (LinkedList) getBody().getVariableByName("lst").getValue();
+		var lst = (List) getBody().getVariableByName("lst").getValue();
 		var index = (BigInteger) getBody().getVariableByName("index").getValue();
 		return lst.get(index.intValue());
 	}

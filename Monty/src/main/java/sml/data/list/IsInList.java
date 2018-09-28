@@ -43,7 +43,7 @@ public class IsInList extends FunctionDeclarationNode {
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
 		var body = getBody();
-		var lst = (LinkedList) body.getVariableByName("lst").getValue();
+		var lst = (List) body.getVariableByName("lst").getValue();
 		var element = body.getVariableByName("element").getValue();
 
 		return lst.contains(element);

@@ -22,22 +22,22 @@ import parser.MontyException;
 import sml.data.array.Array;
 import sml.data.returning.Nothing;
 
-public class LinkedList implements Iterable<Object>, Cloneable {
-	private LinkedList next = null;
-	LinkedList last = this;
+public class List implements Iterable<Object>, Cloneable {
+	private List next = null;
+	List last = this;
 	Object value = Nothing.nothing;
 
-	public LinkedList(Object value) {
+	public List(Object value) {
 		this.value = value;
 	}
 
-	public LinkedList append(Object element) {
-		last.setNext(new LinkedList(element));
+	public List append(Object element) {
+		last.setNext(new List(element));
 		last = last.getNext();
 		return this;
 	}
 
-	public LinkedList append(LinkedList element) {
+	public List append(List element) {
 		last.setNext(element);
 		last = last.getNext();
 		while (last.getNext() != null)
@@ -69,7 +69,7 @@ public class LinkedList implements Iterable<Object>, Cloneable {
 				: (getNext() != null ? getNext().get(index - 1) : new MontyException("Index went away from range"));
 	}
 
-	public LinkedList set(int index, Object element) {
+	public List set(int index, Object element) {
 		if (index == 0)
 			value = element;
 		else if (getNext() != null)
@@ -79,14 +79,14 @@ public class LinkedList implements Iterable<Object>, Cloneable {
 		return this;
 	}
 
-	public LinkedList replaceAll(Object toBeReplaced, Object replacement) {
+	public List replaceAll(Object toBeReplaced, Object replacement) {
 		value = value == toBeReplaced ? replacement : value;
 		if (getNext() != null)
 			getNext().replaceAll(toBeReplaced, replacement);
 		return this;
 	}
 
-	public LinkedList replaceFirst(Object toBeReplaced, Object replacement) {
+	public List replaceFirst(Object toBeReplaced, Object replacement) {
 		if (value == toBeReplaced)
 			value = replacement;
 		else if (getNext() != null)
@@ -94,15 +94,15 @@ public class LinkedList implements Iterable<Object>, Cloneable {
 		return this;
 	}
 
-	public LinkedList reversed() {
-		return getNext() == null ? new LinkedList(value) : getNext().reversed().append(value);
+	public List reversed() {
+		return getNext() == null ? new List(value) : getNext().reversed().append(value);
 	}
 
-	public LinkedList replaceLast(Object toBeReplaced, Object replacement) {
+	public List replaceLast(Object toBeReplaced, Object replacement) {
 		return reversed().replaceFirst(toBeReplaced, replacement).reversed();
 	}
 
-	public LinkedList sublist(int begin) {
+	public List sublist(int begin) {
 		if (begin == 0)
 			return this;
 		else if (getNext() == null)
@@ -110,7 +110,7 @@ public class LinkedList implements Iterable<Object>, Cloneable {
 		return getNext().sublist(begin - 1);
 	}
 
-	public LinkedList sublist(int begin, int end) {
+	public List sublist(int begin, int end) {
 		return sublist(begin).reversed().sublist(length() - end).reversed();
 	}
 
@@ -132,7 +132,7 @@ public class LinkedList implements Iterable<Object>, Cloneable {
 	@Override
 	public Iterator<Object> iterator() {
 		return new Iterator<Object>() {
-			LinkedList list = new LinkedList(value).append(getNext());
+			List list = new List(value).append(getNext());
 
 			@Override
 			public boolean hasNext() {
@@ -149,17 +149,17 @@ public class LinkedList implements Iterable<Object>, Cloneable {
 		};
 	}
 
-	public LinkedList getNext() {
+	public List getNext() {
 		return next;
 	}
 
-	public void setNext(LinkedList next) {
+	public void setNext(List next) {
 		this.next = next;
 	}
 
-	public LinkedList copy() {
+	public List copy() {
 		try {
-			return (LinkedList) clone();
+			return (List) clone();
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}

@@ -19,7 +19,7 @@ package parser;
 import java.math.BigInteger;
 
 import sml.data.array.Array;
-import sml.data.list.LinkedList;
+import sml.data.list.List;
 import sml.data.returning.VoidType;
 
 public enum DataTypes {
@@ -39,7 +39,7 @@ public enum DataTypes {
 			return DataTypes.BOOLEAN;
 		if (value instanceof Array)
 			return DataTypes.ARRAY;
-		if (value instanceof LinkedList)
+		if (value instanceof List)
 			return DataTypes.LIST;
 		return null;
 

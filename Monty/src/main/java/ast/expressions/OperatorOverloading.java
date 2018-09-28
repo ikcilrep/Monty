@@ -21,7 +21,7 @@ import java.math.BigInteger;
 import ast.declarations.VariableDeclarationNode;
 import parser.MontyException;
 import sml.data.array.Array;
-import sml.data.list.LinkedList;
+import sml.data.list.List;
 import parser.DataTypes;
 
 public class OperatorOverloading {
@@ -47,7 +47,7 @@ public class OperatorOverloading {
 		case ARRAY:
 			return ((Array) leftValue).copy().append(rightValue);
 		case LIST:
-			return ((LinkedList) leftValue).copy().append(rightValue);
+			return ((List) leftValue).copy().append(rightValue);
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -184,7 +184,7 @@ public class OperatorOverloading {
 		case ARRAY:
 			return ((Array) rightValue).reversed();
 		case LIST:
-			return ((LinkedList) rightValue).reversed();
+			return ((List) rightValue).reversed();
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -211,7 +211,7 @@ public class OperatorOverloading {
 			var arr = ((Array) leftValue);
 			return arr.subarray(0, arr.length() - ((BigInteger) rightValue).intValue());
 		case LIST:
-			var lst = ((LinkedList) leftValue);
+			var lst = ((List) leftValue);
 			return lst.sublist(0, lst.length() - ((BigInteger) rightValue).intValue());
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
@@ -240,7 +240,7 @@ public class OperatorOverloading {
 			var arr = ((Array) leftValue);
 			return arr.copy().subarray(((BigInteger) rightValue).intValue(), arr.length());
 		case LIST:
-			var lst = ((LinkedList) leftValue);
+			var lst = ((List) leftValue);
 			return lst.copy().sublist(((BigInteger) rightValue).intValue(), lst.length());
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
@@ -541,7 +541,7 @@ public class OperatorOverloading {
 			array.append(rightValue);
 			return variable.getValue();
 		case LIST:
-			var list = (LinkedList) variable.getValue();
+			var list = (List) variable.getValue();
 			list.append(rightValue);
 			return variable.getValue();
 		case ANY:
@@ -670,7 +670,7 @@ public class OperatorOverloading {
 			var arr = ((Array) leftValue);
 			return arr.subarray(0, arr.length() - ((BigInteger) rightValue).intValue());
 		case LIST:
-			var lst = ((LinkedList) leftValue);
+			var lst = ((List) leftValue);
 			return lst.sublist(0, lst.length() - ((BigInteger) rightValue).intValue());
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
@@ -702,7 +702,7 @@ public class OperatorOverloading {
 			var arr = ((Array) leftValue);
 			return arr.subarray(((BigInteger) rightValue).intValue(), arr.length());
 		case LIST:
-			var lst = ((LinkedList) leftValue);
+			var lst = ((List) leftValue);
 			return lst.sublist(((BigInteger) rightValue).intValue(), lst.length());
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
