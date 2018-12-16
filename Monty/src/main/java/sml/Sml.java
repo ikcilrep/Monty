@@ -72,7 +72,9 @@ public class Sml extends Library implements Serializable {
 		data.put("list", new HashMap<>());
 		data.put("checking", new HashMap<>());
 		data.put("string", new HashMap<>());
+		data.put("stack", new HashMap<>());
 
+		
 		var array = (HashMap<String, Object>) data.get("array");
 		array.put("arrayOf", new sml.data.array.ArrayOf());
 		array.put("extendArray", new sml.data.array.ExtendArray());
@@ -116,6 +118,11 @@ public class Sml extends Library implements Serializable {
 		string.put("toLowerCase", new sml.data.string.ToLowerCase());
 		string.put("toUpperCase", new sml.data.string.ToUpperCase());
 
+		var stack = (HashMap<String, Object>) data.get("stack");
+		stack.put("newStack", new sml.data.stack.NewStack());
+		stack.put("pop", new sml.data.stack.Pop());
+		stack.put("peek", new sml.data.stack.Peek());
+		
 		var io = (HashMap<String, Object>) children.get("io");
 		io.put("input", new sml.io.Input());
 		io.put("print", new sml.io.Print());

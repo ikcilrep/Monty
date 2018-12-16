@@ -66,6 +66,8 @@ public class Tokens {
 			return DataTypes.STRING;
 		case ARRAY_KEYWORD:
 			return DataTypes.ARRAY;
+		case STACK_KEYWORD:
+			return DataTypes.STACK;
 		case LIST_KEYWORD:
 			return DataTypes.LIST;
 		case ANY_KEYWORD:
