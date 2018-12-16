@@ -16,7 +16,11 @@ limitations under the License.
 
 package sml.data.stack;
 
-public class Stack {
+import java.util.Iterator;
+
+import parser.MontyException;
+
+public class Stack implements Cloneable, Iterable<Object>{
 	Object[] array;
 	int top;
 
@@ -40,10 +44,14 @@ public class Stack {
 	}
 
 	public Object pop() {
+		if (top == -1)
+			new MontyException("This stack is empty, you can't pop from it");
 		return array[top--];
 	}
 
 	public Object peek() {
+		if (top == -1)
+			new MontyException("This stack is empty, you can't peek with it");
 		return array[top];
 	}
 
@@ -51,6 +59,30 @@ public class Stack {
 		return top < 0;
 	}
 
+	public Stack reversed() {
+		Object[] newArray = new Object[array.length];
+		for (int j = top, i = 0; j >= 0; j--, i++)
+			newArray[i] = array[j];
+		Stack newStack = copy();
+		newStack.array = newArray;
+		return newStack;
+	}
+	@Override
+	public boolean equals(Object other) {
+		Stack otherStack = null;
+		if (otherStack instanceof Stack)
+			otherStack = (Stack) other;
+		else
+			return false;
+		if (otherStack.top != top)
+			return false;
+		int i = top;
+		for (Object e : otherStack)
+			if (!array[i--].equals(e))
+				return false;
+		return true;
+	}
+	
 	@Override
 	public String toString() {
 		var stringBuilder = new StringBuilder((array.length << 1) + 1);
@@ -63,5 +95,35 @@ public class Stack {
 		stringBuilder.append(']');
 		return stringBuilder.toString();
 
+	}
+
+	
+	public Stack copy() {
+		// TODO Auto-generated method stub
+		try {
+			return (Stack) clone();
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public Iterator<Object> iterator() {
+		return new Iterator<Object>() {
+			int counter = top;
+
+			@Override
+			public boolean hasNext() {
+				return counter > -1;
+
+			}
+
+			@Override
+			public Object next() {
+				return array[counter--];
+			}
+		};
 	}
 }

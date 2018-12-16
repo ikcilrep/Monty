@@ -187,12 +187,18 @@ public class Array implements Iterable<Object>, Cloneable {
 	/*
 	 * Description.
 	 */
-	public boolean equals(Array array) {
-		if (array.length() != this.array.length)
+	@Override
+	public boolean equals(Object other) {
+		Array otherArray = null;
+		if (other instanceof Array)
+			otherArray = (Array) other;
+		else
+			return false;
+		if (otherArray.length() != array.length)
 			return false;
 		int i = 0;
-		for (Object e : array)
-			if (!this.array[i++].equals(e))
+		for (Object e : otherArray)
+			if (!array[i++].equals(e))
 				return false;
 		return true;
 

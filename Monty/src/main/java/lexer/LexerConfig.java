@@ -34,6 +34,7 @@ public class LexerConfig {
 		lb.setKeyword("boolean", new MontyToken(TokenTypes.BOOLEAN_KEYWORD));
 		lb.setKeyword("array", new MontyToken(TokenTypes.ARRAY_KEYWORD));
 		lb.setKeyword("list", new MontyToken(TokenTypes.LIST_KEYWORD));
+		lb.setKeyword("stack", new MontyToken(TokenTypes.STACK_KEYWORD));
 		lb.setKeyword("any", new MontyToken(TokenTypes.ANY_KEYWORD));
 		lb.setKeyword("is", new MontyToken(TokenTypes.IS_KEYWORD));
 		lb.setKeyword("while", new MontyToken(TokenTypes.WHILE_KEYWORD));

@@ -23,7 +23,7 @@ import sml.data.list.List;
 import sml.data.returning.VoidType;
 
 public enum DataTypes {
-	BOOLEAN, INTEGER, FLOAT, STRING, VOID, ARRAY, ANY, LIST;
+	BOOLEAN, INTEGER, FLOAT, STRING, VOID, ARRAY, ANY, LIST, STACK;
 
 	public static DataTypes getDataType(Object value) {
 

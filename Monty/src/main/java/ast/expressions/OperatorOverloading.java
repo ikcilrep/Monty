@@ -22,6 +22,7 @@ import ast.declarations.VariableDeclarationNode;
 import parser.MontyException;
 import sml.data.array.Array;
 import sml.data.list.List;
+import sml.data.stack.Stack;
 import parser.DataTypes;
 
 public class OperatorOverloading {
@@ -48,6 +49,8 @@ public class OperatorOverloading {
 			return ((Array) leftValue).copy().append(rightValue);
 		case LIST:
 			return ((List) leftValue).copy().append(rightValue);
+		case STACK:
+			return ((Stack) leftValue).copy().push(rightValue);
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -65,17 +68,12 @@ public class OperatorOverloading {
 		case FLOAT:
 			return ((Float) leftValue) - ((Float) rightValue);
 		case STRING:
-			new MontyException("Can't subtract strings:\t" + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
 		case BOOLEAN:
-			new MontyException("Can't subtract booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
 		case ARRAY:
-			new MontyException("Can't subtract array:\t" + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
 		case LIST:
-			new MontyException("Can't subtract list:\t" + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
+		case STACK:
+			new MontyException("Can't subtract " + type.toString().toLowerCase() + "s:\t" + leftValue.toString() + " "
+					+ rightValue.toString() + " " + operator.toString());
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -93,17 +91,11 @@ public class OperatorOverloading {
 		case FLOAT:
 			return ((Float) leftValue) * ((Float) rightValue);
 		case STRING:
-			new MontyException("Can't multiply strings:\t\"" + leftValue.toString() + "\" \"" + rightValue.toString()
-					+ "\" " + operator.toString());
 		case BOOLEAN:
-			new MontyException("Can't multiply booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
 		case ARRAY:
-			new MontyException("Can't multiply array:\t" + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
 		case LIST:
-			new MontyException("Can't multiply list:\t" + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
+			new MontyException("Can't multiply " + type.toString().toLowerCase() + "s:\t" + leftValue.toString() + " "
+					+ rightValue.toString() + " " + operator.toString());
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -122,17 +114,12 @@ public class OperatorOverloading {
 		case FLOAT:
 			return ((Float) leftValue) / ((Float) rightValue);
 		case STRING:
-			new MontyException("Can't divide strings:\t\"" + leftValue.toString() + "\" \"" + rightValue.toString()
-					+ "\" " + operator.toString());
 		case BOOLEAN:
-			new MontyException("Can't divide booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
 		case ARRAY:
-			new MontyException("Can't divide array:\t" + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
 		case LIST:
-			new MontyException("Can't divide list:\t" + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
+		case STACK:
+			new MontyException("Can't divide " + type.toString().toLowerCase() + "s:\t" + leftValue.toString() + " "
+					+ rightValue.toString() + " " + operator.toString());
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -150,17 +137,12 @@ public class OperatorOverloading {
 		case FLOAT:
 			return ((Float) leftValue) % ((Float) rightValue);
 		case STRING:
-			new MontyException("Can't modulo strings:\t\"" + leftValue.toString() + "\" \"" + rightValue.toString()
-					+ "\" " + operator.toString());
 		case BOOLEAN:
-			new MontyException("Can't modulo booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
 		case ARRAY:
-			new MontyException("Can't modulo array:\t" + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
 		case LIST:
-			new MontyException("Can't modulo list:\t" + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
+		case STACK:
+			new MontyException("Can't do modulo operation on " + type.toString().toLowerCase() + "s:\t"
+					+ leftValue.toString() + " " + rightValue.toString() + " " + operator.toString());
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -178,13 +160,15 @@ public class OperatorOverloading {
 		case FLOAT:
 			return 0 - (Float) rightValue;
 		case STRING:
-			return reverse(leftValue.toString());
+			return reverse(rightValue.toString());
 		case BOOLEAN:
 			return !(boolean) rightValue;
 		case ARRAY:
 			return ((Array) rightValue).reversed();
 		case LIST:
 			return ((List) rightValue).reversed();
+		case STACK:
+			return ((Stack) rightValue).reversed();
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -198,21 +182,26 @@ public class OperatorOverloading {
 		switch (type) {
 		case INTEGER:
 			return ((BigInteger) leftValue).shiftLeft(((BigInteger) rightValue).intValue());
-		case FLOAT:
-			new MontyException("Can't shift left Floats:\t " + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
 		case STRING:
-			new MontyException("Can't shift left strings:\t\"" + leftValue.toString() + "\" \"" + rightValue.toString()
-					+ "\" " + operator.toString());
-		case BOOLEAN:
-			new MontyException("Can't shift left booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
+			var str = leftValue.toString();
+			return str.substring(0, str.length() - ((BigInteger) rightValue).intValue());
 		case ARRAY:
 			var arr = ((Array) leftValue);
 			return arr.subarray(0, arr.length() - ((BigInteger) rightValue).intValue());
 		case LIST:
 			var lst = ((List) leftValue);
 			return lst.sublist(0, lst.length() - ((BigInteger) rightValue).intValue());
+		case STACK:
+			var stack = ((Stack) leftValue).copy();
+			var value = ((BigInteger) rightValue).intValue();
+			for (int i = 0; i < value; i++) {
+				stack.pop();
+			}
+			return stack;
+		case FLOAT:
+		case BOOLEAN:
+			new MontyException("Can't shift left " + type.toString().toLowerCase() + "s:\t " + leftValue.toString()
+					+ " " + rightValue.toString() + " " + operator.toString());
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -228,14 +217,17 @@ public class OperatorOverloading {
 		case INTEGER:
 			return ((BigInteger) leftValue).shiftRight(((BigInteger) rightValue).intValue());
 		case FLOAT:
-			new MontyException("Can't shift right Floats:\t" + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
 		case STRING:
-			new MontyException("Can't shift right strings:\t\"" + leftValue.toString() + "\" \"" + rightValue.toString()
-					+ "\" " + operator.toString());
 		case BOOLEAN:
-			new MontyException("Can't shift right booleans:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
+			new MontyException("Can't shift right " + type.toString().toLowerCase() + "s:\t " + leftValue.toString()
+					+ " " + rightValue.toString() + " " + operator.toString());
+		case STACK:
+			var stack = ((Stack) leftValue).copy().reversed();
+			var value = ((BigInteger) rightValue).intValue();
+			for (int i = 0; i < value; i++) {
+				stack.pop();
+			}
+			return stack.reversed();
 		case ARRAY:
 			var arr = ((Array) leftValue);
 			return arr.copy().subarray(((BigInteger) rightValue).intValue(), arr.length());
@@ -257,20 +249,13 @@ public class OperatorOverloading {
 		case INTEGER:
 			return ((BigInteger) leftValue).xor((BigInteger) rightValue);
 		case FLOAT:
-			new MontyException("Can't do \"xor\" operation with Floats:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
 		case STRING:
-			new MontyException("Can't do \"xor\" operation with strings:\t\"" + leftValue.toString() + "\" \""
-					+ rightValue.toString() + "\" " + operator.toString());
 		case BOOLEAN:
-			new MontyException("Can't do \"xor\" operation with booleans:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
 		case ARRAY:
-			new MontyException("Can't do \"xor\" operation with array:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
 		case LIST:
-			new MontyException("Can't do \"xor\" operation with list:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
+		case STACK:
+			new MontyException("Can't do xor operation with " + type.toString().toLowerCase() + "s:\t "
+					+ leftValue.toString() + " " + rightValue.toString() + " " + operator.toString());
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -285,20 +270,15 @@ public class OperatorOverloading {
 		switch (type) {
 		case INTEGER:
 			return ((BigInteger) leftValue).and((BigInteger) rightValue);
-		case FLOAT:
-			new MontyException("Can't do \"and\" operation with Floats:\t\"" + leftValue.toString() + "\" \""
-					+ rightValue.toString() + "\" " + operator.toString());
-		case STRING:
-			new MontyException("Can't do \"and\" operation with strings:\t\"" + leftValue.toString() + "\" \""
-					+ rightValue.toString() + "\" " + operator.toString());
 		case BOOLEAN:
 			return ((Boolean) leftValue) && ((Boolean) rightValue);
+		case FLOAT:
+		case STRING:
 		case ARRAY:
-			new MontyException("Can't do \"and\" operation with array:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
 		case LIST:
-			new MontyException("Can't do \"and\" operation with list:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
+		case STACK:
+			new MontyException("Can't do and operation with " + type.toString().toLowerCase() + "s:\t "
+					+ leftValue.toString() + " " + rightValue.toString() + " " + operator.toString());
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -313,20 +293,15 @@ public class OperatorOverloading {
 		switch (type) {
 		case INTEGER:
 			return ((BigInteger) leftValue).or((BigInteger) rightValue);
-		case FLOAT:
-			new MontyException("Can't do \"or\" operation with Floats:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
-		case STRING:
-			new MontyException("Can't do \"or\" operation with strings:\t\"" + leftValue.toString() + "\" \""
-					+ rightValue.toString() + "\" " + operator.toString());
 		case BOOLEAN:
 			return ((Boolean) leftValue) || ((Boolean) rightValue);
+		case FLOAT:
+		case STRING:
 		case ARRAY:
-			new MontyException("Can't do \"or\" operation with array:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
 		case LIST:
-			new MontyException("Can't do \"or\" operation with list:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
+		case STACK:
+			new MontyException("Can't do or operation with " + type.toString().toLowerCase() + "s:\t "
+					+ leftValue.toString() + " " + rightValue.toString() + " " + operator.toString());
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -347,6 +322,7 @@ public class OperatorOverloading {
 			return ((Boolean) leftValue).compareTo((Boolean) rightValue) == 0;
 		case STRING:
 		case LIST:
+		case STACK:
 		case ARRAY:
 			return leftValue.equals(rightValue);
 		case ANY:
@@ -366,17 +342,12 @@ public class OperatorOverloading {
 		case FLOAT:
 			return ((Float) leftValue).compareTo((Float) rightValue) > 0;
 		case STRING:
-			new MontyException("One string can't be greater than other string:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
 		case BOOLEAN:
-			new MontyException("One boolean can't be greater than other boolean:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
 		case ARRAY:
-			new MontyException("Array hasn't got any value to compare:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
 		case LIST:
-			new MontyException("List hasn't got any value to compare:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
+		case STACK:
+			new MontyException("Can't do greater operation with " + type.toString().toLowerCase() + "s:\t"
+					+ leftValue.toString() + " " + rightValue.toString() + " " + operator.toString());
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -394,17 +365,12 @@ public class OperatorOverloading {
 		case FLOAT:
 			return ((Float) leftValue).compareTo((Float) rightValue) < 0;
 		case STRING:
-			new MontyException("One string can't be lower than other string:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
 		case BOOLEAN:
-			new MontyException("One boolean can't be lower than other boolean:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
 		case ARRAY:
-			new MontyException("Array hasn't got any value to compare:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
 		case LIST:
-			new MontyException("List hasn't got any value to compare:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
+		case STACK:
+			new MontyException("Can't do lower operation with " + type.toString().toLowerCase() + "s:\t"
+					+ leftValue.toString() + " " + rightValue.toString() + " " + operator.toString());
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -422,17 +388,12 @@ public class OperatorOverloading {
 		case FLOAT:
 			return ((Float) leftValue).compareTo((Float) rightValue) >= 0;
 		case STRING:
-			new MontyException("One string can't be greater than other string:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
 		case BOOLEAN:
-			new MontyException("One boolean can't be greater than other boolean:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
 		case ARRAY:
-			new MontyException("Array hasn't got any value to compare:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
 		case LIST:
-			new MontyException("List hasn't got any value to compare:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
+		case STACK:
+			new MontyException("Can't do greater-equals operation with " + type.toString().toLowerCase() + "s:\t"
+					+ leftValue.toString() + " " + rightValue.toString() + " " + operator.toString());
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -450,17 +411,12 @@ public class OperatorOverloading {
 		case FLOAT:
 			return ((Float) leftValue).compareTo((Float) rightValue) <= 0;
 		case STRING:
-			new MontyException("One string can't be lower than other string:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
 		case BOOLEAN:
-			new MontyException("One boolean can't be lower than other boolean:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
 		case ARRAY:
-			new MontyException("Array hasn't got any value to compare:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
 		case LIST:
-			new MontyException("List hasn't got any value to compare:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
+		case STACK:
+			new MontyException("Can't do lower-equals operation with " + type.toString().toLowerCase() + "s:\t"
+					+ leftValue.toString() + " " + rightValue.toString() + " " + operator.toString());
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -477,18 +433,13 @@ public class OperatorOverloading {
 			return ((BigInteger) leftValue).compareTo((BigInteger) rightValue) != 0;
 		case FLOAT:
 			return ((Float) leftValue).compareTo((Float) rightValue) != 0;
-		case STRING:
-			new MontyException("One string can't be lower than other string:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
 		case BOOLEAN:
-			new MontyException("One boolean can't be lower than other boolean:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
-		case ARRAY:
-			new MontyException("Array hasn't got any value to compare:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
+			return ((Boolean) leftValue).compareTo((Boolean) rightValue) != 0;
+		case STRING:
 		case LIST:
-			new MontyException("List hasn't got any value to compare:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
+		case STACK:
+		case ARRAY:
+			return !leftValue.equals(rightValue);
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -508,6 +459,7 @@ public class OperatorOverloading {
 		case BOOLEAN:
 		case LIST:
 		case ARRAY:
+		case STACK:
 			variable.setValue(rightValue);
 			return variable.getValue();
 		case ANY:
@@ -525,25 +477,16 @@ public class OperatorOverloading {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
 		case INTEGER:
-			variable.setValue(((BigInteger) variable.getValue()).add((BigInteger) rightValue));
-			return variable.getValue();
 		case FLOAT:
-			variable.setValue((Float) variable.getValue() + (Float) rightValue);
-			return variable.getValue();
 		case STRING:
-			variable.setValue(variable.getValue().toString() + rightValue.toString());
+		case ARRAY:
+		case LIST:
+		case STACK:
+			variable.setValue(additionOperator(variable.getValue(), rightValue, operator, type));
 			return variable.getValue();
 		case BOOLEAN:
 			new MontyException("Can't add booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
-		case ARRAY:
-			var array = (Array) variable.getValue();
-			array.append(rightValue);
-			return variable.getValue();
-		case LIST:
-			var list = (List) variable.getValue();
-			list.append(rightValue);
-			return variable.getValue();
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -559,23 +502,13 @@ public class OperatorOverloading {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
 		case INTEGER:
-			variable.setValue(((BigInteger) variable.getValue()).subtract((BigInteger) rightValue));
-			return variable.getValue();
 		case FLOAT:
-			variable.setValue((Float) variable.getValue() - (Float) rightValue);
-			return variable.getValue();
 		case STRING:
-			new MontyException("Can't subtract strings:\t" + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
-		case BOOLEAN:
-			new MontyException("Can't subtract booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
 		case ARRAY:
-			new MontyException("Can't subtract array:\t" + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
 		case LIST:
-			new MontyException("Can't subtract list:\t" + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
+		case STACK:
+			variable.setValue(subtractionOperator(variable.getValue(), rightValue, operator, type));
+			return variable.getValue();
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -591,23 +524,13 @@ public class OperatorOverloading {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
 		case INTEGER:
-			variable.setValue(((BigInteger) variable.getValue()).multiply((BigInteger) rightValue));
-			return variable.getValue();
 		case FLOAT:
-			variable.setValue((Float) variable.getValue() * (Float) rightValue);
-			return variable.getValue();
 		case STRING:
-			new MontyException("Can't multiply strings:\t" + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
-		case BOOLEAN:
-			new MontyException("Can't multiply booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
 		case ARRAY:
-			new MontyException("Can't multiply array:\t" + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
 		case LIST:
-			new MontyException("Can't multiply list:\t" + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
+		case STACK:
+			variable.setValue(multiplicationOperator(variable.getValue(), rightValue, operator, type));
+			return variable.getValue();
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -623,23 +546,13 @@ public class OperatorOverloading {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
 		case INTEGER:
-			variable.setValue(((BigInteger) variable.getValue()).divide((BigInteger) rightValue));
-			return variable.getValue();
 		case FLOAT:
-			variable.setValue((Float) variable.getValue() / (Float) rightValue);
-			return variable.getValue();
 		case STRING:
-			new MontyException("Can't divide strings:\t" + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
-		case BOOLEAN:
-			new MontyException("Can't divide booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
 		case ARRAY:
-			new MontyException("Can't divide array:\t" + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
 		case LIST:
-			new MontyException("Can't divide list:\t" + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
+		case STACK:
+			variable.setValue(divisionOperator(variable.getValue(), rightValue, operator, type));
+			return variable.getValue();
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -652,26 +565,16 @@ public class OperatorOverloading {
 
 	public static Object assignmentShiftLeftOperator(Object leftValue, Object rightValue, Object operator,
 			DataTypes type) {
+		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
 		case INTEGER:
-			var variable = ((VariableDeclarationNode) leftValue);
-			variable.setValue(((BigInteger) variable.getValue()).shiftLeft(((BigInteger) rightValue).intValue()));
-			return variable.getValue();
 		case FLOAT:
-			new MontyException("Can't shift left Floats:\t " + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
 		case STRING:
-			new MontyException("Can't shift left strings:\t\"" + leftValue.toString() + "\" \"" + rightValue.toString()
-					+ "\" " + operator.toString());
-		case BOOLEAN:
-			new MontyException("Can't shift left booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
 		case ARRAY:
-			var arr = ((Array) leftValue);
-			return arr.subarray(0, arr.length() - ((BigInteger) rightValue).intValue());
 		case LIST:
-			var lst = ((List) leftValue);
-			return lst.sublist(0, lst.length() - ((BigInteger) rightValue).intValue());
+		case STACK:
+			variable.setValue(shiftLeftOperator(variable.getValue(), rightValue, operator, type));
+			return variable.getValue();
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -684,26 +587,16 @@ public class OperatorOverloading {
 
 	public static Object assignmentShiftRightOperator(Object leftValue, Object rightValue, Object operator,
 			DataTypes type) {
+		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
 		case INTEGER:
-			var variable = ((VariableDeclarationNode) leftValue);
-			variable.setValue(((BigInteger) variable.getValue()).shiftRight(((BigInteger) rightValue).intValue()));
-			return variable.getValue();
 		case FLOAT:
-			new MontyException("Can't shift right Floats:\t" + leftValue.toString() + " " + rightValue.toString() + " "
-					+ operator.toString());
 		case STRING:
-			new MontyException("Can't shift right strings:\t\"" + leftValue.toString() + "\" \"" + rightValue.toString()
-					+ "\" " + operator.toString());
-		case BOOLEAN:
-			new MontyException("Can't shift right booleans:\t" + leftValue.toString() + " " + rightValue.toString()
-					+ " " + operator.toString());
 		case ARRAY:
-			var arr = ((Array) leftValue);
-			return arr.subarray(((BigInteger) rightValue).intValue(), arr.length());
 		case LIST:
-			var lst = ((List) leftValue);
-			return lst.sublist(((BigInteger) rightValue).intValue(), lst.length());
+		case STACK:
+			variable.setValue(shiftRightOperator(variable.getValue(), rightValue, operator, type));
+			return variable.getValue();
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -715,26 +608,16 @@ public class OperatorOverloading {
 	}
 
 	public static Object assignmentXorOperator(Object leftValue, Object rightValue, Object operator, DataTypes type) {
+		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
 		case INTEGER:
-			var variable = ((VariableDeclarationNode) leftValue);
-			variable.setValue(((BigInteger) variable.getValue()).xor((BigInteger) rightValue));
-			return variable.getValue();
 		case FLOAT:
-			new MontyException("Can't do \"xor\" operation with Floats:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
 		case STRING:
-			new MontyException("Can't do \"xor\" operation with strings:\t\"" + leftValue.toString() + "\" \""
-					+ rightValue.toString() + "\" " + operator.toString());
-		case BOOLEAN:
-			new MontyException("Can't do \"xor\" operation with booleans:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
 		case ARRAY:
-			new MontyException("Can't do \"xor\" operation with array:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
 		case LIST:
-			new MontyException("Can't do \"xor\" operation with list:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
+		case STACK:
+			variable.setValue(xorOperator(variable.getValue(), rightValue, operator, type));
+			return variable.getValue();
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -746,26 +629,16 @@ public class OperatorOverloading {
 	}
 
 	public static Object assignmentAndOperator(Object leftValue, Object rightValue, Object operator, DataTypes type) {
+		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
 		case INTEGER:
-			var variable = ((VariableDeclarationNode) leftValue);
-			variable.setValue(((BigInteger) variable.getValue()).and(((BigInteger) rightValue)));
-			return variable.getValue();
 		case FLOAT:
-			new MontyException("Can't do \"and\" operation with Floats:\t\"" + leftValue.toString() + "\" \""
-					+ rightValue.toString() + "\" " + operator.toString());
 		case STRING:
-			new MontyException("Can't do \"and\" operation with strings:\t\"" + leftValue.toString() + "\" \""
-					+ rightValue.toString() + "\" " + operator.toString());
-		case BOOLEAN:
-			new MontyException("Can't do \"and\" operation with booleans:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
 		case ARRAY:
-			new MontyException("Can't do \"and\" operation with array:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
 		case LIST:
-			new MontyException("Can't do \"and\" operation with list:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
+		case STACK:
+			variable.setValue(andOperator(variable.getValue(), rightValue, operator, type));
+			return variable.getValue();
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -777,26 +650,16 @@ public class OperatorOverloading {
 	}
 
 	public static Object assignmentOrOperator(Object leftValue, Object rightValue, Object operator, DataTypes type) {
+		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
 		case INTEGER:
-			var variable = ((VariableDeclarationNode) leftValue);
-			variable.setValue(((BigInteger) variable.getValue()).or(((BigInteger) rightValue)));
-			return variable.getValue();
 		case FLOAT:
-			new MontyException("Can't do \"or\" operation with Floats:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
 		case STRING:
-			new MontyException("Can't do \"or\" operation with strings:\t\"" + leftValue.toString() + "\" \""
-					+ rightValue.toString() + "\" " + operator.toString());
-		case BOOLEAN:
-			new MontyException("Can't do \"or\" operation with booleans:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
 		case ARRAY:
-			new MontyException("Can't do \"or\" operation with array:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
 		case LIST:
-			new MontyException("Can't do \"or\" operation with list:\t" + leftValue.toString() + " "
-					+ rightValue.toString() + " " + operator.toString());
+		case STACK:
+			variable.setValue(orOperator(variable.getValue(), rightValue, operator, type));
+			return variable.getValue();
 		case ANY:
 			new MontyException("Can't do any operations with \"any\" data type");
 		case VOID:

@@ -24,6 +24,9 @@ import lexer.TokenTypes;
 
 public abstract class Identificator {
 	public static final Pattern importRegex = Pattern.compile("^IMPORT_KEYWORD [A-Z_]+ (DOT [A-Z_]+ )*$");
+	public static final List<TokenTypes> dataTypesKeywords = List.of(TokenTypes.INTEGER_KEYWORD,
+			TokenTypes.FLOAT_KEYWORD, TokenTypes.BOOLEAN_KEYWORD, TokenTypes.STRING_KEYWORD, TokenTypes.VOID_KEYWORD,
+			TokenTypes.ANY_KEYWORD, TokenTypes.ARRAY_KEYWORD, TokenTypes.LIST_KEYWORD, TokenTypes.STACK_KEYWORD);
 
 	public static boolean isElseStatement(List<MontyToken> tokens) {
 		if (!tokens.get(0).getType().equals(TokenTypes.ELSE_KEYWORD))
@@ -88,11 +91,7 @@ public abstract class Identificator {
 		TokenTypes secondTokenType = null;
 		if (tokens.size() >= 2)
 			secondTokenType = tokens.get(1).getType();
-		var isSecondTokenDataTypeKeyword = tokens.size() > 1 && (secondTokenType.equals(TokenTypes.INTEGER_KEYWORD)
-				|| secondTokenType.equals(TokenTypes.FLOAT_KEYWORD) || secondTokenType.equals(TokenTypes.STRING_KEYWORD)
-				|| secondTokenType.equals(TokenTypes.BOOLEAN_KEYWORD) || secondTokenType.equals(TokenTypes.VOID_KEYWORD)
-				|| secondTokenType.equals(TokenTypes.ARRAY_KEYWORD) || secondTokenType.equals(TokenTypes.ANY_KEYWORD)
-				|| secondTokenType.equals(TokenTypes.LIST_KEYWORD));
+		var isSecondTokenDataTypeKeyword = tokens.size() > 1 && dataTypesKeywords.contains(secondTokenType);
 		var isThirdTokenIdentifier = tokens.size() > 2 && tokens.get(2).getType().equals(TokenTypes.IDENTIFIER);
 		if (!isFirstTokenFuncKeyword)
 			return false;
@@ -106,30 +105,22 @@ public abstract class Identificator {
 		var isLastTokenDataTypeDeclaration = false;
 		for (int i = 3; i < tokens.size(); i++) {
 			var t = tokens.get(i);
-			switch (t.getType()) {
-			case INTEGER_KEYWORD:
-			case FLOAT_KEYWORD:
-			case STRING_KEYWORD:
-			case BOOLEAN_KEYWORD:
-			case ARRAY_KEYWORD:
-			case LIST_KEYWORD:
-			case ANY_KEYWORD:
+			if (dataTypesKeywords.contains(t.getType()))
 				isLastTokenDataTypeDeclaration = true;
-				break;
-			case IDENTIFIER:
+			else if(t.getType().equals(TokenTypes.IDENTIFIER)) {
 				if (!isLastTokenDataTypeDeclaration)
 					new MontyException("Expected data type declaration before identifer:\t"
 							+ Tokens.getText(tokens.subList(i, tokens.size())));
 				isLastTokenDataTypeDeclaration = false;
-				break;
-			case COMMA:
+			}
+			else if(t.getType().equals(TokenTypes.COMMA)) {
 				if (!(last.equals(TokenTypes.IDENTIFIER) && i + 1 < tokens.size()))
 					new MontyException("Unexpected comma:\t" + Tokens.getText(tokens.subList(i, tokens.size())));
 				isLastTokenDataTypeDeclaration = false;
-				break;
-			default:
-				new MontyException("Unexpected token:\t" + t.getText());
 			}
+			else
+				new MontyException("Unexpected token:\t" + t.getText());
+			
 			last = t.getType();
 		}
 		return true;
@@ -172,12 +163,7 @@ public abstract class Identificator {
 			secondTokenType = tokens.get(1).getType();
 
 		var isSecondTokenTypeDataTypeKeyword = secondTokenType != null
-				&& (secondTokenType.equals(TokenTypes.INTEGER_KEYWORD)
-						|| secondTokenType.equals(TokenTypes.FLOAT_KEYWORD)
-						|| secondTokenType.equals(TokenTypes.STRING_KEYWORD)
-						|| secondTokenType.equals(TokenTypes.BOOLEAN_KEYWORD)
-						|| secondTokenType.equals(TokenTypes.ARRAY_KEYWORD)
-						|| secondTokenType.equals(TokenTypes.LIST_KEYWORD));
+				&& dataTypesKeywords.contains(secondTokenType);
 		if (!isFirstTokenStaticOrDynamicKeyword)
 			return false;
 		if (!isSecondTokenTypeDataTypeKeyword)
@@ -239,12 +225,7 @@ public abstract class Identificator {
 			new MontyException("Expected \"to\" keyword after identifier:\t" + Tokens.getText(tokens));
 		if (tokensSize >= 4) {
 			TokenTypes fourthTokenType = tokens.get(3).getType();
-			if (!(tokens.get(3).getType().equals(TokenTypes.INTEGER_KEYWORD)
-					|| fourthTokenType.equals(TokenTypes.FLOAT_KEYWORD)
-					|| fourthTokenType.equals(TokenTypes.BOOLEAN_KEYWORD)
-					|| fourthTokenType.equals(TokenTypes.STRING_KEYWORD)
-					|| fourthTokenType.equals(TokenTypes.ARRAY_KEYWORD)
-					|| fourthTokenType.equals(TokenTypes.LIST_KEYWORD)))
+			if (!dataTypesKeywords.contains(fourthTokenType))
 				new MontyException("Expected data type declaration after \"to\" keyword\t" + Tokens.getText(tokens));
 		}
 		return true;
@@ -254,7 +235,7 @@ public abstract class Identificator {
 		if (!tokens.get(0).getType().equals(TokenTypes.THREAD_KEYWORD))
 			return false;
 		if (!(tokens.size() == 1 || isExpression(tokens.subList(1, tokens.size()))))
-			new MontyException("Expected expression after \"jump\" keyword:\t" + Tokens.getText(tokens));
+			new MontyException("Expected expression after \"thread\" keyword:\t" + Tokens.getText(tokens));
 
 		return true;
 	}

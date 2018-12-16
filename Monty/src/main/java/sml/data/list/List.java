@@ -115,6 +115,22 @@ public class List implements Iterable<Object>, Cloneable {
 	}
 
 	@Override
+	public boolean equals(Object other) {
+		List otherList = null;
+		if (other instanceof List)
+			otherList = (List) other;
+		else
+			return false;
+		if (value.equals(otherList.value)) {
+			if (next == null && otherList.next == null)
+				return true;
+			return next.equals(otherList.next);
+		}
+		return false;
+		
+	}
+	
+	@Override
 	public String toString() {
 		var stringBuilder = new StringBuilder((length() << 1) + 1);
 		stringBuilder.append('[');
