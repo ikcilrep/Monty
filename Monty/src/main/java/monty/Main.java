@@ -27,8 +27,9 @@ public class Main {
 			System.out.println("To run:\tjava -jar Monty.jar [file_name.(mt|mtc)]\nTo compile:\\tjava -jar Monty.jar [input_file_name.mt] -o [output_file_name.mtc]");
 		else {
 			argv = args;
+			path = args[0];
 			int from = argv.length > 1 && argv[1].equals("-o") ? 3 : 1;
-			var block = IOBlocks.readBlock(from, args[0]);
+			var block = IOBlocks.readBlock(from, path);
 			if (from == 1)
 				block.run();
 			else 
