@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -36,8 +38,13 @@ import parser.Tokens;
 import parser.parsing.Parser;
 
 public class Importing {
+	private static String emptyIfNull(Path path) {
+		if (path == null)
+			return "";
+		return path.toString();
+	}
 
-	public static String[] subArray(String[] array, int begin) {
+	private static String[] subArray(String[] array, int begin) {
 		var newArray = new String[array.length - begin];
 		for (int i = 0; begin < array.length; begin++, i++) {
 			newArray[i] = array[begin];
@@ -87,13 +94,11 @@ public class Importing {
 
 	@SuppressWarnings("unchecked")
 	private static void addAllFunctions(Block block, HashMap<String, Object> addFrom) {
-		for (Object value : addFrom.values()) {
+		for (Object value : addFrom.values())
 			if (value instanceof FunctionDeclarationNode)
 				block.addFunction((FunctionDeclarationNode) value);
-			else {
+			else
 				addAllFunctions(block, (HashMap<String, Object>) value);
-			}
-		}
 	}
 
 	private static void addFunctionFromFile(Block block, String path) {
@@ -104,11 +109,14 @@ public class Importing {
 
 	private static void addFunctionsFromDirectory(Block block, File folder) {
 		for (File fileEntry : folder.listFiles()) {
-			if (fileEntry.isDirectory()) {
+			if (fileEntry.isDirectory())
 				addFunctionsFromDirectory(block, fileEntry);
-			} else {
+			else if (fileEntry.getName().endsWith(".mt"))
 				addFunctionFromFile(block, fileEntry.getAbsolutePath());
-			}
+			else if (fileEntry.getName().endsWith(".mtc"))
+				block.concat(IOBlocks.readCompiledBlockFromFile(fileEntry.getAbsolutePath()));
+			else
+				new MontyException("Wrong file format");
 		}
 	}
 
@@ -119,9 +127,9 @@ public class Importing {
 		int i = 0;
 
 		for (String toImport : splited) {
-			if (!sublibraries.containsKey(toImport)) {
+			if (!sublibraries.containsKey(toImport))
 				new MontyException("There isn't file to import:\t" + partOfPath);
-			} else if ((function = sublibraries.get(toImport)) instanceof FunctionDeclarationNode) {
+			else if ((function = sublibraries.get(toImport)) instanceof FunctionDeclarationNode) {
 				block.addFunction((FunctionDeclarationNode) function);
 				break;
 			} else if (i + 1 >= splited.length)
@@ -134,18 +142,23 @@ public class Importing {
 
 	public static void importFile(Block block, List<MontyToken> tokens) {
 		var partOfPath = Tokens.getText(tokens.subList(1, tokens.size()));
-		var path = new File(Main.path).getParent() + File.separatorChar + partOfPath.replace('.', File.separatorChar)
-				+ ".mt";
-		var file = new File(path);
-		if (file.exists()) {
-			if (file.isDirectory())
-				addFunctionsFromDirectory(block, file);
-			addFunctionFromFile(block, path);
-		} else {
+		var path = Paths.get("").toAbsolutePath().toString() + File.separatorChar
+				+ emptyIfNull(Paths.get(Main.path).getParent()) + File.separator
+				+ partOfPath.replace('.', File.separatorChar);
+		var file = new File(path + ".mt");
+		var compiled_file = new File(path + ".mtc");
+		var directory = new File(path);
+
+		if (directory.exists() && directory.isDirectory())
+			addFunctionsFromDirectory(block, directory);
+		else if (compiled_file.exists() && compiled_file.isFile())
+			block.concat(IOBlocks.readCompiledBlockFromFile(compiled_file.getPath()));
+		else if (file.exists() && file.isFile())
+			addFunctionFromFile(block, file.getPath());
+		else {
 			var splited = partOfPath.split("\\.");
 			if (!Parser.libraries.containsKey(splited[0]))
-				new MontyException("There isn't file to import:\t" + partOfPath);
-
+				new MontyException("There isn't file to import:\t" + path);
 			findAndAddFunctions(block, subArray(splited, 1), partOfPath, Parser.libraries.get(splited[0]));
 		}
 	}

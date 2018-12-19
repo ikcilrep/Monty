@@ -31,10 +31,10 @@ public class IOBlocks {
 		List<MontyToken> tokens = lb.getAllTokens();
 		var block = Parser.parse(tokens);
 		block.addFunction(new sml.data.returning.Nothing());
-		return block;
-	}
+			return block;
+		}
 	
-	private static Block readCompiledBlockFromFile(String path) {
+	public static Block readCompiledBlockFromFile(String path) {
 		return readBlockFromGZIP(readGZIPBlock(path), path);
 	}
 	private static GZIPInputStream readGZIPBlock(String path) {
