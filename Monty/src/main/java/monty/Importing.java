@@ -157,7 +157,7 @@ public class Importing {
 			addFunctionFromFile(block, file.getPath());
 		else {
 			var splited = partOfPath.split("\\.");
-			if (!Parser.libraries.containsKey(splited[0]))
+			if (!splited[0].equals(Main.standard_library_name))
 				new MontyException("There isn't file to import:\t" + path);
 			findAndAddFunctions(block, subArray(splited, 1), partOfPath, Parser.libraries.get(splited[0]));
 		}
