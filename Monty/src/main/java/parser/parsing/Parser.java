@@ -40,7 +40,6 @@ public class Parser {
 					continue;
 				if (Identificator.isExpression(tokensBeforeSemicolon)) {
 					AdderToBlock.addExpression(block, tokensBeforeSemicolon);
-
 				} else if (Identificator.isVariableDeclaration(tokensBeforeSemicolon)) {
 					AdderToBlock.addVariableDeclaration(block, tokensBeforeSemicolon);
 

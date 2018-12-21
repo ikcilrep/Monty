@@ -80,7 +80,7 @@ public class ExpressionParser {
 	public static OperationNode parse(Block parent, List<Token> tokens) {
 		var stack = new Stack<OperationNode>();
 		for (int i = 0; i < tokens.size(); i++) {
-			Token token = tokens.get(i);
+			var token = tokens.get(i);
 			OperationNode node = null;
 			switch (token.getType()) {
 			case OPERATOR: // If token is operator
@@ -119,6 +119,8 @@ public class ExpressionParser {
 						}
 					}
 					var function = new FunctionCallNode(token.getText());
+					function.setFileName(token.getFileName());
+					function.setLine(token.getLine());
 					var splited = splitArguments(tokens.subList(i + 2, j - 1));
 					// Adds parsed function arguments to object.
 					for (List<Token> ts : splited) {
@@ -133,8 +135,9 @@ public class ExpressionParser {
 					node = new OperationNode(function, parent);
 					// I is after function arguments.
 					i = j - 1;
-				} else
+				} else {
 					node = new OperationNode(new VariableNode(token.getText()), parent);
+				}
 				break;
 			default:
 				// Otherwise token in expression can be only constant.

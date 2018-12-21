@@ -140,16 +140,21 @@ public class Block extends Node implements Serializable {
 			switch (child.getNodeType()) {
 			case OPERATION:
 				var childCastedToVariable = ((OperationNode) child);
-				if (childCastedToVariable.getOperand().equals(NodeTypes.FUNCTION_CALL)) {
-					var functionToCall = ((FunctionCallNode) child);
+				if (childCastedToVariable.getOperand() instanceof Node
+						&& ((Node) childCastedToVariable.getOperand()).getNodeType().equals(NodeTypes.FUNCTION_CALL)) {
+					var functionToCall = ((FunctionCallNode) childCastedToVariable.getOperand());
 					var function = getFunctionByName(functionToCall.getName());
 					function.call(functionToCall.getArguments());
-				} else if (!(childCastedToVariable.getRightOperand() != null
-						&& childCastedToVariable.getLeftOperand().getNodeType().equals(NodeTypes.VARIABLE)
-						&& childCastedToVariable.getRightOperand().getOperand().toString().contains("="))) {
+				} else if (childCastedToVariable.getRightOperand() != null
+						&& childCastedToVariable.getLeftOperand() != null
+						&& childCastedToVariable.getLeftOperand().getOperand() instanceof Node
+						&& ((Node) childCastedToVariable.getLeftOperand().getOperand()).getNodeType()
+								.equals(NodeTypes.VARIABLE)
+						&& childCastedToVariable.getOperand().toString().contains("=")) {
 					childCastedToVariable.run();
-				} else
+				} else {
 					new LogError("Some expression hasn't got any sense!!!");
+				}
 
 				break;
 			case IF_STATEMENT:

@@ -24,8 +24,26 @@ public class Node implements Serializable {
 	 */
 	private static final long serialVersionUID = -1062901583007944186L;
 	protected NodeTypes nodeType;
-
+	protected int line;
+	protected String fileName;
+	
 	public NodeTypes getNodeType() {
 		return nodeType;
+	}
+
+	public int getLine() {
+		return line;
+	}
+
+	public void setLine(int line) {
+		this.line = line;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 }
