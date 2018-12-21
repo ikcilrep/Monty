@@ -16,7 +16,6 @@ limitations under the License.
 
 package lexer;
 
-
 public class Token implements Cloneable {
 	private String text;
 	private String fileName;
@@ -30,9 +29,11 @@ public class Token implements Cloneable {
 	public TokenTypes getType() {
 		return type;
 	}
+
 	public int getLine() {
 		return line;
 	}
+
 	public void setLine(int line) {
 		this.line = line;
 	}
@@ -48,10 +49,11 @@ public class Token implements Cloneable {
 	public Token copy() throws CloneNotSupportedException {
 		return (Token) super.clone();
 	}
+
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
-	
+
 	public String getFileName() {
 		return fileName;
 	}

@@ -55,7 +55,6 @@ public class LexerBuilder extends SetOnSomething implements Cloneable {
 	private String text;
 	private int tokenCounter = -1;
 	private int lines;
-	
 
 	final ArrayList<Token> tokens = new ArrayList<Token>();
 

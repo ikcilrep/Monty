@@ -19,13 +19,15 @@ package monty;
 import java.io.FileNotFoundException;
 
 public class Main {
-	
+
 	public static String[] argv = null;
 	public static String path;
 	public static String standard_library_name = "sml";
+
 	public static void main(String[] args) throws FileNotFoundException {
 		if (args.length == 0 || args[0] == "-h")
-			System.out.println("To run:\tjava -jar Monty.jar [file_name.(mt|mtc)]\nTo compile:\\tjava -jar Monty.jar [input_file_name.mt] -o [output_file_name.mtc]");
+			System.out.println(
+					"To run:\tjava -jar Monty.jar [file_name.(mt|mtc)]\nTo compile:\\tjava -jar Monty.jar [input_file_name.mt] -o [output_file_name.mtc]");
 		else {
 			argv = args;
 			path = args[0];
@@ -33,7 +35,7 @@ public class Main {
 			var block = IOBlocks.readBlock(from, path);
 			if (from == 1)
 				block.run();
-			else 
+			else
 				IOBlocks.compileAndWriteBlock(block, argv[2]);
 		}
 	}

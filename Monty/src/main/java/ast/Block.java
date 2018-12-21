@@ -54,7 +54,6 @@ public class Block extends Node implements Serializable {
 		this.parent = parent;
 	}
 
-
 	public void addChild(Node child) {
 		children.add(child);
 	}
@@ -94,7 +93,6 @@ public class Block extends Node implements Serializable {
 	public boolean doesContainVariable(String name) {
 		return variables.containsKey(name);
 	}
-
 
 	public LinkedList<Node> getChildren() {
 		return children;

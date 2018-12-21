@@ -20,7 +20,7 @@ import java.util.Iterator;
 
 import parser.LogError;
 
-public class Stack implements Cloneable, Iterable<Object>{
+public class Stack implements Cloneable, Iterable<Object> {
 	Object[] array;
 	int top;
 
@@ -67,6 +67,7 @@ public class Stack implements Cloneable, Iterable<Object>{
 		newStack.array = newArray;
 		return newStack;
 	}
+
 	@Override
 	public boolean equals(Object other) {
 		Stack otherStack = null;
@@ -82,7 +83,7 @@ public class Stack implements Cloneable, Iterable<Object>{
 				return false;
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
 		var stringBuilder = new StringBuilder((array.length << 1) + 1);
@@ -97,7 +98,6 @@ public class Stack implements Cloneable, Iterable<Object>{
 
 	}
 
-	
 	public Stack copy() {
 		// TODO Auto-generated method stub
 		try {

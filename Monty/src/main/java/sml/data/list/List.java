@@ -127,9 +127,9 @@ public class List implements Iterable<Object>, Cloneable {
 			return next.equals(otherList.next);
 		}
 		return false;
-		
+
 	}
-	
+
 	@Override
 	public String toString() {
 		var stringBuilder = new StringBuilder((length() << 1) + 1);

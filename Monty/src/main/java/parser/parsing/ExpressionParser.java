@@ -126,8 +126,8 @@ public class ExpressionParser {
 						if (ts.size() == 0)
 							break;
 						if (!Identificator.isExpression(ts))
-							new LogError("Expected expression as function " + token.getText()
-									+ " call's argument:\t" + Tokens.getText(ts), token);
+							new LogError("Expected expression as function " + token.getText() + " call's argument:\t"
+									+ Tokens.getText(ts), token);
 						function.addArgument(parse(parent, ts));
 					}
 					node = new OperationNode(function, parent);

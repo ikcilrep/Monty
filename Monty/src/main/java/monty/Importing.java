@@ -117,14 +117,13 @@ public class Importing {
 			else if (fileEntry.getName().endsWith(".mtc"))
 				block.concat(IOBlocks.readCompiledBlockFromFile(fileEntry.getAbsolutePath()));
 			else
-				new LogError("File with wrong extension: " + directory.getPath() + File.separator
-						+ fileEntry.getName());
+				new LogError(
+						"File with wrong extension: " + directory.getPath() + File.separator + fileEntry.getName());
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	private static void findAndAddFunctions(Block block, String[] splited, String path, Library toSearch,
-			Token token) {
+	private static void findAndAddFunctions(Block block, String[] splited, String path, Library toSearch, Token token) {
 		var sublibraries = toSearch.getSublibraries();
 		Object function = null;
 		int i = 0;

@@ -16,7 +16,7 @@ import parser.LogError;
 import parser.parsing.Parser;
 
 public class IOBlocks {
-	
+
 	public static Block readBlock(int from, String path) {
 		Importing.setLibraries(from);
 		if (path.endsWith(".mt"))
@@ -26,18 +26,19 @@ public class IOBlocks {
 		new LogError("File with wrong extension: " + path);
 		return null;
 	}
-	
+
 	private static Block readBlockFromFile(String path) {
 		var lb = LexerConfig.getLexer(FileIO.readFile(path), path);
 		List<Token> tokens = lb.getAllTokens();
 		var block = Parser.parse(tokens);
 		block.addFunction(new sml.data.returning.Nothing());
-			return block;
-		}
-	
+		return block;
+	}
+
 	public static Block readCompiledBlockFromFile(String path) {
 		return readBlockFromGZIP(readGZIPBlock(path), path);
 	}
+
 	private static GZIPInputStream readGZIPBlock(String path) {
 		FileInputStream fis = null;
 		GZIPInputStream gis = null;
@@ -49,7 +50,7 @@ public class IOBlocks {
 		}
 		return gis;
 	}
-	
+
 	private static Block readBlockFromGZIP(GZIPInputStream gis, String path) {
 		ObjectInputStream ois;
 		Block block = null;
@@ -66,7 +67,7 @@ public class IOBlocks {
 		}
 		return block;
 	}
-	
+
 	public static void compileAndWriteBlock(Block block, String outputPath) {
 		try {
 			FileOutputStream fos = new FileOutputStream(outputPath);

@@ -42,7 +42,7 @@ public class Pop extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
-		var stack  = (Stack) getBody().getVariableByName("stack").getValue();
+		var stack = (Stack) getBody().getVariableByName("stack").getValue();
 		return stack.pop();
 	}
 

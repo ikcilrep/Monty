@@ -196,7 +196,8 @@ public class OperationNode extends ExpressionNode {
 		Object rightValue = null;
 		DataTypes type = getDataType(a);
 		// If type isn't array and type of a and b aren't equals.
-		if (!(type.equals(DataTypes.ARRAY) || type.equals(DataTypes.LIST) || type.equals(DataTypes.STACK) || type.equals(getDataType(b))))
+		if (!(type.equals(DataTypes.ARRAY) || type.equals(DataTypes.LIST) || type.equals(DataTypes.STACK)
+				|| type.equals(getDataType(b))))
 			new LogError("Type mismatch:\t" + type + " and " + getDataType(b));
 		leftValue = getLiteral(a);
 		rightValue = getLiteral(b);

@@ -141,8 +141,8 @@ public class OperatorOverloading {
 		case ARRAY:
 		case LIST:
 		case STACK:
-			new LogError("Can't do modulo operation on " + type.toString().toLowerCase() + "s:\t"
-					+ leftValue.toString() + " " + rightValue.toString() + " " + operator.toString());
+			new LogError("Can't do modulo operation on " + type.toString().toLowerCase() + "s:\t" + leftValue.toString()
+					+ " " + rightValue.toString() + " " + operator.toString());
 		case ANY:
 			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -200,8 +200,8 @@ public class OperatorOverloading {
 			return stack;
 		case FLOAT:
 		case BOOLEAN:
-			new LogError("Can't shift left " + type.toString().toLowerCase() + "s:\t " + leftValue.toString()
-					+ " " + rightValue.toString() + " " + operator.toString());
+			new LogError("Can't shift left " + type.toString().toLowerCase() + "s:\t " + leftValue.toString() + " "
+					+ rightValue.toString() + " " + operator.toString());
 		case ANY:
 			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -219,8 +219,8 @@ public class OperatorOverloading {
 		case FLOAT:
 		case STRING:
 		case BOOLEAN:
-			new LogError("Can't shift right " + type.toString().toLowerCase() + "s:\t " + leftValue.toString()
-					+ " " + rightValue.toString() + " " + operator.toString());
+			new LogError("Can't shift right " + type.toString().toLowerCase() + "s:\t " + leftValue.toString() + " "
+					+ rightValue.toString() + " " + operator.toString());
 		case STACK:
 			var stack = ((Stack) leftValue).copy().reversed();
 			var value = ((BigInteger) rightValue).intValue();
@@ -254,8 +254,8 @@ public class OperatorOverloading {
 		case ARRAY:
 		case LIST:
 		case STACK:
-			new LogError("Can't do xor operation with " + type.toString().toLowerCase() + "s:\t "
-					+ leftValue.toString() + " " + rightValue.toString() + " " + operator.toString());
+			new LogError("Can't do xor operation with " + type.toString().toLowerCase() + "s:\t " + leftValue.toString()
+					+ " " + rightValue.toString() + " " + operator.toString());
 		case ANY:
 			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -277,8 +277,8 @@ public class OperatorOverloading {
 		case ARRAY:
 		case LIST:
 		case STACK:
-			new LogError("Can't do and operation with " + type.toString().toLowerCase() + "s:\t "
-					+ leftValue.toString() + " " + rightValue.toString() + " " + operator.toString());
+			new LogError("Can't do and operation with " + type.toString().toLowerCase() + "s:\t " + leftValue.toString()
+					+ " " + rightValue.toString() + " " + operator.toString());
 		case ANY:
 			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
@@ -300,8 +300,8 @@ public class OperatorOverloading {
 		case ARRAY:
 		case LIST:
 		case STACK:
-			new LogError("Can't do or operation with " + type.toString().toLowerCase() + "s:\t "
-					+ leftValue.toString() + " " + rightValue.toString() + " " + operator.toString());
+			new LogError("Can't do or operation with " + type.toString().toLowerCase() + "s:\t " + leftValue.toString()
+					+ " " + rightValue.toString() + " " + operator.toString());
 		case ANY:
 			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:

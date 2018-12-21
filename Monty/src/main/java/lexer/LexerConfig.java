@@ -16,7 +16,6 @@ limitations under the License.
 
 package lexer;
 
-
 import lexer.lexerbuilder.LexerBuilder;
 
 public class LexerConfig {

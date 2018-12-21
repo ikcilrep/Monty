@@ -23,7 +23,7 @@ public class LogError {
 		System.out.println(message + ".");
 		System.exit(0);
 	}
-	
+
 	public LogError(String message, Token token) {
 		System.out.println(message + ".\nLook at " + token.getLine() + " line in " + token.getFileName() + " file.");
 		System.exit(0);
