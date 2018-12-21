@@ -22,7 +22,7 @@ import ast.Block;
 import ast.NodeTypes;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
-import parser.MontyException;
+import parser.LogError;
 
 public abstract class FunctionDeclarationNode extends DeclarationNode {
 	/**
@@ -57,9 +57,9 @@ public abstract class FunctionDeclarationNode extends DeclarationNode {
 
 	public void setArguments(ArrayList<OperationNode> arguments) {
 		if (arguments.size() > parameters.size())
-			new MontyException("Too many arguments in " + name + " function call");
+			new LogError("Too many arguments in " + name + " function call");
 		else if (arguments.size() < parameters.size())
-			new MontyException("Too few arguments in " + name + " function call");
+			new LogError("Too few arguments in " + name + " function call");
 		for (int i = 0; i < arguments.size(); i++) {
 			var name = parameters.get(i).getName();
 			var dataType = parameters.get(i).getType();
@@ -68,7 +68,7 @@ public abstract class FunctionDeclarationNode extends DeclarationNode {
 			var argumentDataType = DataTypes.getDataType(value);
 			if (!dataType.equals(DataTypes.ANY))
 				if (!argumentDataType.equals(dataType))
-					new MontyException("Wrong data type for parameter with name\n\"" + name + "\" in " + getName()
+					new LogError("Wrong data type for parameter with name\n\"" + name + "\" in " + getName()
 							+ " function call expected " + dataType.toString().toLowerCase() + " got "
 							+ argumentDataType.toString().toLowerCase());
 			if (!body.doesContainVariable(name))

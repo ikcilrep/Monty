@@ -23,7 +23,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
-import parser.MontyException;
+import parser.LogError;
 
 public class CharAt extends FunctionDeclarationNode {
 
@@ -47,7 +47,7 @@ public class CharAt extends FunctionDeclarationNode {
 		var index = ((BigInteger) body.getVariableByName("index").getValue()).intValue();
 		var length = str.length();
 		if (index >= length)
-			new MontyException("Index " + index + " is too large for length " + length);
+			new LogError("Index " + index + " is too large for length " + length);
 		return String.valueOf(str.charAt(index));
 	}
 

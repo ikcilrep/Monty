@@ -24,7 +24,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
-import parser.MontyException;
+import parser.LogError;
 import sml.data.returning.Nothing;
 
 public class Join extends FunctionDeclarationNode {
@@ -47,7 +47,7 @@ public class Join extends FunctionDeclarationNode {
 		try {
 			Thread.currentThread().join(millis);
 		} catch (InterruptedException e) {
-			new MontyException("Join for " + millis + " was interrupted");
+			new LogError("Join for " + millis + " was interrupted");
 		}
 		return Nothing.nothing;
 	}

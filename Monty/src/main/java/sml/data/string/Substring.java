@@ -24,7 +24,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
-import parser.MontyException;
+import parser.LogError;
 
 public class Substring extends FunctionDeclarationNode {
 
@@ -51,9 +51,9 @@ public class Substring extends FunctionDeclarationNode {
 		var end = ((BigInteger) body.getVariableByName("end").getValue()).intValue();
 		var length = str.length();
 		if (end > length)
-			new MontyException("End " + length + " is too large for length " + length);
+			new LogError("End " + length + " is too large for length " + length);
 		if (begin < 0)
-			new MontyException("Begin cannot be lower than 0");
+			new LogError("Begin cannot be lower than 0");
 
 		return str.substring(begin, end);
 	}

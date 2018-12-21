@@ -18,7 +18,7 @@ package sml.data.list;
 
 import java.util.Iterator;
 
-import parser.MontyException;
+import parser.LogError;
 import sml.data.array.Array;
 import sml.data.returning.Nothing;
 
@@ -66,7 +66,7 @@ public class List implements Iterable<Object>, Cloneable {
 
 	public Object get(int index) {
 		return index == 0 ? value
-				: (getNext() != null ? getNext().get(index - 1) : new MontyException("Index went away from range"));
+				: (getNext() != null ? getNext().get(index - 1) : new LogError("Index went away from range"));
 	}
 
 	public List set(int index, Object element) {
@@ -75,7 +75,7 @@ public class List implements Iterable<Object>, Cloneable {
 		else if (getNext() != null)
 			return getNext().set(index - 1, element);
 		else
-			new MontyException("Index went away from range");
+			new LogError("Index went away from range");
 		return this;
 	}
 
@@ -106,7 +106,7 @@ public class List implements Iterable<Object>, Cloneable {
 		if (begin == 0)
 			return this;
 		else if (getNext() == null)
-			new MontyException("Index went away from range");
+			new LogError("Index went away from range");
 		return getNext().sublist(begin - 1);
 	}
 

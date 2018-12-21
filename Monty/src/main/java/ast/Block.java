@@ -34,7 +34,7 @@ import ast.statements.ThreadStatement;
 import ast.statements.ReturnStatementNode;
 import ast.statements.WhileStatementNode;
 import parser.DataTypes;
-import parser.MontyException;
+import parser.LogError;
 import sml.casts.*;
 import sml.data.returning.BreakType;
 import sml.data.returning.Nothing;
@@ -45,10 +45,8 @@ public class Block extends Node implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -1974629623424063560L;
-	private final HashMap<String, Block> blocks = new HashMap<>();
 	private LinkedList<Node> children = new LinkedList<>();
 	private final HashMap<String, FunctionDeclarationNode> functions = new HashMap<>();
-	private String name = "";
 	private Block parent;
 	private HashMap<String, VariableDeclarationNode> variables = new HashMap<>();
 
@@ -56,12 +54,6 @@ public class Block extends Node implements Serializable {
 		this.parent = parent;
 	}
 
-	public void addBlock(Block block) {
-		String name = block.getName();
-		if (blocks.containsKey(name))
-			new MontyException("Block with this label " + name + " already exists");
-		blocks.put(name, block);
-	}
 
 	public void addChild(Node child) {
 		children.add(child);
@@ -70,14 +62,14 @@ public class Block extends Node implements Serializable {
 	public void addFunction(FunctionDeclarationNode function) {
 		String name = function.getName();
 		if (variables.containsKey(name))
-			new MontyException("Function " + name + " already exists");
+			new LogError("Function " + name + " already exists");
 		functions.put(name, function);
 	}
 
 	public void addVariable(VariableDeclarationNode variable) {
 		String name = variable.getName();
 		if (variables.containsKey(name)) {
-			new MontyException("Variable " + name + " already exists");
+			new LogError("Variable " + name + " already exists");
 		}
 		variables.put(name, variable);
 	}
@@ -103,19 +95,6 @@ public class Block extends Node implements Serializable {
 		return variables.containsKey(name);
 	}
 
-	public Block getBlockByName(String name) {
-		Block block = this;
-		while (true) {
-			if (block.blocks.containsKey(name))
-				return block.blocks.get(name);
-			var parent = block.getParent();
-			if (parent == null) {
-				new MontyException("There isn't block with name:\t" + name);
-			}
-			block = parent;
-		}
-
-	}
 
 	public LinkedList<Node> getChildren() {
 		return children;
@@ -128,7 +107,7 @@ public class Block extends Node implements Serializable {
 				return block.functions.get(name);
 			var parent = block.getParent();
 			if (parent == null) {
-				new MontyException("There isn't function with name:\t" + name);
+				new LogError("There isn't function with name:\t" + name);
 			}
 			block = parent;
 		}
@@ -136,10 +115,6 @@ public class Block extends Node implements Serializable {
 
 	private HashMap<String, FunctionDeclarationNode> getFunctions() {
 		return functions;
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public Block getParent() {
@@ -153,7 +128,7 @@ public class Block extends Node implements Serializable {
 				return block.variables.get(name);
 			var parent = block.getParent();
 			if (parent == null)
-				new MontyException("There isn't variable with name:\t" + name);
+				new LogError("There isn't variable with name:\t" + name);
 			block = parent;
 		}
 	}
@@ -176,7 +151,7 @@ public class Block extends Node implements Serializable {
 						&& childCastedToVariable.getRightOperand().getOperand().toString().contains("="))) {
 					childCastedToVariable.run();
 				} else
-					new MontyException("Some expression hasn't got any sense!!!");
+					new LogError("Some expression hasn't got any sense!!!");
 
 				break;
 			case IF_STATEMENT:
@@ -223,7 +198,7 @@ public class Block extends Node implements Serializable {
 				var name = childCastedToForStatement.getVariableName();
 				var toIter = childCastedToForStatement.getArray().run();
 				if (!(toIter instanceof Iterable<?>))
-					new MontyException("Can't iterate over:\t" + toIter.getClass().getName());
+					new LogError("Can't iterate over:\t" + toIter.getClass().getName());
 				var iterable = (Iterable<?>) toIter;
 				loop: for (Object e : iterable) {
 					var body = childCastedToForStatement.getBody();
@@ -247,7 +222,7 @@ public class Block extends Node implements Serializable {
 				var newVariableType = childCastedToChangeToStatement.getDataType();
 				var variable = getVariableByName(childCastedToChangeToStatement.getToChangeType().getName());
 				if (!variable.isDynamic())
-					new MontyException("Can't change type of static variable:\tchange " + variable.getName() + " to "
+					new LogError("Can't change type of static variable:\tchange " + variable.getName() + " to "
 							+ newVariableType.toString().toLowerCase());
 
 				variable.setType(newVariableType);
@@ -285,10 +260,6 @@ public class Block extends Node implements Serializable {
 			}
 		}
 		return null;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public void setVariables(HashMap<String, VariableDeclarationNode> variables) {

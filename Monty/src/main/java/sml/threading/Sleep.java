@@ -24,7 +24,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
-import parser.MontyException;
+import parser.LogError;
 import sml.data.returning.Nothing;
 
 public class Sleep extends FunctionDeclarationNode {
@@ -47,7 +47,7 @@ public class Sleep extends FunctionDeclarationNode {
 		try {
 			Thread.sleep(millis);
 		} catch (InterruptedException e) {
-			new MontyException("Sleep for " + millis + " was interrupted");
+			new LogError("Sleep for " + millis + " was interrupted");
 		}
 		return Nothing.nothing;
 	}

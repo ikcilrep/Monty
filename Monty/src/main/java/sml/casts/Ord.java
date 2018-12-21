@@ -24,7 +24,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
-import parser.MontyException;
+import parser.LogError;
 
 public class Ord extends FunctionDeclarationNode {
 
@@ -44,7 +44,7 @@ public class Ord extends FunctionDeclarationNode {
 		setArguments(arguments);
 		var chr = (String) getBody().getVariableByName("chr").getValue();
 		if (chr.length() != 1)
-			new MontyException("Expected one character, but got " + chr.length() + ":\t" + chr);
+			new LogError("Expected one character, but got " + chr.length() + ":\t" + chr);
 		return BigInteger.valueOf(chr.charAt(0));
 	}
 

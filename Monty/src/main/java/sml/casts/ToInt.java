@@ -24,7 +24,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
-import parser.MontyException;
+import parser.LogError;
 import sml.data.array.Array;
 
 public class ToInt extends FunctionDeclarationNode {
@@ -42,7 +42,7 @@ public class ToInt extends FunctionDeclarationNode {
 
 	public static BigInteger toInt(Object a) {
 		if (a == null)
-			new MontyException("Can't cast void to integer");
+			new LogError("Can't cast void to integer");
 		if (a instanceof BigInteger)
 			return (BigInteger) a;
 		if (a instanceof Float)
@@ -52,7 +52,7 @@ public class ToInt extends FunctionDeclarationNode {
 		if (a instanceof String)
 			return StringToInt.stringToInt((String) a);
 		if (a instanceof Array)
-			new MontyException("Can't cast array to integer:\t" + a.toString());
+			new LogError("Can't cast array to integer:\t" + a.toString());
 		return null;
 	}
 

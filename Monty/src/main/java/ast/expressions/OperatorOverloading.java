@@ -19,7 +19,7 @@ package ast.expressions;
 import java.math.BigInteger;
 
 import ast.declarations.VariableDeclarationNode;
-import parser.MontyException;
+import parser.LogError;
 import sml.data.array.Array;
 import sml.data.list.List;
 import sml.data.stack.Stack;
@@ -43,7 +43,7 @@ public class OperatorOverloading {
 		case STRING:
 			return leftValue.toString() + rightValue.toString();
 		case BOOLEAN:
-			new MontyException("Can't add booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+			new LogError("Can't add booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
 		case ARRAY:
 			return ((Array) leftValue).copy().append(rightValue);
@@ -52,9 +52,9 @@ public class OperatorOverloading {
 		case STACK:
 			return ((Stack) leftValue).copy().push(rightValue);
 		case ANY:
-			new MontyException("Can't do any operations with \"any\" data type");
+			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
 		default:
 			return null;
@@ -72,12 +72,12 @@ public class OperatorOverloading {
 		case ARRAY:
 		case LIST:
 		case STACK:
-			new MontyException("Can't subtract " + type.toString().toLowerCase() + "s:\t" + leftValue.toString() + " "
+			new LogError("Can't subtract " + type.toString().toLowerCase() + "s:\t" + leftValue.toString() + " "
 					+ rightValue.toString() + " " + operator.toString());
 		case ANY:
-			new MontyException("Can't do any operations with \"any\" data type");
+			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
 		default:
 			return null;
@@ -94,12 +94,12 @@ public class OperatorOverloading {
 		case BOOLEAN:
 		case ARRAY:
 		case LIST:
-			new MontyException("Can't multiply " + type.toString().toLowerCase() + "s:\t" + leftValue.toString() + " "
+			new LogError("Can't multiply " + type.toString().toLowerCase() + "s:\t" + leftValue.toString() + " "
 					+ rightValue.toString() + " " + operator.toString());
 		case ANY:
-			new MontyException("Can't do any operations with \"any\" data type");
+			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
 		default:
 			return null;
@@ -118,12 +118,12 @@ public class OperatorOverloading {
 		case ARRAY:
 		case LIST:
 		case STACK:
-			new MontyException("Can't divide " + type.toString().toLowerCase() + "s:\t" + leftValue.toString() + " "
+			new LogError("Can't divide " + type.toString().toLowerCase() + "s:\t" + leftValue.toString() + " "
 					+ rightValue.toString() + " " + operator.toString());
 		case ANY:
-			new MontyException("Can't do any operations with \"any\" data type");
+			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
 		default:
 			return null;
@@ -141,12 +141,12 @@ public class OperatorOverloading {
 		case ARRAY:
 		case LIST:
 		case STACK:
-			new MontyException("Can't do modulo operation on " + type.toString().toLowerCase() + "s:\t"
+			new LogError("Can't do modulo operation on " + type.toString().toLowerCase() + "s:\t"
 					+ leftValue.toString() + " " + rightValue.toString() + " " + operator.toString());
 		case ANY:
-			new MontyException("Can't do any operations with \"any\" data type");
+			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
 		default:
 			return null;
@@ -170,9 +170,9 @@ public class OperatorOverloading {
 		case STACK:
 			return ((Stack) rightValue).reversed();
 		case ANY:
-			new MontyException("Can't do any operations with \"any\" data type");
+			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString());
+			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString());
 		default:
 			return null;
 		}
@@ -200,12 +200,12 @@ public class OperatorOverloading {
 			return stack;
 		case FLOAT:
 		case BOOLEAN:
-			new MontyException("Can't shift left " + type.toString().toLowerCase() + "s:\t " + leftValue.toString()
+			new LogError("Can't shift left " + type.toString().toLowerCase() + "s:\t " + leftValue.toString()
 					+ " " + rightValue.toString() + " " + operator.toString());
 		case ANY:
-			new MontyException("Can't do any operations with \"any\" data type");
+			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
 		default:
 			return null;
@@ -219,7 +219,7 @@ public class OperatorOverloading {
 		case FLOAT:
 		case STRING:
 		case BOOLEAN:
-			new MontyException("Can't shift right " + type.toString().toLowerCase() + "s:\t " + leftValue.toString()
+			new LogError("Can't shift right " + type.toString().toLowerCase() + "s:\t " + leftValue.toString()
 					+ " " + rightValue.toString() + " " + operator.toString());
 		case STACK:
 			var stack = ((Stack) leftValue).copy().reversed();
@@ -235,9 +235,9 @@ public class OperatorOverloading {
 			var lst = ((List) leftValue);
 			return lst.copy().sublist(((BigInteger) rightValue).intValue(), lst.length());
 		case ANY:
-			new MontyException("Can't do any operations with \"any\" data type");
+			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
 		default:
 			return null;
@@ -254,12 +254,12 @@ public class OperatorOverloading {
 		case ARRAY:
 		case LIST:
 		case STACK:
-			new MontyException("Can't do xor operation with " + type.toString().toLowerCase() + "s:\t "
+			new LogError("Can't do xor operation with " + type.toString().toLowerCase() + "s:\t "
 					+ leftValue.toString() + " " + rightValue.toString() + " " + operator.toString());
 		case ANY:
-			new MontyException("Can't do any operations with \"any\" data type");
+			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
 		default:
 			return null;
@@ -277,12 +277,12 @@ public class OperatorOverloading {
 		case ARRAY:
 		case LIST:
 		case STACK:
-			new MontyException("Can't do and operation with " + type.toString().toLowerCase() + "s:\t "
+			new LogError("Can't do and operation with " + type.toString().toLowerCase() + "s:\t "
 					+ leftValue.toString() + " " + rightValue.toString() + " " + operator.toString());
 		case ANY:
-			new MontyException("Can't do any operations with \"any\" data type");
+			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
 		default:
 			return null;
@@ -300,12 +300,12 @@ public class OperatorOverloading {
 		case ARRAY:
 		case LIST:
 		case STACK:
-			new MontyException("Can't do or operation with " + type.toString().toLowerCase() + "s:\t "
+			new LogError("Can't do or operation with " + type.toString().toLowerCase() + "s:\t "
 					+ leftValue.toString() + " " + rightValue.toString() + " " + operator.toString());
 		case ANY:
-			new MontyException("Can't do any operations with \"any\" data type");
+			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
 		default:
 			return null;
@@ -326,9 +326,9 @@ public class OperatorOverloading {
 		case ARRAY:
 			return leftValue.equals(rightValue);
 		case ANY:
-			new MontyException("Can't do any operations with \"any\" data type");
+			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
 		default:
 			return null;
@@ -346,12 +346,12 @@ public class OperatorOverloading {
 		case ARRAY:
 		case LIST:
 		case STACK:
-			new MontyException("Can't do greater operation with " + type.toString().toLowerCase() + "s:\t"
+			new LogError("Can't do greater operation with " + type.toString().toLowerCase() + "s:\t"
 					+ leftValue.toString() + " " + rightValue.toString() + " " + operator.toString());
 		case ANY:
-			new MontyException("Can't do any operations with \"any\" data type");
+			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
 		default:
 			return null;
@@ -369,12 +369,12 @@ public class OperatorOverloading {
 		case ARRAY:
 		case LIST:
 		case STACK:
-			new MontyException("Can't do lower operation with " + type.toString().toLowerCase() + "s:\t"
+			new LogError("Can't do lower operation with " + type.toString().toLowerCase() + "s:\t"
 					+ leftValue.toString() + " " + rightValue.toString() + " " + operator.toString());
 		case ANY:
-			new MontyException("Can't do any operations with \"any\" data type");
+			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
 		default:
 			return null;
@@ -392,12 +392,12 @@ public class OperatorOverloading {
 		case ARRAY:
 		case LIST:
 		case STACK:
-			new MontyException("Can't do greater-equals operation with " + type.toString().toLowerCase() + "s:\t"
+			new LogError("Can't do greater-equals operation with " + type.toString().toLowerCase() + "s:\t"
 					+ leftValue.toString() + " " + rightValue.toString() + " " + operator.toString());
 		case ANY:
-			new MontyException("Can't do any operations with \"any\" data type");
+			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
 		default:
 			return null;
@@ -415,12 +415,12 @@ public class OperatorOverloading {
 		case ARRAY:
 		case LIST:
 		case STACK:
-			new MontyException("Can't do lower-equals operation with " + type.toString().toLowerCase() + "s:\t"
+			new LogError("Can't do lower-equals operation with " + type.toString().toLowerCase() + "s:\t"
 					+ leftValue.toString() + " " + rightValue.toString() + " " + operator.toString());
 		case ANY:
-			new MontyException("Can't do any operations with \"any\" data type");
+			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
 		default:
 			return null;
@@ -441,9 +441,9 @@ public class OperatorOverloading {
 		case ARRAY:
 			return !leftValue.equals(rightValue);
 		case ANY:
-			new MontyException("Can't do any operations with \"any\" data type");
+			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
 		default:
 			return null;
@@ -463,9 +463,9 @@ public class OperatorOverloading {
 			variable.setValue(rightValue);
 			return variable.getValue();
 		case ANY:
-			new MontyException("Can't do any operations with \"any\" data type");
+			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
 		default:
 			return null;
@@ -485,12 +485,12 @@ public class OperatorOverloading {
 			variable.setValue(additionOperator(variable.getValue(), rightValue, operator, type));
 			return variable.getValue();
 		case BOOLEAN:
-			new MontyException("Can't add booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+			new LogError("Can't add booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
 		case ANY:
-			new MontyException("Can't do any operations with \"any\" data type");
+			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
 		default:
 			return null;
@@ -510,9 +510,9 @@ public class OperatorOverloading {
 			variable.setValue(subtractionOperator(variable.getValue(), rightValue, operator, type));
 			return variable.getValue();
 		case ANY:
-			new MontyException("Can't do any operations with \"any\" data type");
+			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
 		default:
 			return null;
@@ -532,9 +532,9 @@ public class OperatorOverloading {
 			variable.setValue(multiplicationOperator(variable.getValue(), rightValue, operator, type));
 			return variable.getValue();
 		case ANY:
-			new MontyException("Can't do any operations with \"any\" data type");
+			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
 		default:
 			return null;
@@ -554,9 +554,9 @@ public class OperatorOverloading {
 			variable.setValue(divisionOperator(variable.getValue(), rightValue, operator, type));
 			return variable.getValue();
 		case ANY:
-			new MontyException("Can't do any operations with \"any\" data type");
+			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
 		default:
 			return null;
@@ -576,9 +576,9 @@ public class OperatorOverloading {
 			variable.setValue(shiftLeftOperator(variable.getValue(), rightValue, operator, type));
 			return variable.getValue();
 		case ANY:
-			new MontyException("Can't do any operations with \"any\" data type");
+			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
 		default:
 			return null;
@@ -598,9 +598,9 @@ public class OperatorOverloading {
 			variable.setValue(shiftRightOperator(variable.getValue(), rightValue, operator, type));
 			return variable.getValue();
 		case ANY:
-			new MontyException("Can't do any operations with \"any\" data type");
+			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
 		default:
 			return null;
@@ -619,9 +619,9 @@ public class OperatorOverloading {
 			variable.setValue(xorOperator(variable.getValue(), rightValue, operator, type));
 			return variable.getValue();
 		case ANY:
-			new MontyException("Can't do any operations with \"any\" data type");
+			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
 		default:
 			return null;
@@ -640,9 +640,9 @@ public class OperatorOverloading {
 			variable.setValue(andOperator(variable.getValue(), rightValue, operator, type));
 			return variable.getValue();
 		case ANY:
-			new MontyException("Can't do any operations with \"any\" data type");
+			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
 		default:
 			return null;
@@ -661,9 +661,9 @@ public class OperatorOverloading {
 			variable.setValue(orOperator(variable.getValue(), rightValue, operator, type));
 			return variable.getValue();
 		case ANY:
-			new MontyException("Can't do any operations with \"any\" data type");
+			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
-			new MontyException("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
+			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString());
 		default:
 			return null;

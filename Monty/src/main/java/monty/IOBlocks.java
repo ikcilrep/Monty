@@ -11,24 +11,25 @@ import java.util.zip.GZIPOutputStream;
 
 import ast.Block;
 import lexer.LexerConfig;
-import lexer.MontyToken;
-import parser.MontyException;
+import lexer.Token;
+import parser.LogError;
 import parser.parsing.Parser;
 
 public class IOBlocks {
+	
 	public static Block readBlock(int from, String path) {
 		Importing.setLibraries(from);
 		if (path.endsWith(".mt"))
 			return readBlockFromFile(path);
 		else if (path.endsWith(".mtc"))
 			return readCompiledBlockFromFile(path);
-		new MontyException("Wrong file extensions");
+		new LogError("File with wrong extension: " + path);
 		return null;
 	}
 	
 	private static Block readBlockFromFile(String path) {
-		var lb = LexerConfig.getLexer(FileIO.readFile(path));
-		List<MontyToken> tokens = lb.getAllTokens();
+		var lb = LexerConfig.getLexer(FileIO.readFile(path), path);
+		List<Token> tokens = lb.getAllTokens();
 		var block = Parser.parse(tokens);
 		block.addFunction(new sml.data.returning.Nothing());
 			return block;
@@ -44,7 +45,7 @@ public class IOBlocks {
 			fis = new FileInputStream(path);
 			gis = new GZIPInputStream(fis);
 		} catch (IOException e) {
-			new MontyException("File not found:\t" + path);
+			new LogError("File not found:\t" + path);
 		}
 		return gis;
 	}
@@ -56,12 +57,12 @@ public class IOBlocks {
 			ois = new ObjectInputStream(gis);
 			var obj = ois.readObject();
 			if (!(obj instanceof Block))
-				new MontyException("This isn't file with program or library:\t" + path);
+				new LogError("This isn't file with program or library:\t" + path);
 			block = (Block) obj;
 			ois.close();
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
-			new MontyException("Wrong file format");
+			new LogError("Wrong file format");
 		}
 		return block;
 	}

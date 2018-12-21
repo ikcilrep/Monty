@@ -32,8 +32,8 @@ import java.util.jar.JarFile;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import lexer.LexerConfig;
-import lexer.MontyToken;
-import parser.MontyException;
+import lexer.Token;
+import parser.LogError;
 import parser.Tokens;
 import parser.parsing.Parser;
 
@@ -102,13 +102,14 @@ public class Importing {
 	}
 
 	private static void addFunctionFromFile(Block block, String path) {
-		var text = FileIO.readFile(new File(path).getAbsolutePath());
-		var importedTokens = LexerConfig.getLexer(text).getAllTokens();
+		var file = new File(path);
+		var text = FileIO.readFile(file.getAbsolutePath());
+		var importedTokens = LexerConfig.getLexer(text, file.getName()).getAllTokens();
 		block.concat(Parser.parse(importedTokens));
 	}
 
-	private static void addFunctionsFromDirectory(Block block, File folder) {
-		for (File fileEntry : folder.listFiles()) {
+	private static void addFunctionsFromDirectory(Block block, File directory) {
+		for (File fileEntry : directory.listFiles()) {
 			if (fileEntry.isDirectory())
 				addFunctionsFromDirectory(block, fileEntry);
 			else if (fileEntry.getName().endsWith(".mt"))
@@ -116,19 +117,21 @@ public class Importing {
 			else if (fileEntry.getName().endsWith(".mtc"))
 				block.concat(IOBlocks.readCompiledBlockFromFile(fileEntry.getAbsolutePath()));
 			else
-				new MontyException("Wrong file format");
+				new LogError("File with wrong extension: " + directory.getPath() + File.separator
+						+ fileEntry.getName());
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	private static void findAndAddFunctions(Block block, String[] splited, String partOfPath, Library toSearch) {
+	private static void findAndAddFunctions(Block block, String[] splited, String path, Library toSearch,
+			Token token) {
 		var sublibraries = toSearch.getSublibraries();
 		Object function = null;
 		int i = 0;
 
 		for (String toImport : splited) {
 			if (!sublibraries.containsKey(toImport))
-				new MontyException("There isn't file to import:\t" + partOfPath);
+				new LogError("There isn't file to import:\t" + path, token);
 			else if ((function = sublibraries.get(toImport)) instanceof FunctionDeclarationNode) {
 				block.addFunction((FunctionDeclarationNode) function);
 				break;
@@ -140,7 +143,7 @@ public class Importing {
 		}
 	}
 
-	public static void importFile(Block block, List<MontyToken> tokens) {
+	public static void importFile(Block block, List<Token> tokens) {
 		var partOfPath = Tokens.getText(tokens.subList(1, tokens.size()));
 		var path = Paths.get("").toAbsolutePath().toString() + File.separatorChar
 				+ emptyIfNull(Paths.get(Main.path).getParent()) + File.separator
@@ -158,8 +161,8 @@ public class Importing {
 		else {
 			var splited = partOfPath.split("\\.");
 			if (!splited[0].equals(Main.standard_library_name))
-				new MontyException("There isn't file to import:\t" + path);
-			findAndAddFunctions(block, subArray(splited, 1), partOfPath, Parser.libraries.get(splited[0]));
+				new LogError("There isn't file to import:\t" + path, tokens.get(1));
+			findAndAddFunctions(block, subArray(splited, 1), path, Parser.libraries.get(splited[0]), tokens.get(1));
 		}
 	}
 

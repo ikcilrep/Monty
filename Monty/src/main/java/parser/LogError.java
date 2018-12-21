@@ -1,3 +1,4 @@
+
 /*
 Copyright 2018 Szymon Perlicki
 
@@ -13,36 +14,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+package parser;
 
-package lexer;
+import lexer.Token;
 
-import lexer.lexerbuilder.Token;
-
-public class MontyToken implements Token<MontyToken>, Cloneable {
-	private String text;
-	TokenTypes type;
-
-	public MontyToken(TokenTypes type) {
-		this.type = type;
+public class LogError {
+	public LogError(String message) {
+		System.out.println(message + ".");
+		System.exit(0);
 	}
-
-	public TokenTypes getType() {
-		return type;
+	
+	public LogError(String message, Token token) {
+		System.out.println(message + ".\nLook at " + token.getLine() + " line in " + token.getFileName() + " file.");
+		System.exit(0);
 	}
-
-	@Override
-	public void setText(String text) {
-		this.text = text;
-	}
-
-	@Override
-	public String getText() {
-		return text;
-	}
-
-	@Override
-	public MontyToken copy() throws CloneNotSupportedException {
-		return (MontyToken) super.clone();
-	}
-
 }

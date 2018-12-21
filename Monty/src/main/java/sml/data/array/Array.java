@@ -18,7 +18,7 @@ package sml.data.array;
 
 import java.util.Iterator;
 
-import parser.MontyException;
+import parser.LogError;
 import sml.data.list.List;
 
 public class Array implements Iterable<Object>, Cloneable {
@@ -131,7 +131,7 @@ public class Array implements Iterable<Object>, Cloneable {
 	 */
 	public Object get(int index) {
 		if (index >= array.length)
-			new MontyException("Index " + index + " is too large for length " + array.length);
+			new LogError("Index " + index + " is too large for length " + array.length);
 		return array[index];
 	}
 

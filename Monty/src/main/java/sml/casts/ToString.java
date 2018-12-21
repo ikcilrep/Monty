@@ -23,7 +23,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
-import parser.MontyException;
+import parser.LogError;
 
 public class ToString extends FunctionDeclarationNode {
 
@@ -40,7 +40,7 @@ public class ToString extends FunctionDeclarationNode {
 
 	public static String toString(Object a) {
 		if (a == null)
-			new MontyException("Can't cast void to string.");
+			new LogError("Can't cast void to string.");
 		return a.toString();
 	}
 

@@ -22,7 +22,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import parser.MontyException;
+import parser.LogError;
 
 public abstract class FileIO {
 	public static String readFile(String path) {
@@ -33,7 +33,7 @@ public abstract class FileIO {
 			try {
 				fr = new FileReader(path);
 			} catch (FileNotFoundException e) {
-				new MontyException("This file isn't exists:\t" + path);
+				new LogError("This file doesn't exist:\t" + path);
 			}
 			br = new BufferedReader(fr);
 			String line;
@@ -48,7 +48,7 @@ public abstract class FileIO {
 					br.close();
 				}
 			} catch (IOException ex) {
-				new MontyException("Failed to read file " + path);
+				new LogError("Failed to read file:\t" + path);
 			}
 		}
 		return text.toString();
@@ -62,7 +62,7 @@ public abstract class FileIO {
 			fileWriter.flush();
 			fileWriter.close();
 		} catch (IOException e) {
-			new MontyException("Failed to write file " + path);
+			new LogError("Failed to write file:\t" + path);
 			e.printStackTrace();
 		}
 

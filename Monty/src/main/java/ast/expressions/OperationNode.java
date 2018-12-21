@@ -21,7 +21,7 @@ import ast.Node;
 import ast.NodeTypes;
 import ast.declarations.VariableDeclarationNode;
 import parser.DataTypes;
-import parser.MontyException;
+import parser.LogError;
 import ast.expressions.OperatorOverloading;
 
 public class OperationNode extends ExpressionNode {
@@ -197,7 +197,7 @@ public class OperationNode extends ExpressionNode {
 		DataTypes type = getDataType(a);
 		// If type isn't array and type of a and b aren't equals.
 		if (!(type.equals(DataTypes.ARRAY) || type.equals(DataTypes.LIST) || type.equals(DataTypes.STACK) || type.equals(getDataType(b))))
-			new MontyException("Type mismatch:\t" + type + " and " + getDataType(b));
+			new LogError("Type mismatch:\t" + type + " and " + getDataType(b));
 		leftValue = getLiteral(a);
 		rightValue = getLiteral(b);
 

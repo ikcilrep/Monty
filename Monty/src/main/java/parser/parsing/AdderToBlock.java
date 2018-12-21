@@ -34,19 +34,19 @@ import ast.statements.IfStatementNode;
 import ast.statements.ThreadStatement;
 import ast.statements.ReturnStatementNode;
 import ast.statements.WhileStatementNode;
-import lexer.MontyToken;
+import lexer.Token;
 import lexer.TokenTypes;
 import parser.DataTypes;
-import parser.MontyException;
+import parser.LogError;
 import parser.Tokens;
 
 public abstract class AdderToBlock {
 
-	public static void addExpression(Block block, List<MontyToken> tokens) {
+	public static void addExpression(Block block, List<Token> tokens) {
 		block.addChild(ExpressionParser.parse(block, tokens));
 	}
 
-	public static void addReturnStatement(Block block, List<MontyToken> tokens) {
+	public static void addReturnStatement(Block block, List<Token> tokens) {
 		OperationNode expression = null;
 		if (tokens.size() > 1)
 			expression = ExpressionParser.parse(block, tokens.subList(1, tokens.size()));
@@ -55,7 +55,7 @@ public abstract class AdderToBlock {
 		block.addChild(new ReturnStatementNode(expression));
 	}
 
-	public static void addVariableDeclaration(Block block, List<MontyToken> tokens) {
+	public static void addVariableDeclaration(Block block, List<Token> tokens) {
 		var variable = new VariableDeclarationNode(tokens.get(2).getText(),
 				Tokens.getDataType(tokens.get(1).getType()));
 		variable.setDynamic(true);
@@ -63,7 +63,7 @@ public abstract class AdderToBlock {
 		addExpression(block, tokens.subList(2, tokens.size()));
 	}
 
-	public static Block addFunctionDeclaration(Block block, List<MontyToken> tokens) {
+	public static Block addFunctionDeclaration(Block block, List<Token> tokens) {
 		var function = new CustomFunctionDeclarationNode(tokens.get(2).getText(),
 				Tokens.getDataType(tokens.get(1).getType()));
 		DataTypes type = null;
@@ -83,22 +83,22 @@ public abstract class AdderToBlock {
 		return function.getBody();
 	}
 
-	public static Block addIfStatement(Block block, List<MontyToken> tokens) {
+	public static Block addIfStatement(Block block, List<Token> tokens) {
 		var ifStatement = new IfStatementNode(block, ExpressionParser.parse(block, tokens.subList(1, tokens.size())));
 		block.addChild(ifStatement);
 		return ifStatement;
 
 	}
 
-	public static Block addElseStatement(Block block, List<MontyToken> tokens) {
+	public static Block addElseStatement(Block block, List<Token> tokens) {
 		if (!block.getNodeType().equals(NodeTypes.IF_STATEMENT))
-			new MontyException("Unexpected \"else\" keyword.");
+			new LogError("Unexpected \"else\" keyword", tokens.get(0));
 		var elseBlock = new Block(block.getParent());
 		((IfStatementNode) block).setElseBody(elseBlock);
 		return elseBlock;
 	}
 
-	public static Block addWhileStatement(Block block, List<MontyToken> tokens) {
+	public static Block addWhileStatement(Block block, List<Token> tokens) {
 		var whileStatement = new WhileStatementNode(ExpressionParser.parse(block, tokens.subList(1, tokens.size())));
 		whileStatement.setBody(new Block(block));
 		block.addChild(whileStatement);
@@ -106,7 +106,7 @@ public abstract class AdderToBlock {
 
 	}
 
-	public static Block addDoWhileStatement(Block block, List<MontyToken> tokens) {
+	public static Block addDoWhileStatement(Block block, List<Token> tokens) {
 		var whileStatement = new DoWhileStatementNode(ExpressionParser.parse(block, tokens.subList(2, tokens.size())));
 		whileStatement.setBody(new Block(block));
 		block.addChild(whileStatement);
@@ -114,12 +114,12 @@ public abstract class AdderToBlock {
 
 	}
 
-	public static void addChangeToStatement(Block block, List<MontyToken> tokens) {
+	public static void addChangeToStatement(Block block, List<Token> tokens) {
 		block.addChild(new ChangeToStatementNode(new VariableNode(tokens.get(1).getText()),
 				Tokens.getDataType(tokens.get(3).getType())));
 	}
 
-	public static void addThreadStatement(Block block, List<MontyToken> tokens) {
+	public static void addThreadStatement(Block block, List<Token> tokens) {
 		block.addChild(new ThreadStatement(ExpressionParser.parse(block, tokens.subList(1, tokens.size()))));
 	}
 
@@ -131,7 +131,7 @@ public abstract class AdderToBlock {
 		block.addChild(new ContinueStatementNode());
 	}
 
-	public static Block addForStatement(Block block, List<MontyToken> tokens) {
+	public static Block addForStatement(Block block, List<Token> tokens) {
 		var forStatement = new ForStatementNode(tokens.get(1).getText(),
 				ExpressionParser.parse(block, tokens.subList(3, tokens.size())));
 		forStatement.setBody(new Block(block));

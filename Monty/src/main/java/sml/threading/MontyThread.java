@@ -17,7 +17,7 @@ limitations under the License.
 package sml.threading;
 
 import ast.expressions.OperationNode;
-import parser.MontyException;
+import parser.LogError;
 
 public class MontyThread implements Runnable {
 	private OperationNode expression;
@@ -29,7 +29,7 @@ public class MontyThread implements Runnable {
 		try {
 			thread.start();
 		} catch (OutOfMemoryError e) {
-			new MontyException("Out of memory in thread");
+			new LogError("Out of memory in thread");
 		}
 	}
 

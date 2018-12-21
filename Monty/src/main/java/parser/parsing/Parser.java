@@ -21,20 +21,20 @@ import java.util.HashMap;
 import java.util.List;
 
 import ast.Block;
-import lexer.MontyToken;
+import lexer.Token;
 import lexer.TokenTypes;
 import monty.Importing;
 import monty.Library;
 import parser.Identificator;
-import parser.MontyException;
+import parser.LogError;
 
 public class Parser {
 	public static HashMap<String, Library> libraries;
 
-	public static Block parse(List<MontyToken> tokens) {
-		var tokensBeforeSemicolon = new ArrayList<MontyToken>();
+	public static Block parse(List<Token> tokens) {
+		var tokensBeforeSemicolon = new ArrayList<Token>();
 		var block = new Block(null);
-		for (MontyToken token : tokens) {
+		for (Token token : tokens) {
 			if (token.getType().equals(TokenTypes.SEMICOLON)) {
 				if (tokensBeforeSemicolon.size() == 0)
 					continue;
@@ -81,7 +81,7 @@ public class Parser {
 				} else if (Identificator.isEndKeyword(tokensBeforeSemicolon)) {
 					var parent = block.getParent();
 					if (parent == null)
-						new MontyException("Nothing to end!");
+						new LogError("Nothing to end!", tokensBeforeSemicolon.get(0));
 					block = block.getParent();
 				}
 				tokensBeforeSemicolon.clear();

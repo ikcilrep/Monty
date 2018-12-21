@@ -24,15 +24,17 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.text.StringEscapeUtils;
 
-public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething<T> implements Cloneable {
+import lexer.Token;
 
-	final ArrayList<Character> binaryOperators = new ArrayList<Character>();
+public class LexerBuilder extends SetOnSomething implements Cloneable {
+
+	final ArrayList<Character> binaryOperators = new ArrayList<>();
 
 	private boolean canIAddQuotes = false;
 
-	final ArrayList<Character> comparisonOperators = new ArrayList<Character>();
+	final ArrayList<Character> comparisonOperators = new ArrayList<>();
 
-	private T copied;
+	private Token copied;
 
 	final Pattern floatLiteralIdentifier = Pattern.compile("[+-]?[0-9]+\\.[0-9]+");
 
@@ -40,24 +42,26 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 
 	final StringBuilder keyword = new StringBuilder();
 
-	final private HashMap<String, T> keywords = new HashMap<String, T>();
+	final private HashMap<String, Token> keywords = new HashMap<>();
 
 	final ArrayList<Character> logicalOperators = new ArrayList<Character>();
 
-	private T matchedValue;
+	private Token matchedValue;
 
 	final Pattern regexIdentifier = Pattern.compile("^[a-zA-Z_$][a-zA-Z_$0-9]*$");
 
-	final private HashMap<Pattern, T> regularExpressions = new HashMap<Pattern, T>();
+	final private HashMap<Pattern, Token> regularExpressions = new HashMap<>();
 
 	private String text;
-
 	private int tokenCounter = -1;
+	private int lines;
+	
 
-	final ArrayList<T> tokens = new ArrayList<T>();
+	final ArrayList<Token> tokens = new ArrayList<Token>();
 
-	public LexerBuilder(String text) {
-		this.setText(text);
+	public LexerBuilder(String text, String fileName) {
+		super.fileName = fileName;
+		lines = 1;
 		binaryOperators.add('*');
 		binaryOperators.add('/');
 		binaryOperators.add('+');
@@ -76,6 +80,7 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 		logicalOperators.add('&');
 		logicalOperators.add('|');
 		logicalOperators.add('!');
+		setText(text);
 	}
 
 	public void addQuotesToStringText(boolean canIAddQuotes) {
@@ -87,27 +92,32 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 		if (keywords.containsKey(keywordToString)) {
 			copied = keywords.get(keywordToString).copy();
 			copied.setText(keywordToString);
+			copied.setLine(lines);
 			tokens.add(copied);
 		} else if ((matchedValue = matched(keywordToString)) != null) {
 			copied = matchedValue.copy();
 			copied.setText(keywordToString);
+			copied.setLine(lines);
 			tokens.add(copied);
 		} else if (tokenFloat != null && isFloatLiteral(keywordToString)) {
 			copied = tokenFloat.copy();
 			copied.setText(keywordToString);
+			copied.setLine(lines);
 			tokens.add(copied);
 		} else if (tokenInteger != null && isIntegerLiteral(keywordToString)) {
 			copied = tokenInteger.copy();
 			copied.setText(keywordToString);
+			copied.setLine(lines);
 			tokens.add(copied);
 		} else if (tokenIdentifier != null && isIdentifier(keywordToString)) {
 			copied = tokenIdentifier.copy();
 			copied.setText(keywordToString);
+			copied.setLine(lines);
 			tokens.add(copied);
 		}
 	}
 
-	public ArrayList<T> getAllTokens() {
+	public ArrayList<Token> getAllTokens() {
 		tokens.clear();
 		keyword.setLength(0);
 		boolean isInString = false;
@@ -136,6 +146,7 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 						e.printStackTrace();
 					}
 					copied.setText(StringEscapeUtils.unescapeJava(keyword.toString()));
+					copied.setLine(lines);
 					if (canIAddQuotes)
 						copied.setText("\"" + copied.getText() + "\"");
 					tokens.add(copied);
@@ -148,11 +159,15 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 			}
 			keyword.append(thisChar);
 			if (thisChar != '\0' && thisChar == commentChar) {
+				if (thisChar == '\n')
+					lines++;
 				isInComment = true;
 			} else if (tokenString != null && thisChar == '\"') {
 				isInString = true;
 				keyword.setLength(0);
 			} else if (Character.isWhitespace(thisChar)) {
+				if (thisChar == '\n')
+					lines++;
 				try {
 					check();
 				} catch (CloneNotSupportedException e) {
@@ -208,6 +223,7 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 					e.printStackTrace();
 				}
 				copied.setText("" + thisChar);
+				copied.setLine(lines);
 				tokens.add(copied);
 				keyword.setLength(0);
 			} else if (tokenCurlyBracket != null && (thisChar == '{' || thisChar == '}')) {
@@ -222,6 +238,7 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 					e.printStackTrace();
 				}
 				copied.setText("" + thisChar);
+				copied.setLine(lines);
 				tokens.add(copied);
 				keyword.setLength(0);
 			} else if (tokenSquareBracket != null && (thisChar == '[' || thisChar == ']')) {
@@ -236,6 +253,7 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 					e.printStackTrace();
 				}
 				copied.setText("" + thisChar);
+				copied.setLine(lines);
 				tokens.add(copied);
 				keyword.setLength(0);
 			} else if (tokenComparisonOperator != null && comparisonOperators.contains(thisChar)
@@ -253,8 +271,10 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 				}
 				if ((thisChar == '<' || thisChar == '>') && text.charAt(i + 1) != '=') {
 					copied.setText("" + thisChar);
+					copied.setLine(lines);
 				} else {
 					copied.setText("" + thisChar + '=');
+					copied.setLine(lines);
 					i++;
 				}
 				tokens.add(copied);
@@ -274,6 +294,7 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 						e.printStackTrace();
 					}
 					copied.setText(text.substring(i, i + 2));
+					copied.setLine(lines);
 					i++;
 				} else if (thisChar == '!'
 						&& (i == text.length() - 1 || (i <= text.length() - 2) && text.charAt(i + 1) != '=')) {
@@ -283,6 +304,7 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 						e.printStackTrace();
 					}
 					copied.setText("!");
+					copied.setLine(lines);
 				}
 				tokens.add(copied);
 				keyword.setLength(0);
@@ -305,6 +327,7 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 							e.printStackTrace();
 						}
 						copied.setText(text.substring(i, i + 3));
+						copied.setLine(lines);
 						i += 2;
 						isAssignmentOperator = true;
 					} else if (i <= text.length() - 2 && binaryOperators.contains(thisChar)
@@ -315,6 +338,7 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 							e.printStackTrace();
 						}
 						copied.setText(text.substring(i, i + 2));
+						copied.setLine(lines);
 						i++;
 						isAssignmentOperator = true;
 
@@ -325,6 +349,7 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 							e.printStackTrace();
 						}
 						copied.setText("" + thisChar);
+						copied.setLine(lines);
 						isAssignmentOperator = true;
 
 					}
@@ -338,6 +363,7 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 							e.printStackTrace();
 						}
 						copied.setText(text.substring(i, i + 2));
+						copied.setLine(lines);
 						i++;
 					} else if (binaryOperators.contains(thisChar)) {
 						try {
@@ -346,6 +372,7 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 							e.printStackTrace();
 						}
 						copied.setText("" + thisChar);
+						copied.setLine(lines);
 					}
 				}
 				keyword.setLength(0);
@@ -357,7 +384,7 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 
 	}
 
-	public T getCurrentToken() {
+	public Token getCurrentToken() {
 		if (tokenCounter >= 0)
 			return tokens.get(tokenCounter);
 		return null;
@@ -370,7 +397,7 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 	/*
 	 * If you want to change options between the tokens.
 	 */
-	public T getNextToken() {
+	public Token getNextToken() {
 		getAllTokens();
 		if (tokens != null && tokenCounter + 1 < tokens.size())
 			return tokens.get(++tokenCounter);
@@ -392,10 +419,10 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 		return integerLiteralIdentifier.matcher(str).matches();
 	}
 
-	private T matched(String str) {
-		for (Entry<Pattern, T> entry : regularExpressions.entrySet()) {
+	private Token matched(String str) {
+		for (Entry<Pattern, Token> entry : regularExpressions.entrySet()) {
 			Matcher keyMatcher = entry.getKey().matcher(str);
-			T value = entry.getValue();
+			Token value = entry.getValue();
 			if (keyMatcher.matches())
 				return value;
 		}
@@ -417,11 +444,13 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 			System.out.println("Regex " + regex + " wasn't set.");
 	}
 
-	public void setKeyword(String keyword, T token) {
+	public void setKeyword(String keyword, Token token) {
+		token.setFileName(fileName);
 		keywords.put(keyword, token);
 	}
 
-	public void setRegex(String regex, T token) {
+	public void setRegex(String regex, Token token) {
+		token.setFileName(fileName);
 		regularExpressions.put(Pattern.compile(regex), token);
 	}
 
@@ -429,10 +458,9 @@ public class LexerBuilder<T extends Token<T> & Cloneable> extends SetOnSomething
 		this.text = " " + text + " ";
 	}
 
-	@SuppressWarnings("unchecked")
-	public LexerBuilder<T> copy() {
+	public LexerBuilder copy() {
 		try {
-			return (LexerBuilder<T>) clone();
+			return (LexerBuilder) clone();
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}

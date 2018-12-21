@@ -18,7 +18,7 @@ package sml.data.stack;
 
 import java.util.Iterator;
 
-import parser.MontyException;
+import parser.LogError;
 
 public class Stack implements Cloneable, Iterable<Object>{
 	Object[] array;
@@ -45,13 +45,13 @@ public class Stack implements Cloneable, Iterable<Object>{
 
 	public Object pop() {
 		if (top == -1)
-			new MontyException("This stack is empty, you can't pop from it");
+			new LogError("This stack is empty, you can't pop from it");
 		return array[top--];
 	}
 
 	public Object peek() {
 		if (top == -1)
-			new MontyException("This stack is empty, you can't peek with it");
+			new LogError("This stack is empty, you can't peek with it");
 		return array[top];
 	}
 

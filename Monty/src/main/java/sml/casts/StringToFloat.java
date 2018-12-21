@@ -16,7 +16,7 @@ limitations under the License.
 
 package sml.casts;
 
-import parser.MontyException;
+import parser.LogError;
 
 public class StringToFloat {
 
@@ -26,7 +26,7 @@ public class StringToFloat {
 		else if (str.matches("[+-]?[0-9]+"))
 			return (float) Integer.parseInt(str);
 		else
-			new MontyException("Unknown number format for float type:\t" + str);
+			new LogError("Unknown number format for float type:\t" + str);
 		return null;
 	}
 

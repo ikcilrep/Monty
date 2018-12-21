@@ -25,7 +25,7 @@ import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import monty.Main;
 import parser.DataTypes;
-import parser.MontyException;
+import parser.LogError;
 
 public class Argv extends FunctionDeclarationNode {
 
@@ -45,7 +45,7 @@ public class Argv extends FunctionDeclarationNode {
 		setArguments(arguments);
 		var index = ((BigInteger) getBody().getVariableByName("index").getValue()).intValue();
 		if (index >= Main.argv.length)
-			new MontyException("Index " + index + " is too large for length " + Main.argv.length);
+			new LogError("Index " + index + " is too large for length " + Main.argv.length);
 		return Main.argv[index];
 	}
 

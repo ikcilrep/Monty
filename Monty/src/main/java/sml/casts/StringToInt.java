@@ -18,7 +18,7 @@ package sml.casts;
 
 import java.math.BigInteger;
 
-import parser.MontyException;
+import parser.LogError;
 
 public class StringToInt {
 
@@ -28,7 +28,7 @@ public class StringToInt {
 		else if (str.matches("[+-]?[0-9]+"))
 			return new BigInteger(str);
 		else
-			new MontyException("Unknown number format for integer type:\t" + str);
+			new LogError("Unknown number format for integer type:\t" + str);
 		return null;
 	}
 

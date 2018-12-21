@@ -16,7 +16,7 @@ limitations under the License.
 
 package sml.casts;
 
-import parser.MontyException;
+import parser.LogError;
 
 public class StringToBoolean {
 
@@ -25,7 +25,7 @@ public class StringToBoolean {
 		if (doesstrEqualsTrue || str.equalsIgnoreCase("false"))
 			return doesstrEqualsTrue;
 		else
-			new MontyException("Unknown format for boolean type:\t" + str);
+			new LogError("Unknown format for boolean type:\t" + str);
 		return null;
 	}
 

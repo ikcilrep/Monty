@@ -18,15 +18,15 @@ package parser;
 
 import java.util.List;
 
-import lexer.MontyToken;
+import lexer.Token;
 import lexer.TokenTypes;
 
 public class Tokens {
-	public static String getText(List<MontyToken> tokens) {
+	public static String getText(List<Token> tokens) {
 		var result = new StringBuilder();
-		MontyToken next = null;
+		Token next = null;
 		int i = 0;
-		for (MontyToken token : tokens) {
+		for (Token token : tokens) {
 			result.append(token.getText());
 			if (i + 1 < tokens.size())
 				next = tokens.get(i + 1);
@@ -41,9 +41,9 @@ public class Tokens {
 		return result.toString();
 	}
 
-	public static String getTypesToString(List<MontyToken> tokens) {
+	public static String getTypesToString(List<Token> tokens) {
 		var result = new StringBuilder();
-		for (MontyToken token : tokens) {
+		for (Token token : tokens) {
 			result.append(token.getType());
 			result.append(' ');
 		}

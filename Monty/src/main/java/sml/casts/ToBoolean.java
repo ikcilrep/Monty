@@ -24,7 +24,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
-import parser.MontyException;
+import parser.LogError;
 import sml.data.array.Array;
 
 public class ToBoolean extends FunctionDeclarationNode {
@@ -42,7 +42,7 @@ public class ToBoolean extends FunctionDeclarationNode {
 
 	public static Object toBoolean(Object a) {
 		if (a == null)
-			new MontyException("Can't cast void to boolean");
+			new LogError("Can't cast void to boolean");
 		if (a instanceof BigInteger)
 			return IntToBoolean.intToBoolean((BigInteger) a);
 		if (a instanceof Float)
@@ -52,7 +52,7 @@ public class ToBoolean extends FunctionDeclarationNode {
 		if (a instanceof String)
 			return StringToBoolean.stringToBoolean((String) a);
 		if (a instanceof Array)
-			new MontyException("Can't cast array to boolean:\t" + a.toString());
+			new LogError("Can't cast array to boolean:\t" + a.toString());
 		return null;
 	}
 

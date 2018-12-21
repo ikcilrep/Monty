@@ -23,7 +23,7 @@ import java.util.Map;
 import ast.expressions.OperationNode;
 import ast.statements.ContinueStatementNode;
 import parser.DataTypes;
-import parser.MontyException;
+import parser.LogError;
 import sml.data.returning.BreakType;
 
 public class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
@@ -51,17 +51,17 @@ public class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
 		try {
 			result = body.run();
 		} catch (StackOverflowError e) {
-			new MontyException("Stack overflow at " + name + " function call");
+			new LogError("Stack overflow at " + name + " function call");
 		}
 		if (result instanceof BreakType)
-			new MontyException("Trying to break function " + getName());
+			new LogError("Trying to break function " + getName());
 		if (result instanceof ContinueStatementNode)
-			new MontyException("Trying to continue function " + getName());
+			new LogError("Trying to continue function " + getName());
 		body.setVariables(variables);
 		var resultDataType = DataTypes.getDataType(result);
 
 		if (!resultDataType.equals(getType()))
-			new MontyException("Function " + getName() + " should returns " + getType().toString().toLowerCase()
+			new LogError("Function " + getName() + " should returns " + getType().toString().toLowerCase()
 					+ ",\nbut returns " + resultDataType.toString().toLowerCase());
 		return result;
 	}
