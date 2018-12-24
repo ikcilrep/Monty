@@ -109,10 +109,12 @@ public class OperationNode extends ExpressionNode {
 		if (expression instanceof Node)
 			switch (((Node) expression).getNodeType()) {
 			case VARIABLE:
-				return parent.getVariableByName(((VariableNode) expression).getName()).getType();
+				var variableCall = (VariableNode) expression;
+				return parent.getVariableByName(variableCall.getName(), variableCall.getFileName(), variableCall.getLine()).getType();
 			case FUNCTION_CALL:
 				var functionCall = ((FunctionCallNode) expression);
-				var function = parent.getFunctionByName(functionCall.getName());
+				var function = parent.getFunctionByName(functionCall.getName(), functionCall.getFileName(),
+						functionCall.getLine());
 				return function.getType();
 			case CONSTANT:
 				var cn = ((ConstantNode) expression);
@@ -133,10 +135,13 @@ public class OperationNode extends ExpressionNode {
 		if (expression instanceof Node)
 			switch (((Node) expression).getNodeType()) {
 			case VARIABLE:
-				return parent.getVariableByName(((VariableNode) expression).getName());
+				var variableCall = (VariableNode) expression;
+				return parent.getVariableByName(variableCall.getName(), variableCall.getFileName(),
+						variableCall.getLine());
 			case FUNCTION_CALL:
 				var functionToCall = ((FunctionCallNode) expression);
-				var function = parent.getFunctionByName(functionToCall.getName());
+				var function = parent.getFunctionByName(functionToCall.getName(), functionToCall.getFileName(),
+						functionToCall.getLine());
 				return function.call(functionToCall.getArguments());
 			case CONSTANT:
 				var cn = ((ConstantNode) expression);
@@ -198,18 +203,22 @@ public class OperationNode extends ExpressionNode {
 		// If type isn't array and type of a and b aren't equals.
 		if (!(type.equals(DataTypes.ARRAY) || type.equals(DataTypes.LIST) || type.equals(DataTypes.STACK)
 				|| type.equals(getDataType(b))))
-			new LogError("Type mismatch:\t" + type + " and " + getDataType(b));
+			new LogError("Type mismatch:\t" + type + " and " + getDataType(b), getFileName(), getLine());
 		leftValue = getLiteral(a);
 		rightValue = getLiteral(b);
 
 		if (!operator.toString().contains("=") || (operator.toString().contains("=") && isComparison))
-			if (a instanceof Node && ((Node) a).getNodeType().equals(NodeTypes.VARIABLE)) {
-				var variable = parent.getVariableByName(((VariableNode) a).getName());
+			if (a instanceof VariableNode) {
+				var variableCall = (VariableNode) a;
+				var variable = parent.getVariableByName(variableCall.getName(), variableCall.getFileName(),
+						variableCall.getLine());
 				leftValue = variable.getValue();
 
 			}
-		if (b instanceof Node && ((Node) b).getNodeType().equals(NodeTypes.VARIABLE)) {
-			var variable = parent.getVariableByName(((VariableNode) b).getName());
+		if (b instanceof VariableNode) {
+			var variableCall = (VariableNode) b;
+			var variable = parent.getVariableByName(variableCall.getName(), variableCall.getFileName(),
+					variableCall.getLine());
 			rightValue = variable.getValue();
 		}
 		return calculate(leftValue, rightValue, getOperand(), type);

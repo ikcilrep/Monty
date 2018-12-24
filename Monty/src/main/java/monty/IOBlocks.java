@@ -8,7 +8,6 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
-
 import ast.Block;
 import lexer.LexerConfig;
 import lexer.Token;
@@ -31,10 +30,10 @@ public class IOBlocks {
 		var lb = LexerConfig.getLexer(FileIO.readFile(path), path);
 		List<Token> tokens = lb.getAllTokens();
 		var block = Parser.parse(tokens);
-		block.addFunction(new sml.data.returning.Nothing());
+		block.getFunctions().put("nothing", new sml.data.returning.Nothing());
 		return block;
 	}
-
+	
 	public static Block readCompiledBlockFromFile(String path) {
 		return readBlockFromGZIP(readGZIPBlock(path), path);
 	}

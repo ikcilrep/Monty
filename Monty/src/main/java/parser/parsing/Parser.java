@@ -35,6 +35,7 @@ public class Parser {
 		var tokensBeforeSemicolon = new ArrayList<Token>();
 		var block = new Block(null);
 		for (Token token : tokens) {
+			System.out.println(token.getText());
 			if (token.getType().equals(TokenTypes.SEMICOLON)) {
 				if (tokensBeforeSemicolon.size() == 0)
 					continue;

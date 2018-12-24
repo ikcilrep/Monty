@@ -25,8 +25,7 @@ import sml.data.returning.VoidType;
 public enum DataTypes {
 	BOOLEAN, INTEGER, FLOAT, STRING, VOID, ARRAY, ANY, LIST, STACK;
 
-	public static DataTypes getDataType(Object value) {
-
+	public static DataTypes getDataType(Object value) {	
 		if (value instanceof VoidType)
 			return DataTypes.VOID;
 		if (value instanceof BigInteger)

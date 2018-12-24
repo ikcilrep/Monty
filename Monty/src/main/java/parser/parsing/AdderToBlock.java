@@ -59,7 +59,7 @@ public abstract class AdderToBlock {
 		var variable = new VariableDeclarationNode(tokens.get(2).getText(),
 				Tokens.getDataType(tokens.get(1).getType()));
 		variable.setDynamic(true);
-		block.addVariable(variable);
+		block.addVariable(variable, tokens.get(1));
 		addExpression(block, tokens.subList(2, tokens.size()));
 	}
 
@@ -79,7 +79,7 @@ public abstract class AdderToBlock {
 				function.addParameter(new VariableDeclarationNode(name, type));
 		}
 		function.setBody(new Block(block));
-		block.addFunction(function);
+		block.addFunction(function,tokens.get(1));
 		return function.getBody();
 	}
 

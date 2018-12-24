@@ -142,7 +142,6 @@ public class ExpressionParser {
 			default:
 				// Otherwise token in expression can be only constant.
 				var dataType = Tokens.getDataType(token.getType());
-
 				node = new OperationNode(new ConstantNode(toDataType(token.getText(), dataType), dataType), parent);
 				break;
 			}

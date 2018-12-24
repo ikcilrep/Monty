@@ -18,6 +18,7 @@ package sml.data.returning;
 
 import java.util.ArrayList;
 
+import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
@@ -33,10 +34,12 @@ public class Nothing extends FunctionDeclarationNode {
 
 	public Nothing() {
 		super("nothing", DataTypes.VOID);
+		new Block(null);
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments) {
+		setArguments(arguments);
 		return nothing;
 	}
 

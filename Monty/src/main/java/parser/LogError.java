@@ -28,4 +28,21 @@ public class LogError {
 		System.out.println(message + ".\nLook at " + token.getLine() + " line in " + token.getFileName() + " file.");
 		System.exit(0);
 	}
+	
+	public LogError(String message, String fileName, int line) {
+		System.out.println(message + ".\nLook at " + line + " line in " + fileName + " file.");
+		System.exit(0);
+	}
+	public LogError(String message, String[] fileNames, int[] lines) {
+		if (fileNames.length != lines.length)
+			new LogError("Language creator mess something up!");
+		String linesToString = "";
+		for (int i = 0; i < lines.length; i++) {
+			linesToString += lines[i] + " line in " + fileNames[i];
+			if (i + 1 < lines.length)
+				linesToString += ", ";
+		}
+		System.out.println(message + ".\nLook at " + linesToString + ".");
+		System.exit(0);
+	}
 }

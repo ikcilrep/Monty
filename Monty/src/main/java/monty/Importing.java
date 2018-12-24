@@ -31,6 +31,7 @@ import java.util.jar.JarFile;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
+import ast.declarations.VariableDeclarationNode;
 import lexer.LexerConfig;
 import lexer.Token;
 import parser.LogError;
@@ -93,12 +94,12 @@ public class Importing {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static void addAllFunctions(Block block, HashMap<String, Object> addFrom) {
+	private static void addAllFunctions(Block block, HashMap<String, Object> addFrom, Token token) {
 		for (Object value : addFrom.values())
 			if (value instanceof FunctionDeclarationNode)
-				block.addFunction((FunctionDeclarationNode) value);
+				block.addFunction((FunctionDeclarationNode) value, token);
 			else
-				addAllFunctions(block, (HashMap<String, Object>) value);
+				addAllFunctions(block, (HashMap<String, Object>) value, token);
 	}
 
 	private static void addFunctionFromFile(Block block, String path) {
@@ -122,22 +123,44 @@ public class Importing {
 		}
 	}
 
+	private static void addSpecifiedFunctionOrVariableFromFile(Block block, Block importedBlock, String path, String name) {
+		var doesContainVariable = importedBlock.doesContainVariable(name);
+		var doesContainFunction = importedBlock.doesContainFunction(name);
+		if (doesContainVariable || doesContainFunction) {
+			importedBlock.run();
+			if (doesContainVariable) {
+				var variable = importedBlock.getVariableByName(name); // błąd
+				block.addVariable(variable, variable.getFileName(), variable.getLine());
+			}
+			if (doesContainFunction) {
+				var function = importedBlock.getFunctionByName(name);	
+				block.addFunction(function, function.getFileName(), function.getLine());
+			}
+		} else {
+			new LogError("There aren't any function or variable with this name to import:\t" + name
+					+ ". Look at this file:\t" + path);
+		}
+	}
+
 	@SuppressWarnings("unchecked")
 	private static void findAndAddFunctions(Block block, String[] splited, String path, Library toSearch, Token token) {
 		var sublibraries = toSearch.getSublibraries();
-		Object function = null;
+		Object functionVariableOrSubLibrary = null;
 		int i = 0;
 
 		for (String toImport : splited) {
 			if (!sublibraries.containsKey(toImport))
 				new LogError("There isn't file to import:\t" + path, token);
-			else if ((function = sublibraries.get(toImport)) instanceof FunctionDeclarationNode) {
-				block.addFunction((FunctionDeclarationNode) function);
+			else if ((functionVariableOrSubLibrary = sublibraries.get(toImport)) instanceof FunctionDeclarationNode) {
+				block.addFunction((FunctionDeclarationNode) functionVariableOrSubLibrary, token);
+				break;
+			} else if (functionVariableOrSubLibrary instanceof VariableDeclarationNode) {
+				block.addVariable((VariableDeclarationNode) functionVariableOrSubLibrary, token);
 				break;
 			} else if (i + 1 >= splited.length)
-				addAllFunctions(block, sublibraries);
+				addAllFunctions(block, (HashMap<String, Object>) functionVariableOrSubLibrary, token);
 			else
-				sublibraries = (HashMap<String, Object>) function;
+				sublibraries = (HashMap<String, Object>) functionVariableOrSubLibrary;
 			i++;
 		}
 	}
@@ -148,18 +171,28 @@ public class Importing {
 				+ emptyIfNull(Paths.get(Main.path).getParent()) + File.separator
 				+ partOfPath.replace('.', File.separatorChar);
 		var file = new File(path + ".mt");
+		var parent_file = new File(file.getParent() + ".mt");
 		var compiled_file = new File(path + ".mtc");
+		var parent_compiled_file = new File(compiled_file.getParent() + ".mtc");
 		var directory = new File(path);
-
 		if (directory.exists() && directory.isDirectory())
 			addFunctionsFromDirectory(block, directory);
 		else if (compiled_file.exists() && compiled_file.isFile())
 			block.concat(IOBlocks.readCompiledBlockFromFile(compiled_file.getPath()));
 		else if (file.exists() && file.isFile())
 			addFunctionFromFile(block, file.getPath());
-		else {
+		else if (parent_compiled_file.exists() && parent_compiled_file.isFile()) {
+			var name = compiled_file.getName().substring(0, compiled_file.getName().length() - 4);
+			var importedBlock = IOBlocks.readCompiledBlockFromFile(parent_compiled_file.getPath());
+			addSpecifiedFunctionOrVariableFromFile(block, importedBlock, parent_compiled_file.getPath(), name);
+		} else if (parent_file.exists() && parent_file.isFile()) {
+			var name = file.getName().substring(0, file.getName().length() - 3);
+			var importedBlock = Parser.parse(LexerConfig
+					.getLexer(FileIO.readFile(parent_file.getAbsolutePath()), file.getName()).getAllTokens());
+			addSpecifiedFunctionOrVariableFromFile(block, importedBlock, parent_file.getPath(), name);
+		} else {
 			var splited = partOfPath.split("\\.");
-			if (!splited[0].equals(Main.standard_library_name))
+			if (!Parser.libraries.containsKey(splited[0]))
 				new LogError("There isn't file to import:\t" + path, tokens.get(1));
 			findAndAddFunctions(block, subArray(splited, 1), path, Parser.libraries.get(splited[0]), tokens.get(1));
 		}

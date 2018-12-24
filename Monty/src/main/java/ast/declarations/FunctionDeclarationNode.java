@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.NodeTypes;
 import ast.expressions.OperationNode;
+import lexer.Token;
 import parser.DataTypes;
 import parser.LogError;
 
@@ -57,9 +58,9 @@ public abstract class FunctionDeclarationNode extends DeclarationNode {
 
 	public void setArguments(ArrayList<OperationNode> arguments) {
 		if (arguments.size() > parameters.size())
-			new LogError("Too many arguments in " + name + " function call");
+			new LogError("Too many arguments in " + name + " function call", getFileName(), getLine());
 		else if (arguments.size() < parameters.size())
-			new LogError("Too few arguments in " + name + " function call");
+			new LogError("Too few arguments in " + name + " function call", getFileName(), getLine());
 		for (int i = 0; i < arguments.size(); i++) {
 			var name = parameters.get(i).getName();
 			var dataType = parameters.get(i).getType();
@@ -70,10 +71,14 @@ public abstract class FunctionDeclarationNode extends DeclarationNode {
 				if (!argumentDataType.equals(dataType))
 					new LogError("Wrong data type for parameter with name\n\"" + name + "\" in " + getName()
 							+ " function call expected " + dataType.toString().toLowerCase() + " got "
-							+ argumentDataType.toString().toLowerCase());
-			if (!body.doesContainVariable(name))
-				body.addVariable(new VariableDeclarationNode(name, dataType));
-			body.getVariableByName(name).setValue(value);
+							+ argumentDataType.toString().toLowerCase(), getFileName(), getLine());
+			if (!body.doesContainVariable(name)) {
+				var token = new Token(null);
+				token.setFileName(fileName);
+				token.setLine(line);
+				body.addVariable(new VariableDeclarationNode(name, dataType), token);
+			}
+			body.getVariableByName(name, getFileName(), getLine()).setValue(value);
 		}
 	}
 }
