@@ -65,8 +65,8 @@ public class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
 		if (resultDataType == null)
 			resultDataType = DataTypes.VOID;
 		if (!resultDataType.equals(getType()))
-			new LogError("Function " + getName() + " should returns " + getType().toString().toLowerCase()
-					+ ",\nbut returns " + resultDataType.toString().toLowerCase(), getLastFileName(), getLastLine());
+			new LogError("Function " + getName() + " should return " + getType().toString().toLowerCase()
+					+ ",\nbut returned " + resultDataType.toString().toLowerCase(), getLastFileName(), getLastLine());
 		return result;
 	}
 }
