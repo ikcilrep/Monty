@@ -20,12 +20,12 @@ import parser.LogError;
 
 public class StringToBoolean {
 
-	public static Boolean stringToBoolean(String str) {
+	public static Boolean stringToBoolean(String str, String fileName, int line) {
 		Boolean doesstrEqualsTrue = str.equalsIgnoreCase("true");
 		if (doesstrEqualsTrue || str.equalsIgnoreCase("false"))
 			return doesstrEqualsTrue;
 		else
-			new LogError("Unknown format for boolean type:\t" + str);
+			new LogError("Unknown format for boolean type:\t" + str, fileName, line);
 		return null;
 	}
 

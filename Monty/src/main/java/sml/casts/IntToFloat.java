@@ -16,12 +16,13 @@ limitations under the License.
 
 package sml.casts;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 public class IntToFloat {
 
-	public static Float intToFloat(BigInteger integer) {
-		return (float) integer.intValue();
+	public static BigDecimal intToFloat(BigInteger integer) {
+		return new BigDecimal(integer);
 
 	}
 

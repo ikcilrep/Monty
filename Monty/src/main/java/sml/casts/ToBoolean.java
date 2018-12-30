@@ -16,6 +16,7 @@ limitations under the License.
 
 package sml.casts;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
@@ -34,26 +35,26 @@ public class ToBoolean extends FunctionDeclarationNode {
 	 */
 	private static final long serialVersionUID = -7799331880685421047L;
 
+	public Object toBoolean(Object a) {
+		if (a == null)
+			new LogError("Can't cast void to boolean",  getLastFileName(), getLastLine());
+		if (a instanceof BigInteger)
+			return IntToBoolean.intToBoolean((BigInteger) a);
+		if (a instanceof BigDecimal)
+			return FloatToBoolean.floatToBoolean((BigDecimal) a);
+		if (a instanceof Boolean)
+			return a;
+		if (a instanceof String)
+			return StringToBoolean.stringToBoolean((String) a, getLastFileName(), getLastLine());
+		if (a instanceof Array)
+			new LogError("Can't cast array to boolean:\t" + a.toString(),  getLastFileName(), getLastLine());
+		return null;
+	}
+
 	public ToBoolean() {
 		super("toBoolean", DataTypes.BOOLEAN);
 		setBody(new Block(null));
 		addParameter(new VariableDeclarationNode("a", DataTypes.ANY));
-	}
-
-	public static Object toBoolean(Object a) {
-		if (a == null)
-			new LogError("Can't cast void to boolean");
-		if (a instanceof BigInteger)
-			return IntToBoolean.intToBoolean((BigInteger) a);
-		if (a instanceof Float)
-			return FloatToBoolean.floatToBoolean((Float) a);
-		if (a instanceof Boolean)
-			return a;
-		if (a instanceof String)
-			return StringToBoolean.stringToBoolean((String) a);
-		if (a instanceof Array)
-			new LogError("Can't cast array to boolean:\t" + a.toString());
-		return null;
 	}
 
 	@Override

@@ -16,6 +16,7 @@ limitations under the License.
 
 package parser.parsing;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,46 +35,6 @@ import parser.LogError;
 import parser.Tokens;
 
 public class ExpressionParser {
-	private static List<ArrayList<Token>> splitArguments(List<Token> list) {
-		// Splits function arguments into two dimensional array.
-		ArrayList<ArrayList<Token>> newList = new ArrayList<>();
-		newList.add(new ArrayList<Token>());
-		int i = 0;
-		int openBracketCounter = 1;
-		int closeBracketCounter = 0;
-		for (Token t : list) {
-			if (t.getText().equals("("))
-				openBracketCounter++;
-			else if (t.getText().equals(")"))
-				closeBracketCounter++;
-			// If every pair of bracket except last is closed and actual token type is comma
-			// adds new arguments.
-			if (t.getType().equals(TokenTypes.COMMA) && openBracketCounter - 1 == closeBracketCounter) {
-				newList.add(new ArrayList<Token>());
-				i++;
-			} else
-				newList.get(i).add(t);
-		}
-		return newList;
-	}
-
-	private static Object toDataType(String literal, DataTypes dataType) {
-		// Returns values with proper data type.
-		switch (dataType) {
-		case INTEGER:
-			return new BigInteger(literal);
-		case FLOAT:
-			return Float.parseFloat(literal);
-		case STRING:
-			return literal;
-		case BOOLEAN:
-			return Boolean.parseBoolean(literal);
-		default:
-			new LogError("There isn't constant of " + dataType.toString().toLowerCase());
-		}
-		return dataType;
-	}
-
 	/*
 	 * Parses list of tokens to abstract syntax tree.
 	 */
@@ -146,11 +107,53 @@ public class ExpressionParser {
 				break;
 			}
 			stack.push(node);
+			node.setFileName(token.getFileName());
+			node.setLine(token.getLine());
 		}
 		if (stack.size() != 1)
 			new LogError("Ambiguous result for this operation:\t" + Tokens.getText(tokens), tokens.get(0));
 
 		return stack.pop();
+	}
+
+	private static List<ArrayList<Token>> splitArguments(List<Token> list) {
+		// Splits function arguments into two dimensional array.
+		ArrayList<ArrayList<Token>> newList = new ArrayList<>();
+		newList.add(new ArrayList<Token>());
+		int i = 0;
+		int openBracketCounter = 1;
+		int closeBracketCounter = 0;
+		for (Token t : list) {
+			if (t.getText().equals("("))
+				openBracketCounter++;
+			else if (t.getText().equals(")"))
+				closeBracketCounter++;
+			// If every pair of bracket except last is closed and actual token type is comma
+			// adds new arguments.
+			if (t.getType().equals(TokenTypes.COMMA) && openBracketCounter - 1 == closeBracketCounter) {
+				newList.add(new ArrayList<Token>());
+				i++;
+			} else
+				newList.get(i).add(t);
+		}
+		return newList;
+	}
+
+	private static Object toDataType(String literal, DataTypes dataType) {
+		// Returns values with proper data type.
+		switch (dataType) {
+		case INTEGER:
+			return new BigInteger(literal);
+		case FLOAT:
+			return new BigDecimal(literal);
+		case STRING:
+			return literal;
+		case BOOLEAN:
+			return Boolean.parseBoolean(literal);
+		default:
+			new LogError("There isn't constant of " + dataType.toString().toLowerCase());
+		}
+		return dataType;
 	}
 
 }

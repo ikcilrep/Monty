@@ -33,12 +33,28 @@ public class Token implements Cloneable {
 		this.line = line;
 	}
 
-	public TokenTypes getType() {
-		return type;
+	public Token copy() throws CloneNotSupportedException {
+		return (Token) super.clone();
+	}
+
+	public String getFileName() {
+		return fileName;
 	}
 
 	public int getLine() {
 		return line;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public TokenTypes getType() {
+		return type;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 
 	public void setLine(int line) {
@@ -47,22 +63,6 @@ public class Token implements Cloneable {
 
 	public void setText(String text) {
 		this.text = text;
-	}
-
-	public String getText() {
-		return text;
-	}
-
-	public Token copy() throws CloneNotSupportedException {
-		return (Token) super.clone();
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
-
-	public String getFileName() {
-		return fileName;
 	}
 
 }

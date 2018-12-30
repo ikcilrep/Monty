@@ -22,13 +22,13 @@ import parser.LogError;
 
 public class StringToInt {
 
-	public static BigInteger stringToInt(String str) {
+	public static BigInteger stringToInt(String str, String fileName, int line) {
 		if (str.matches("[+-]?[0-9]+\\.[0-9]+"))
 			return new BigInteger(str.split("\\.")[0]);
 		else if (str.matches("[+-]?[0-9]+"))
 			return new BigInteger(str);
 		else
-			new LogError("Unknown number format for integer type:\t" + str);
+			new LogError("Unknown number format for integer type:\t" + str, fileName, line);
 		return null;
 	}
 

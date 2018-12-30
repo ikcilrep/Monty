@@ -32,14 +32,14 @@ public class ToArray extends FunctionDeclarationNode {
 	 */
 	private static final long serialVersionUID = -3165880297105294653L;
 
+	public static Object toArray(Object a) {
+		return new Array().append(a);
+	}
+
 	public ToArray() {
 		super("toArray", DataTypes.ARRAY);
 		setBody(new Block(null));
 		addParameter(new VariableDeclarationNode("a", DataTypes.ANY));
-	}
-
-	public static Object toArray(Object a) {
-		return new Array().append(a);
 	}
 
 	@Override

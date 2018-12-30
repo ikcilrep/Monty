@@ -28,6 +28,52 @@ public abstract class Identificator {
 			TokenTypes.FLOAT_KEYWORD, TokenTypes.BOOLEAN_KEYWORD, TokenTypes.STRING_KEYWORD, TokenTypes.VOID_KEYWORD,
 			TokenTypes.ANY_KEYWORD, TokenTypes.ARRAY_KEYWORD, TokenTypes.LIST_KEYWORD, TokenTypes.STACK_KEYWORD);
 
+	public static boolean isBreakStatement(List<Token> tokens) {
+		if (!tokens.get(0).getType().equals(TokenTypes.BREAK_KEYWORD))
+			return false;
+		if (tokens.size() > 1)
+			new LogError("Nothing expected after \"break\" keyword", tokens.get(1));
+		return true;
+
+	}
+
+	public static boolean isChangeToStatement(List<Token> tokens) {
+		var tokensSize = tokens.size();
+		if (!tokens.get(0).getType().equals(TokenTypes.CHANGE_KEYWORD))
+			return false;
+		if (tokensSize == 1 || !tokens.get(1).getType().equals(TokenTypes.IDENTIFIER))
+			new LogError("Expected identifier after \"change\" keyword:\t" + Tokens.getText(tokens),
+					tokens.get(tokens.size() > 1 ? 1 : 0));
+		if (tokensSize == 2 || !tokens.get(2).getType().equals(TokenTypes.TO_KEYWORD))
+			new LogError("Expected \"to\" keyword after identifier:\t" + Tokens.getText(tokens),
+					tokens.get(tokens.size() > 2 ? 2 : 1));
+		if (tokensSize == 3 | !dataTypesKeywords.contains(tokens.get(3).getType()))
+			new LogError("Expected data type declaration after \"to\" keyword\t" + Tokens.getText(tokens),
+					tokens.get(tokens.size() > 3 ? 3 : 2));
+		return true;
+	}
+
+	public static boolean isContinueStatement(List<Token> tokens) {
+		if (!tokens.get(0).getType().equals(TokenTypes.CONTINUE_KEYWORD))
+			return false;
+		if (tokens.size() > 1)
+			new LogError("Nothing expected after \"continue\" keyword", tokens.get(1));
+		return true;
+
+	}
+
+	public static boolean isDoWhileStatement(List<Token> tokens) {
+		if (!tokens.get(0).getType().equals(TokenTypes.DO_KEYWORD))
+			return false;
+		if (tokens.size() == 1 || !tokens.get(1).getType().equals(TokenTypes.WHILE_KEYWORD))
+			new LogError("Expected \"while\" keyword after \"do\" keyword:\t" + Tokens.getText(tokens),
+					tokens.get(tokens.size() > 1 ? 1 : 0));
+		if (!isExpression(tokens.subList(2, tokens.size())))
+			new LogError("Expected expression after \"do\" keyword:\t" + Tokens.getText(tokens), tokens.get(2));
+		return true;
+
+	}
+
 	public static boolean isElseStatement(List<Token> tokens) {
 		if (!tokens.get(0).getType().equals(TokenTypes.ELSE_KEYWORD))
 			return false;
@@ -87,6 +133,22 @@ public abstract class Identificator {
 		}
 		return true;
 
+	}
+
+	public static boolean isForStatement(List<Token> tokens) {
+		if (!tokens.get(0).getType().equals(TokenTypes.FOR_KEYWORD))
+			return false;
+
+		if (tokens.size() == 1 || !tokens.get(1).getType().equals(TokenTypes.IDENTIFIER))
+			new LogError("Expected identifier after \"for\" keyword:\t" + Tokens.getText(tokens),
+					tokens.get(tokens.size() > 1 ? 1 : 0));
+		if (tokens.size() == 2 || !tokens.get(2).getType().equals(TokenTypes.IN_KEYWORD))
+			new LogError("Expected \"in\" keyword after \"for\" keyword:\t" + Tokens.getText(tokens),
+					tokens.get(tokens.size() > 2 ? 2 : 1));
+		if (tokens.size() == 3 || !isExpression(tokens.subList(3, tokens.size() - 1)))
+			new LogError("Expected expression after \"in\" keyword:\t" + Tokens.getText(tokens),
+					tokens.get(tokens.size() > 3 ? 3 : 2));
+		return true;
 	}
 
 	public static boolean isFunctionDeclaration(List<Token> tokens) {
@@ -153,6 +215,16 @@ public abstract class Identificator {
 		return true;
 	}
 
+	public static boolean isThreadStatement(List<Token> tokens) {
+		if (!tokens.get(0).getType().equals(TokenTypes.THREAD_KEYWORD))
+			return false;
+		if (tokens.size() == 1 || !isExpression(tokens.subList(1, tokens.size())))
+			new LogError("Expected expression after \"thread\" keyword:\t" + Tokens.getText(tokens),
+					tokens.get(tokens.size() > 1 ? 1 : 0));
+
+		return true;
+	}
+
 	public static boolean isVariableDeclaration(List<Token> tokens) {
 		var firstTokenType = tokens.get(0).getType();
 		var isFirstTokenStaticOrDynamicKeyword = firstTokenType.equals(TokenTypes.STATIC_KEYWORD)
@@ -186,78 +258,6 @@ public abstract class Identificator {
 		if (tokens.size() == 1 || !isExpression(tokens.subList(1, tokens.size())))
 			new LogError("Expected expression after \"while\" keyword:\t" + Tokens.getText(tokens),
 					tokens.get(tokens.size() > 1 ? 1 : 0));
-		return true;
-
-	}
-
-	public static boolean isDoWhileStatement(List<Token> tokens) {
-		if (!tokens.get(0).getType().equals(TokenTypes.DO_KEYWORD))
-			return false;
-		if (tokens.size() == 1 || !tokens.get(1).getType().equals(TokenTypes.WHILE_KEYWORD))
-			new LogError("Expected \"while\" keyword after \"do\" keyword:\t" + Tokens.getText(tokens),
-					tokens.get(tokens.size() > 1 ? 1 : 0));
-		if (!isExpression(tokens.subList(2, tokens.size())))
-			new LogError("Expected expression after \"do\" keyword:\t" + Tokens.getText(tokens), tokens.get(2));
-		return true;
-
-	}
-
-	public static boolean isForStatement(List<Token> tokens) {
-		if (!tokens.get(0).getType().equals(TokenTypes.FOR_KEYWORD))
-			return false;
-
-		if (tokens.size() == 1 || !tokens.get(1).getType().equals(TokenTypes.IDENTIFIER))
-			new LogError("Expected identifier after \"for\" keyword:\t" + Tokens.getText(tokens),
-					tokens.get(tokens.size() > 1 ? 1 : 0));
-		if (tokens.size() == 2 || !tokens.get(2).getType().equals(TokenTypes.IN_KEYWORD))
-			new LogError("Expected \"in\" keyword after \"for\" keyword:\t" + Tokens.getText(tokens),
-					tokens.get(tokens.size() > 2 ? 2 : 1));
-		if (tokens.size() == 3 || !isExpression(tokens.subList(3, tokens.size() - 1)))
-			new LogError("Expected expression after \"in\" keyword:\t" + Tokens.getText(tokens),
-					tokens.get(tokens.size() > 3 ? 3 : 2));
-		return true;
-	}
-
-	public static boolean isChangeToStatement(List<Token> tokens) {
-		var tokensSize = tokens.size();
-		if (!tokens.get(0).getType().equals(TokenTypes.CHANGE_KEYWORD))
-			return false;
-		if (tokensSize == 1 || !tokens.get(1).getType().equals(TokenTypes.IDENTIFIER))
-			new LogError("Expected identifier after \"change\" keyword:\t" + Tokens.getText(tokens),
-					tokens.get(tokens.size() > 1 ? 1 : 0));
-		if (tokensSize == 2 || !tokens.get(2).getType().equals(TokenTypes.TO_KEYWORD))
-			new LogError("Expected \"to\" keyword after identifier:\t" + Tokens.getText(tokens),
-					tokens.get(tokens.size() > 2 ? 2 : 1));
-		if (tokensSize == 3 | !dataTypesKeywords.contains(tokens.get(3).getType()))
-			new LogError("Expected data type declaration after \"to\" keyword\t" + Tokens.getText(tokens),
-					tokens.get(tokens.size() > 3 ? 3 : 2));
-		return true;
-	}
-
-	public static boolean isThreadStatement(List<Token> tokens) {
-		if (!tokens.get(0).getType().equals(TokenTypes.THREAD_KEYWORD))
-			return false;
-		if (tokens.size() == 1 || !isExpression(tokens.subList(1, tokens.size())))
-			new LogError("Expected expression after \"thread\" keyword:\t" + Tokens.getText(tokens),
-					tokens.get(tokens.size() > 1 ? 1 : 0));
-
-		return true;
-	}
-
-	public static boolean isBreakStatement(List<Token> tokens) {
-		if (!tokens.get(0).getType().equals(TokenTypes.BREAK_KEYWORD))
-			return false;
-		if (tokens.size() > 1)
-			new LogError("Nothing expected after \"break\" keyword", tokens.get(1));
-		return true;
-
-	}
-
-	public static boolean isContinueStatement(List<Token> tokens) {
-		if (!tokens.get(0).getType().equals(TokenTypes.CONTINUE_KEYWORD))
-			return false;
-		if (tokens.size() > 1)
-			new LogError("Nothing expected after \"continue\" keyword", tokens.get(1));
 		return true;
 
 	}

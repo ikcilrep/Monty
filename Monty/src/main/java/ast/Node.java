@@ -27,23 +27,23 @@ public class Node implements Serializable {
 	protected int line;
 	protected String fileName;
 
-	public NodeTypes getNodeType() {
-		return nodeType;
+	public String getFileName() {
+		return fileName;
 	}
 
 	public int getLine() {
 		return line;
 	}
 
-	public void setLine(int line) {
-		this.line = line;
-	}
-
-	public String getFileName() {
-		return fileName;
+	public NodeTypes getNodeType() {
+		return nodeType;
 	}
 
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
+	}
+
+	public void setLine(int line) {
+		this.line = line;
 	}
 }

@@ -16,6 +16,7 @@ limitations under the License.
 
 package sml.casts;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
@@ -34,26 +35,26 @@ public class ToInt extends FunctionDeclarationNode {
 	 */
 	private static final long serialVersionUID = 9063163249840188097L;
 
+	public BigInteger toInt(Object a) {
+		if (a == null)
+			new LogError("Can't cast void to integer",  getLastFileName(), getLastLine());
+		if (a instanceof BigInteger)
+			return (BigInteger) a;
+		if (a instanceof BigDecimal)
+			return ((BigDecimal) a).toBigInteger();
+		if (a instanceof Boolean)
+			return BooleanToInt.booleanToInt((Boolean) a);
+		if (a instanceof String)
+			return StringToInt.stringToInt((String) a, getLastFileName(), getLastLine());
+		if (a instanceof Array)
+			new LogError("Can't cast array to integer:\t" + a.toString(),  getLastFileName(), getLastLine());
+		return null;
+	}
+
 	public ToInt() {
 		super("toInt", DataTypes.INTEGER);
 		setBody(new Block(null));
 		addParameter(new VariableDeclarationNode("a", DataTypes.ANY));
-	}
-
-	public static BigInteger toInt(Object a) {
-		if (a == null)
-			new LogError("Can't cast void to integer");
-		if (a instanceof BigInteger)
-			return (BigInteger) a;
-		if (a instanceof Float)
-			return FloatToInt.floatToInt((Float) a);
-		if (a instanceof Boolean)
-			return BooleanToInt.booleanToInt((Boolean) a);
-		if (a instanceof String)
-			return StringToInt.stringToInt((String) a);
-		if (a instanceof Array)
-			new LogError("Can't cast array to integer:\t" + a.toString());
-		return null;
 	}
 
 	@Override

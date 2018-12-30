@@ -27,24 +27,24 @@ public abstract class DeclarationNode extends Node {
 	protected String name;
 	protected DataTypes type;
 
-	public String getName() {
-		return name;
+	public DeclarationNode(String name, DataTypes type) {
+		this.name = name;
+		this.type = type;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public String getName() {
+		return name;
 	}
 
 	public DataTypes getType() {
 		return type;
 	}
 
-	public void setType(DataTypes type) {
-		this.type = type;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public DeclarationNode(String name, DataTypes type) {
-		this.name = name;
+	public void setType(DataTypes type) {
 		this.type = type;
 	}
 }

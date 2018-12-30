@@ -64,10 +64,8 @@ public class Block extends Node implements Serializable {
 		children.add(child);
 	}
 
-	public void addFunction(FunctionDeclarationNode function, Token token) {
+	private void addFunction(FunctionDeclarationNode function) {
 		String name = function.getName();
-		function.setFileName(token.getFileName());
-		function.setLine(token.getLine());
 		if (functions.containsKey(name)) {
 			var existing_function = functions.get(name);
 			int[] lines = { existing_function.getLine(), function.getLine() };
@@ -90,10 +88,21 @@ public class Block extends Node implements Serializable {
 		functions.put(name, function);
 	}
 
-	public void addVariable(VariableDeclarationNode variable, Token token) {
+	public void addFunction(FunctionDeclarationNode function, Token token) {
+		String name = function.getName();
+		function.setFileName(token.getFileName());
+		function.setLine(token.getLine());
+		if (functions.containsKey(name)) {
+			var existing_function = functions.get(name);
+			int[] lines = { existing_function.getLine(), function.getLine() };
+			String[] fileNames = { existing_function.getFileName(), function.getFileName() };
+			new LogError("Function " + name + " already exists", fileNames, lines);
+		}
+		functions.put(name, function);
+	}
+
+	private void addVariable(VariableDeclarationNode variable) {
 		String name = variable.getName();
-		variable.setFileName(token.getFileName());
-		variable.setLine(token.getLine());
 		if (variables.containsKey(name)) {
 			var existing_variable = variables.get(name);
 			int[] lines = { existing_variable.getLine(), variable.getLine() };
@@ -116,19 +125,10 @@ public class Block extends Node implements Serializable {
 		variables.put(name, variable);
 	}
 
-	private void addFunction(FunctionDeclarationNode function) {
-		String name = function.getName();
-		if (functions.containsKey(name)) {
-			var existing_function = functions.get(name);
-			int[] lines = { existing_function.getLine(), function.getLine() };
-			String[] fileNames = { existing_function.getFileName(), function.getFileName() };
-			new LogError("Function " + name + " already exists", fileNames, lines);
-		}
-		functions.put(name, function);
-	}
-
-	private void addVariable(VariableDeclarationNode variable) {
+	public void addVariable(VariableDeclarationNode variable, Token token) {
 		String name = variable.getName();
+		variable.setFileName(token.getFileName());
+		variable.setLine(token.getLine());
 		if (variables.containsKey(name)) {
 			var existing_variable = variables.get(name);
 			int[] lines = { existing_variable.getLine(), variable.getLine() };
@@ -156,24 +156,28 @@ public class Block extends Node implements Serializable {
 		}
 	}
 
-	public boolean doesContainVariable(String name) {
-		return variables.containsKey(name);
-	}
-
 	public boolean doesContainFunction(String name) {
 		return functions.containsKey(name);
+	}
+
+	public boolean doesContainVariable(String name) {
+		return variables.containsKey(name);
 	}
 
 	public LinkedList<Node> getChildren() {
 		return children;
 	}
 
-	public HashMap<String, FunctionDeclarationNode> getFunctions() {
-		return functions;
-	}
+	public FunctionDeclarationNode getFunctionByName(String name) {
+		Block block = this;
+		while (!block.functions.containsKey(name)) {
+			var parent = block.getParent();
+			if (parent == null)
+				new LogError("There isn't function with name:\t" + name);
+			block = parent;
+		}
+		return block.functions.get(name);
 
-	public Block getParent() {
-		return parent;
 	}
 
 	public FunctionDeclarationNode getFunctionByName(String name, String fileName, int line) {
@@ -188,15 +192,12 @@ public class Block extends Node implements Serializable {
 
 	}
 
-	public VariableDeclarationNode getVariableByName(String name, String fileName, int line) {
-		Block block = this;
-		while (!block.variables.containsKey(name)) {
-			var parent = block.getParent();
-			if (parent == null)
-				new LogError("There isn't variable with name:\t" + name, fileName, line);
-			block = parent;
-		}
-		return block.variables.get(name);
+	public HashMap<String, FunctionDeclarationNode> getFunctions() {
+		return functions;
+	}
+
+	public Block getParent() {
+		return parent;
 	}
 
 	public VariableDeclarationNode getVariableByName(String name) {
@@ -210,16 +211,15 @@ public class Block extends Node implements Serializable {
 		return block.variables.get(name);
 	}
 
-	public FunctionDeclarationNode getFunctionByName(String name) {
+	public VariableDeclarationNode getVariableByName(String name, String fileName, int line) {
 		Block block = this;
-		while (!block.functions.containsKey(name)) {
+		while (!block.variables.containsKey(name)) {
 			var parent = block.getParent();
 			if (parent == null)
-				new LogError("There isn't function with name:\t" + name);
+				new LogError("There isn't variable with name:\t" + name, fileName, line);
 			block = parent;
 		}
-		return block.functions.get(name);
-
+		return block.variables.get(name);
 	}
 
 	public HashMap<String, VariableDeclarationNode> getVariables() {
@@ -236,6 +236,8 @@ public class Block extends Node implements Serializable {
 					var functionToCall = ((FunctionCallNode) childCastedToVariable.getOperand());
 					var function = getFunctionByName(functionToCall.getName(), functionToCall.getFileName(),
 							functionToCall.getLine());
+					function.setLastFileName(functionToCall.getFileName());
+					function.setLastLine(functionToCall.getLine());
 					function.call(functionToCall.getArguments());
 				} else if (childCastedToVariable.getRightOperand() != null
 						&& childCastedToVariable.getLeftOperand() != null
@@ -328,16 +330,16 @@ public class Block extends Node implements Serializable {
 				variable.setType(newVariableType);
 				switch (newVariableType) {
 				case INTEGER:
-					variable.setValue(ToInt.toInt(variable.getValue()));
+					variable.setValue(new ToInt().toInt(variable.getValue()));
 					break;
 				case BOOLEAN:
-					variable.setValue(ToBoolean.toBoolean(variable.getValue()));
+					variable.setValue(new ToBoolean().toBoolean(variable.getValue()));
 					break;
 				case FLOAT:
-					variable.setValue(ToFloat.toFloat(variable.getValue()));
+					variable.setValue(new ToFloat().toFloat(variable.getValue()));
 					break;
 				case STRING:
-					variable.setValue(ToString.toString(variable.getValue()));
+					variable.setValue(new ToString().toString(variable.getValue()));
 					break;
 				case ARRAY:
 					variable.setValue(ToArray.toArray(variable.getValue()));

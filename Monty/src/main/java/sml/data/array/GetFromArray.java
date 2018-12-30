@@ -24,6 +24,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
+import parser.LogError;
 
 public class GetFromArray extends FunctionDeclarationNode {
 
@@ -44,6 +45,8 @@ public class GetFromArray extends FunctionDeclarationNode {
 		setArguments(arguments);
 		var arr = (Array) getBody().getVariableByName("arr").getValue();
 		var index = (BigInteger) getBody().getVariableByName("index").getValue();
+		if (index.compareTo(BigInteger.valueOf(arr.length())) >= 0)
+			new LogError("Index " + index + " is too large for length " + arr.length(), getLastFileName(), getLastLine());
 		return arr.get(index.intValue());
 	}
 

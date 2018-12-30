@@ -22,34 +22,6 @@ import lexer.Token;
 import lexer.TokenTypes;
 
 public class Tokens {
-	public static String getText(List<Token> tokens) {
-		var result = new StringBuilder();
-		Token next = null;
-		int i = 0;
-		for (Token token : tokens) {
-			result.append(token.getText());
-			if (i + 1 < tokens.size())
-				next = tokens.get(i + 1);
-			if (!(token.getType().equals(TokenTypes.BRACKET) || token.getType().equals(TokenTypes.COMMA)
-					|| token.getType().equals(TokenTypes.DOT) || next == null
-					|| next.getType().equals(TokenTypes.BRACKET) || next.getType().equals(TokenTypes.COMMA)
-					|| next.getType().equals(TokenTypes.DOT)))
-				result.append(' ');
-			i++;
-			next = null;
-		}
-		return result.toString();
-	}
-
-	public static String getTypesToString(List<Token> tokens) {
-		var result = new StringBuilder();
-		for (Token token : tokens) {
-			result.append(token.getType());
-			result.append(' ');
-		}
-		return result.toString();
-	}
-
 	public static DataTypes getDataType(TokenTypes type) {
 		switch (type) {
 		case INTEGER_LITERAL:
@@ -77,5 +49,33 @@ public class Tokens {
 		default:
 			return null;
 		}
+	}
+
+	public static String getText(List<Token> tokens) {
+		var result = new StringBuilder();
+		Token next = null;
+		int i = 0;
+		for (Token token : tokens) {
+			result.append(token.getText());
+			if (i + 1 < tokens.size())
+				next = tokens.get(i + 1);
+			if (!(token.getType().equals(TokenTypes.BRACKET) || token.getType().equals(TokenTypes.COMMA)
+					|| token.getType().equals(TokenTypes.DOT) || next == null
+					|| next.getType().equals(TokenTypes.BRACKET) || next.getType().equals(TokenTypes.COMMA)
+					|| next.getType().equals(TokenTypes.DOT)))
+				result.append(' ');
+			i++;
+			next = null;
+		}
+		return result.toString();
+	}
+
+	public static String getTypesToString(List<Token> tokens) {
+		var result = new StringBuilder();
+		for (Token token : tokens) {
+			result.append(token.getType());
+			result.append(' ');
+		}
+		return result.toString();
 	}
 }

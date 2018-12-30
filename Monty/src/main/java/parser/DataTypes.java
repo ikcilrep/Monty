@@ -16,6 +16,7 @@ limitations under the License.
 
 package parser;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import sml.data.array.Array;
@@ -30,7 +31,7 @@ public enum DataTypes {
 			return DataTypes.VOID;
 		if (value instanceof BigInteger)
 			return DataTypes.INTEGER;
-		if (value instanceof Float)
+		if (value instanceof BigDecimal)
 			return DataTypes.FLOAT;
 		if (value instanceof String)
 			return DataTypes.STRING;

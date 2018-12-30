@@ -44,7 +44,7 @@ public class Ord extends FunctionDeclarationNode {
 		setArguments(arguments);
 		var chr = (String) getBody().getVariableByName("chr").getValue();
 		if (chr.length() != 1)
-			new LogError("Expected one character, but got " + chr.length() + ":\t" + chr);
+			new LogError("Expected one character, but got " + chr.length() + ":\t" + chr, getLastFileName(), getLine());
 		return BigInteger.valueOf(chr.charAt(0));
 	}
 

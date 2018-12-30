@@ -37,11 +37,11 @@ public class FunctionCallNode extends ExpressionNode {
 		arguments.add(argument);
 	}
 
-	public String getName() {
-		return name;
-	}
-
 	public ArrayList<OperationNode> getArguments() {
 		return arguments;
+	}
+
+	public String getName() {
+		return name;
 	}
 }

@@ -33,12 +33,12 @@ public class ConstantNode extends ExpressionNode {
 		super.nodeType = NodeTypes.CONSTANT;
 	}
 
-	public Object getValue() {
-		return value;
-	}
-
 	public DataTypes getType() {
 		return type;
+	}
+
+	public Object getValue() {
+		return value;
 	}
 
 }

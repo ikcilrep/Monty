@@ -16,12 +16,14 @@ limitations under the License.
 
 package sml.casts;
 
+import java.math.BigDecimal;
+
 public class BooleanToFloat {
 
-	public static Float booleanToFloat(Boolean bool) {
+	public static BigDecimal booleanToFloat(Boolean bool) {
 		if (bool == true)
-			return 1f;
-		return 0f;
+			return BigDecimal.ONE;
+		return BigDecimal.ZERO;
 	}
 
 }

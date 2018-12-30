@@ -47,7 +47,7 @@ public class Sleep extends FunctionDeclarationNode {
 		try {
 			Thread.sleep(millis);
 		} catch (InterruptedException e) {
-			new LogError("Sleep for " + millis + " was interrupted");
+			new LogError("Sleep for " + millis + " was interrupted",getLastFileName(), getLastLine());
 		}
 		return Nothing.nothing;
 	}

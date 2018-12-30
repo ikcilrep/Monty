@@ -18,7 +18,6 @@ package sml.data.array;
 
 import java.util.Iterator;
 
-import parser.LogError;
 import sml.data.list.List;
 
 public class Array implements Iterable<Object>, Cloneable {
@@ -34,17 +33,17 @@ public class Array implements Iterable<Object>, Cloneable {
 	/*
 	 * Description.
 	 */
-	public Array(int length) {
-		array = new Object[length];
-		for (int i = 0; i < length; i++)
-			array[i] = null;
+	public Array(Array array) {
+		this.array = array.toArray();
 	}
 
 	/*
 	 * Description.
 	 */
-	public Array(Array array) {
-		this.array = array.toArray();
+	public Array(int length) {
+		array = new Object[length];
+		for (int i = 0; i < length; i++)
+			array[i] = null;
 	}
 
 	/*
@@ -55,52 +54,6 @@ public class Array implements Iterable<Object>, Cloneable {
 		int i = 0;
 		for (Object e : array)
 			this.array[i++] = e;
-	}
-
-	/*
-	 * Description.
-	 */
-	public boolean isEmpty() {
-		for (Object e : array)
-			if (e != null)
-				return true;
-		return false;
-	}
-
-	/*
-	 * Description.
-	 */
-	public boolean contains(Object toSearch) {
-		for (Object e : array)
-			if (e.equals(toSearch))
-				return true;
-		return false;
-
-	}
-
-	/*
-	 * Description.
-	 */
-	public Array subarray(int begin, int end) {
-		int length = end - begin + 1;
-		Array newArray = new Array(length);
-		for (int i = 0; i < length; i++)
-			newArray.set(i, array[i]);
-
-		return newArray;
-	}
-
-	/*
-	 * Description.
-	 */
-	public Array append(Object element) {
-		var newArray = new Object[array.length + 1];
-		newArray[array.length] = element;
-		int i = 0;
-		for (Object e : array)
-			newArray[i++] = e;
-		array = newArray;
-		return this;
 	}
 
 	/*
@@ -122,25 +75,89 @@ public class Array implements Iterable<Object>, Cloneable {
 	/*
 	 * Description.
 	 */
-	public Object[] toArray() {
-		return array;
+	public Array append(Object element) {
+		var newArray = new Object[array.length + 1];
+		newArray[array.length] = element;
+		int i = 0;
+		for (Object e : array)
+			newArray[i++] = e;
+		array = newArray;
+		return this;
+	}
+
+	/*
+	 * Description.
+	 */
+	public boolean contains(Object toSearch) {
+		for (Object e : array)
+			if (e.equals(toSearch))
+				return true;
+		return false;
+
+	}
+
+	public Array copy() {
+		try {
+			return (Array) clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/*
+	 * Description.
+	 */
+	@Override
+	public boolean equals(Object other) {
+		Array otherArray = null;
+		if (other instanceof Array)
+			otherArray = (Array) other;
+		else
+			return false;
+		if (otherArray.length() != array.length)
+			return false;
+		int i = 0;
+		for (Object e : otherArray)
+			if (!array[i++].equals(e))
+				return false;
+		return true;
+
 	}
 
 	/*
 	 * Description.
 	 */
 	public Object get(int index) {
-		if (index >= array.length)
-			new LogError("Index " + index + " is too large for length " + array.length);
 		return array[index];
 	}
 
 	/*
 	 * Description.
 	 */
-	public Array set(int index, Object element) {
-		array[index] = element;
-		return this;
+	public boolean isEmpty() {
+		for (Object e : array)
+			if (e != null)
+				return true;
+		return false;
+	}
+
+	@Override
+	public Iterator<Object> iterator() {
+		return new Iterator<Object>() {
+			int counter = 0;
+
+			@Override
+			public boolean hasNext() {
+				return counter < array.length;
+
+			}
+
+			@Override
+			public Object next() {
+				return array[counter++];
+			}
+		};
 	}
 
 	/*
@@ -184,33 +201,46 @@ public class Array implements Iterable<Object>, Cloneable {
 		return this;
 	}
 
+	public Array reversed() {
+		var arr = new Array(array.length);
+		for (int i = 0; i < array.length; i++)
+			arr.set(array.length - i, get(i));
+		return arr;
+	}
+
 	/*
 	 * Description.
 	 */
-	@Override
-	public boolean equals(Object other) {
-		Array otherArray = null;
-		if (other instanceof Array)
-			otherArray = (Array) other;
-		else
-			return false;
-		if (otherArray.length() != array.length)
-			return false;
-		int i = 0;
-		for (Object e : otherArray)
-			if (!array[i++].equals(e))
-				return false;
-		return true;
-
+	public Array set(int index, Object element) {
+		array[index] = element;
+		return this;
 	}
 
-	public Array copy() {
-		try {
-			return (Array) clone();
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
-		return null;
+	/*
+	 * Description.
+	 */
+	public Array subarray(int begin, int end) {
+		int length = end - begin + 1;
+		Array newArray = new Array(length);
+		for (int i = 0; i < length; i++)
+			newArray.set(i, array[i]);
+
+		return newArray;
+	}
+
+	/*
+	 * Description.
+	 */
+	public Object[] toArray() {
+		return array;
+	}
+
+	public List toList() {
+		var list = new List(array[0]);
+		for (Object e : array)
+			list.append(e);
+		return list.getNext();
+
 	}
 
 	@Override
@@ -226,38 +256,5 @@ public class Array implements Iterable<Object>, Cloneable {
 		stringBuilder.append(']');
 		return stringBuilder.toString();
 
-	}
-
-	public List toList() {
-		var list = new List(array[0]);
-		for (Object e : array)
-			list.append(e);
-		return list.getNext();
-
-	}
-
-	public Array reversed() {
-		var arr = new Array(array.length);
-		for (int i = 0; i < array.length; i++)
-			arr.set(array.length - i, get(i));
-		return arr;
-	}
-
-	@Override
-	public Iterator<Object> iterator() {
-		return new Iterator<Object>() {
-			int counter = 0;
-
-			@Override
-			public boolean hasNext() {
-				return counter < array.length;
-
-			}
-
-			@Override
-			public Object next() {
-				return array[counter++];
-			}
-		};
 	}
 }

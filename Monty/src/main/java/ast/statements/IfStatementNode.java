@@ -28,31 +28,31 @@ public class IfStatementNode extends Block {
 	private OperationNode condition;
 	private Block elseBody;
 
+	private boolean isInElse = false;
+
 	public IfStatementNode(Block parent, OperationNode condition) {
 		super(parent);
 		this.condition = condition;
 		super.nodeType = NodeTypes.IF_STATEMENT;
 	}
 
-	private boolean isInElse = false;
-
-	public boolean isInElse() {
-		return isInElse;
-	}
-
-	public void setInElse(boolean isInElse) {
-		this.isInElse = isInElse;
+	public OperationNode getCondition() {
+		return condition;
 	}
 
 	public Block getElseBody() {
 		return elseBody;
 	}
 
+	public boolean isInElse() {
+		return isInElse;
+	}
+
 	public void setElseBody(Block elseBody) {
 		this.elseBody = elseBody;
 	}
 
-	public OperationNode getCondition() {
-		return condition;
+	public void setInElse(boolean isInElse) {
+		this.isInElse = isInElse;
 	}
 }

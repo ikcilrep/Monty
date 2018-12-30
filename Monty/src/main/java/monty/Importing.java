@@ -40,60 +40,6 @@ import parser.Tokens;
 import parser.parsing.Parser;
 
 public class Importing {
-	private static String emptyIfNull(Path path) {
-		if (path == null)
-			return "";
-		return path.toString();
-	}
-
-	private static String[] subArray(String[] array, int begin) {
-		var newArray = new String[array.length - begin];
-		for (int i = 0; begin < array.length; begin++, i++) {
-			newArray[i] = array[begin];
-		}
-		return newArray;
-	}
-
-	public static void setLibraries(int from) {
-		Parser.libraries = new HashMap<>();
-		Parser.libraries.put("sml", new sml.Sml());
-		for (int i = from; i < Main.argv.length; i++) {
-			try {
-				File pathToJar = new File(Main.argv[i]);
-
-				@SuppressWarnings("resource")
-				JarFile jarFile = new JarFile(pathToJar);
-				Enumeration<JarEntry> e = jarFile.entries();
-
-				URL[] urls = { new URL("jar:file:" + pathToJar + "!/") };
-				URLClassLoader cl = URLClassLoader.newInstance(urls);
-
-				while (e.hasMoreElements()) {
-					JarEntry je = e.nextElement();
-					if (je.isDirectory() || !je.getName().endsWith(".class")) {
-						continue;
-					}
-					// -6 because of .class
-					String className = je.getName().substring(0, je.getName().length() - 6);
-					className = className.replace('/', '.');
-					Class<?> c = cl.loadClass(className);
-					Object instance;
-					instance = c.getDeclaredConstructor().newInstance();
-
-					if (instance instanceof Library) {
-						Library lib = (Library) instance;
-						Parser.libraries.put(lib.getName(), lib);
-					}
-				}
-			} catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException
-					| IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-					| SecurityException e1) {
-				e1.printStackTrace();
-
-			}
-		}
-	}
-
 	@SuppressWarnings("unchecked")
 	private static void addAllFunctions(Block block, HashMap<String, Object> addFrom, Token token) {
 		for (Object value : addFrom.values())
@@ -140,6 +86,12 @@ public class Importing {
 			new LogError("There aren't any function or variable with this name to import:\t" + name
 					+ ". Look at this file:\t" + path);
 		}
+	}
+
+	private static String emptyIfNull(Path path) {
+		if (path == null)
+			return "";
+		return path.toString();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -196,6 +148,54 @@ public class Importing {
 				new LogError("There isn't file to import:\t" + path, tokens.get(1));
 			findAndAddFunctions(block, subArray(splited, 1), path, Parser.libraries.get(splited[0]), tokens.get(1));
 		}
+	}
+
+	public static void setLibraries(int from) {
+		Parser.libraries = new HashMap<>();
+		Parser.libraries.put("sml", new sml.Sml());
+		for (int i = from; i < Main.argv.length; i++) {
+			try {
+				File pathToJar = new File(Main.argv[i]);
+
+				@SuppressWarnings("resource")
+				JarFile jarFile = new JarFile(pathToJar);
+				Enumeration<JarEntry> e = jarFile.entries();
+
+				URL[] urls = { new URL("jar:file:" + pathToJar + "!/") };
+				URLClassLoader cl = URLClassLoader.newInstance(urls);
+
+				while (e.hasMoreElements()) {
+					JarEntry je = e.nextElement();
+					if (je.isDirectory() || !je.getName().endsWith(".class")) {
+						continue;
+					}
+					// -6 because of .class
+					String className = je.getName().substring(0, je.getName().length() - 6);
+					className = className.replace('/', '.');
+					Class<?> c = cl.loadClass(className);
+					Object instance;
+					instance = c.getDeclaredConstructor().newInstance();
+
+					if (instance instanceof Library) {
+						Library lib = (Library) instance;
+						Parser.libraries.put(lib.getName(), lib);
+					}
+				}
+			} catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException
+					| IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+					| SecurityException e1) {
+				e1.printStackTrace();
+
+			}
+		}
+	}
+
+	private static String[] subArray(String[] array, int begin) {
+		var newArray = new String[array.length - begin];
+		for (int i = 0; begin < array.length; begin++, i++) {
+			newArray[i] = array[begin];
+		}
+		return newArray;
 	}
 
 }

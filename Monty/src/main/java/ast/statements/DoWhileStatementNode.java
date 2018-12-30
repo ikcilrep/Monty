@@ -37,12 +37,12 @@ public class DoWhileStatementNode extends StatementNode {
 		return body;
 	}
 
-	public void setBody(Block body) {
-		this.body = body;
-	}
-
 	public OperationNode getCondition() {
 		return condition;
+	}
+
+	public void setBody(Block body) {
+		this.body = body;
 	}
 
 }

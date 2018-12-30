@@ -34,12 +34,12 @@ public class ChangeToStatementNode extends StatementNode {
 		super.nodeType = NodeTypes.CHANGE_TO_STATEMENT;
 	}
 
-	public VariableNode getToChangeType() {
-		return toChangeType;
-	}
-
 	public DataTypes getDataType() {
 		return dataType;
+	}
+
+	public VariableNode getToChangeType() {
+		return toChangeType;
 	}
 
 }

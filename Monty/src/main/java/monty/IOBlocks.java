@@ -15,6 +15,20 @@ import parser.parsing.Parser;
 
 public class IOBlocks {
 
+	public static void compileAndWriteBlock(Block block, String outputPath) {
+		try {
+			FileOutputStream fos = new FileOutputStream(outputPath);
+			GZIPOutputStream gos = new GZIPOutputStream(fos);
+			ObjectOutputStream oos = new ObjectOutputStream(gos);
+			oos.writeObject(block);
+			oos.flush();
+			oos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
 	public static Block readBlock(int from, String path) {
 		Importing.setLibraries(from);
 		if (path.endsWith(".mt"))
@@ -30,22 +44,6 @@ public class IOBlocks {
 		var block = Parser.parse(tokens);
 		block.getFunctions().put("nothing", new sml.data.returning.Nothing());
 		return block;
-	}
-
-	public static Block readCompiledBlockFromFile(String path) {
-		return readBlockFromGZIP(readGZIPBlock(path), path);
-	}
-
-	private static GZIPInputStream readGZIPBlock(String path) {
-		FileInputStream fis = null;
-		GZIPInputStream gis = null;
-		try {
-			fis = new FileInputStream(path);
-			gis = new GZIPInputStream(fis);
-		} catch (IOException e) {
-			new LogError("File not found:\t" + path);
-		}
-		return gis;
 	}
 
 	private static Block readBlockFromGZIP(GZIPInputStream gis, String path) {
@@ -65,17 +63,19 @@ public class IOBlocks {
 		return block;
 	}
 
-	public static void compileAndWriteBlock(Block block, String outputPath) {
-		try {
-			FileOutputStream fos = new FileOutputStream(outputPath);
-			GZIPOutputStream gos = new GZIPOutputStream(fos);
-			ObjectOutputStream oos = new ObjectOutputStream(gos);
-			oos.writeObject(block);
-			oos.flush();
-			oos.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public static Block readCompiledBlockFromFile(String path) {
+		return readBlockFromGZIP(readGZIPBlock(path), path);
+	}
 
+	private static GZIPInputStream readGZIPBlock(String path) {
+		FileInputStream fis = null;
+		GZIPInputStream gis = null;
+		try {
+			fis = new FileInputStream(path);
+			gis = new GZIPInputStream(fis);
+		} catch (IOException e) {
+			new LogError("File not found:\t" + path);
+		}
+		return gis;
 	}
 }

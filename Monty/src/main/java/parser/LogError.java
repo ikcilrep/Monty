@@ -24,11 +24,6 @@ public class LogError {
 		System.exit(0);
 	}
 
-	public LogError(String message, Token token) {
-		System.out.println(message + ".\nLook at " + token.getLine() + " line in " + token.getFileName() + " file.");
-		System.exit(0);
-	}
-
 	public LogError(String message, String fileName, int line) {
 		System.out.println(message + ".\nLook at " + line + " line in " + fileName + " file.");
 		System.exit(0);
@@ -44,6 +39,11 @@ public class LogError {
 				linesToString += ", ";
 		}
 		System.out.println(message + ".\nLook at " + linesToString + ".");
+		System.exit(0);
+	}
+
+	public LogError(String message, Token token) {
+		System.out.println(message + ".\nLook at " + token.getLine() + " line in " + token.getFileName() + " file.");
 		System.exit(0);
 	}
 }

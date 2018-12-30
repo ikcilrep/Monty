@@ -47,7 +47,7 @@ public class Join extends FunctionDeclarationNode {
 		try {
 			Thread.currentThread().join(millis);
 		} catch (InterruptedException e) {
-			new LogError("Join for " + millis + " was interrupted");
+			new LogError("Join for " + millis + " was interrupted", getLastFileName(), getLastLine());
 		}
 		return Nothing.nothing;
 	}

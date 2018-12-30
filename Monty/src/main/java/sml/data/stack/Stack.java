@@ -29,43 +29,15 @@ public class Stack implements Cloneable, Iterable<Object> {
 		top = -1;
 	}
 
-	private void resize() {
-		Object[] newArray = new Object[array.length << 1];
-		for (int i = 0; i < array.length; i++)
-			newArray[i] = array[i];
-		array = newArray;
-	}
-
-	public Stack push(Object elem) {
-		if (top >= array.length >>> 1)
-			resize();
-		array[++top] = elem;
-		return this;
-	}
-
-	public Object pop() {
-		if (top == -1)
-			new LogError("This stack is empty, you can't pop from it");
-		return array[top--];
-	}
-
-	public Object peek() {
-		if (top == -1)
-			new LogError("This stack is empty, you can't peek with it");
-		return array[top];
-	}
-
-	public boolean isEmpty() {
-		return top < 0;
-	}
-
-	public Stack reversed() {
-		Object[] newArray = new Object[array.length];
-		for (int j = top, i = 0; j >= 0; j--, i++)
-			newArray[i] = array[j];
-		Stack newStack = copy();
-		newStack.array = newArray;
-		return newStack;
+	public Stack copy() {
+		// TODO Auto-generated method stub
+		try {
+			return (Stack) clone();
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
@@ -84,29 +56,8 @@ public class Stack implements Cloneable, Iterable<Object> {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		var stringBuilder = new StringBuilder((array.length << 1) + 1);
-		stringBuilder.append('[');
-		for (int i = 0; i <= top; i++) {
-			stringBuilder.append(array[i].toString());
-			if (i < top)
-				stringBuilder.append(',');
-		}
-		stringBuilder.append(']');
-		return stringBuilder.toString();
-
-	}
-
-	public Stack copy() {
-		// TODO Auto-generated method stub
-		try {
-			return (Stack) clone();
-		} catch (CloneNotSupportedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+	public boolean isEmpty() {
+		return top < 0;
 	}
 
 	@Override
@@ -125,5 +76,54 @@ public class Stack implements Cloneable, Iterable<Object> {
 				return array[counter--];
 			}
 		};
+	}
+
+	public Object peek() {
+		if (top == -1)
+			new LogError("This stack is empty, you can't peek with it");
+		return array[top];
+	}
+
+	public Object pop() {
+		if (top == -1)
+			new LogError("This stack is empty, you can't pop from it");
+		return array[top--];
+	}
+
+	public Stack push(Object elem) {
+		if (top >= array.length >>> 1)
+			resize();
+		array[++top] = elem;
+		return this;
+	}
+
+	private void resize() {
+		Object[] newArray = new Object[array.length << 1];
+		for (int i = 0; i < array.length; i++)
+			newArray[i] = array[i];
+		array = newArray;
+	}
+
+	public Stack reversed() {
+		Object[] newArray = new Object[array.length];
+		for (int j = top, i = 0; j >= 0; j--, i++)
+			newArray[i] = array[j];
+		Stack newStack = copy();
+		newStack.array = newArray;
+		return newStack;
+	}
+
+	@Override
+	public String toString() {
+		var stringBuilder = new StringBuilder((array.length << 1) + 1);
+		stringBuilder.append('[');
+		for (int i = 0; i <= top; i++) {
+			stringBuilder.append(array[i].toString());
+			if (i < top)
+				stringBuilder.append(',');
+		}
+		stringBuilder.append(']');
+		return stringBuilder.toString();
+
 	}
 }

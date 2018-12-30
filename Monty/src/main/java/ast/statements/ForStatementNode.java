@@ -35,20 +35,20 @@ public class ForStatementNode extends StatementNode {
 		super.nodeType = NodeTypes.FOR_STATEMENT;
 	}
 
-	public Block getBody() {
-		return body;
-	}
-
-	public void setBody(Block body) {
-		this.body = body;
-	}
-
 	public OperationNode getArray() {
 		return array;
 	}
 
+	public Block getBody() {
+		return body;
+	}
+
 	public String getVariableName() {
 		return variableName;
+	}
+
+	public void setBody(Block body) {
+		this.body = body;
 	}
 
 }

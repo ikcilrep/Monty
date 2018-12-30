@@ -16,17 +16,17 @@ limitations under the License.
 
 package sml.casts;
 
+import java.math.BigDecimal;
+
 import parser.LogError;
 
 public class StringToFloat {
 
-	public static Float stringToFloat(String str) {
-		if (str.matches("[+-]?[0-9]+\\.[0-9]+"))
-			return Float.parseFloat(str);
-		else if (str.matches("[+-]?[0-9]+"))
-			return (float) Integer.parseInt(str);
+	public static BigDecimal stringToFloat(String str, String fileName, int line) {
+		if (str.matches("[+-]?[0-9]+(\\.[0-9]+)?"))
+			return new BigDecimal(str);
 		else
-			new LogError("Unknown number format for float type:\t" + str);
+			new LogError("Unknown number format for float type:\t" + str, fileName, line);
 		return null;
 	}
 
