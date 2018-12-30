@@ -25,6 +25,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -32,7 +33,7 @@ import java.util.jar.JarFile;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
-import lexer.LexerConfig;
+import lexer.Lexer;
 import lexer.Token;
 import parser.LogError;
 import parser.Tokens;
@@ -104,9 +105,7 @@ public class Importing {
 
 	private static void addFunctionFromFile(Block block, String path) {
 		var file = new File(path);
-		var text = FileIO.readFile(file.getAbsolutePath());
-		var importedTokens = LexerConfig.getLexer(text, file.getName()).getAllTokens();
-		block.concat(Parser.parse(importedTokens));
+		block.concat(Parser.parse(Lexer.lex(FileIO.readFile(file.getAbsolutePath()), path, 1, new LinkedList<>(), 0)));
 	}
 
 	private static void addFunctionsFromDirectory(Block block, File directory) {
@@ -123,17 +122,18 @@ public class Importing {
 		}
 	}
 
-	private static void addSpecifiedFunctionOrVariableFromFile(Block block, Block importedBlock, String path, String name) {
+	private static void addSpecifiedFunctionOrVariableFromFile(Block block, Block importedBlock, String path,
+			String name) {
 		var doesContainVariable = importedBlock.doesContainVariable(name);
 		var doesContainFunction = importedBlock.doesContainFunction(name);
 		if (doesContainVariable || doesContainFunction) {
 			importedBlock.run();
 			if (doesContainVariable) {
-				var variable = importedBlock.getVariableByName(name); // błąd
+				var variable = importedBlock.getVariableByName(name);
 				block.addVariable(variable, variable.getFileName(), variable.getLine());
 			}
 			if (doesContainFunction) {
-				var function = importedBlock.getFunctionByName(name);	
+				var function = importedBlock.getFunctionByName(name);
 				block.addFunction(function, function.getFileName(), function.getLine());
 			}
 		} else {
@@ -187,8 +187,8 @@ public class Importing {
 			addSpecifiedFunctionOrVariableFromFile(block, importedBlock, parent_compiled_file.getPath(), name);
 		} else if (parent_file.exists() && parent_file.isFile()) {
 			var name = file.getName().substring(0, file.getName().length() - 3);
-			var importedBlock = Parser.parse(LexerConfig
-					.getLexer(FileIO.readFile(parent_file.getAbsolutePath()), file.getName()).getAllTokens());
+			var importedBlock = Parser.parse(Lexer.lex(FileIO.readFile(parent_file.getAbsolutePath()),
+					parent_file.getName(), 1, new LinkedList<>(), 0));
 			addSpecifiedFunctionOrVariableFromFile(block, importedBlock, parent_file.getPath(), name);
 		} else {
 			var splited = partOfPath.split("\\.");

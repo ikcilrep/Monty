@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import ast.Block;
+import ast.NodeTypes;
+import ast.statements.IfStatementNode;
 import lexer.Token;
 import lexer.TokenTypes;
 import monty.Importing;
@@ -35,7 +37,6 @@ public class Parser {
 		var tokensBeforeSemicolon = new ArrayList<Token>();
 		var block = new Block(null);
 		for (Token token : tokens) {
-			System.out.println(token.getText());
 			if (token.getType().equals(TokenTypes.SEMICOLON)) {
 				if (tokensBeforeSemicolon.size() == 0)
 					continue;
@@ -43,33 +44,27 @@ public class Parser {
 					AdderToBlock.addExpression(block, tokensBeforeSemicolon);
 				} else if (Identificator.isVariableDeclaration(tokensBeforeSemicolon)) {
 					AdderToBlock.addVariableDeclaration(block, tokensBeforeSemicolon);
-
 				} else if (Identificator.isReturnStatement(tokensBeforeSemicolon)) {
 					AdderToBlock.addReturnStatement(block, tokensBeforeSemicolon);
-
 				} else if (Identificator.isFunctionDeclaration(tokensBeforeSemicolon)) {
 					block = AdderToBlock.addFunctionDeclaration(block, tokensBeforeSemicolon);
-
 				} else if (Identificator.isIfStatement(tokensBeforeSemicolon)) {
 					block = AdderToBlock.addIfStatement(block, tokensBeforeSemicolon);
-
 				} else if (Identificator.isElseStatement(tokensBeforeSemicolon)) {
 					block = AdderToBlock.addElseStatement(block, tokensBeforeSemicolon);
-					if (tokensBeforeSemicolon.size() > 1)
+					if (tokensBeforeSemicolon.size() > 1) {
 						block = AdderToBlock.addIfStatement(block,
 								tokensBeforeSemicolon.subList(1, tokensBeforeSemicolon.size()));
+						((IfStatementNode) block).setInElse(true);
+					}
 				} else if (Identificator.isWhileStatement(tokensBeforeSemicolon)) {
 					block = AdderToBlock.addWhileStatement(block, tokensBeforeSemicolon);
-
 				} else if (Identificator.isDoWhileStatement(tokensBeforeSemicolon)) {
 					block = AdderToBlock.addDoWhileStatement(block, tokensBeforeSemicolon);
-
 				} else if (Identificator.isImport(tokensBeforeSemicolon)) {
 					Importing.importFile(block, tokensBeforeSemicolon);
-
 				} else if (Identificator.isChangeToStatement(tokensBeforeSemicolon)) {
 					AdderToBlock.addChangeToStatement(block, tokensBeforeSemicolon);
-
 				} else if (Identificator.isThreadStatement(tokensBeforeSemicolon)) {
 					AdderToBlock.addThreadStatement(block, tokensBeforeSemicolon);
 				} else if (Identificator.isBreakStatement(tokensBeforeSemicolon)) {
@@ -82,6 +77,9 @@ public class Parser {
 					var parent = block.getParent();
 					if (parent == null)
 						new LogError("Nothing to end!", tokensBeforeSemicolon.get(0));
+					if (block.getNodeType() == NodeTypes.IF_STATEMENT && ((IfStatementNode) block).isInElse()
+							&& parent.getNodeType() == NodeTypes.ELSE_BLOCK)
+						block = parent;
 					block = block.getParent();
 				}
 				tokensBeforeSemicolon.clear();

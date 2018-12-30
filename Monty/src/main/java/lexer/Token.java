@@ -26,6 +26,13 @@ public class Token implements Cloneable {
 		this.type = type;
 	}
 
+	public Token(TokenTypes type, String text, String fileName, int line) {
+		this.type = type;
+		this.text = text;
+		this.fileName = fileName;
+		this.line = line;
+	}
+	
 	public TokenTypes getType() {
 		return type;
 	}

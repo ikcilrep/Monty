@@ -315,8 +315,6 @@ public class OperatorOverloading {
 	public static Object equalsOperator(Object leftValue, Object rightValue, Object operator, DataTypes type) {
 		switch (type) {
 		case INTEGER:
-			System.out.println(leftValue);
-			System.out.println(rightValue);
 			return ((BigInteger) leftValue).compareTo((BigInteger) rightValue) == 0;
 		case FLOAT:
 			return ((Float) leftValue).compareTo((Float) rightValue) == 0;
@@ -420,8 +418,6 @@ public class OperatorOverloading {
 			new LogError("Can't do lower-equals operation with " + type.toString().toLowerCase() + "s:\t"
 					+ leftValue.toString() + " " + rightValue.toString() + " " + operator.toString());
 		case ANY:
-			System.out.println(leftValue);
-			System.out.println(rightValue	);
 			new LogError("Can't do any operations with \"any\" data type");
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "

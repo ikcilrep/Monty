@@ -55,6 +55,11 @@ public class Block extends Node implements Serializable {
 		this.parent = parent;
 	}
 
+	public Block(Block parent, NodeTypes nodeType) {
+		this.parent = parent;
+		super.nodeType = nodeType;
+	}
+	
 	public void addChild(Node child) {
 		children.add(child);
 	}

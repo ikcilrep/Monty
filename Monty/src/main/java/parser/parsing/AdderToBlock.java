@@ -93,8 +93,9 @@ public abstract class AdderToBlock {
 	public static Block addElseStatement(Block block, List<Token> tokens) {
 		if (!block.getNodeType().equals(NodeTypes.IF_STATEMENT))
 			new LogError("Unexpected \"else\" keyword", tokens.get(0));
-		var elseBlock = new Block(block.getParent());
+		var elseBlock = new Block(block.getParent(), NodeTypes.ELSE_BLOCK);
 		((IfStatementNode) block).setElseBody(elseBlock);
+		
 		return elseBlock;
 	}
 
