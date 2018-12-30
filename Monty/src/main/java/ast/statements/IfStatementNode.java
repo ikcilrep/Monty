@@ -33,8 +33,9 @@ public class IfStatementNode extends Block {
 		this.condition = condition;
 		super.nodeType = NodeTypes.IF_STATEMENT;
 	}
+
 	private boolean isInElse = false;
-	
+
 	public boolean isInElse() {
 		return isInElse;
 	}

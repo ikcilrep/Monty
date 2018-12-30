@@ -63,7 +63,7 @@ public abstract class FunctionDeclarationNode extends DeclarationNode {
 		else if (arguments.size() < parameters.size())
 			new LogError("Too few arguments in " + name + " function call", getFileName(), getLine());
 		var runnedArguments = new LinkedList<Object>();
-		
+
 		for (int i = 0; i < arguments.size(); i++) {
 			var dataType = parameters.get(i).getType();
 			var argument = arguments.get(i);
@@ -81,7 +81,7 @@ public abstract class FunctionDeclarationNode extends DeclarationNode {
 			var name = parameters.get(i).getName();
 			var dataType = parameters.get(i).getType();
 			if (!body.doesContainVariable(name)) {
-				var token = new Token(null);	
+				var token = new Token(null);
 				token.setFileName(fileName);
 				token.setLine(line);
 				body.addVariable(new VariableDeclarationNode(name, dataType), token);

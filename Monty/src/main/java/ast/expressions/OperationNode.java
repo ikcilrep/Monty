@@ -110,7 +110,9 @@ public class OperationNode extends ExpressionNode {
 			switch (((Node) expression).getNodeType()) {
 			case VARIABLE:
 				var variableCall = (VariableNode) expression;
-				return parent.getVariableByName(variableCall.getName(), variableCall.getFileName(), variableCall.getLine()).getType();
+				return parent
+						.getVariableByName(variableCall.getName(), variableCall.getFileName(), variableCall.getLine())
+						.getType();
 			case FUNCTION_CALL:
 				var functionCall = ((FunctionCallNode) expression);
 				var function = parent.getFunctionByName(functionCall.getName(), functionCall.getFileName(),

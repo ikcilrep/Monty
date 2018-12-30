@@ -79,7 +79,7 @@ public abstract class AdderToBlock {
 				function.addParameter(new VariableDeclarationNode(name, type));
 		}
 		function.setBody(new Block(block));
-		block.addFunction(function,tokens.get(1));
+		block.addFunction(function, tokens.get(1));
 		return function.getBody();
 	}
 
@@ -95,7 +95,7 @@ public abstract class AdderToBlock {
 			new LogError("Unexpected \"else\" keyword", tokens.get(0));
 		var elseBlock = new Block(block.getParent(), NodeTypes.ELSE_BLOCK);
 		((IfStatementNode) block).setElseBody(elseBlock);
-		
+
 		return elseBlock;
 	}
 

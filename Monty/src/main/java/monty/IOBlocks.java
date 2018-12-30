@@ -31,7 +31,7 @@ public class IOBlocks {
 		block.getFunctions().put("nothing", new sml.data.returning.Nothing());
 		return block;
 	}
-	
+
 	public static Block readCompiledBlockFromFile(String path) {
 		return readBlockFromGZIP(readGZIPBlock(path), path);
 	}

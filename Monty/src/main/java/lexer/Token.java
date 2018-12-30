@@ -32,7 +32,7 @@ public class Token implements Cloneable {
 		this.fileName = fileName;
 		this.line = line;
 	}
-	
+
 	public TokenTypes getType() {
 		return type;
 	}

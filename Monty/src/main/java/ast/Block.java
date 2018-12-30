@@ -59,7 +59,7 @@ public class Block extends Node implements Serializable {
 		this.parent = parent;
 		super.nodeType = nodeType;
 	}
-	
+
 	public void addChild(Node child) {
 		children.add(child);
 	}
@@ -76,7 +76,7 @@ public class Block extends Node implements Serializable {
 		}
 		functions.put(name, function);
 	}
-	
+
 	public void addFunction(FunctionDeclarationNode function, String fileName, int line) {
 		String name = function.getName();
 		function.setFileName(fileName);
@@ -103,7 +103,6 @@ public class Block extends Node implements Serializable {
 		variables.put(name, variable);
 	}
 
-	
 	public void addVariable(VariableDeclarationNode variable, String fileName, int line) {
 		String name = variable.getName();
 		variable.setFileName(fileName);
@@ -116,7 +115,7 @@ public class Block extends Node implements Serializable {
 		}
 		variables.put(name, variable);
 	}
-	
+
 	private void addFunction(FunctionDeclarationNode function) {
 		String name = function.getName();
 		if (functions.containsKey(name)) {
@@ -164,11 +163,10 @@ public class Block extends Node implements Serializable {
 	public boolean doesContainFunction(String name) {
 		return functions.containsKey(name);
 	}
-	
+
 	public LinkedList<Node> getChildren() {
 		return children;
 	}
-
 
 	public HashMap<String, FunctionDeclarationNode> getFunctions() {
 		return functions;
@@ -189,7 +187,7 @@ public class Block extends Node implements Serializable {
 		return block.functions.get(name);
 
 	}
-	
+
 	public VariableDeclarationNode getVariableByName(String name, String fileName, int line) {
 		Block block = this;
 		while (!block.variables.containsKey(name)) {
@@ -211,7 +209,7 @@ public class Block extends Node implements Serializable {
 		}
 		return block.variables.get(name);
 	}
-	
+
 	public FunctionDeclarationNode getFunctionByName(String name) {
 		Block block = this;
 		while (!block.functions.containsKey(name)) {
@@ -223,7 +221,7 @@ public class Block extends Node implements Serializable {
 		return block.functions.get(name);
 
 	}
-	
+
 	public HashMap<String, VariableDeclarationNode> getVariables() {
 		return variables;
 	}

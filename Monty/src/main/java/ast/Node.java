@@ -26,7 +26,7 @@ public class Node implements Serializable {
 	protected NodeTypes nodeType;
 	protected int line;
 	protected String fileName;
-	
+
 	public NodeTypes getNodeType() {
 		return nodeType;
 	}

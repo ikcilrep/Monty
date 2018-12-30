@@ -199,12 +199,4 @@ public class Lexer {
 		}
 		return tokens;
 	}
-
-	public static void main(String[] args) {
-		var lexed = lex("if n 1 ==;println(1)\nelse if n 0 ==;\nend;", "", 1, new LinkedList<>(), 0);
-		for (Token t : lexed) {
-			System.out.println(t.getText());
-			System.out.println(t.getType());
-		}
-	}
 }
