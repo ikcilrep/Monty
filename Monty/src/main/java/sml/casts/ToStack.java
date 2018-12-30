@@ -41,7 +41,7 @@ public class ToStack extends FunctionDeclarationNode {
 			return ((Array) a).toStack();
 		if (a instanceof List)
 			return ((List) a).toArray().toStack();
-		return new Array().append(a);
+		return new Stack().push(a);
 	}
 
 	public ToStack() {

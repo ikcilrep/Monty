@@ -41,7 +41,7 @@ public class ToList extends FunctionDeclarationNode {
 			return ((Array) a).toList();
 		if (a instanceof Stack)
 			return ((Stack) a).toArray().toList();
-		return new Array().append(a);
+		return new List(a);
 	}
 
 	public ToList() {

@@ -344,6 +344,12 @@ public class Block extends Node implements Serializable {
 				case ARRAY:
 					variable.setValue(ToArray.toArray(variable.getValue()));
 					break;
+				case LIST:
+					variable.setValue(ToList.toList(variable.getValue()));
+					break;
+				case STACK:
+					variable.setValue(ToStack.toStack(variable.getValue()));
+					break;
 				default:
 					break;
 

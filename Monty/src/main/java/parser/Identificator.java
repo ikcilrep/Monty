@@ -209,8 +209,8 @@ public abstract class Identificator {
 
 		if (!isFirstTokenReturnKeyword)
 			return false;
-		if (tokens.size() == 1 || !isExpression(tokens.subList(1, tokens.size())))
-			new LogError("Expected expression after \"return\" keyword:\t" + Tokens.getText(tokens),
+		if (tokens.size() > 1 && !isExpression(tokens.subList(1, tokens.size())))
+			new LogError("Expected expression or nothing after \"return\" keyword:\t" + Tokens.getText(tokens),
 					tokens.get(tokens.size() > 1 ? 1 : 0));
 		return true;
 	}

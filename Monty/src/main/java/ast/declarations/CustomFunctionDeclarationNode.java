@@ -25,6 +25,7 @@ import ast.statements.ContinueStatementNode;
 import parser.DataTypes;
 import parser.LogError;
 import sml.data.returning.BreakType;
+import sml.data.returning.Nothing;
 
 public class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
 	/**
@@ -51,18 +52,21 @@ public class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
 		try {
 			result = body.run();
 		} catch (StackOverflowError e) {
-			new LogError("Stack overflow at " + name + " function call");
+			new LogError("Stack overflow at " + name + " function call", getLastFileName(), getLastLine());
 		}
+		if (result == null)
+			result = Nothing.nothing;
 		if (result instanceof BreakType)
-			new LogError("Trying to break function " + getName());
+			new LogError("Trying to break function " + getName(), getLastFileName(), getLastLine());
 		if (result instanceof ContinueStatementNode)
-			new LogError("Trying to continue function " + getName());
+			new LogError("Trying to continue function " + getName(), getLastFileName(), getLastLine());
 		body.setVariables(variables);
 		var resultDataType = DataTypes.getDataType(result);
-
+		if (resultDataType == null)
+			resultDataType = DataTypes.VOID;
 		if (!resultDataType.equals(getType()))
 			new LogError("Function " + getName() + " should returns " + getType().toString().toLowerCase()
-					+ ",\nbut returns " + resultDataType.toString().toLowerCase());
+					+ ",\nbut returns " + resultDataType.toString().toLowerCase(), getLastFileName(), getLastLine());
 		return result;
 	}
 }
