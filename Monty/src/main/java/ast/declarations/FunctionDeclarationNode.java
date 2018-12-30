@@ -17,6 +17,7 @@ limitations under the License.
 package ast.declarations;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import ast.Block;
 import ast.NodeTypes;
@@ -61,8 +62,9 @@ public abstract class FunctionDeclarationNode extends DeclarationNode {
 			new LogError("Too many arguments in " + name + " function call", getFileName(), getLine());
 		else if (arguments.size() < parameters.size())
 			new LogError("Too few arguments in " + name + " function call", getFileName(), getLine());
+		var runnedArguments = new LinkedList<Object>();
+		
 		for (int i = 0; i < arguments.size(); i++) {
-			var name = parameters.get(i).getName();
 			var dataType = parameters.get(i).getType();
 			var argument = arguments.get(i);
 			var value = argument.run();
@@ -72,13 +74,19 @@ public abstract class FunctionDeclarationNode extends DeclarationNode {
 					new LogError("Wrong data type for parameter with name\n\"" + name + "\" in " + getName()
 							+ " function call expected " + dataType.toString().toLowerCase() + " got "
 							+ argumentDataType.toString().toLowerCase(), getFileName(), getLine());
+
+			runnedArguments.add(value);
+		}
+		for (int i = 0; i < runnedArguments.size(); i++) {
+			var name = parameters.get(i).getName();
+			var dataType = parameters.get(i).getType();
 			if (!body.doesContainVariable(name)) {
-				var token = new Token(null);
+				var token = new Token(null);	
 				token.setFileName(fileName);
 				token.setLine(line);
 				body.addVariable(new VariableDeclarationNode(name, dataType), token);
 			}
-			body.getVariableByName(name, getFileName(), getLine()).setValue(value);
+			body.getVariableByName(name, getFileName(), getLine()).setValue(runnedArguments.get(i));
 		}
 	}
 }
