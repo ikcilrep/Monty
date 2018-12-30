@@ -27,6 +27,8 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
 import sml.data.array.Array;
+import sml.data.list.List;
+import sml.data.stack.Stack;
 
 public class ToBoolean extends FunctionDeclarationNode {
 
@@ -48,6 +50,10 @@ public class ToBoolean extends FunctionDeclarationNode {
 			return StringToBoolean.stringToBoolean((String) a, getLastFileName(), getLastLine());
 		if (a instanceof Array)
 			new LogError("Can't cast array to boolean:\t" + a.toString(),  getLastFileName(), getLastLine());
+		if (a instanceof List)
+			new LogError("Can't cast list to boolean:\t" + a.toString(),  getLastFileName(), getLastLine());
+		if (a instanceof Stack)
+			new LogError("Can't cast stack to boolean:\t" + a.toString(),  getLastFileName(), getLastLine());
 		return null;
 	}
 

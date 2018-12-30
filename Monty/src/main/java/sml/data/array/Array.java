@@ -19,6 +19,7 @@ package sml.data.array;
 import java.util.Iterator;
 
 import sml.data.list.List;
+import sml.data.stack.Stack;
 
 public class Array implements Iterable<Object>, Cloneable {
 	protected Object[] array;
@@ -50,10 +51,7 @@ public class Array implements Iterable<Object>, Cloneable {
 	 * Description.
 	 */
 	public Array(Object array[]) {
-		this.array = new Object[array.length];
-		int i = 0;
-		for (Object e : array)
-			this.array[i++] = e;
+		this.array = array;
 	}
 
 	/*
@@ -242,6 +240,10 @@ public class Array implements Iterable<Object>, Cloneable {
 		return list.getNext();
 
 	}
+	
+	public Stack toStack() {
+		return new Stack(array);
+	}
 
 	@Override
 	public String toString() {
@@ -249,6 +251,7 @@ public class Array implements Iterable<Object>, Cloneable {
 		stringBuilder.append('[');
 		int i = 0;
 		for (Object e : array) {
+			System.out.println(e);
 			stringBuilder.append(e.toString());
 			if (++i < array.length)
 				stringBuilder.append(',');

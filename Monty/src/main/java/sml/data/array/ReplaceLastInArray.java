@@ -32,7 +32,7 @@ public class ReplaceLastInArray extends FunctionDeclarationNode {
 	private static final long serialVersionUID = 268032436604437625L;
 
 	public ReplaceLastInArray() {
-		super("replaceFirstInArray", DataTypes.ARRAY);
+		super("replaceLastInArray", DataTypes.ARRAY);
 		setBody(new Block(null));
 		addParameter(new VariableDeclarationNode("arr", DataTypes.ARRAY));
 		addParameter(new VariableDeclarationNode("toBeReplaced", DataTypes.ANY));

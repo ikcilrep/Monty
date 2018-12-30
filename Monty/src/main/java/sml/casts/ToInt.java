@@ -27,6 +27,8 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
 import sml.data.array.Array;
+import sml.data.list.List;
+import sml.data.stack.Stack;
 
 public class ToInt extends FunctionDeclarationNode {
 
@@ -48,6 +50,10 @@ public class ToInt extends FunctionDeclarationNode {
 			return StringToInt.stringToInt((String) a, getLastFileName(), getLastLine());
 		if (a instanceof Array)
 			new LogError("Can't cast array to integer:\t" + a.toString(),  getLastFileName(), getLastLine());
+		if (a instanceof List)
+			new LogError("Can't cast list to integer:\t" + a.toString(),  getLastFileName(), getLastLine());
+		if (a instanceof Stack)
+			new LogError("Can't cast stack to integer:\t" + a.toString(),  getLastFileName(), getLastLine());
 		return null;
 	}
 

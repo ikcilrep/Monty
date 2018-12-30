@@ -61,6 +61,10 @@ public class Sml extends Library implements Serializable {
 		var casts = (HashMap<String, Object>) children.get("casts");
 
 		casts.put("toBoolean", new sml.casts.ToBoolean());
+		casts.put("toArray", new sml.casts.ToArray());
+		casts.put("toList", new sml.casts.ToList());
+		casts.put("toStack", new sml.casts.ToStack());
+
 		casts.put("toFloat", new sml.casts.ToFloat());
 		casts.put("toInt", new sml.casts.ToInt());
 		casts.put("toString", new sml.casts.ToString());
@@ -97,8 +101,8 @@ public class Sml extends Library implements Serializable {
 		list.put("sublist", new sml.data.list.Sublist());
 		list.put("isInList", new sml.data.list.IsInList());
 		list.put("replaceAllInList", new sml.data.list.ReplaceAllInList());
-		list.put("replaceFirstInList", new sml.data.list.ReplaceAllInList());
-		list.put("replaceLastInList", new sml.data.list.ReplaceAllInList());
+		list.put("replaceFirstInList", new sml.data.list.ReplaceFirstInList());
+		list.put("replaceLastInList", new sml.data.list.ReplaceLastInList());
 
 		var checking = (HashMap<String, Object>) data.get("checking");
 		checking.put("isInt", new sml.data.checking.IsInt());

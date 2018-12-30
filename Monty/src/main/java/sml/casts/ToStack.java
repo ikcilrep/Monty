@@ -27,25 +27,25 @@ import sml.data.array.Array;
 import sml.data.list.List;
 import sml.data.stack.Stack;
 
-public class ToArray extends FunctionDeclarationNode {
+public class ToStack extends FunctionDeclarationNode {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -3165880297105294653L;
 
-	public static Object toArray(Object a) {
-		if (a instanceof Array)
-			return a;
-		if (a instanceof List)
-			return ((List) a).toArray();
+	public static Object toStack(Object a) {
 		if (a instanceof Stack)
-			return ((Stack) a).toArray();
+			return a;
+		if (a instanceof Array)
+			return ((Array) a).toStack();
+		if (a instanceof List)
+			return ((List) a).toArray().toStack();
 		return new Array().append(a);
 	}
 
-	public ToArray() {
-		super("toArray", DataTypes.ARRAY);
+	public ToStack() {
+		super("toStack", DataTypes.LIST);
 		setBody(new Block(null));
 		addParameter(new VariableDeclarationNode("a", DataTypes.ANY));
 	}
@@ -54,7 +54,7 @@ public class ToArray extends FunctionDeclarationNode {
 	public Object call(ArrayList<OperationNode> arguments) {
 		setArguments(arguments);
 		var a = getBody().getVariableByName("a").getValue();
-		return toArray(a);
+		return toStack(a);
 	}
 
 }

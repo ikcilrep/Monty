@@ -19,6 +19,7 @@ package sml.data.stack;
 import java.util.Iterator;
 
 import parser.LogError;
+import sml.data.array.Array;
 
 public class Stack implements Cloneable, Iterable<Object> {
 	Object[] array;
@@ -29,16 +30,26 @@ public class Stack implements Cloneable, Iterable<Object> {
 		top = -1;
 	}
 
+	public Stack(Object[]array) {
+		this.array = array;
+		top = array.length-1;
+	}
+	
 	public Stack copy() {
-		// TODO Auto-generated method stub
 		try {
 			return (Stack) clone();
 		} catch (CloneNotSupportedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
 	}
+	public Array toArray() {
+		return new Array(array).subarray(0, top + 1);
+	}
+	public Object[] getArray() {
+		return array;
+	}
+
 
 	@Override
 	public boolean equals(Object other) {

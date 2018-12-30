@@ -119,9 +119,8 @@ public class Importing {
 
 	public static void importFile(Block block, List<Token> tokens) {
 		var partOfPath = Tokens.getText(tokens.subList(1, tokens.size()));
-		var path = Paths.get("").toAbsolutePath().toString() + File.separatorChar
-				+ emptyIfNull(Paths.get(Main.path).getParent()) + File.separator
-				+ partOfPath.replace('.', File.separatorChar);
+		var path = Paths.get("").toAbsolutePath().toString() + emptyIfNull(Paths.get(Main.path).getParent())
+				+ File.separator + partOfPath.replace('.', File.separatorChar);
 		var file = new File(path + ".mt");
 		var parent_file = new File(file.getParent() + ".mt");
 		var compiled_file = new File(path + ".mtc");
