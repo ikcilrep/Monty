@@ -236,9 +236,7 @@ public class Block extends Node implements Serializable {
 					var functionToCall = ((FunctionCallNode) childCastedToVariable.getOperand());
 					var function = getFunctionByName(functionToCall.getName(), functionToCall.getFileName(),
 							functionToCall.getLine());
-					function.setLastFileName(functionToCall.getFileName());
-					function.setLastLine(functionToCall.getLine());
-					function.call(functionToCall.getArguments());
+					function.call(functionToCall.getArguments(), functionToCall.getFileName(),functionToCall.getLine() );
 				} else if (childCastedToVariable.getRightOperand() != null
 						&& childCastedToVariable.getLeftOperand() != null
 						&& childCastedToVariable.getLeftOperand().getOperand() instanceof Node
@@ -330,25 +328,25 @@ public class Block extends Node implements Serializable {
 				variable.setType(newVariableType);
 				switch (newVariableType) {
 				case INTEGER:
-					variable.setValue(new ToInt().toInt(variable.getValue()));
+					variable.setValue(new ToInt().toInt(variable.getValue(), child.getFileName(), child.getLine()));
 					break;
 				case BOOLEAN:
-					variable.setValue(new ToBoolean().toBoolean(variable.getValue()));
+					variable.setValue(new ToBoolean().toBoolean(variable.getValue(), child.getFileName(), child.getLine()));
 					break;
 				case FLOAT:
-					variable.setValue(new ToFloat().toFloat(variable.getValue()));
+					variable.setValue(new ToFloat().toFloat(variable.getValue(), child.getFileName(), child.getLine()));
 					break;
 				case STRING:
-					variable.setValue(new ToString().toString(variable.getValue()));
+					variable.setValue(new ToString().toString(variable.getValue(), child.getFileName(), child.getLine()));
 					break;
 				case ARRAY:
-					variable.setValue(ToArray.toArray(variable.getValue()));
+					variable.setValue(ToArray.toArray(variable.getValue(), child.getFileName(), child.getLine()));
 					break;
 				case LIST:
-					variable.setValue(ToList.toList(variable.getValue()));
+					variable.setValue(ToList.toList(variable.getValue(), child.getFileName(), child.getLine()));
 					break;
 				case STACK:
-					variable.setValue(ToStack.toStack(variable.getValue()));
+					variable.setValue(ToStack.toStack(variable.getValue(), child.getFileName(), child.getLine()));
 					break;
 				default:
 					break;

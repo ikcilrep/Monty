@@ -24,7 +24,9 @@ public class ContinueStatementNode extends StatementNode {
 	 */
 	private static final long serialVersionUID = 7650196634865355243L;
 
-	public ContinueStatementNode() {
+	public ContinueStatementNode(String fileName, int line) {
 		this.nodeType = NodeTypes.CONTINUE_STATEMENT;
+		this.fileName = fileName;
+		this.line = line;
 	}
 }

@@ -37,8 +37,8 @@ public class LengthOfArray extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments) {
-		setArguments(arguments);
+	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+		setArguments(arguments, callFileName, callLine);
 		var arr = (Array) getBody().getVariableByName("arr").getValue();
 		return arr.length();
 	}

@@ -34,7 +34,7 @@ public class ToList extends FunctionDeclarationNode {
 	 */
 	private static final long serialVersionUID = -3165880297105294653L;
 
-	public static Object toList(Object a) {
+	public static Object toList(Object a, String callFileName, int callLine) {
 		if (a instanceof List)
 			return a;
 		if (a instanceof Array)
@@ -51,10 +51,10 @@ public class ToList extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments) {
-		setArguments(arguments);
+	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+		setArguments(arguments, callFileName, callLine);
 		var a = getBody().getVariableByName("a").getValue();
-		return toList(a);
+		return toList(a,callFileName, callLine);
 	}
 
 }

@@ -28,9 +28,11 @@ public class DoWhileStatementNode extends StatementNode {
 	private OperationNode condition;
 	private Block body;
 
-	public DoWhileStatementNode(OperationNode condition) {
+	public DoWhileStatementNode(OperationNode condition, String fileName, int line) {
 		this.condition = condition;
 		super.nodeType = NodeTypes.DO_WHILE_STATEMENT;
+		this.fileName = fileName;
+		this.line = line;
 	}
 
 	public Block getBody() {

@@ -30,10 +30,12 @@ public class IfStatementNode extends Block {
 
 	private boolean isInElse = false;
 
-	public IfStatementNode(Block parent, OperationNode condition) {
+	public IfStatementNode(Block parent, OperationNode condition,String fileName, int line) {
 		super(parent);
 		this.condition = condition;
 		super.nodeType = NodeTypes.IF_STATEMENT;
+		this.fileName = fileName;
+		this.line = line;
 	}
 
 	public OperationNode getCondition() {

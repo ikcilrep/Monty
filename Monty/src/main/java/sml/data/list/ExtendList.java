@@ -40,8 +40,8 @@ public class ExtendList extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments) {
-		setArguments(arguments);
+	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+		setArguments(arguments, callFileName, callLine);
 		var listToBeExtended = (List) getBody().getVariableByName("listToBeExtended").getValue();
 		var listToExtend = (List) getBody().getVariableByName("listToExtend").getValue();
 

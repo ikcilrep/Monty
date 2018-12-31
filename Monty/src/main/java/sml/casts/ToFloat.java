@@ -37,9 +37,9 @@ public class ToFloat extends FunctionDeclarationNode {
 	 */
 	private static final long serialVersionUID = -8735792965162262066L;
 
-	public Object toFloat(Object a) {
+	public Object toFloat(Object a, String callFileName, int callLine) {
 		if (a == null)
-			new LogError("Can't cast void to float",  getLastFileName(), getLastLine());
+			new LogError("Can't cast void to float",  callFileName, callLine);
 		if (a instanceof BigInteger)
 			return IntToFloat.intToFloat((BigInteger) a);
 		if (a instanceof Boolean)
@@ -47,13 +47,13 @@ public class ToFloat extends FunctionDeclarationNode {
 		if (a instanceof BigDecimal)
 			return a;
 		if (a instanceof String)
-			return StringToFloat.stringToFloat((String) a, getLastFileName(), getLastLine());
+			return StringToFloat.stringToFloat((String) a, callFileName, callLine);
 		if (a instanceof Array)
-			new LogError("Can't cast array to float:\t" + a.toString(),  getLastFileName(), getLastLine());
+			new LogError("Can't cast array to float:\t" + a.toString(),  callFileName, callLine);
 		if (a instanceof List)
-			new LogError("Can't cast list to float:\t" + a.toString(),  getLastFileName(), getLastLine());
+			new LogError("Can't cast list to float:\t" + a.toString(),  callFileName, callLine);
 		if (a instanceof Stack)
-			new LogError("Can't cast stack to float:\t" + a.toString(),  getLastFileName(), getLastLine());
+			new LogError("Can't cast stack to float:\t" + a.toString(),  callFileName, callLine);
 		return null;
 	}
 
@@ -64,10 +64,10 @@ public class ToFloat extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments) {
-		setArguments(arguments);
+	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+		setArguments(arguments, callFileName, callLine);
 		var a = getBody().getVariableByName("a").getValue();
-		return toFloat(a);
+		return toFloat(a,callFileName, callLine);
 	}
 
 }

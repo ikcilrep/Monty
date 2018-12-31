@@ -31,8 +31,6 @@ public abstract class FunctionDeclarationNode extends DeclarationNode {
 	 * 
 	 */
 	private static final long serialVersionUID = -3950386734423560272L;
-	private String lastFileName;
-	private int lastLine;
 	Block body;
 
 	public ArrayList<VariableDeclarationNode> parameters = new ArrayList<>();
@@ -46,28 +44,20 @@ public abstract class FunctionDeclarationNode extends DeclarationNode {
 		parameters.add(parameter);
 	}
 
-	public abstract Object call(ArrayList<OperationNode> arguments);
+	public abstract Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine);
 	public Block getBody() {
 		return body;
-	}
-
-	public String getLastFileName() {
-		return lastFileName;
-	}
-
-	public int getLastLine() {
-		return lastLine;
 	}
 
 	public ArrayList<VariableDeclarationNode> getParameters() {
 		return parameters;
 	}
 
-	public void setArguments(ArrayList<OperationNode> arguments) {
+	public void setArguments(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		if (arguments.size() > parameters.size())
-			new LogError("Too many arguments in " + name + " function call", getLastFileName(), getLastLine());
+			new LogError("Too many arguments in " + name + " function call", callFileName, callLine);
 		else if (arguments.size() < parameters.size())
-			new LogError("Too few arguments in " + name + " function call", getLastFileName(), getLastLine());
+			new LogError("Too few arguments in " + name + " function call", callFileName, callLine);
 		var runnedArguments = new LinkedList<Object>();
 
 		for (int i = 0; i < arguments.size(); i++) {
@@ -79,7 +69,7 @@ public abstract class FunctionDeclarationNode extends DeclarationNode {
 				if (!argumentDataType.equals(dataType))
 					new LogError("Wrong data type for"+i+ "parameter with name\n\"" + name + "\" in " + getName()
 							+ " function call expected " + dataType.toString().toLowerCase() + " got "
-							+ argumentDataType.toString().toLowerCase(), getLastFileName(), getLastLine());
+							+ argumentDataType.toString().toLowerCase(), callFileName, callLine);
 
 			runnedArguments.add(value);
 		}
@@ -100,11 +90,4 @@ public abstract class FunctionDeclarationNode extends DeclarationNode {
 		this.body = body;
 	}
 
-	public void setLastFileName(String lastFileName) {
-		this.lastFileName = lastFileName;
-	}
-
-	public void setLastLine(int lastLine) {
-		this.lastLine = lastLine;
-	}
 }

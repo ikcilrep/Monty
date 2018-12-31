@@ -42,21 +42,22 @@ import parser.Tokens;
 
 public abstract class AdderToBlock {
 
-	public static void addBreakStatement(Block block) {
-		block.addChild(new BreakStatementNode());
+	public static void addBreakStatement(Block block, String fileName, int line) {
+		block.addChild(new BreakStatementNode(fileName, line));
 	}
 
 	public static void addChangeToStatement(Block block, List<Token> tokens) {
 		block.addChild(new ChangeToStatementNode(new VariableNode(tokens.get(1).getText()),
-				Tokens.getDataType(tokens.get(3).getType())));
+				Tokens.getDataType(tokens.get(3).getType()), tokens.get(0).getFileName(), tokens.get(0).getLine()));
 	}
 
-	public static void addContinueStatement(Block block) {
-		block.addChild(new ContinueStatementNode());
+	public static void addContinueStatement(Block block, String fileName, int line) {
+		block.addChild(new ContinueStatementNode(fileName, line));
 	}
 
 	public static Block addDoWhileStatement(Block block, List<Token> tokens) {
-		var whileStatement = new DoWhileStatementNode(ExpressionParser.parse(block, tokens.subList(2, tokens.size())));
+		var whileStatement = new DoWhileStatementNode(ExpressionParser.parse(block, tokens.subList(2, tokens.size())),
+				tokens.get(0).getFileName(), tokens.get(0).getLine());
 		whileStatement.setBody(new Block(block));
 		block.addChild(whileStatement);
 		return whileStatement.getBody();
@@ -67,6 +68,8 @@ public abstract class AdderToBlock {
 		if (!block.getNodeType().equals(NodeTypes.IF_STATEMENT))
 			new LogError("Unexpected \"else\" keyword", tokens.get(0));
 		var elseBlock = new Block(block.getParent(), NodeTypes.ELSE_BLOCK);
+		elseBlock.setFileName(tokens.get(0).getFileName());
+		elseBlock.setLine(tokens.get(0).getLine());
 		((IfStatementNode) block).setElseBody(elseBlock);
 
 		return elseBlock;
@@ -78,7 +81,8 @@ public abstract class AdderToBlock {
 
 	public static Block addForStatement(Block block, List<Token> tokens) {
 		var forStatement = new ForStatementNode(tokens.get(1).getText(),
-				ExpressionParser.parse(block, tokens.subList(3, tokens.size())));
+				ExpressionParser.parse(block, tokens.subList(3, tokens.size())), tokens.get(0).getFileName(),
+				tokens.get(0).getLine());
 		forStatement.setBody(new Block(block));
 
 		block.addChild(forStatement);
@@ -106,7 +110,8 @@ public abstract class AdderToBlock {
 	}
 
 	public static Block addIfStatement(Block block, List<Token> tokens) {
-		var ifStatement = new IfStatementNode(block, ExpressionParser.parse(block, tokens.subList(1, tokens.size())));
+		var ifStatement = new IfStatementNode(block, ExpressionParser.parse(block, tokens.subList(1, tokens.size())),
+				tokens.get(0).getFileName(), tokens.get(0).getLine());
 		block.addChild(ifStatement);
 		return ifStatement;
 
@@ -118,23 +123,25 @@ public abstract class AdderToBlock {
 			expression = ExpressionParser.parse(block, tokens.subList(1, tokens.size()));
 		else
 			expression = new OperationNode(new FunctionCallNode("nothing"), block);
-		block.addChild(new ReturnStatementNode(expression));
+		block.addChild(new ReturnStatementNode(expression, tokens.get(0).getFileName(), tokens.get(0).getLine()));
 	}
 
 	public static void addThreadStatement(Block block, List<Token> tokens) {
-		block.addChild(new ThreadStatement(ExpressionParser.parse(block, tokens.subList(1, tokens.size()))));
+		block.addChild(new ThreadStatement(ExpressionParser.parse(block, tokens.subList(1, tokens.size())),
+				tokens.get(0).getFileName(), tokens.get(0).getLine()));
 	}
 
 	public static void addVariableDeclaration(Block block, List<Token> tokens) {
 		var variable = new VariableDeclarationNode(tokens.get(2).getText(),
 				Tokens.getDataType(tokens.get(1).getType()));
-		variable.setDynamic(true);
+		variable.setDynamic(tokens.get(0).getType().equals(TokenTypes.DYNAMIC_KEYWORD));
 		block.addVariable(variable, tokens.get(1));
 		addExpression(block, tokens.subList(2, tokens.size()));
 	}
 
 	public static Block addWhileStatement(Block block, List<Token> tokens) {
-		var whileStatement = new WhileStatementNode(ExpressionParser.parse(block, tokens.subList(1, tokens.size())));
+		var whileStatement = new WhileStatementNode(ExpressionParser.parse(block, tokens.subList(1, tokens.size())),
+				 tokens.get(0).getFileName(), tokens.get(0).getLine());
 		whileStatement.setBody(new Block(block));
 		block.addChild(whileStatement);
 		return whileStatement.getBody();

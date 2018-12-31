@@ -144,7 +144,8 @@ public class OperationNode extends ExpressionNode {
 				var functionToCall = ((FunctionCallNode) expression);
 				var function = parent.getFunctionByName(functionToCall.getName(), functionToCall.getFileName(),
 						functionToCall.getLine());
-				return function.call(functionToCall.getArguments());
+				return function.call(functionToCall.getArguments(), functionToCall.getFileName(),
+						functionToCall.getLine());
 			case CONSTANT:
 				var cn = ((ConstantNode) expression);
 				return cn.getValue();

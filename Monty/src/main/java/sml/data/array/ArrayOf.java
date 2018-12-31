@@ -34,7 +34,7 @@ public class ArrayOf extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments) {
+	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		var arr = new Array(arguments.size());
 		for (int i = 0; i < arguments.size(); i++)
 			arr.set(i, arguments.get(i).run());

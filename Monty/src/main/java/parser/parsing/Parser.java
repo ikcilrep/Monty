@@ -68,9 +68,11 @@ public class Parser {
 				} else if (Identificator.isThreadStatement(tokensBeforeSemicolon)) {
 					AdderToBlock.addThreadStatement(block, tokensBeforeSemicolon);
 				} else if (Identificator.isBreakStatement(tokensBeforeSemicolon)) {
-					AdderToBlock.addBreakStatement(block);
+					AdderToBlock.addBreakStatement(block, tokensBeforeSemicolon.get(0).getFileName(),
+							tokensBeforeSemicolon.get(0).getLine());
 				} else if (Identificator.isContinueStatement(tokensBeforeSemicolon)) {
-					AdderToBlock.addContinueStatement(block);
+					AdderToBlock.addContinueStatement(block, tokensBeforeSemicolon.get(0).getFileName(),
+							tokensBeforeSemicolon.get(0).getLine());
 				} else if (Identificator.isForStatement(tokensBeforeSemicolon)) {
 					block = AdderToBlock.addForStatement(block, tokensBeforeSemicolon);
 				} else if (Identificator.isEndKeyword(tokensBeforeSemicolon)) {

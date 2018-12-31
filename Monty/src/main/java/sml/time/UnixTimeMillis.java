@@ -37,8 +37,8 @@ public class UnixTimeMillis extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments) {
-		setArguments(arguments);
+	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+		setArguments(arguments, callFileName, callLine);
 		return BigInteger.valueOf(System.currentTimeMillis());
 	}
 

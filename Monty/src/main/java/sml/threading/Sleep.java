@@ -41,13 +41,13 @@ public class Sleep extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments) {
-		setArguments(arguments);
+	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+		setArguments(arguments, callFileName, callLine);
 		var millis = ((BigInteger) getBody().getVariableByName("millis").getValue()).intValue();
 		try {
 			Thread.sleep(millis);
 		} catch (InterruptedException e) {
-			new LogError("Sleep for " + millis + " was interrupted",getLastFileName(), getLastLine());
+			new LogError("Sleep for " + millis + " was interrupted",callFileName, callLine);
 		}
 		return Nothing.nothing;
 	}

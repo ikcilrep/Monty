@@ -41,12 +41,12 @@ public class GetFromList extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments) {
-		setArguments(arguments);
+	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+		setArguments(arguments, callFileName, callLine);
 		var lst = (List) getBody().getVariableByName("lst").getValue();
 		var index = (BigInteger) getBody().getVariableByName("index").getValue();
 		if (index.compareTo(BigInteger.valueOf(lst.length())) >= 0)
-			new LogError("Index " + index + " is too large for length " + lst.length(), getLastFileName(), getLastLine());
+			new LogError("Index " + index + " is too large for length " + lst.length(), callFileName, callLine);
 		return lst.get(index.intValue());
 	}
 

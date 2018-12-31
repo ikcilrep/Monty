@@ -24,7 +24,9 @@ public class BreakStatementNode extends StatementNode {
 	 */
 	private static final long serialVersionUID = 1417558661844580557L;
 
-	public BreakStatementNode() {
+	public BreakStatementNode(String fileName, int line) {
 		this.nodeType = NodeTypes.BREAK_STATEMENT;
+		this.fileName = fileName;
+		this.line = line;
 	}
 }

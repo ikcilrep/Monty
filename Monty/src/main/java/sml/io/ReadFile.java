@@ -40,8 +40,8 @@ public class ReadFile extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments) {
-		setArguments(arguments);
+	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
 		var path = (String) body.getVariableByName("path").getValue();
 		var file = new File(path);

@@ -39,7 +39,7 @@ public class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments) {
+	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		var variables = new HashMap<String, VariableDeclarationNode>();
 		var variablesSet = body.getVariables().entrySet();
 		for (Map.Entry<String, VariableDeclarationNode> entry : variablesSet) {
@@ -47,26 +47,26 @@ public class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
 			VariableDeclarationNode value = (entry.getValue());
 			variables.put(key, value.copy());
 		}
-		setArguments(arguments);
+		setArguments(arguments, callFileName, callLine);
 		Object result = null;
 		try {
 			result = body.run();
 		} catch (StackOverflowError e) {
-			new LogError("Stack overflow at " + name + " function call", getLastFileName(), getLastLine());
+			new LogError("Stack overflow at " + name + " function call", callFileName, callLine);
 		}
 		if (result == null)
 			result = Nothing.nothing;
 		if (result instanceof BreakType)
-			new LogError("Trying to break function " + getName(), getLastFileName(), getLastLine());
+			new LogError("Trying to break function " + getName(), callFileName, callLine);
 		if (result instanceof ContinueStatementNode)
-			new LogError("Trying to continue function " + getName(), getLastFileName(), getLastLine());
+			new LogError("Trying to continue function " + getName(), callFileName, callLine);
 		body.setVariables(variables);
 		var resultDataType = DataTypes.getDataType(result);
 		if (resultDataType == null)
 			resultDataType = DataTypes.VOID;
 		if (!resultDataType.equals(getType()))
 			new LogError("Function " + getName() + " should return " + getType().toString().toLowerCase()
-					+ ",\nbut returned " + resultDataType.toString().toLowerCase(), getLastFileName(), getLastLine());
+					+ ",\nbut returned " + resultDataType.toString().toLowerCase(), callFileName, callLine);
 		return result;
 	}
 }

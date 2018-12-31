@@ -37,9 +37,9 @@ public class ToInt extends FunctionDeclarationNode {
 	 */
 	private static final long serialVersionUID = 9063163249840188097L;
 
-	public BigInteger toInt(Object a) {
+	public BigInteger toInt(Object a, String callFileName, int callLine) {
 		if (a == null)
-			new LogError("Can't cast void to integer",  getLastFileName(), getLastLine());
+			new LogError("Can't cast void to integer",  callFileName, callLine);
 		if (a instanceof BigInteger)
 			return (BigInteger) a;
 		if (a instanceof BigDecimal)
@@ -47,13 +47,13 @@ public class ToInt extends FunctionDeclarationNode {
 		if (a instanceof Boolean)
 			return BooleanToInt.booleanToInt((Boolean) a);
 		if (a instanceof String)
-			return StringToInt.stringToInt((String) a, getLastFileName(), getLastLine());
+			return StringToInt.stringToInt((String) a, callFileName, callLine);
 		if (a instanceof Array)
-			new LogError("Can't cast array to integer:\t" + a.toString(),  getLastFileName(), getLastLine());
+			new LogError("Can't cast array to integer:\t" + a.toString(),  callFileName, callLine);
 		if (a instanceof List)
-			new LogError("Can't cast list to integer:\t" + a.toString(),  getLastFileName(), getLastLine());
+			new LogError("Can't cast list to integer:\t" + a.toString(),  callFileName, callLine);
 		if (a instanceof Stack)
-			new LogError("Can't cast stack to integer:\t" + a.toString(),  getLastFileName(), getLastLine());
+			new LogError("Can't cast stack to integer:\t" + a.toString(),  callFileName, callLine);
 		return null;
 	}
 
@@ -64,10 +64,10 @@ public class ToInt extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments) {
-		setArguments(arguments);
+	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+		setArguments(arguments, callFileName, callLine);
 		var a = getBody().getVariableByName("a").getValue();
-		return toInt(a);
+		return toInt(a,callFileName, callLine);
 	}
 
 }

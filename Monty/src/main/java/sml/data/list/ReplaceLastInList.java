@@ -41,8 +41,8 @@ public class ReplaceLastInList extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments) {
-		setArguments(arguments);
+	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
 		var lst = (List) body.getVariableByName("lst").getValue();
 		var toBeReplaced = body.getVariableByName("toBeReplaced").getValue();

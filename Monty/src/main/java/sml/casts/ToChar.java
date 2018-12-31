@@ -39,8 +39,8 @@ public class ToChar extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments) {
-		setArguments(arguments);
+	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+		setArguments(arguments, callFileName, callLine);
 		var integer = ((BigInteger) getBody().getVariableByName("integer").getValue()).intValue();
 		return String.valueOf(Character.valueOf((char) integer));
 	}

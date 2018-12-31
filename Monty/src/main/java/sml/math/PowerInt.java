@@ -41,8 +41,8 @@ public class PowerInt extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments) {
-		setArguments(arguments);
+	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
 		var base = (BigInteger) body.getVariableByName("base").getValue();
 		var exponent = (BigInteger) body.getVariableByName("exponent").getValue();

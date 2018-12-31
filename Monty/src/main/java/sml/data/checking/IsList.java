@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sml.math;
+package sml.data.checking;
 
 import java.util.ArrayList;
 
@@ -23,26 +23,26 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
+import sml.data.list.List;
 
-public class AbsFloat extends FunctionDeclarationNode {
+public class IsList extends FunctionDeclarationNode {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -1085302614805452237L;
+	private static final long serialVersionUID = 3631208014701476121L;
 
-	public AbsFloat() {
-		super("absFloat", DataTypes.FLOAT);
+	public IsList() {
+		super("isList", DataTypes.BOOLEAN);
 		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("floating", DataTypes.FLOAT));
+		addParameter(new VariableDeclarationNode("toCheck", DataTypes.ANY));
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		var floating = (Float) getBody().getVariableByName("floating").getValue();
-		if (floating < 0)
-			return 0 - floating;
-		return floating;
+		setArguments(arguments, callFileName, callLine);
+		var toCheck = getBody().getVariableByName("toCheck").getValue();
+		return toCheck instanceof List;
 	}
 
 }

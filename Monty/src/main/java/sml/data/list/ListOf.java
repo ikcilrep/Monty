@@ -34,7 +34,7 @@ public class ListOf extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments) {
+	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		var lst = new List(null);
 		for (Object argument : arguments)
 			lst.append(argument);

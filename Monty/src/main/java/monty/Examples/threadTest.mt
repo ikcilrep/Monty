@@ -6,10 +6,10 @@ import sml.threading.join;
 
 func int infinity int a;
 	while true;
-		println("Creating thread:\t" toString(a) + );
+		println("Creating thread:\t" toString(a,callFileName, callLine) + );
 		sleep(1000);
 		thread infinity(a 1 +);
-		println("Created thread:\t" toString(a) +);
+		println("Created thread:\t" toString(a,callFileName, callLine) +);
 		join(0);
 	end;
 end;

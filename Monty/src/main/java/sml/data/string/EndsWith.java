@@ -40,8 +40,8 @@ public class EndsWith extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments) {
-		setArguments(arguments);
+	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
 		var str = (String) body.getVariableByName("str").getValue();
 		var suffix = (String) body.getVariableByName("suffix").getValue();

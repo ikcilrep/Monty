@@ -109,6 +109,8 @@ public class Sml extends Library implements Serializable {
 		checking.put("isFloat", new sml.data.checking.IsFloat());
 		checking.put("isString", new sml.data.checking.IsString());
 		checking.put("isArray", new sml.data.checking.IsArray());
+		checking.put("isList", new sml.data.checking.IsList());
+		checking.put("isStack", new sml.data.checking.IsStack());
 
 		var string = (HashMap<String, Object>) data.get("string");
 		string.put("charAt", new sml.data.string.CharAt());

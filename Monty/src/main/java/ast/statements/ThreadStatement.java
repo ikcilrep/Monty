@@ -26,9 +26,11 @@ public class ThreadStatement extends StatementNode {
 	private static final long serialVersionUID = -5935370042825970627L;
 	private OperationNode expression;
 
-	public ThreadStatement(OperationNode expression) {
+	public ThreadStatement(OperationNode expression, String fileName, int line) {
 		this.expression = expression;
 		super.nodeType = NodeTypes.THREAD_STATEMENT;
+		this.fileName = fileName;
+		this.line = line;
 	}
 
 	public OperationNode getExpression() {

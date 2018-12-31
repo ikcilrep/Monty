@@ -34,7 +34,7 @@ public class ToStack extends FunctionDeclarationNode {
 	 */
 	private static final long serialVersionUID = -3165880297105294653L;
 
-	public static Object toStack(Object a) {
+	public static Object toStack(Object a, String callFileName, int callLine) {
 		if (a instanceof Stack)
 			return a;
 		if (a instanceof Array)
@@ -51,10 +51,10 @@ public class ToStack extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments) {
-		setArguments(arguments);
+	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+		setArguments(arguments, callFileName, callLine);
 		var a = getBody().getVariableByName("a").getValue();
-		return toStack(a);
+		return toStack(a,callFileName, callLine);
 	}
 
 }

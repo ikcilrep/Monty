@@ -7,7 +7,7 @@ do while a 2 ==;
 		continue;
 	end;
 	println("Aweqw");
-	println(a);
+	println(a,callFileName, callLine);
 	a 1 +=;
 end;
 	
