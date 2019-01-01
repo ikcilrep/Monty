@@ -75,8 +75,8 @@ public abstract class AdderToBlock {
 		return elseBlock;
 	}
 
-	public static void addExpression(Block block, LinkedList<Token> tokens) {
-		block.addChild(ExpressionParser.parse(block, tokens));
+	public static void addExpression(Block block, List<Token> list) {
+		block.addChild(ExpressionParser.parse(block, list));
 	}
 
 	public static Block addForStatement(Block block, LinkedList<Token> tokens) {
@@ -137,7 +137,7 @@ public abstract class AdderToBlock {
 		variable.setDynamic(tokens.get(0).getType().equals(TokenTypes.DYNAMIC_KEYWORD));
 		block.addVariable(variable, tokens.get(1));
 		if (tokens.size() > 3)
-			addExpression(block, (LinkedList<Token>) tokens.subList(2, tokens.size()));
+			addExpression(block, tokens.subList(2, tokens.size()));
 		else
 			variable.setValue(DataTypes.getNeutralValue(dataType));
 
