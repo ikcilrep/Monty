@@ -17,6 +17,7 @@ limitations under the License.
 package parser.parsing;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import ast.Block;
 import ast.NodeTypes;
@@ -108,7 +109,7 @@ public abstract class AdderToBlock {
 		return function.getBody();
 	}
 
-	public static Block addIfStatement(Block block, LinkedList<Token> tokens) {
+	public static Block addIfStatement(Block block, List<Token> tokens) {
 		var ifStatement = new IfStatementNode(block, ExpressionParser.parse(block, tokens.subList(1, tokens.size())),
 				tokens.get(0).getFileName(), tokens.get(0).getLine());
 		block.addChild(ifStatement);
