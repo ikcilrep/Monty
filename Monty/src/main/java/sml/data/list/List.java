@@ -31,6 +31,10 @@ public class List implements Iterable<Object>, Cloneable {
 		this.value = value;
 	}
 
+	public List() {
+		
+	}
+	
 	public List append(List element) {
 		last.setNext(element);
 		last = last.getNext();
@@ -85,7 +89,7 @@ public class List implements Iterable<Object>, Cloneable {
 	@Override
 	public Iterator<Object> iterator() {
 		return new Iterator<Object>() {
-			List list = new List(value).append(getNext());
+			List list = copy();
 
 			@Override
 			public boolean hasNext() {
@@ -165,7 +169,7 @@ public class List implements Iterable<Object>, Cloneable {
 		}
 		return array;
 	}
-
+		
 	@Override
 	public String toString() {
 		var stringBuilder = new StringBuilder((length() << 1) + 1);

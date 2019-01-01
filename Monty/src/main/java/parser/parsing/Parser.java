@@ -16,9 +16,8 @@ limitations under the License.
 
 package parser.parsing;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedList;
 
 import ast.Block;
 import ast.NodeTypes;
@@ -33,8 +32,8 @@ import parser.LogError;
 public class Parser {
 	public static HashMap<String, Library> libraries;
 
-	public static Block parse(List<Token> tokens) {
-		var tokensBeforeSemicolon = new ArrayList<Token>();
+	public static Block parse(LinkedList<Token> tokens) {
+		var tokensBeforeSemicolon = new LinkedList<Token>();
 		var block = new Block(null);
 		for (Token token : tokens) {
 			if (token.getType().equals(TokenTypes.SEMICOLON)) {
@@ -54,7 +53,7 @@ public class Parser {
 					block = AdderToBlock.addElseStatement(block, tokensBeforeSemicolon);
 					if (tokensBeforeSemicolon.size() > 1) {
 						block = AdderToBlock.addIfStatement(block,
-								tokensBeforeSemicolon.subList(1, tokensBeforeSemicolon.size()));
+								(LinkedList<Token>) tokensBeforeSemicolon.subList(1, tokensBeforeSemicolon.size()));
 						((IfStatementNode) block).setInElse(true);
 					}
 				} else if (Identificator.isWhileStatement(tokensBeforeSemicolon)) {

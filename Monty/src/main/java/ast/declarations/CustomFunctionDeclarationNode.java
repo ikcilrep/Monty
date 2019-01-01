@@ -25,7 +25,6 @@ import ast.statements.ContinueStatementNode;
 import parser.DataTypes;
 import parser.LogError;
 import sml.data.returning.BreakType;
-import sml.data.returning.Nothing;
 
 public class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
 	/**
@@ -55,7 +54,7 @@ public class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
 			new LogError("Stack overflow at " + name + " function call", callFileName, callLine);
 		}
 		if (result == null)
-			result = Nothing.nothing;
+			result = DataTypes.getNeutralValue(getType());
 		if (result instanceof BreakType)
 			new LogError("Trying to break function " + getName(), callFileName, callLine);
 		if (result instanceof ContinueStatementNode)
@@ -63,7 +62,7 @@ public class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
 		body.setVariables(variables);
 		var resultDataType = DataTypes.getDataType(result);
 		if (resultDataType == null)
-			resultDataType = DataTypes.VOID;
+			resultDataType = getType();
 		if (!resultDataType.equals(getType()))
 			new LogError("Function " + getName() + " should return " + getType().toString().toLowerCase()
 					+ ",\nbut returned " + resultDataType.toString().toLowerCase(), callFileName, callLine);

@@ -245,10 +245,12 @@ public abstract class Identificator {
 			new LogError("Expected expression after data type declaration:\t" + Tokens.getText(tokens), tokens.get(1));
 		if (!tokens.get(2).getType().equals(TokenTypes.IDENTIFIER))
 			new LogError("Expected identifier after data type declaration:\t" + Tokens.getText(tokens), tokens.get(2));
-		var expression = tokens.subList(2, tokens.size());
-		if (!isExpression(expression))
-			new LogError("Wrong expression after data type declaration:\t" + Tokens.getText(expression), tokens.get(2));
-
+		if (tokensSize > 3) {
+			var expression = tokens.subList(2, tokens.size());
+			if (!isExpression(expression))
+				new LogError("Wrong expression after data type declaration:\t" + Tokens.getText(expression),
+						tokens.get(2));
+		}
 		return true;
 	}
 

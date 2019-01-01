@@ -251,7 +251,6 @@ public class Array implements Iterable<Object>, Cloneable {
 		stringBuilder.append('[');
 		int i = 0;
 		for (Object e : array) {
-			System.out.println(e);
 			stringBuilder.append(e.toString());
 			if (++i < array.length)
 				stringBuilder.append(',');

@@ -16,7 +16,7 @@ limitations under the License.
 
 package parser.parsing;
 
-import java.util.List;
+import java.util.LinkedList;
 
 import ast.Block;
 import ast.NodeTypes;
@@ -41,12 +41,11 @@ import parser.LogError;
 import parser.Tokens;
 
 public abstract class AdderToBlock {
-
 	public static void addBreakStatement(Block block, String fileName, int line) {
 		block.addChild(new BreakStatementNode(fileName, line));
 	}
 
-	public static void addChangeToStatement(Block block, List<Token> tokens) {
+	public static void addChangeToStatement(Block block, LinkedList<Token> tokens) {
 		block.addChild(new ChangeToStatementNode(new VariableNode(tokens.get(1).getText()),
 				Tokens.getDataType(tokens.get(3).getType()), tokens.get(0).getFileName(), tokens.get(0).getLine()));
 	}
@@ -55,7 +54,7 @@ public abstract class AdderToBlock {
 		block.addChild(new ContinueStatementNode(fileName, line));
 	}
 
-	public static Block addDoWhileStatement(Block block, List<Token> tokens) {
+	public static Block addDoWhileStatement(Block block, LinkedList<Token> tokens) {
 		var whileStatement = new DoWhileStatementNode(ExpressionParser.parse(block, tokens.subList(2, tokens.size())),
 				tokens.get(0).getFileName(), tokens.get(0).getLine());
 		whileStatement.setBody(new Block(block));
@@ -64,7 +63,7 @@ public abstract class AdderToBlock {
 
 	}
 
-	public static Block addElseStatement(Block block, List<Token> tokens) {
+	public static Block addElseStatement(Block block, LinkedList<Token> tokens) {
 		if (!block.getNodeType().equals(NodeTypes.IF_STATEMENT))
 			new LogError("Unexpected \"else\" keyword", tokens.get(0));
 		var elseBlock = new Block(block.getParent(), NodeTypes.ELSE_BLOCK);
@@ -75,11 +74,11 @@ public abstract class AdderToBlock {
 		return elseBlock;
 	}
 
-	public static void addExpression(Block block, List<Token> tokens) {
+	public static void addExpression(Block block, LinkedList<Token> tokens) {
 		block.addChild(ExpressionParser.parse(block, tokens));
 	}
 
-	public static Block addForStatement(Block block, List<Token> tokens) {
+	public static Block addForStatement(Block block, LinkedList<Token> tokens) {
 		var forStatement = new ForStatementNode(tokens.get(1).getText(),
 				ExpressionParser.parse(block, tokens.subList(3, tokens.size())), tokens.get(0).getFileName(),
 				tokens.get(0).getLine());
@@ -89,7 +88,7 @@ public abstract class AdderToBlock {
 		return forStatement.getBody();
 	}
 
-	public static Block addFunctionDeclaration(Block block, List<Token> tokens) {
+	public static Block addFunctionDeclaration(Block block, LinkedList<Token> tokens) {
 		var function = new CustomFunctionDeclarationNode(tokens.get(2).getText(),
 				Tokens.getDataType(tokens.get(1).getType()));
 		DataTypes type = null;
@@ -109,7 +108,7 @@ public abstract class AdderToBlock {
 		return function.getBody();
 	}
 
-	public static Block addIfStatement(Block block, List<Token> tokens) {
+	public static Block addIfStatement(Block block, LinkedList<Token> tokens) {
 		var ifStatement = new IfStatementNode(block, ExpressionParser.parse(block, tokens.subList(1, tokens.size())),
 				tokens.get(0).getFileName(), tokens.get(0).getLine());
 		block.addChild(ifStatement);
@@ -117,7 +116,7 @@ public abstract class AdderToBlock {
 
 	}
 
-	public static void addReturnStatement(Block block, List<Token> tokens) {
+	public static void addReturnStatement(Block block, LinkedList<Token> tokens) {
 		OperationNode expression = null;
 		if (tokens.size() > 1)
 			expression = ExpressionParser.parse(block, tokens.subList(1, tokens.size()));
@@ -126,20 +125,25 @@ public abstract class AdderToBlock {
 		block.addChild(new ReturnStatementNode(expression, tokens.get(0).getFileName(), tokens.get(0).getLine()));
 	}
 
-	public static void addThreadStatement(Block block, List<Token> tokens) {
+	public static void addThreadStatement(Block block, LinkedList<Token> tokens) {
 		block.addChild(new ThreadStatement(ExpressionParser.parse(block, tokens.subList(1, tokens.size())),
 				tokens.get(0).getFileName(), tokens.get(0).getLine()));
 	}
 
-	public static void addVariableDeclaration(Block block, List<Token> tokens) {
+	public static void addVariableDeclaration(Block block, LinkedList<Token> tokens) {
+		var dataType = Tokens.getDataType(tokens.get(1).getType());
 		var variable = new VariableDeclarationNode(tokens.get(2).getText(),
-				Tokens.getDataType(tokens.get(1).getType()));
+				dataType);
 		variable.setDynamic(tokens.get(0).getType().equals(TokenTypes.DYNAMIC_KEYWORD));
 		block.addVariable(variable, tokens.get(1));
-		addExpression(block, tokens.subList(2, tokens.size()));
+		if (tokens.size() > 3)
+			addExpression(block, (LinkedList<Token>)tokens.subList(2, tokens.size()));
+		else
+			variable.setValue(DataTypes.getNeutralValue(dataType));
+			
 	}
 
-	public static Block addWhileStatement(Block block, List<Token> tokens) {
+	public static Block addWhileStatement(Block block, LinkedList<Token> tokens) {
 		var whileStatement = new WhileStatementNode(ExpressionParser.parse(block, tokens.subList(1, tokens.size())),
 				 tokens.get(0).getFileName(), tokens.get(0).getLine());
 		whileStatement.setBody(new Block(block));
