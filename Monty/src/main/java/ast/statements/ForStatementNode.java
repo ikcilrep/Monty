@@ -29,7 +29,7 @@ public class ForStatementNode extends StatementNode {
 	private String variableName;
 	private Block body;
 
-	public ForStatementNode(String variableName, OperationNode array,String fileName, int line) {
+	public ForStatementNode(String variableName, OperationNode array, String fileName, int line) {
 		this.variableName = variableName;
 		this.array = array;
 		super.nodeType = NodeTypes.FOR_STATEMENT;

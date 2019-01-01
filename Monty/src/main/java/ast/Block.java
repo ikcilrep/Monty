@@ -30,13 +30,19 @@ import ast.statements.ContinueStatementNode;
 import ast.statements.DoWhileStatementNode;
 import ast.statements.ForStatementNode;
 import ast.statements.IfStatementNode;
-import ast.statements.ThreadStatement;
 import ast.statements.ReturnStatementNode;
+import ast.statements.ThreadStatement;
 import ast.statements.WhileStatementNode;
 import lexer.Token;
 import parser.DataTypes;
 import parser.LogError;
-import sml.casts.*;
+import sml.casts.ToArray;
+import sml.casts.ToBoolean;
+import sml.casts.ToFloat;
+import sml.casts.ToInt;
+import sml.casts.ToList;
+import sml.casts.ToStack;
+import sml.casts.ToString;
 import sml.data.returning.BreakType;
 import sml.data.returning.Nothing;
 import sml.threading.MontyThread;
@@ -236,7 +242,8 @@ public class Block extends Node implements Serializable {
 					var functionToCall = ((FunctionCallNode) childCastedToVariable.getOperand());
 					var function = getFunctionByName(functionToCall.getName(), functionToCall.getFileName(),
 							functionToCall.getLine());
-					function.call(functionToCall.getArguments(), functionToCall.getFileName(),functionToCall.getLine() );
+					function.call(functionToCall.getArguments(), functionToCall.getFileName(),
+							functionToCall.getLine());
 				} else if (childCastedToVariable.getRightOperand() != null
 						&& childCastedToVariable.getLeftOperand() != null
 						&& childCastedToVariable.getLeftOperand().getOperand() instanceof Node
@@ -331,13 +338,15 @@ public class Block extends Node implements Serializable {
 					variable.setValue(new ToInt().toInt(variable.getValue(), child.getFileName(), child.getLine()));
 					break;
 				case BOOLEAN:
-					variable.setValue(new ToBoolean().toBoolean(variable.getValue(), child.getFileName(), child.getLine()));
+					variable.setValue(
+							new ToBoolean().toBoolean(variable.getValue(), child.getFileName(), child.getLine()));
 					break;
 				case FLOAT:
 					variable.setValue(new ToFloat().toFloat(variable.getValue(), child.getFileName(), child.getLine()));
 					break;
 				case STRING:
-					variable.setValue(new ToString().toString(variable.getValue(), child.getFileName(), child.getLine()));
+					variable.setValue(
+							new ToString().toString(variable.getValue(), child.getFileName(), child.getLine()));
 					break;
 				case ARRAY:
 					variable.setValue(ToArray.toArray(variable.getValue(), child.getFileName(), child.getLine()));

@@ -54,7 +54,7 @@ public class ToList extends FunctionDeclarationNode {
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var a = getBody().getVariableByName("a").getValue();
-		return toList(a,callFileName, callLine);
+		return toList(a, callFileName, callLine);
 	}
 
 }

@@ -240,7 +240,7 @@ public class Array implements Iterable<Object>, Cloneable {
 		return list.getNext();
 
 	}
-	
+
 	public Stack toStack() {
 		return new Stack(array);
 	}

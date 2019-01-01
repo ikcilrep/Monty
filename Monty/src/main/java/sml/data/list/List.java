@@ -32,9 +32,9 @@ public class List implements Iterable<Object>, Cloneable {
 	}
 
 	public List() {
-		
+
 	}
-	
+
 	public List append(List element) {
 		last.setNext(element);
 		last = last.getNext();
@@ -169,7 +169,7 @@ public class List implements Iterable<Object>, Cloneable {
 		}
 		return array;
 	}
-		
+
 	@Override
 	public String toString() {
 		var stringBuilder = new StringBuilder((length() << 1) + 1);

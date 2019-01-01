@@ -30,11 +30,11 @@ public class Stack implements Cloneable, Iterable<Object> {
 		top = -1;
 	}
 
-	public Stack(Object[]array) {
+	public Stack(Object[] array) {
 		this.array = array;
-		top = array.length-1;
+		top = array.length - 1;
 	}
-	
+
 	public Stack copy() {
 		try {
 			return (Stack) clone();
@@ -43,13 +43,14 @@ public class Stack implements Cloneable, Iterable<Object> {
 		}
 		return null;
 	}
+
 	public Array toArray() {
 		return new Array(array).subarray(0, top + 1);
 	}
+
 	public Object[] getArray() {
 		return array;
 	}
-
 
 	@Override
 	public boolean equals(Object other) {

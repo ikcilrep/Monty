@@ -31,8 +31,8 @@ import ast.statements.ContinueStatementNode;
 import ast.statements.DoWhileStatementNode;
 import ast.statements.ForStatementNode;
 import ast.statements.IfStatementNode;
-import ast.statements.ThreadStatement;
 import ast.statements.ReturnStatementNode;
+import ast.statements.ThreadStatement;
 import ast.statements.WhileStatementNode;
 import lexer.Token;
 import lexer.TokenTypes;
@@ -132,20 +132,19 @@ public abstract class AdderToBlock {
 
 	public static void addVariableDeclaration(Block block, LinkedList<Token> tokens) {
 		var dataType = Tokens.getDataType(tokens.get(1).getType());
-		var variable = new VariableDeclarationNode(tokens.get(2).getText(),
-				dataType);
+		var variable = new VariableDeclarationNode(tokens.get(2).getText(), dataType);
 		variable.setDynamic(tokens.get(0).getType().equals(TokenTypes.DYNAMIC_KEYWORD));
 		block.addVariable(variable, tokens.get(1));
 		if (tokens.size() > 3)
-			addExpression(block, (LinkedList<Token>)tokens.subList(2, tokens.size()));
+			addExpression(block, (LinkedList<Token>) tokens.subList(2, tokens.size()));
 		else
 			variable.setValue(DataTypes.getNeutralValue(dataType));
-			
+
 	}
 
 	public static Block addWhileStatement(Block block, LinkedList<Token> tokens) {
 		var whileStatement = new WhileStatementNode(ExpressionParser.parse(block, tokens.subList(1, tokens.size())),
-				 tokens.get(0).getFileName(), tokens.get(0).getLine());
+				tokens.get(0).getFileName(), tokens.get(0).getLine());
 		whileStatement.setBody(new Block(block));
 		block.addChild(whileStatement);
 		return whileStatement.getBody();

@@ -54,7 +54,7 @@ public class ToStack extends FunctionDeclarationNode {
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var a = getBody().getVariableByName("a").getValue();
-		return toStack(a,callFileName, callLine);
+		return toStack(a, callFileName, callLine);
 	}
 
 }

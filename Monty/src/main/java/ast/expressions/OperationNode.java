@@ -22,7 +22,6 @@ import ast.NodeTypes;
 import ast.declarations.VariableDeclarationNode;
 import parser.DataTypes;
 import parser.LogError;
-import ast.expressions.OperatorOverloading;
 
 public class OperationNode extends ExpressionNode {
 
@@ -47,21 +46,28 @@ public class OperationNode extends ExpressionNode {
 
 		switch (operator.toString()) {
 		case "+":
-			return OperatorOverloading.additionOperator(leftValue, rightValue, operator, type, getFileName(), getLine());
+			return OperatorOverloading.additionOperator(leftValue, rightValue, operator, type, getFileName(),
+					getLine());
 		case "-":
-			return OperatorOverloading.subtractionOperator(leftValue, rightValue, operator, type, getFileName(), getLine());
+			return OperatorOverloading.subtractionOperator(leftValue, rightValue, operator, type, getFileName(),
+					getLine());
 		case "*":
-			return OperatorOverloading.multiplicationOperator(leftValue, rightValue, operator, type, getFileName(), getLine());
+			return OperatorOverloading.multiplicationOperator(leftValue, rightValue, operator, type, getFileName(),
+					getLine());
 		case "/":
-			return OperatorOverloading.divisionOperator(leftValue, rightValue, operator, type, getFileName(), getLine());
+			return OperatorOverloading.divisionOperator(leftValue, rightValue, operator, type, getFileName(),
+					getLine());
 		case "%":
 			return OperatorOverloading.moduloOperator(leftValue, rightValue, operator, type, getFileName(), getLine());
 		case "!":
-			return OperatorOverloading.negationOperator(leftValue, rightValue, operator, type, getFileName(), getLine());
+			return OperatorOverloading.negationOperator(leftValue, rightValue, operator, type, getFileName(),
+					getLine());
 		case "<<":
-			return OperatorOverloading.shiftLeftOperator(leftValue, rightValue, operator, type, getFileName(), getLine());
+			return OperatorOverloading.shiftLeftOperator(leftValue, rightValue, operator, type, getFileName(),
+					getLine());
 		case ">>":
-			return OperatorOverloading.shiftRightOperator(leftValue, rightValue, operator, type, getFileName(), getLine());
+			return OperatorOverloading.shiftRightOperator(leftValue, rightValue, operator, type, getFileName(),
+					getLine());
 		case "^":
 			return OperatorOverloading.xorOperator(leftValue, rightValue, operator, type, getFileName(), getLine());
 		case "&":
@@ -75,31 +81,44 @@ public class OperationNode extends ExpressionNode {
 		case "<":
 			return OperatorOverloading.lowerOperator(leftValue, rightValue, operator, type, getFileName(), getLine());
 		case "<=":
-			return OperatorOverloading.lowerEqualsOperator(leftValue, rightValue, operator, type, getFileName(), getLine());
+			return OperatorOverloading.lowerEqualsOperator(leftValue, rightValue, operator, type, getFileName(),
+					getLine());
 		case ">=":
-			return OperatorOverloading.greaterEqualsOperator(leftValue, rightValue, operator, type, getFileName(), getLine());
+			return OperatorOverloading.greaterEqualsOperator(leftValue, rightValue, operator, type, getFileName(),
+					getLine());
 		case "!=":
-			return OperatorOverloading.notEqualsOperator(leftValue, rightValue, operator, type, getFileName(), getLine());
+			return OperatorOverloading.notEqualsOperator(leftValue, rightValue, operator, type, getFileName(),
+					getLine());
 		case "=":
-			return OperatorOverloading.assignmentOperator(leftValue, rightValue, operator, type, getFileName(), getLine());
+			return OperatorOverloading.assignmentOperator(leftValue, rightValue, operator, type, getFileName(),
+					getLine());
 		case "+=":
-			return OperatorOverloading.assignmentAdditionOperator(leftValue, rightValue, operator, type, getFileName(), getLine());
+			return OperatorOverloading.assignmentAdditionOperator(leftValue, rightValue, operator, type, getFileName(),
+					getLine());
 		case "-=":
-			return OperatorOverloading.assignmentSubtractionOperator(leftValue, rightValue, operator, type, getFileName(), getLine());
+			return OperatorOverloading.assignmentSubtractionOperator(leftValue, rightValue, operator, type,
+					getFileName(), getLine());
 		case "*=":
-			return OperatorOverloading.assignmentMultiplicationOperator(leftValue, rightValue, operator, type, getFileName(), getLine());
+			return OperatorOverloading.assignmentMultiplicationOperator(leftValue, rightValue, operator, type,
+					getFileName(), getLine());
 		case "/=":
-			return OperatorOverloading.assignmentDivisionOperator(leftValue, rightValue, operator, type, getFileName(), getLine());
+			return OperatorOverloading.assignmentDivisionOperator(leftValue, rightValue, operator, type, getFileName(),
+					getLine());
 		case "<<=":
-			return OperatorOverloading.assignmentShiftLeftOperator(leftValue, rightValue, operator, type, getFileName(), getLine());
+			return OperatorOverloading.assignmentShiftLeftOperator(leftValue, rightValue, operator, type, getFileName(),
+					getLine());
 		case ">>=":
-			return OperatorOverloading.assignmentShiftRightOperator(leftValue, rightValue, operator, type, getFileName(), getLine());
+			return OperatorOverloading.assignmentShiftRightOperator(leftValue, rightValue, operator, type,
+					getFileName(), getLine());
 		case "^=":
-			return OperatorOverloading.assignmentXorOperator(leftValue, rightValue, operator, type, getFileName(), getLine());
+			return OperatorOverloading.assignmentXorOperator(leftValue, rightValue, operator, type, getFileName(),
+					getLine());
 		case "&=":
-			return OperatorOverloading.assignmentAndOperator(leftValue, rightValue, operator, type, getFileName(), getLine());
+			return OperatorOverloading.assignmentAndOperator(leftValue, rightValue, operator, type, getFileName(),
+					getLine());
 		case "|=":
-			return OperatorOverloading.assignmentOrOperator(leftValue, rightValue, operator, type, getFileName(), getLine());
+			return OperatorOverloading.assignmentOrOperator(leftValue, rightValue, operator, type, getFileName(),
+					getLine());
 		}
 		return null;
 	}

@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
+
 import ast.Block;
 import lexer.Lexer;
 import parser.LogError;

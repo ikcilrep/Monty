@@ -20,11 +20,11 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import ast.declarations.VariableDeclarationNode;
+import parser.DataTypes;
 import parser.LogError;
 import sml.data.array.Array;
 import sml.data.list.List;
 import sml.data.stack.Stack;
-import parser.DataTypes;
 
 public class OperatorOverloading {
 	public static Object additionOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,

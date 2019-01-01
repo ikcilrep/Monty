@@ -54,7 +54,7 @@ public class ToArray extends FunctionDeclarationNode {
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var a = getBody().getVariableByName("a").getValue();
-		return toArray(a,callFileName, callLine);
+		return toArray(a, callFileName, callLine);
 	}
 
 }

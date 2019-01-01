@@ -47,6 +47,7 @@ public enum DataTypes {
 			return Nothing.nothing;
 		}
 	}
+
 	public static DataTypes getDataType(Object value) {
 		if (value instanceof VoidType)
 			return DataTypes.VOID;

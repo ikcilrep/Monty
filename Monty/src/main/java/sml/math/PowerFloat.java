@@ -17,6 +17,7 @@ limitations under the License.
 package sml.math;
 
 import java.util.ArrayList;
+
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;

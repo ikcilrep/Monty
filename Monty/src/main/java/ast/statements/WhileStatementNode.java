@@ -28,7 +28,7 @@ public class WhileStatementNode extends StatementNode {
 	private OperationNode condition;
 	private Block body;
 
-	public WhileStatementNode(OperationNode condition,String fileName, int line) {
+	public WhileStatementNode(OperationNode condition, String fileName, int line) {
 		this.condition = condition;
 		super.nodeType = NodeTypes.WHILE_STATEMENT;
 		this.fileName = fileName;

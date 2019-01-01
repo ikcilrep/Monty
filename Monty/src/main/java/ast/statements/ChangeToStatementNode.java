@@ -28,13 +28,13 @@ public class ChangeToStatementNode extends StatementNode {
 	private VariableNode toChangeType;
 	private DataTypes dataType;
 
-	public ChangeToStatementNode(VariableNode toChangeType, DataTypes dataType,String fileName, int line) {
+	public ChangeToStatementNode(VariableNode toChangeType, DataTypes dataType, String fileName, int line) {
 		this.toChangeType = toChangeType;
 		this.dataType = dataType;
 		super.nodeType = NodeTypes.CHANGE_TO_STATEMENT;
 		this.fileName = fileName;
 		this.line = line;
-		
+
 	}
 
 	public DataTypes getDataType() {
