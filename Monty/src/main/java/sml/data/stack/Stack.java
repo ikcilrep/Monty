@@ -44,14 +44,6 @@ public class Stack implements Cloneable, Iterable<Object> {
 		return null;
 	}
 
-	public Array toArray() {
-		return new Array(array).subarray(0, top + 1);
-	}
-
-	public Object[] getArray() {
-		return array;
-	}
-
 	@Override
 	public boolean equals(Object other) {
 		Stack otherStack = null;
@@ -66,6 +58,10 @@ public class Stack implements Cloneable, Iterable<Object> {
 			if (!array[i--].equals(e))
 				return false;
 		return true;
+	}
+
+	public Object[] getArray() {
+		return array;
 	}
 
 	public boolean isEmpty() {
@@ -123,6 +119,10 @@ public class Stack implements Cloneable, Iterable<Object> {
 		Stack newStack = copy();
 		newStack.array = newArray;
 		return newStack;
+	}
+
+	public Array toArray() {
+		return new Array(array).subarray(0, top + 1);
 	}
 
 	@Override

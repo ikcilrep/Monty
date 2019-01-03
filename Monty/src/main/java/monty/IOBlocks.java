@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.LinkedList;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
 
 import ast.Block;
 import lexer.Lexer;
@@ -19,8 +17,7 @@ public class IOBlocks {
 	public static void compileAndWriteBlock(Block block, String outputPath) {
 		try {
 			FileOutputStream fos = new FileOutputStream(outputPath);
-			GZIPOutputStream gos = new GZIPOutputStream(fos);
-			ObjectOutputStream oos = new ObjectOutputStream(gos);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(block);
 			oos.flush();
 			oos.close();
@@ -46,11 +43,11 @@ public class IOBlocks {
 		return block;
 	}
 
-	private static Block readBlockFromGZIP(GZIPInputStream gis, String path) {
+	private static Block readCompiledBlock(FileInputStream fis, String path) {
 		ObjectInputStream ois;
 		Block block = null;
 		try {
-			ois = new ObjectInputStream(gis);
+			ois = new ObjectInputStream(fis);
 			var obj = ois.readObject();
 			if (!(obj instanceof Block))
 				new LogError("This isn't file with program or library:\t" + path);
@@ -64,18 +61,13 @@ public class IOBlocks {
 	}
 
 	public static Block readCompiledBlockFromFile(String path) {
-		return readBlockFromGZIP(readGZIPBlock(path), path);
-	}
-
-	private static GZIPInputStream readGZIPBlock(String path) {
 		FileInputStream fis = null;
-		GZIPInputStream gis = null;
 		try {
 			fis = new FileInputStream(path);
-			gis = new GZIPInputStream(fis);
 		} catch (IOException e) {
 			new LogError("File not found:\t" + path);
 		}
-		return gis;
+		return readCompiledBlock(fis, path);
 	}
+
 }

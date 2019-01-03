@@ -27,27 +27,6 @@ import sml.data.stack.Stack;
 
 public enum DataTypes {
 	BOOLEAN, INTEGER, FLOAT, STRING, VOID, ARRAY, ANY, LIST, STACK;
-	public static Object getNeutralValue(DataTypes dataType) {
-		switch (dataType) {
-		case INTEGER:
-			return BigInteger.ZERO;
-		case FLOAT:
-			return BigDecimal.ZERO;
-		case STRING:
-			return "";
-		case BOOLEAN:
-			return false;
-		case ARRAY:
-			return new Array().append(Nothing.nothing);
-		case LIST:
-			return new List();
-		case STACK:
-			return new Stack().push(Nothing.nothing);
-		default:
-			return Nothing.nothing;
-		}
-	}
-
 	public static DataTypes getDataType(Object value) {
 		if (value instanceof VoidType)
 			return DataTypes.VOID;
@@ -67,5 +46,26 @@ public enum DataTypes {
 			return DataTypes.LIST;
 		return null;
 
+	}
+
+	public static Object getNeutralValue(DataTypes dataType) {
+		switch (dataType) {
+		case INTEGER:
+			return BigInteger.ZERO;
+		case FLOAT:
+			return BigDecimal.ZERO;
+		case STRING:
+			return "";
+		case BOOLEAN:
+			return false;
+		case ARRAY:
+			return new Array().append(Nothing.nothing);
+		case LIST:
+			return new List();
+		case STACK:
+			return new Stack().push(Nothing.nothing);
+		default:
+			return Nothing.nothing;
+		}
 	}
 }

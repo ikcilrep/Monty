@@ -27,12 +27,12 @@ public class List implements Iterable<Object>, Cloneable {
 	List last = this;
 	Object value = Nothing.nothing;
 
-	public List(Object value) {
-		this.value = value;
-	}
-
 	public List() {
 
+	}
+
+	public List(Object value) {
+		this.value = value;
 	}
 
 	public List append(List element) {

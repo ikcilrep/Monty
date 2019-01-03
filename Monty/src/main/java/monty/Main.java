@@ -38,11 +38,10 @@ public class Main {
 		argv = args;
 		Block block = null;
 		block = IOBlocks.readBlock(args[1]);
-		if (isItToRun) {
+		if (isItToRun)
 			block.run();
-		} else {
+		else
 			IOBlocks.compileAndWriteBlock(block, args[2]);
-		}
 	}
 
 }

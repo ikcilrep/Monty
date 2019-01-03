@@ -73,6 +73,46 @@ public class Importing {
 		}
 	}
 
+	public static void addLibrary(List<Token> tokens) {
+		var partOfPath = Tokens.getText(tokens.subList(1, tokens.size()));
+		var path = mainFileLocation + partOfPath.replace('.', File.separatorChar) + ".jar";
+		try {
+			File jar = new File(path);
+			if (jar.exists()) {
+				@SuppressWarnings("resource")
+				JarFile jarFile = new JarFile(jar);
+				Enumeration<JarEntry> e = jarFile.entries();
+
+				URL[] urls = { new URL("jar:file:" + jar + "!/") };
+				URLClassLoader cl = URLClassLoader.newInstance(urls);
+
+				while (e.hasMoreElements()) {
+					JarEntry je = e.nextElement();
+					if (je.isDirectory() || !je.getName().endsWith(".class")) {
+						continue;
+					}
+					// -6 because of .class
+					String className = je.getName().substring(0, je.getName().length() - 6);
+					className = className.replace('/', '.');
+					Class<?> c = cl.loadClass(className);
+					Object instance;
+					instance = c.getDeclaredConstructor().newInstance();
+
+					if (instance instanceof Library) {
+						Library lib = (Library) instance;
+						Parser.libraries.put(lib.getName(), lib);
+					}
+				}
+			} else {
+				new LogError("There isn't library to import:\t" + path, tokens.get(1));
+			}
+		} catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e1) {
+			e1.printStackTrace();
+
+		}
+	}
+
 	private static void addSpecifiedFunctionOrVariableFromFile(Block block, Block importedBlock, String path,
 			String name) {
 		var doesContainVariable = importedBlock.doesContainVariable(name);
@@ -144,46 +184,6 @@ public class Importing {
 			if (!Parser.libraries.containsKey(splited[0]))
 				new LogError("There isn't file to import:\t" + path, tokens.get(1));
 			findAndAddFunctions(block, subArray(splited, 1), path, Parser.libraries.get(splited[0]), tokens.get(1));
-		}
-	}
-
-	public static void addLibrary(List<Token> tokens) {
-		var partOfPath = Tokens.getText(tokens.subList(1, tokens.size()));
-		var path = mainFileLocation + partOfPath.replace('.', File.separatorChar) + ".jar";
-		try {
-			File jar = new File(path);
-			if (jar.exists()) {
-				@SuppressWarnings("resource")
-				JarFile jarFile = new JarFile(jar);
-				Enumeration<JarEntry> e = jarFile.entries();
-
-				URL[] urls = { new URL("jar:file:" + jar + "!/") };
-				URLClassLoader cl = URLClassLoader.newInstance(urls);
-
-				while (e.hasMoreElements()) {
-					JarEntry je = e.nextElement();
-					if (je.isDirectory() || !je.getName().endsWith(".class")) {
-						continue;
-					}
-					// -6 because of .class
-					String className = je.getName().substring(0, je.getName().length() - 6);
-					className = className.replace('/', '.');
-					Class<?> c = cl.loadClass(className);
-					Object instance;
-					instance = c.getDeclaredConstructor().newInstance();
-
-					if (instance instanceof Library) {
-						Library lib = (Library) instance;
-						Parser.libraries.put(lib.getName(), lib);
-					}
-				}
-			} else {
-				new LogError("There isn't library to import:\t" + path, tokens.get(1));
-			}
-		} catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e1) {
-			e1.printStackTrace();
-
 		}
 	}
 

@@ -32,12 +32,6 @@ public class ToString extends FunctionDeclarationNode {
 	 */
 	private static final long serialVersionUID = -2725148737303045967L;
 
-	public String toString(Object a, String callFileName, int callLine) {
-		if (a == null)
-			new LogError("Can't cast void to string.", callFileName, callLine);
-		return a.toString();
-	}
-
 	public ToString() {
 		super("toString", DataTypes.STRING);
 		setBody(new Block(null));
@@ -49,6 +43,12 @@ public class ToString extends FunctionDeclarationNode {
 		setArguments(arguments, callFileName, callLine);
 		var a = getBody().getVariableByName("a").getValue();
 		return toString(a, callFileName, callLine);
+	}
+
+	public String toString(Object a, String callFileName, int callLine) {
+		if (a == null)
+			new LogError("Can't cast void to string.", callFileName, callLine);
+		return a.toString();
 	}
 
 }
