@@ -41,8 +41,10 @@ import parser.parsing.Parser;
 
 public class Importing {
 	private static String mainPath = Paths.get("").toAbsolutePath().toString();
+	private static Path fileAbsolutePath = Paths.get(Main.path).getParent();
 	private static String mainFileLocation = mainPath + (mainPath.endsWith(File.separator) ? "" : File.separator)
-			+ emptyIfNull(Paths.get(Main.path).getParent()) + File.separator;
+			+ (fileAbsolutePath == null ? "" : fileAbsolutePath) + File.separator;
+
 	@SuppressWarnings("unchecked")
 	private static void addAllFunctions(Block block, HashMap<String, Object> addFrom, Token token) {
 		for (Object value : addFrom.values())
@@ -89,12 +91,6 @@ public class Importing {
 			new LogError("There aren't any function or variable with this name to import:\t" + name
 					+ ". Look at this file:\t" + path);
 		}
-	}
-
-	private static String emptyIfNull(Path path) {
-		if (path == null)
-			return "";
-		return path.toString();
 	}
 
 	@SuppressWarnings("unchecked")

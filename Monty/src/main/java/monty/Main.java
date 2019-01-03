@@ -29,11 +29,9 @@ public class Main {
 	public static void main(String[] args) throws FileNotFoundException {
 		boolean isItToRun = false;
 		if ((args.length < 2 || !(isItToRun = args[0].equals("-r"))) && (args.length < 3 || !args[0].equals("-c"))) {
-			System.out.println((args.length < 2 || !(isItToRun = args[0].equals("-r"))));
-			System.out.println((args.length < 3 || !args[0].equals("-c")));
 			System.out.println(
 					"To run:\tjava -jar Monty.jar [file_name.(mt|mtc)]\nTo compile:\\tjava -jar Monty.jar [input_file_name.mt] -o [output_file_name.mtc]");
-			System.exit(0);
+			System.exit(1);
 		}
 		Parser.libraries.put("sml", new sml.Sml());
 		path = args[1];

@@ -16,7 +16,7 @@ limitations under the License.
 
 package parser.parsing;
 
-	import java.util.HashMap;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import ast.Block;
@@ -53,7 +53,7 @@ public class Parser {
 					block = AdderToBlock.addElseStatement(block, tokensBeforeSemicolon);
 					if (tokensBeforeSemicolon.size() > 1) {
 						block = AdderToBlock.addIfStatement(block,
-								 tokensBeforeSemicolon.subList(1, tokensBeforeSemicolon.size()));
+								tokensBeforeSemicolon.subList(1, tokensBeforeSemicolon.size()));
 						((IfStatementNode) block).setInElse(true);
 					}
 				} else if (Identificator.isWhileStatement(tokensBeforeSemicolon)) {
@@ -62,7 +62,7 @@ public class Parser {
 					block = AdderToBlock.addDoWhileStatement(block, tokensBeforeSemicolon);
 				} else if (Identificator.isImport(tokensBeforeSemicolon)) {
 					Importing.importFile(block, tokensBeforeSemicolon);
-				}  else if (Identificator.isJar(tokensBeforeSemicolon)) {
+				} else if (Identificator.isJar(tokensBeforeSemicolon)) {
 					Importing.addLibrary(tokensBeforeSemicolon);
 				} else if (Identificator.isChangeToStatement(tokensBeforeSemicolon)) {
 					AdderToBlock.addChangeToStatement(block, tokensBeforeSemicolon);

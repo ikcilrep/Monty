@@ -16,9 +16,12 @@ limitations under the License.
 
 package sml.system;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
+import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
+import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.returning.Nothing;
@@ -32,12 +35,14 @@ public class Exit extends FunctionDeclarationNode {
 
 	public Exit() {
 		super("exit", DataTypes.VOID);
+		setBody(new Block(null));
+		addParameter(new VariableDeclarationNode("status", DataTypes.INTEGER));
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		System.exit(0);
+		System.exit(((BigInteger) getBody().getVariableByName("status").getValue()).intValue());
 		return Nothing.nothing;
 	}
 
