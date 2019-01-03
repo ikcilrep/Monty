@@ -40,9 +40,9 @@ import parser.Tokens;
 import parser.parsing.Parser;
 
 public class Importing {
-	private static String mainFileLocation = Paths.get("").toAbsolutePath().toString()
+	private static String mainPath = Paths.get("").toAbsolutePath().toString();
+	private static String mainFileLocation = mainPath + (mainPath.endsWith(File.separator) ? "" : File.separator)
 			+ emptyIfNull(Paths.get(Main.path).getParent()) + File.separator;
-
 	@SuppressWarnings("unchecked")
 	private static void addAllFunctions(Block block, HashMap<String, Object> addFrom, Token token) {
 		for (Object value : addFrom.values())
