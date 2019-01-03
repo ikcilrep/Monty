@@ -46,7 +46,7 @@ public class Argv extends FunctionDeclarationNode {
 		var index = ((BigInteger) getBody().getVariableByName("index").getValue()).intValue();
 		if (index >= Main.argv.length)
 			new LogError("Index " + index + " is too large for length " + Main.argv.length, callFileName, callLine);
-		return Main.argv[index];
+		return Main.argv[index + 2];
 	}
 
 }

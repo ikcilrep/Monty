@@ -30,7 +30,7 @@ import parser.Identificator;
 import parser.LogError;
 
 public class Parser {
-	public static HashMap<String, Library> libraries;
+	public static HashMap<String, Library> libraries = new HashMap<>();
 
 	public static Block parse(LinkedList<Token> tokens) {
 		var tokensBeforeSemicolon = new LinkedList<Token>();
@@ -62,6 +62,8 @@ public class Parser {
 					block = AdderToBlock.addDoWhileStatement(block, tokensBeforeSemicolon);
 				} else if (Identificator.isImport(tokensBeforeSemicolon)) {
 					Importing.importFile(block, tokensBeforeSemicolon);
+				}  else if (Identificator.isJar(tokensBeforeSemicolon)) {
+					Importing.addLibrary(tokensBeforeSemicolon);
 				} else if (Identificator.isChangeToStatement(tokensBeforeSemicolon)) {
 					AdderToBlock.addChangeToStatement(block, tokensBeforeSemicolon);
 				} else if (Identificator.isThreadStatement(tokensBeforeSemicolon)) {

@@ -40,6 +40,9 @@ import parser.Tokens;
 import parser.parsing.Parser;
 
 public class Importing {
+	private static String mainFileLocation = Paths.get("").toAbsolutePath().toString()
+			+ emptyIfNull(Paths.get(Main.path).getParent()) + File.separator;
+
 	@SuppressWarnings("unchecked")
 	private static void addAllFunctions(Block block, HashMap<String, Object> addFrom, Token token) {
 		for (Object value : addFrom.values())
@@ -119,8 +122,7 @@ public class Importing {
 
 	public static void importFile(Block block, List<Token> tokens) {
 		var partOfPath = Tokens.getText(tokens.subList(1, tokens.size()));
-		var path = Paths.get("").toAbsolutePath().toString() + emptyIfNull(Paths.get(Main.path).getParent())
-				+ File.separator + partOfPath.replace('.', File.separatorChar);
+		var path = mainFileLocation + partOfPath.replace('.', File.separatorChar);
 		var file = new File(path + ".mt");
 		var parent_file = new File(file.getParent() + ".mt");
 		var compiled_file = new File(path + ".mtc");
@@ -149,18 +151,17 @@ public class Importing {
 		}
 	}
 
-	public static void setLibraries(int from) {
-		Parser.libraries = new HashMap<>();
-		Parser.libraries.put("sml", new sml.Sml());
-		for (int i = from; i < Main.argv.length; i++) {
-			try {
-				File pathToJar = new File(Main.argv[i]);
-
+	public static void addLibrary(List<Token> tokens) {
+		var partOfPath = Tokens.getText(tokens.subList(1, tokens.size()));
+		var path = mainFileLocation + partOfPath.replace('.', File.separatorChar) + ".jar";
+		try {
+			File jar = new File(path);
+			if (jar.exists()) {
 				@SuppressWarnings("resource")
-				JarFile jarFile = new JarFile(pathToJar);
+				JarFile jarFile = new JarFile(jar);
 				Enumeration<JarEntry> e = jarFile.entries();
 
-				URL[] urls = { new URL("jar:file:" + pathToJar + "!/") };
+				URL[] urls = { new URL("jar:file:" + jar + "!/") };
 				URLClassLoader cl = URLClassLoader.newInstance(urls);
 
 				while (e.hasMoreElements()) {
@@ -180,12 +181,13 @@ public class Importing {
 						Parser.libraries.put(lib.getName(), lib);
 					}
 				}
-			} catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException
-					| IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-					| SecurityException e1) {
-				e1.printStackTrace();
-
+			} else {
+				new LogError("There isn't library to import:\t" + path, tokens.get(1));
 			}
+		} catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e1) {
+			e1.printStackTrace();
+
 		}
 	}
 

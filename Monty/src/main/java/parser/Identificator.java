@@ -23,7 +23,7 @@ import lexer.Token;
 import lexer.TokenTypes;
 
 public abstract class Identificator {
-	public static final Pattern importRegex = Pattern.compile("^IMPORT_KEYWORD [A-Z_]+ (DOT [A-Z_]+ )*$");
+	public static final Pattern importRegex = Pattern.compile("^[A-Z_]+ (DOT [A-Z_]+ )*$");
 	public static final List<TokenTypes> dataTypesKeywords = List.of(TokenTypes.INTEGER_KEYWORD,
 			TokenTypes.FLOAT_KEYWORD, TokenTypes.BOOLEAN_KEYWORD, TokenTypes.STRING_KEYWORD, TokenTypes.VOID_KEYWORD,
 			TokenTypes.ANY_KEYWORD, TokenTypes.ARRAY_KEYWORD, TokenTypes.LIST_KEYWORD, TokenTypes.STACK_KEYWORD);
@@ -201,7 +201,13 @@ public abstract class Identificator {
 	}
 
 	public static boolean isImport(List<Token> tokens) {
-		return importRegex.matcher(Tokens.getTypesToString(tokens)).matches();
+		return tokens.get(0).getType().equals(TokenTypes.IMPORT_KEYWORD)
+				&& importRegex.matcher(Tokens.getTypesToString(tokens.subList(1, tokens.size()))).matches();
+	}
+
+	public static boolean isJar(List<Token> tokens) {
+		return tokens.get(0).getType().equals(TokenTypes.JAR_KEYWORD)
+				&& importRegex.matcher(Tokens.getTypesToString(tokens.subList(1, tokens.size()))).matches();
 	}
 
 	public static boolean isReturnStatement(List<Token> tokens) {

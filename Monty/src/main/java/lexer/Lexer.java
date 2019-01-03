@@ -85,6 +85,8 @@ public class Lexer {
 			return TokenTypes.CONTINUE_KEYWORD;
 		case "import":
 			return TokenTypes.IMPORT_KEYWORD;
+		case "jar":
+			return TokenTypes.JAR_KEYWORD;
 		case "dynamic":
 			return TokenTypes.DYNAMIC_KEYWORD;
 		case "static":

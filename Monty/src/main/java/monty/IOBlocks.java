@@ -30,8 +30,7 @@ public class IOBlocks {
 
 	}
 
-	public static Block readBlock(int from, String path) {
-		Importing.setLibraries(from);
+	public static Block readBlock(String path) {
 		if (path.endsWith(".mt"))
 			return readBlockFromFile(path);
 		else if (path.endsWith(".mtc"))

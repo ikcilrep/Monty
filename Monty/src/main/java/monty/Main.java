@@ -18,24 +18,32 @@ package monty;
 
 import java.io.FileNotFoundException;
 
+import ast.Block;
+import parser.parsing.Parser;
+
 public class Main {
 
 	public static String[] argv = null;
 	public static String path;
 
 	public static void main(String[] args) throws FileNotFoundException {
-		if (args.length == 0 || args[0] == "-h")
+		boolean isItToRun = false;
+		if ((args.length < 2 || !(isItToRun = args[0].equals("-r"))) && (args.length < 3 || !args[0].equals("-c"))) {
+			System.out.println((args.length < 2 || !(isItToRun = args[0].equals("-r"))));
+			System.out.println((args.length < 3 || !args[0].equals("-c")));
 			System.out.println(
 					"To run:\tjava -jar Monty.jar [file_name.(mt|mtc)]\nTo compile:\\tjava -jar Monty.jar [input_file_name.mt] -o [output_file_name.mtc]");
-		else {
-			argv = args;
-			path = args[0];
-			int from = argv.length > 1 && argv[1].equals("-o") ? 3 : 1;
-			var block = IOBlocks.readBlock(from, path);
-			if (from == 1)
-				block.run();
-			else
-				IOBlocks.compileAndWriteBlock(block, argv[2]);
+			System.exit(0);
+		}
+		Parser.libraries.put("sml", new sml.Sml());
+		path = args[1];
+		argv = args;
+		Block block = null;
+		block = IOBlocks.readBlock(args[1]);
+		if (isItToRun) {
+			block.run();
+		} else {
+			IOBlocks.compileAndWriteBlock(block, args[2]);
 		}
 	}
 
