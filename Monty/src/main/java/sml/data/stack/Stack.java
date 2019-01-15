@@ -16,12 +16,17 @@ limitations under the License.
 
 package sml.data.stack;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 import parser.LogError;
 import sml.data.array.Array;
 
-public class Stack implements Cloneable, Iterable<Object> {
+public class Stack implements Cloneable, Iterable<Object>, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9022992871505654219L;
 	Object[] array;
 	int top;
 

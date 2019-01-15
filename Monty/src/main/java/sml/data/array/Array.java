@@ -16,13 +16,18 @@ limitations under the License.
 
 package sml.data.array;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 import sml.data.list.List;
 import sml.data.returning.Nothing;
 import sml.data.stack.Stack;
 
-public class Array<T> implements Iterable<T>, Cloneable {
+public class Array<T> implements Iterable<T>, Cloneable, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -114997948039751189L;
 	protected Object[] array;
 	public int top;
 

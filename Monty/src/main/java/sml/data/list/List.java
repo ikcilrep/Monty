@@ -16,13 +16,18 @@ limitations under the License.
 
 package sml.data.list;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 import parser.LogError;
 import sml.data.array.Array;
 import sml.data.returning.Nothing;
 
-public class List implements Iterable<Object>, Cloneable {
+public class List implements Iterable<Object>, Cloneable, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8860315591604247049L;
 	private List next = null;
 	List last = this;
 	Object value = Nothing.nothing;
