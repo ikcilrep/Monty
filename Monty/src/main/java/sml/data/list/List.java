@@ -1,5 +1,5 @@
 /*
-Copyright 2018 Szymon Perlicki
+Copyright 2018-2019 Szymon Perlicki
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -159,8 +159,8 @@ public class List implements Iterable<Object>, Cloneable {
 		return sublist(begin).reversed().sublist(length() - end).reversed();
 	}
 
-	public Array toArray() {
-		Array array = new Array(length());
+	public Array<Object> toArray() {
+		Array<Object> array = new Array<Object>(length());
 		var list = this;
 		int i = 0;
 		while (i < array.length()) {

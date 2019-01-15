@@ -1,5 +1,5 @@
 /*
-Copyright 2018 Szymon Perlicki
+Copyright 2018-2019 Szymon Perlicki
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -18,14 +18,13 @@ package parser.parsing;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 import ast.Block;
 import ast.expressions.ConstantNode;
 import ast.expressions.FunctionCallNode;
 import ast.expressions.OperationNode;
+import ast.expressions.StructContainer;
 import ast.expressions.VariableNode;
 import lexer.Token;
 import lexer.TokenTypes;
@@ -33,15 +32,103 @@ import parser.DataTypes;
 import parser.Identificator;
 import parser.LogError;
 import parser.Tokens;
+import sml.data.array.Array;
 
 public class ExpressionParser {
 	/*
 	 * Parses list of tokens to abstract syntax tree.
 	 */
-	public static OperationNode parse(Block parent, List<Token> tokens) {
-		var stack = new Stack<OperationNode>();
-		for (int i = 0; i < tokens.size(); i++) {
-			var token = tokens.get(i);
+
+	private static boolean isFunction(Array<Token> array, int i) {
+		return i + 1 < array.length() && array.get(i + 1).getType().equals(TokenTypes.BRACKET);
+	}
+
+	private static OperationNode parseIdentifier(Block parent, Array<Token> array, IntegerHolder i) {
+		if (isFunction(array, i.i))
+			return parseFunction(parent, array, i);
+		return parseVariable(parent, array, i);
+	}
+
+	private static OperationNode parseFunction(Block parent, Array<Token> array, IntegerHolder i) {
+		var token = array.get(i.i);
+		int j = 0;
+		int openBracketCounter = 1;
+		int closeBracketCounter = 0;
+		// Separates function arguments from identifier.
+		for (j = i.i + 2; openBracketCounter > closeBracketCounter; j++) {
+			if (j >= array.length()) {
+				if (openBracketCounter > closeBracketCounter)
+					new LogError("Expected closing bracket:\t" + Tokens.getText(array.subarray(i.i + 1, array.length())),
+							token);
+				break;
+			}
+			switch (array.get(j).getText()) {
+			case "(":
+				openBracketCounter++;
+				break;
+			case ")":
+				closeBracketCounter++;
+				break;
+			default:
+				break;
+			}
+
+		}
+		var function = new FunctionCallNode(token.getText());
+		function.setFileName(token.getFileName());
+		function.setLine(token.getLine());
+		var splited = splitArguments(array.subarray(i.i + 2, j - 1));
+		// Adds parsed function arguments to object.
+		for (Array<Token> ts : splited) {
+			// If there isn't any arguments breaks loop.
+			if (ts.length() == 0)
+				break;
+
+			if (!Identificator.isExpression(ts))
+				new LogError("Expected expression as function " + token.getText() + " call's argument:\t"
+						+ Tokens.getText(ts), token);
+			function.addArgument(parse(parent, ts, new Stack<>(), new IntegerHolder()));
+		}
+		i.i = j - 1;
+		parseAfterDot(parent, function, array, i);
+		var node = new OperationNode(function, parent);
+		node.setFileName(token.getFileName());
+		node.setLine(token.getLine());
+		return node;
+	}
+
+	private static OperationNode parseAfterDot(Block parent, StructContainer structContainer, Array<Token> array,
+			IntegerHolder i) {
+		if (i.i + 1 < array.length() && array.get(i.i + 1).getType().equals(TokenTypes.DOT))
+			if ((i.i += 2) < array.length() && array.get(i.i).getType().equals(TokenTypes.IDENTIFIER)) {
+				var variableOrFunctionOperationNode = parseIdentifier(parent, array, i);
+				structContainer.setNext(variableOrFunctionOperationNode);
+				return variableOrFunctionOperationNode;
+			} else
+				new LogError("Expression after dot have to be function or variable", array.get(i.i - 1));
+		return null;
+	}
+
+	private static OperationNode parseVariable(Block parent, Array<Token> array, IntegerHolder i) {
+		var token = array.get(i.i);
+		var variable = new VariableNode(token.getText());
+		parseAfterDot(parent, variable, array, i);
+		var node = new OperationNode(variable, parent);
+		node.setFileName(token.getFileName());
+		node.setLine(token.getLine());
+		return node;
+	}
+
+	private static OperationNode recParseIdentifier(Block parent, Array<Token> array, Stack<OperationNode> stack,
+			IntegerHolder i) {
+		stack.push(parseIdentifier(parent, array, i));
+		i.i++;
+		return parse(parent, array, stack, i);
+	}
+
+	public static OperationNode parse(Block parent, Array<Token> array, Stack<OperationNode> stack, IntegerHolder i) {
+		if (i.i < array.length()) {
+			var token = array.get(i.i);
 			OperationNode node = null;
 			switch (token.getType()) {
 			case OPERATOR: // If token is operator
@@ -56,50 +143,7 @@ public class ExpressionParser {
 				node.setLeftOperand(stack.pop());
 				break;
 			case IDENTIFIER: // If token is identifier
-				if (i + 1 < tokens.size() && tokens.get(i + 1).getType().equals(TokenTypes.BRACKET)) {
-					int j = 0;
-					int openBracketCounter = 1;
-					int closeBracketCounter = 0;
-					// Separates function arguments from identifier.
-					for (j = i + 2; openBracketCounter > closeBracketCounter; j++) {
-						if (j >= tokens.size()) {
-							if (openBracketCounter > closeBracketCounter)
-								new LogError("Expected closing bracket:\t"
-										+ Tokens.getText(tokens.subList(i + 1, tokens.size())), token);
-							break;
-						}
-						switch (tokens.get(j).getText()) {
-						case "(":
-							openBracketCounter++;
-							break;
-						case ")":
-							closeBracketCounter++;
-							break;
-						default:
-							break;
-						}
-					}
-					var function = new FunctionCallNode(token.getText());
-					function.setFileName(token.getFileName());
-					function.setLine(token.getLine());
-					var splited = splitArguments(tokens.subList(i + 2, j - 1));
-					// Adds parsed function arguments to object.
-					for (List<Token> ts : splited) {
-						// If there isn't any arguments breaks loop.
-						if (ts.size() == 0)
-							break;
-						if (!Identificator.isExpression(ts))
-							new LogError("Expected expression as function " + token.getText() + " call's argument:\t"
-									+ Tokens.getText(ts), token);
-						function.addArgument(parse(parent, ts));
-					}
-					node = new OperationNode(function, parent);
-					// I is after function arguments.
-					i = j - 1;
-				} else {
-					node = new OperationNode(new VariableNode(token.getText()), parent);
-				}
-				break;
+				return recParseIdentifier(parent, array, stack, i);
 			default:
 				// Otherwise token in expression can be only constant.
 				var dataType = Tokens.getDataType(token.getType());
@@ -109,34 +153,39 @@ public class ExpressionParser {
 			stack.push(node);
 			node.setFileName(token.getFileName());
 			node.setLine(token.getLine());
+			i.i++;
+			return parse(parent, array, stack, i);
 		}
 		if (stack.size() != 1)
-			new LogError("Ambiguous result for this operation:\t" + Tokens.getText(tokens), tokens.get(0));
-
+			new LogError("Ambiguous result for this operation:\t" + Tokens.getText(array), array.get(0));
 		return stack.pop();
 	}
 
-	private static List<ArrayList<Token>> splitArguments(List<Token> list) {
+	public static OperationNode parse(Block parent, Array<Token> array) {
+		return parse(parent, array, new Stack<>(), new IntegerHolder());
+	}
+
+	private static Array<Array<Token>> splitArguments(Array<Token> array) {
 		// Splits function arguments into two dimensional array.
-		ArrayList<ArrayList<Token>> newList = new ArrayList<>();
-		newList.add(new ArrayList<Token>());
+		Array<Array<Token>> newArray = new Array<>();
+		newArray.append(new Array<Token>());
 		int i = 0;
 		int openBracketCounter = 1;
 		int closeBracketCounter = 0;
-		for (Token t : list) {
+		for (Token t : array) {
 			if (t.getText().equals("("))
 				openBracketCounter++;
 			else if (t.getText().equals(")"))
 				closeBracketCounter++;
 			// If every pair of bracket except last is closed and actual token type is comma
-			// adds new arguments.
+			// appends new arguments.
 			if (t.getType().equals(TokenTypes.COMMA) && openBracketCounter - 1 == closeBracketCounter) {
-				newList.add(new ArrayList<Token>());
+				newArray.append(new Array<Token>());
 				i++;
 			} else
-				newList.get(i).add(t);
+				newArray.get(i).append(t);
 		}
-		return newList;
+		return newArray;
 	}
 
 	private static Object toDataType(String literal, DataTypes dataType) {

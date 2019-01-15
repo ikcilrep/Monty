@@ -1,5 +1,5 @@
 /*
-Copyright 2018 Szymon Perlicki
+Copyright 2018-2019 Szymon Perlicki
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -39,11 +39,12 @@ public class ExtendArray extends FunctionDeclarationNode {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var arrayToBeExtended = (Array) getBody().getVariableByName("arrayToBeExtended").getValue();
-		var arrayToExtend = (Array) getBody().getVariableByName("arrayToExtend").getValue();
+		var arrayToBeExtended = (Array<Object>) getBody().getVariableByName("arrayToBeExtended").getValue();
+		var arrayToExtend = (Array<Object>) getBody().getVariableByName("arrayToExtend").getValue();
 
 		return arrayToBeExtended.copy().append(arrayToExtend);
 	}

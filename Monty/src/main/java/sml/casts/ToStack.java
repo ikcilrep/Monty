@@ -1,5 +1,5 @@
 /*
-Copyright 2018 Szymon Perlicki
+Copyright 2018-2019 Szymon Perlicki
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -34,11 +34,12 @@ public class ToStack extends FunctionDeclarationNode {
 	 */
 	private static final long serialVersionUID = -3165880297105294653L;
 
+	@SuppressWarnings("unchecked")
 	public static Object toStack(Object a, String callFileName, int callLine) {
 		if (a instanceof Stack)
 			return a;
 		if (a instanceof Array)
-			return ((Array) a).toStack();
+			return ((Array<Object>) a).toStack();
 		if (a instanceof List)
 			return ((List) a).toArray().toStack();
 		return new Stack().push(a);

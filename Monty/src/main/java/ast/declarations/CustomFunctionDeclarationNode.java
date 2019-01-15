@@ -1,5 +1,5 @@
 /*
-Copyright 2018 Szymon Perlicki
+Copyright 2018-2019 Szymon Perlicki
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -47,25 +47,27 @@ public class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
 			variables.put(key, value.copy());
 		}
 		setArguments(arguments, callFileName, callLine);
+		String[] fileNames = {callFileName, getFileName()};
+		int[] lines=  {callLine, getLine()};
 		Object result = null;
 		try {
 			result = body.run();
 		} catch (StackOverflowError e) {
-			new LogError("Stack overflow at " + name + " function call", callFileName, callLine);
+			new LogError("Stack overflow at " + name + " function call", fileNames, lines);
 		}
 		if (result == null)
 			result = DataTypes.getNeutralValue(getType());
 		if (result instanceof BreakType)
-			new LogError("Trying to break function " + getName(), callFileName, callLine);
+			new LogError("Trying to break function " + getName(), fileNames, lines);
 		if (result instanceof ContinueStatementNode)
-			new LogError("Trying to continue function " + getName(), callFileName, callLine);
+			new LogError("Trying to continue function " + getName(), fileNames, lines);
 		body.setVariables(variables);
 		var resultDataType = DataTypes.getDataType(result);
 		if (resultDataType == null)
 			resultDataType = getType();
 		if (!resultDataType.equals(getType()))
 			new LogError("Function " + getName() + " should return " + getType().toString().toLowerCase()
-					+ ",\nbut returned " + resultDataType.toString().toLowerCase(), callFileName, callLine);
+					+ ",\nbut returned " + resultDataType.toString().toLowerCase(), fileNames, lines);
 		return result;
 	}
 }

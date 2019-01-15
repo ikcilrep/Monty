@@ -1,5 +1,5 @@
 /*
-Copyright 2018 Szymon Perlicki
+Copyright 2018-2019 Szymon Perlicki
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -17,8 +17,6 @@ limitations under the License.
 package parser.parsing;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-
 import ast.Block;
 import ast.NodeTypes;
 import ast.statements.IfStatementNode;
@@ -28,16 +26,17 @@ import monty.Importing;
 import monty.Library;
 import parser.Identificator;
 import parser.LogError;
+import sml.data.array.Array;
 
 public class Parser {
 	public static HashMap<String, Library> libraries = new HashMap<>();
 
-	public static Block parse(LinkedList<Token> tokens) {
-		var tokensBeforeSemicolon = new LinkedList<Token>();
+	public static Block parse(Array<Token> tokens) {
+		var tokensBeforeSemicolon = new Array<Token>();
 		var block = new Block(null);
 		for (Token token : tokens) {
 			if (token.getType().equals(TokenTypes.SEMICOLON)) {
-				if (tokensBeforeSemicolon.size() == 0)
+				if (tokensBeforeSemicolon.length() == 0)
 					continue;
 				if (Identificator.isExpression(tokensBeforeSemicolon)) {
 					AdderToBlock.addExpression(block, tokensBeforeSemicolon);
@@ -47,13 +46,15 @@ public class Parser {
 					AdderToBlock.addReturnStatement(block, tokensBeforeSemicolon);
 				} else if (Identificator.isFunctionDeclaration(tokensBeforeSemicolon)) {
 					block = AdderToBlock.addFunctionDeclaration(block, tokensBeforeSemicolon);
+				} else if (Identificator.isStructDeclaration(tokensBeforeSemicolon)){
+					block = AdderToBlock.addStructDeclaration(block, tokensBeforeSemicolon);
 				} else if (Identificator.isIfStatement(tokensBeforeSemicolon)) {
 					block = AdderToBlock.addIfStatement(block, tokensBeforeSemicolon);
 				} else if (Identificator.isElseStatement(tokensBeforeSemicolon)) {
 					block = AdderToBlock.addElseStatement(block, tokensBeforeSemicolon);
-					if (tokensBeforeSemicolon.size() > 1) {
+					if (tokensBeforeSemicolon.length() > 1) {
 						block = AdderToBlock.addIfStatement(block,
-								tokensBeforeSemicolon.subList(1, tokensBeforeSemicolon.size()));
+								tokensBeforeSemicolon.subarray(1, tokensBeforeSemicolon.length()));
 						((IfStatementNode) block).setInElse(true);
 					}
 				} else if (Identificator.isWhileStatement(tokensBeforeSemicolon)) {
@@ -87,7 +88,7 @@ public class Parser {
 				}
 				tokensBeforeSemicolon.clear();
 			} else
-				tokensBeforeSemicolon.add(token);
+				tokensBeforeSemicolon.append(token);
 		}
 		while (true) {
 			var parent = block.getParent();

@@ -1,5 +1,5 @@
 /*
-Copyright 2018 Szymon Perlicki
+Copyright 2018-2019 Szymon Perlicki
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -16,16 +16,15 @@ limitations under the License.
 
 package parser;
 
-import java.util.List;
-
 import lexer.Token;
 import lexer.TokenTypes;
+import sml.data.array.Array;
 
 public class Tokens {
 	public static DataTypes getDataType(TokenTypes type) {
 		switch (type) {
 		case INTEGER_LITERAL:
-		case INTEGER_KEYWORD:
+		case INT_KEYWORD:
 			return DataTypes.INTEGER;
 		case FLOAT_LITERAL:
 		case FLOAT_KEYWORD:
@@ -51,14 +50,14 @@ public class Tokens {
 		}
 	}
 
-	public static String getText(List<Token> tokens) {
+	public static String getText(Array<Token> array) {
 		var result = new StringBuilder();
 		Token next = null;
 		int i = 0;
-		for (Token token : tokens) {
+		for (Token token : array) {
 			result.append(token.getText());
-			if (i + 1 < tokens.size())
-				next = tokens.get(i + 1);
+			if (i + 1 < array.length())
+				next = array.get(i + 1);
 			if (!(token.getType().equals(TokenTypes.BRACKET) || token.getType().equals(TokenTypes.COMMA)
 					|| token.getType().equals(TokenTypes.DOT) || next == null
 					|| next.getType().equals(TokenTypes.BRACKET) || next.getType().equals(TokenTypes.COMMA)
@@ -70,9 +69,9 @@ public class Tokens {
 		return result.toString();
 	}
 
-	public static String getTypesToString(List<Token> tokens) {
+	public static String getTypesToString(Array<Token> array) {
 		var result = new StringBuilder();
-		for (Token token : tokens) {
+		for (Token token : array) {
 			result.append(token.getType());
 			result.append(' ');
 		}

@@ -1,30 +1,30 @@
 package lexer;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.text.StringEscapeUtils;
 
 import parser.LogError;
+import sml.data.array.Array;
 
 public class Lexer {
 	private static List<Character> operatorsParts = List.of('+', '-', '*', '/', '!', '<', '>', '=', '|', '&', '%', '^');
 
-	private static LinkedList<Token> floatLiteral(String code, String integer, String fileName, int line,
-			LinkedList<Token> tokens, int i) {
+	private static Array<Token> floatLiteral(String code, String integer, String fileName, int line,
+			Array<Token> tokens, int i) {
 		var tokenText = integer;
 		while (++i < code.length() && Character.isDigit(code.charAt(i)))
 			tokenText += code.charAt(i);
-		tokens.add(new Token(TokenTypes.FLOAT_LITERAL, tokenText, fileName, line));
+		tokens.append(new Token(TokenTypes.FLOAT_LITERAL, tokenText, fileName, line));
 		return lex(code, fileName, line, tokens, i);
 	}
 
-	private static LinkedList<Token> identifierOrKeyword(String code, String fileName, int line,
-			LinkedList<Token> tokens, int i) {
+	private static Array<Token> identifierOrKeyword(String code, String fileName, int line,
+			Array<Token> tokens, int i) {
 		var tokenText = "" + code.charAt(i);
 		while (++i < code.length() && Character.isJavaIdentifierPart(code.charAt(i)))
 			tokenText += code.charAt(i);
-		tokens.add(new Token(keywordOrIdentifierToTokenType(tokenText), tokenText, fileName, line));
+		tokens.append(new Token(keywordOrIdentifierToTokenType(tokenText), tokenText, fileName, line));
 		return lex(code, fileName, line, tokens, i);
 	}
 
@@ -53,10 +53,12 @@ public class Lexer {
 			return TokenTypes.END_KEYWORD;
 		case "func":
 			return TokenTypes.FUNC_KEYWORD;
+		case "struct":
+			return TokenTypes.STRUCT_KEYWORD;
 		case "return":
 			return TokenTypes.RETURN_KEYWORD;
 		case "int":
-			return TokenTypes.INTEGER_KEYWORD;
+			return TokenTypes.INT_KEYWORD;
 		case "void":
 			return TokenTypes.VOID_KEYWORD;
 		case "float":
@@ -107,7 +109,7 @@ public class Lexer {
 		}
 	}
 
-	public static LinkedList<Token> lex(String code, String fileName, int line, LinkedList<Token> tokens, int i) {
+	public static Array<Token> lex(String code, String fileName, int line, Array<Token> tokens, int i) {
 		var isInComment = false;
 		for (; i < code.length(); i++) {
 			char c = code.charAt(i);
@@ -119,7 +121,7 @@ public class Lexer {
 				if (c == '#')
 					isInComment = true;
 				if (c == ';' || c == ',' || c == '.' || c == '(' || c == ')')
-					tokens.add(new Token(interpunctionToTokenType(c), "" + c, fileName, line));
+					tokens.append(new Token(interpunctionToTokenType(c), "" + c, fileName, line));
 				if (c == '\"')
 					return stringLiteral(code, fileName, line, tokens, i);
 				if (Character.isDigit(c)
@@ -134,22 +136,22 @@ public class Lexer {
 		return tokens;
 	}
 
-	private static LinkedList<Token> number(String code, String fileName, int line, LinkedList<Token> tokens, int i) {
+	private static Array<Token> number(String code, String fileName, int line, Array<Token> tokens, int i) {
 		var tokenText = "" + code.charAt(i);
 		while (++i < code.length() && Character.isDigit(code.charAt(i)))
 			tokenText += code.charAt(i);
 		if (code.charAt(i) == '.')
 			return floatLiteral(code, tokenText + '.', fileName, line, tokens, i);
-		tokens.add(new Token(TokenTypes.INTEGER_LITERAL, tokenText, fileName, line));
+		tokens.append(new Token(TokenTypes.INTEGER_LITERAL, tokenText, fileName, line));
 		return lex(code, fileName, line, tokens, i);
 	}
 
-	private static LinkedList<Token> operator(String code, String fileName, int line, LinkedList<Token> tokens, int i) {
+	private static Array<Token> operator(String code, String fileName, int line, Array<Token> tokens, int i) {
 		var tokenText = "" + code.charAt(i);
 		while (++i < code.length() && operatorsParts.contains((Character) code.charAt(i)))
 			tokenText += code.charAt(i);
 		Token token = new Token(operatorToTokenType(tokenText, fileName, line), tokenText, fileName, line);
-		tokens.add(token);
+		tokens.append(token);
 		return lex(code, fileName, line, tokens, i);
 	}
 
@@ -188,7 +190,7 @@ public class Lexer {
 		return null;
 	}
 
-	private static LinkedList<Token> stringLiteral(String code, String fileName, int line, LinkedList<Token> tokens,
+	private static Array<Token> stringLiteral(String code, String fileName, int line, Array<Token> tokens,
 			int i) {
 		var tokenText = "";
 		try {
@@ -198,7 +200,7 @@ public class Lexer {
 			new LogError("String wasn't closed", fileName, line);
 		}
 		Token token = new Token(TokenTypes.STRING_LITERAL, StringEscapeUtils.unescapeJava(tokenText), fileName, line);
-		tokens.add(token);
+		tokens.append(token);
 		return lex(code, fileName, line, tokens, i + 1);
 	}
 }

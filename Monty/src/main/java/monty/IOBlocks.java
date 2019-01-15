@@ -5,12 +5,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.LinkedList;
 
 import ast.Block;
 import lexer.Lexer;
 import parser.LogError;
 import parser.parsing.Parser;
+import sml.data.array.Array;
 
 public class IOBlocks {
 
@@ -37,7 +37,7 @@ public class IOBlocks {
 	}
 
 	private static Block readBlockFromFile(String path) {
-		var tokens = Lexer.lex(FileIO.readFile(path), path, 1, new LinkedList<>(), 0);
+		var tokens = Lexer.lex(FileIO.readFile(path), path, 1, new Array<>(), 0);
 		var block = Parser.parse(tokens);
 		block.getFunctions().put("nothing", new sml.data.returning.Nothing());
 		return block;

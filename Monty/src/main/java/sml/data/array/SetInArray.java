@@ -1,5 +1,5 @@
 /*
-Copyright 2018 Szymon Perlicki
+Copyright 2018-2019 Szymon Perlicki
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -40,11 +40,12 @@ public class SetInArray extends FunctionDeclarationNode {
 		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var arr = (Array) body.getVariableByName("arr").getValue();
+		var arr = (Array<Object>) body.getVariableByName("arr").getValue();
 		var index = ((BigInteger) body.getVariableByName("index").getValue()).intValue();
 		var element = body.getVariableByName("element").getValue();
 		return arr.set(index, element);

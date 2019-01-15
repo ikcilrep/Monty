@@ -19,6 +19,7 @@ package ast.expressions;
 import ast.Block;
 import ast.Node;
 import ast.NodeTypes;
+import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import parser.DataTypes;
 import parser.LogError;
@@ -127,19 +128,10 @@ public class OperationNode extends ExpressionNode {
 		// Returns data type of expression.
 		if (expression instanceof Node)
 			switch (((Node) expression).getNodeType()) {
-			case VARIABLE:
-				var variableCall = (VariableNode) expression;
-				return parent
-						.getVariableByName(variableCall.getName(), variableCall.getFileName(), variableCall.getLine())
-						.getType();
-			case FUNCTION_CALL:
-				var functionCall = ((FunctionCallNode) expression);
-				var function = parent.getFunctionByName(functionCall.getName(), functionCall.getFileName(),
-						functionCall.getLine());
-				return function.getType();
-			case CONSTANT:
-				var cn = ((ConstantNode) expression);
-				return cn.getType();
+			case VARIABLE_DECLARATION:
+				return ((VariableDeclarationNode) expression).getType();
+			case STRUCT_DECLARATION:
+				return DataTypes.ANY;
 			default:
 				return null;
 			}
@@ -151,20 +143,39 @@ public class OperationNode extends ExpressionNode {
 		return left;
 	}
 
-	private Object getLiteral(Object expression) {
+	private Object getLiteral(Object expression, Block parent) {
 		// Returns value of expression.
 		if (expression instanceof Node)
 			switch (((Node) expression).getNodeType()) {
 			case VARIABLE:
 				var variableCall = (VariableNode) expression;
-				return parent.getVariableByName(variableCall.getName(), variableCall.getFileName(),
+				var nextV = variableCall.getNext();
+				var variable = parent.getVariableByName(variableCall.getName(), variableCall.getFileName(),
 						variableCall.getLine());
+				if (nextV != null) {
+					var variableValue = variable.getValue();
+					if (variableValue instanceof StructDeclarationNode)
+						return getLiteral(nextV.getOperand(), (StructDeclarationNode) variableValue);
+					else
+						new LogError("Can't get attributes from simple data type", variableCall.getFileName(),
+								variableCall.getLine());
+				}
+				return variable;
 			case FUNCTION_CALL:
 				var functionToCall = ((FunctionCallNode) expression);
 				var function = parent.getFunctionByName(functionToCall.getName(), functionToCall.getFileName(),
 						functionToCall.getLine());
-				return function.call(functionToCall.getArguments(), functionToCall.getFileName(),
+				var functionCallValue = function.call(functionToCall.getArguments(), functionToCall.getFileName(),
 						functionToCall.getLine());
+				var nextF = functionToCall.getNext();
+				if (nextF != null)
+					if (functionCallValue instanceof StructDeclarationNode)
+						return getLiteral(nextF.getOperand(), (StructDeclarationNode) functionCallValue);
+					else
+						new LogError("Can't get attributes from simple data type", functionToCall.getFileName(),
+								functionToCall.getLine());
+
+				return functionCallValue;
 			case CONSTANT:
 				var cn = ((ConstantNode) expression);
 				return cn.getValue();
@@ -173,6 +184,10 @@ public class OperationNode extends ExpressionNode {
 			}
 		else
 			return expression;
+	}
+
+	private Object getLiteral(Object expression) {
+		return getLiteral(expression, parent);
 	}
 
 	public Object getOperand() {
@@ -189,14 +204,13 @@ public class OperationNode extends ExpressionNode {
 
 	public Object run() {
 		// Returns calculated value.
-		if (!getOperand().getClass().equals(String.class)) {
-			var operand = getOperand();
-			var castedOperand = (Node) operand;
-			if (castedOperand.getNodeType().equals(NodeTypes.VARIABLE)) {
-				var variable = ((VariableDeclarationNode) getLiteral(operand));
-				return variable.getValue();
+		var operand = getOperand();
+		if (!(operand instanceof String)) {
+			var literal = getLiteral(operand);
+			if (literal instanceof VariableDeclarationNode) {
+				return ((VariableDeclarationNode) literal).getValue();
 			} else {
-				return getLiteral(operand);
+				return literal;
 			}
 		}
 		return solve();
@@ -211,7 +225,7 @@ public class OperationNode extends ExpressionNode {
 	}
 
 	private Object solve() {
-		if (!getOperand().getClass().equals(String.class))
+		if (!(getOperand() instanceof String))
 			return getOperand();
 		Object a = getLeftOperand().solve();
 		Object b = getRightOperand().solve();
@@ -219,31 +233,23 @@ public class OperationNode extends ExpressionNode {
 		var isComparison = operator.toString().equals("==") || operator.toString().equals("!=")
 				|| operator.toString().equals("<=") || operator.toString().equals(">=")
 				|| operator.toString().equals(">") || operator.toString().equals("<");
-		Object leftValue = null;
-		Object rightValue = null;
-		DataTypes type = getDataType(a);
-		// If type isn't array and type of a and b aren't equals.
+		Object leftValue = getLiteral(a);
+		Object rightValue = getLiteral(b);
+		DataTypes type = getDataType(leftValue); // If type isn't array and type of a and b aren't equals.
 		if (!(type.equals(DataTypes.ARRAY) || type.equals(DataTypes.LIST) || type.equals(DataTypes.STACK)
-				|| type.equals(getDataType(b))))
-			new LogError("Type mismatch:\t" + type + " and " + getDataType(b), getFileName(), getLine());
-		leftValue = getLiteral(a);
-		rightValue = getLiteral(b);
+				|| type.equals(getDataType(rightValue))))
+			new LogError("Type mismatch:\t" + type + " and " + getDataType(rightValue), getFileName(), getLine());
 
-		if (!operator.toString().contains("=") || (operator.toString().contains("=") && isComparison))
-			if (a instanceof VariableNode) {
-				var variableCall = (VariableNode) a;
-				var variable = parent.getVariableByName(variableCall.getName(), variableCall.getFileName(),
-						variableCall.getLine());
-				leftValue = variable.getValue();
-
-			}
-		if (b instanceof VariableNode) {
-			var variableCall = (VariableNode) b;
-			var variable = parent.getVariableByName(variableCall.getName(), variableCall.getFileName(),
-					variableCall.getLine());
-			rightValue = variable.getValue();
-		}
+		if (!operator.toString().contains("=") || isComparison)
+			if (leftValue instanceof VariableDeclarationNode)
+				leftValue = ((VariableDeclarationNode) leftValue).getValue();
+		if (rightValue instanceof VariableDeclarationNode)
+			rightValue = ((VariableDeclarationNode) rightValue).getValue();
 		return calculate(leftValue, rightValue, getOperand(), type);
 
+	}
+
+	public void setParent(Block parent) {
+		this.parent = parent;
 	}
 }

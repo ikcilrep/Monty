@@ -1,5 +1,5 @@
 /*
-Copyright 2018 Szymon Perlicki
+Copyright 2018-2019 Szymon Perlicki
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import sml.data.list.List;
 import sml.data.stack.Stack;
 
 public class OperatorOverloading {
+	@SuppressWarnings("unchecked")
 	public static Object additionOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
 		switch (type) {
@@ -40,7 +41,7 @@ public class OperatorOverloading {
 			new LogError("Can't add booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString(), fileName, line);
 		case ARRAY:
-			return ((Array) leftValue).copy().append(rightValue);
+			return ((Array<Object>) leftValue).copy().append(rightValue);
 		case LIST:
 			return ((List) leftValue).copy().append(rightValue);
 		case STACK:
@@ -181,10 +182,9 @@ public class OperatorOverloading {
 		case LIST:
 		case ARRAY:
 		case STACK:
+		case ANY:
 			variable.setValue(rightValue);
 			return variable.getValue();
-		case ANY:
-			new LogError("Can't do any operations with \"any\" data type", fileName, line);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString(), fileName, line);
@@ -499,6 +499,7 @@ public class OperatorOverloading {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public static Object negationOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
 		switch (type) {
@@ -511,7 +512,7 @@ public class OperatorOverloading {
 		case BOOLEAN:
 			return !(boolean) rightValue;
 		case ARRAY:
-			return ((Array) rightValue).reversed();
+			return ((Array<Object>) rightValue).reversed();
 		case LIST:
 			return ((List) rightValue).reversed();
 		case STACK:
@@ -582,6 +583,7 @@ public class OperatorOverloading {
 		return result.toString();
 	}
 
+	@SuppressWarnings("unchecked")
 	public static Object shiftLeftOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
 		switch (type) {
@@ -591,7 +593,7 @@ public class OperatorOverloading {
 			var str = leftValue.toString();
 			return str.substring(0, str.length() - ((BigInteger) rightValue).intValue());
 		case ARRAY:
-			var arr = ((Array) leftValue);
+			var arr = ((Array<Object>) leftValue);
 			return arr.subarray(0, arr.length() - ((BigInteger) rightValue).intValue());
 		case LIST:
 			var lst = ((List) leftValue);
@@ -617,6 +619,7 @@ public class OperatorOverloading {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public static Object shiftRightOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
 		switch (type) {
@@ -635,7 +638,7 @@ public class OperatorOverloading {
 			}
 			return stack.reversed();
 		case ARRAY:
-			var arr = ((Array) leftValue);
+			var arr = ((Array<Object>) leftValue);
 			return arr.copy().subarray(((BigInteger) rightValue).intValue(), arr.length());
 		case LIST:
 			var lst = ((List) leftValue);

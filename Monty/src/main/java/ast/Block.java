@@ -1,5 +1,5 @@
 /*
-Copyright 2018 Szymon Perlicki
+Copyright 2018-2019 Szymon Perlicki
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import ast.declarations.FunctionDeclarationNode;
+import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
-import ast.expressions.FunctionCallNode;
 import ast.expressions.OperationNode;
 import ast.statements.ChangeToStatementNode;
 import ast.statements.ContinueStatementNode;
@@ -47,13 +47,13 @@ import sml.data.returning.BreakType;
 import sml.data.returning.Nothing;
 import sml.threading.MontyThread;
 
-public class Block extends Node implements Serializable {
+public class Block extends Node implements Serializable,Cloneable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1974629623424063560L;
 	private LinkedList<Node> children = new LinkedList<>();
-	private final HashMap<String, FunctionDeclarationNode> functions = new HashMap<>();
+	protected HashMap<String, FunctionDeclarationNode> functions = new HashMap<>();
 	private Block parent;
 	private HashMap<String, VariableDeclarationNode> variables = new HashMap<>();
 
@@ -107,15 +107,16 @@ public class Block extends Node implements Serializable {
 		functions.put(name, function);
 	}
 
-	private void addVariable(VariableDeclarationNode variable) {
+	
+	public void addVariable(VariableDeclarationNode variable) {
 		String name = variable.getName();
-		if (variables.containsKey(name)) {
-			var existing_variable = variables.get(name);
-			int[] lines = { existing_variable.getLine(), variable.getLine() };
-			String[] fileNames = { existing_variable.getFileName(), variable.getFileName() };
-			new LogError("Variable " + name + " already exists", fileNames, lines);
-		}
+		if (variables.containsKey(name))
+			new LogError("Variable " + name + " already exists");
 		variables.put(name, variable);
+	}
+
+	public void setParent(Block parent) {
+		this.parent = parent;
 	}
 
 	public void addVariable(VariableDeclarationNode variable, String fileName, int line) {
@@ -169,7 +170,7 @@ public class Block extends Node implements Serializable {
 	public boolean doesContainVariable(String name) {
 		return variables.containsKey(name);
 	}
-
+	
 	public LinkedList<Node> getChildren() {
 		return children;
 	}
@@ -197,7 +198,7 @@ public class Block extends Node implements Serializable {
 		return block.functions.get(name);
 
 	}
-
+	
 	public HashMap<String, FunctionDeclarationNode> getFunctions() {
 		return functions;
 	}
@@ -237,24 +238,11 @@ public class Block extends Node implements Serializable {
 			switch (child.getNodeType()) {
 			case OPERATION:
 				var childCastedToVariable = ((OperationNode) child);
-				if (childCastedToVariable.getOperand() instanceof Node
-						&& ((Node) childCastedToVariable.getOperand()).getNodeType().equals(NodeTypes.FUNCTION_CALL)) {
-					var functionToCall = ((FunctionCallNode) childCastedToVariable.getOperand());
-					var function = getFunctionByName(functionToCall.getName(), functionToCall.getFileName(),
-							functionToCall.getLine());
-					function.call(functionToCall.getArguments(), functionToCall.getFileName(),
-							functionToCall.getLine());
-				} else if (childCastedToVariable.getRightOperand() != null
-						&& childCastedToVariable.getLeftOperand() != null
-						&& childCastedToVariable.getLeftOperand().getOperand() instanceof Node
-						&& ((Node) childCastedToVariable.getLeftOperand().getOperand()).getNodeType()
-								.equals(NodeTypes.VARIABLE)
-						&& childCastedToVariable.getOperand().toString().contains("=")) {
-					childCastedToVariable.run();
-				} else {
-					new LogError("Expression is doing nothing!", child.getFileName(), child.getLine());
-				}
-
+				childCastedToVariable.run();
+				break;
+			case STRUCT_DECLARATION:
+				var childCastedToStruct = ((StructDeclarationNode) child);
+				childCastedToStruct.run();
 				break;
 			case IF_STATEMENT:
 				var childCastedToIfStatement = ((IfStatementNode) child);
@@ -379,5 +367,14 @@ public class Block extends Node implements Serializable {
 
 	public void setVariables(HashMap<String, VariableDeclarationNode> variables) {
 		this.variables = variables;
+	}
+	
+	public Block copy() {
+		try {
+			return (Block) clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

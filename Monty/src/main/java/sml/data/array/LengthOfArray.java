@@ -1,5 +1,5 @@
 /*
-Copyright 2018 Szymon Perlicki
+Copyright 2018-2019 Szymon Perlicki
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -36,10 +36,11 @@ public class LengthOfArray extends FunctionDeclarationNode {
 		addParameter(new VariableDeclarationNode("arr", DataTypes.ARRAY));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var arr = (Array) getBody().getVariableByName("arr").getValue();
+		var arr = (Array<Object>) getBody().getVariableByName("arr").getValue();
 		return arr.length();
 	}
 

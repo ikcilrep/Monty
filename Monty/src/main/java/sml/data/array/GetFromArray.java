@@ -1,5 +1,5 @@
 /*
-Copyright 2018 Szymon Perlicki
+Copyright 2018-2019 Szymon Perlicki
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -40,10 +40,11 @@ public class GetFromArray extends FunctionDeclarationNode {
 		addParameter(new VariableDeclarationNode("index", DataTypes.INTEGER));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var arr = (Array) getBody().getVariableByName("arr").getValue();
+		var arr = (Array<Object>) getBody().getVariableByName("arr").getValue();
 		var index = (BigInteger) getBody().getVariableByName("index").getValue();
 		if (index.compareTo(BigInteger.valueOf(arr.length())) >= 0)
 			new LogError("Index " + index + " is too large for length " + arr.length(), callFileName, callLine);

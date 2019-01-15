@@ -1,5 +1,5 @@
 /*
-Copyright 2018 Szymon Perlicki
+Copyright 2018-2019 Szymon Perlicki
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ public class Sublist extends FunctionDeclarationNode {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -9201866361416331207L;
+	private static final long serialVersionUID = -92018-201966361416331207L;
 
 	public Sublist() {
 		super("subList", DataTypes.LIST);

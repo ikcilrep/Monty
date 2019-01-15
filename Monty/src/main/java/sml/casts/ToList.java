@@ -1,5 +1,5 @@
 /*
-Copyright 2018 Szymon Perlicki
+Copyright 2018-2019 Szymon Perlicki
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -34,11 +34,12 @@ public class ToList extends FunctionDeclarationNode {
 	 */
 	private static final long serialVersionUID = -3165880297105294653L;
 
+	@SuppressWarnings("unchecked")
 	public static Object toList(Object a, String callFileName, int callLine) {
 		if (a instanceof List)
 			return a;
 		if (a instanceof Array)
-			return ((Array) a).toList();
+			return ((Array<Object>) a).toList();
 		if (a instanceof Stack)
 			return ((Stack) a).toArray().toList();
 		return new List(a);

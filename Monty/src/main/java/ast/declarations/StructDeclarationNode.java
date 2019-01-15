@@ -14,38 +14,38 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package ast.expressions;
+package ast.declarations;
 
+import java.util.HashMap;
+
+import ast.Block;
 import ast.NodeTypes;
 
-public class VariableNode extends ExpressionNode implements StructContainer {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8300892680278895019L;
+public class StructDeclarationNode extends Block {
+	private static final long serialVersionUID = -8205779269625980876L;
+	private static int number = -1;
+	private int instanceNumber;
 	private String name;
-	private OperationNode next = null;
-	public VariableNode(String name) {
-		this.name = name;
-		super.nodeType = NodeTypes.VARIABLE;
-	}
-
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	public int getInstanceNumber() {
+		return instanceNumber;
+	}
+	
+	public void incrementNumber() {
+		instanceNumber = ++number;
+	}
+
+	public StructDeclarationNode(Block parent, String name) {
+		super(parent);
+		super.nodeType = NodeTypes.STRUCT_DECLARATION;
 		this.name = name;
 	}
 
-	@Override
-	public OperationNode getNext() {
-		return next;
+	public void setFunctions(HashMap<String, FunctionDeclarationNode> functions) {
+		this.functions = functions;
 	}
-
-	@Override
-	public void setNext(OperationNode variableOrFunction) {
-		next =  variableOrFunction;
-	}
-
+	
 }

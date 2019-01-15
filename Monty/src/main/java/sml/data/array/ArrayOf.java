@@ -1,5 +1,5 @@
 /*
-Copyright 2018 Szymon Perlicki
+Copyright 2018-2019 Szymon Perlicki
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ public class ArrayOf extends FunctionDeclarationNode {
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		var arr = new Array(arguments.size());
+		var arr = new Array<Object>(arguments.size());
 		for (int i = 0; i < arguments.size(); i++)
 			arr.set(i, arguments.get(i).run());
 		return arr;

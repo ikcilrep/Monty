@@ -1,5 +1,5 @@
 /*
-Copyright 2018 Szymon Perlicki
+Copyright 2018-2019 Szymon Perlicki
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -16,12 +16,15 @@ limitations under the License.
 
 package parser.parsing;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import ast.Block;
 import ast.NodeTypes;
 import ast.declarations.CustomFunctionDeclarationNode;
+import ast.declarations.FunctionDeclarationNode;
+import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.FunctionCallNode;
 import ast.expressions.OperationNode;
@@ -40,13 +43,14 @@ import lexer.TokenTypes;
 import parser.DataTypes;
 import parser.LogError;
 import parser.Tokens;
+import sml.data.array.Array;
 
 public abstract class AdderToBlock {
 	public static void addBreakStatement(Block block, String fileName, int line) {
 		block.addChild(new BreakStatementNode(fileName, line));
 	}
 
-	public static void addChangeToStatement(Block block, LinkedList<Token> tokens) {
+	public static void addChangeToStatement(Block block, Array<Token> tokens) {
 		block.addChild(new ChangeToStatementNode(new VariableNode(tokens.get(1).getText()),
 				Tokens.getDataType(tokens.get(3).getType()), tokens.get(0).getFileName(), tokens.get(0).getLine()));
 	}
@@ -55,8 +59,8 @@ public abstract class AdderToBlock {
 		block.addChild(new ContinueStatementNode(fileName, line));
 	}
 
-	public static Block addDoWhileStatement(Block block, LinkedList<Token> tokens) {
-		var whileStatement = new DoWhileStatementNode(ExpressionParser.parse(block, tokens.subList(2, tokens.size())),
+	public static Block addDoWhileStatement(Block block, Array<Token> tokens) {
+		var whileStatement = new DoWhileStatementNode(ExpressionParser.parse(block, tokens.subarray(2, tokens.length())),
 				tokens.get(0).getFileName(), tokens.get(0).getLine());
 		whileStatement.setBody(new Block(block));
 		block.addChild(whileStatement);
@@ -64,7 +68,7 @@ public abstract class AdderToBlock {
 
 	}
 
-	public static Block addElseStatement(Block block, LinkedList<Token> tokens) {
+	public static Block addElseStatement(Block block, Array<Token> tokens) {
 		if (!block.getNodeType().equals(NodeTypes.IF_STATEMENT))
 			new LogError("Unexpected \"else\" keyword", tokens.get(0));
 		var elseBlock = new Block(block.getParent(), NodeTypes.ELSE_BLOCK);
@@ -75,13 +79,13 @@ public abstract class AdderToBlock {
 		return elseBlock;
 	}
 
-	public static void addExpression(Block block, List<Token> list) {
-		block.addChild(ExpressionParser.parse(block, list));
+	public static void addExpression(Block block, Array<Token> tokensBeforeSemicolon) {
+		block.addChild(ExpressionParser.parse(block, tokensBeforeSemicolon));
 	}
 
-	public static Block addForStatement(Block block, LinkedList<Token> tokens) {
+	public static Block addForStatement(Block block, Array<Token> tokens) {
 		var forStatement = new ForStatementNode(tokens.get(1).getText(),
-				ExpressionParser.parse(block, tokens.subList(3, tokens.size())), tokens.get(0).getFileName(),
+				ExpressionParser.parse(block, tokens.subarray(3, tokens.length())), tokens.get(0).getFileName(),
 				tokens.get(0).getLine());
 		forStatement.setBody(new Block(block));
 
@@ -89,19 +93,19 @@ public abstract class AdderToBlock {
 		return forStatement.getBody();
 	}
 
-	public static Block addFunctionDeclaration(Block block, LinkedList<Token> tokens) {
+	public static Block addFunctionDeclaration(Block block, Array<Token> tokens) {
 		var function = new CustomFunctionDeclarationNode(tokens.get(2).getText(),
 				Tokens.getDataType(tokens.get(1).getType()));
 		DataTypes type = null;
 		String name = null;
-		for (int i = 3; i < tokens.size(); i++) {
+		for (int i = 3; i < tokens.length(); i++) {
 			var tokenType = tokens.get(i).getType();
 			var isTokenTypeEqualsComma = tokens.get(i).getType().equals(TokenTypes.COMMA);
 			if (tokenType.equals(TokenTypes.IDENTIFIER))
 				name = tokens.get(i).getText();
 			else if (!isTokenTypeEqualsComma)
 				type = Tokens.getDataType(tokenType);
-			if (isTokenTypeEqualsComma || i + 1 >= tokens.size())
+			if (isTokenTypeEqualsComma || i + 1 >= tokens.length())
 				function.addParameter(new VariableDeclarationNode(name, type));
 		}
 		function.setBody(new Block(block));
@@ -109,42 +113,76 @@ public abstract class AdderToBlock {
 		return function.getBody();
 	}
 
-	public static Block addIfStatement(Block block, List<Token> tokens) {
-		var ifStatement = new IfStatementNode(block, ExpressionParser.parse(block, tokens.subList(1, tokens.size())),
+	public static Block addIfStatement(Block block, Array<Token> tokens) {
+		var ifStatement = new IfStatementNode(block, ExpressionParser.parse(block, tokens.subarray(1, tokens.length())),
 				tokens.get(0).getFileName(), tokens.get(0).getLine());
 		block.addChild(ifStatement);
 		return ifStatement;
 
 	}
 
-	public static void addReturnStatement(Block block, LinkedList<Token> tokens) {
+	public static void addReturnStatement(Block block, Array<Token> tokens) {
 		OperationNode expression = null;
-		if (tokens.size() > 1)
-			expression = ExpressionParser.parse(block, tokens.subList(1, tokens.size()));
+		if (tokens.length() > 1)
+			expression = ExpressionParser.parse(block, tokens.subarray(1, tokens.length()));
 		else
 			expression = new OperationNode(new FunctionCallNode("nothing"), block);
 		block.addChild(new ReturnStatementNode(expression, tokens.get(0).getFileName(), tokens.get(0).getLine()));
 	}
 
-	public static void addThreadStatement(Block block, LinkedList<Token> tokens) {
-		block.addChild(new ThreadStatement(ExpressionParser.parse(block, tokens.subList(1, tokens.size())),
+	public static void addThreadStatement(Block block, Array<Token> tokens) {
+		block.addChild(new ThreadStatement(ExpressionParser.parse(block, tokens.subarray(1, tokens.length())),
 				tokens.get(0).getFileName(), tokens.get(0).getLine()));
 	}
 
-	public static void addVariableDeclaration(Block block, LinkedList<Token> tokens) {
+	public static void addVariableDeclaration(Block block, Array<Token> tokens) {
 		var dataType = Tokens.getDataType(tokens.get(1).getType());
 		var variable = new VariableDeclarationNode(tokens.get(2).getText(), dataType);
 		variable.setDynamic(tokens.get(0).getType().equals(TokenTypes.DYNAMIC_KEYWORD));
 		block.addVariable(variable, tokens.get(1));
-		if (tokens.size() > 3)
-			addExpression(block, tokens.subList(2, tokens.size()));
+		if (tokens.length() > 3)
+			addExpression(block, tokens.subarray(2, tokens.length()));
 		else
 			variable.setValue(DataTypes.getNeutralValue(dataType));
 
 	}
 
-	public static Block addWhileStatement(Block block, LinkedList<Token> tokens) {
-		var whileStatement = new WhileStatementNode(ExpressionParser.parse(block, tokens.subList(1, tokens.size())),
+	public static Block addStructDeclaration(Block block, Array<Token> tokens) {
+		var name = tokens.get(1).getText();
+		var struct = new StructDeclarationNode(block, name) {
+			private static final long serialVersionUID = -1625798332991883578L;
+
+			@Override
+			public String toString() {
+				return name + "#" + this.getInstanceNumber();
+			}
+		};
+		block.addFunction(new FunctionDeclarationNode(name, DataTypes.ANY) {
+			private static final long serialVersionUID = 2786609094600151036L;
+
+			@Override
+			public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+				var newStruct = (StructDeclarationNode) struct.copy();
+				var variables = new HashMap<String, VariableDeclarationNode>();
+				var variablesSet = struct.getVariables().entrySet();
+				for (Map.Entry<String, VariableDeclarationNode> entry : variablesSet) {
+					String key = entry.getKey();
+					variables.put(key, entry.getValue().copy());
+				}
+				newStruct.setVariables(variables);
+				/*if (newStruct.doesContainFunction("init"))
+					newStruct.getFunctionByName("init").call(arguments, callFileName, callLine);*/
+				newStruct.incrementNumber();
+				return newStruct;
+			}
+
+		}, tokens.get(0));
+		block.addChild(struct);
+		return struct;
+	}
+
+	public static Block addWhileStatement(Block block, Array<Token> tokens) {
+		var whileStatement = new WhileStatementNode(ExpressionParser.parse(block, tokens.subarray(1, tokens.length())),
 				tokens.get(0).getFileName(), tokens.get(0).getLine());
 		whileStatement.setBody(new Block(block));
 		block.addChild(whileStatement);

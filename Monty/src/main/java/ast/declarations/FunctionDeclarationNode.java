@@ -1,5 +1,5 @@
 /*
-Copyright 2018 Szymon Perlicki
+Copyright 2018-2019 Szymon Perlicki
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import lexer.Token;
 import parser.DataTypes;
 import parser.LogError;
 
-public abstract class FunctionDeclarationNode extends DeclarationNode {
+public abstract class FunctionDeclarationNode extends DeclarationNode implements Cloneable {
 	/**
 	 * 
 	 */
@@ -91,4 +91,12 @@ public abstract class FunctionDeclarationNode extends DeclarationNode {
 		this.body = body;
 	}
 
+	public FunctionDeclarationNode copy() {
+		try {
+			return (FunctionDeclarationNode) clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

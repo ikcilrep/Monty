@@ -1,5 +1,5 @@
 /*
-Copyright 2018 Szymon Perlicki
+Copyright 2018-2019 Szymon Perlicki
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -25,8 +25,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -38,6 +36,7 @@ import lexer.Token;
 import parser.LogError;
 import parser.Tokens;
 import parser.parsing.Parser;
+import sml.data.array.Array;
 
 public class Importing {
 	private static String mainPath = Paths.get("").toAbsolutePath().toString();
@@ -56,7 +55,7 @@ public class Importing {
 
 	private static void addFunctionFromFile(Block block, String path) {
 		var file = new File(path);
-		block.concat(Parser.parse(Lexer.lex(FileIO.readFile(file.getAbsolutePath()), path, 1, new LinkedList<>(), 0)));
+		block.concat(Parser.parse(Lexer.lex(FileIO.readFile(file.getAbsolutePath()), path, 1, new Array<>(), 0)));
 	}
 
 	private static void addFunctionsFromDirectory(Block block, File directory) {
@@ -73,8 +72,8 @@ public class Importing {
 		}
 	}
 
-	public static void addLibrary(List<Token> tokens) {
-		var partOfPath = Tokens.getText(tokens.subList(1, tokens.size()));
+	public static void addLibrary(Array<Token> tokens) {
+		var partOfPath = Tokens.getText(tokens.subarray(1, tokens.length()));
 		var path = mainFileLocation + partOfPath.replace('.', File.separatorChar) + ".jar";
 		try {
 			File jar = new File(path);
@@ -156,8 +155,8 @@ public class Importing {
 		}
 	}
 
-	public static void importFile(Block block, List<Token> tokens) {
-		var partOfPath = Tokens.getText(tokens.subList(1, tokens.size()));
+	public static void importFile(Block block, Array<Token> tokensBeforeSemicolon) {
+		var partOfPath = Tokens.getText(tokensBeforeSemicolon.subarray(1, tokensBeforeSemicolon.length()));
 		var path = mainFileLocation + partOfPath.replace('.', File.separatorChar);
 		var file = new File(path + ".mt");
 		var parent_file = new File(file.getParent() + ".mt");
@@ -177,13 +176,13 @@ public class Importing {
 		} else if (parent_file.exists() && parent_file.isFile()) {
 			var name = file.getName().substring(0, file.getName().length() - 3);
 			var importedBlock = Parser.parse(Lexer.lex(FileIO.readFile(parent_file.getAbsolutePath()),
-					parent_file.getName(), 1, new LinkedList<>(), 0));
+					parent_file.getName(), 1, new Array<>(), 0));
 			addSpecifiedFunctionOrVariableFromFile(block, importedBlock, parent_file.getPath(), name);
 		} else {
 			var splited = partOfPath.split("\\.");
 			if (!Parser.libraries.containsKey(splited[0]))
-				new LogError("There isn't file to import:\t" + path, tokens.get(1));
-			findAndAddFunctions(block, subArray(splited, 1), path, Parser.libraries.get(splited[0]), tokens.get(1));
+				new LogError("There isn't file to import:\t" + path, tokensBeforeSemicolon.get(1));
+			findAndAddFunctions(block, subArray(splited, 1), path, Parser.libraries.get(splited[0]), tokensBeforeSemicolon.get(1));
 		}
 	}
 

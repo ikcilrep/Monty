@@ -1,5 +1,5 @@
 /*
-Copyright 2018 Szymon Perlicki
+Copyright 2018-2019 Szymon Perlicki
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ public class Subarray extends FunctionDeclarationNode {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -9201866361416331207L;
+	private static final long serialVersionUID = -92018-201966361416331207L;
 
 	public Subarray() {
 		super("subArray", DataTypes.ARRAY);
@@ -41,11 +41,12 @@ public class Subarray extends FunctionDeclarationNode {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var arr = (Array) body.getVariableByName("arr").getValue();
+		var arr = (Array<Object>) body.getVariableByName("arr").getValue();
 		var begin = ((BigInteger) body.getVariableByName("begin").getValue()).intValue();
 		var end = ((BigInteger) body.getVariableByName("end").getValue()).intValue();
 		return arr.subarray(begin, end);

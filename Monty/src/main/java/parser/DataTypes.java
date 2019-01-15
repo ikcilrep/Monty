@@ -1,5 +1,5 @@
 /*
-Copyright 2018 Szymon Perlicki
+Copyright 2018-2019 Szymon Perlicki
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -59,7 +59,7 @@ public enum DataTypes {
 		case BOOLEAN:
 			return false;
 		case ARRAY:
-			return new Array().append(Nothing.nothing);
+			return new Array<Object>().append(Nothing.nothing);
 		case LIST:
 			return new List();
 		case STACK:
