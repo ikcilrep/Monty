@@ -46,7 +46,7 @@ public class Parser {
 					AdderToBlock.addReturnStatement(block, tokensBeforeSemicolon);
 				} else if (Identificator.isFunctionDeclaration(tokensBeforeSemicolon)) {
 					block = AdderToBlock.addFunctionDeclaration(block, tokensBeforeSemicolon);
-				} else if (Identificator.isStructDeclaration(tokensBeforeSemicolon)){
+				} else if (Identificator.isStructDeclaration(tokensBeforeSemicolon)) {
 					block = AdderToBlock.addStructDeclaration(block, tokensBeforeSemicolon);
 				} else if (Identificator.isIfStatement(tokensBeforeSemicolon)) {
 					block = AdderToBlock.addIfStatement(block, tokensBeforeSemicolon);

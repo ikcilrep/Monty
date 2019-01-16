@@ -1,6 +1,6 @@
 package lexer;
 
-import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.text.StringEscapeUtils;
 
@@ -8,7 +8,7 @@ import parser.LogError;
 import sml.data.array.Array;
 
 public class Lexer {
-	private static List<Character> operatorsParts = List.of('+', '-', '*', '/', '!', '<', '>', '=', '|', '&', '%', '^');
+	private static Set<Character> operatorsParts = Set.of('+', '-', '*', '/', '!', '<', '>', '=', '|', '&', '%', '^');
 
 	private static Array<Token> floatLiteral(String code, String integer, String fileName, int line,
 			Array<Token> tokens, int i) {

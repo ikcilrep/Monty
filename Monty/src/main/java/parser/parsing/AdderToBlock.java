@@ -16,11 +16,9 @@ limitations under the License.
 
 package parser.parsing;
 
-import java.util.ArrayList;
 import ast.Block;
 import ast.NodeTypes;
 import ast.declarations.CustomFunctionDeclarationNode;
-import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.FunctionCallNode;
@@ -146,37 +144,10 @@ public abstract class AdderToBlock {
 
 	public static Block addStructDeclaration(Block block, Array<Token> tokens) {
 		var name = tokens.get(1).getText();
-		var struct = new StructDeclarationNode(block, name) {
-			private static final long serialVersionUID = -1625798332991883578L;
-
-			@Override
-			public String toString() {
-				return name + "#" + this.getInstanceNumber();
-			}
-		};
-		block.addFunction(new FunctionDeclarationNode(name, DataTypes.ANY) {
-			private static final long serialVersionUID = 2786609094600151036L;
-
-			@Override
-			public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-				var newStruct = (StructDeclarationNode) struct.copy();
-				var thisVariable = new VariableDeclarationNode("this", DataTypes.ANY);
-				thisVariable.setValue(newStruct);
-				newStruct.addVariable(thisVariable);
-				if (newStruct.doesContainFunction("init")) {
-					var function = newStruct.getFunctionByName("init");
-					if (!function.getType().equals(DataTypes.VOID)) {
-						String[] fileNames = {function.getFileName(), callFileName};
-						int[] lines = {function.getLine(), callLine};
-						new LogError("Init method have to be void", fileNames, lines);
-					}
-					function.call(arguments, callFileName, callLine);
-				}
-				newStruct.incrementNumber();
-				return newStruct;
-			}
-
-		}, tokens.get(0));
+		if (Character.isLowerCase(name.charAt(0)))
+			new LogError("Struct name should start with upper case", tokens.get(0));
+		var struct = new StructDeclarationNode(block, name);
+		struct.addNewStruct(block, tokens.get(0));
 		block.addChild(struct);
 		return struct;
 	}

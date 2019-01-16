@@ -16,7 +16,7 @@ limitations under the License.
 
 package parser;
 
-import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import lexer.Token;
@@ -25,7 +25,7 @@ import sml.data.array.Array;
 
 public abstract class Identificator {
 	public static final Pattern importRegex = Pattern.compile("^[A-Z_]+ (DOT [A-Z_]+ )*$");
-	public static final List<TokenTypes> dataTypesKeywords = List.of(TokenTypes.INT_KEYWORD,
+	public static final Set<TokenTypes> dataTypesKeywords = Set.of(TokenTypes.INT_KEYWORD,
 			TokenTypes.FLOAT_KEYWORD, TokenTypes.BOOLEAN_KEYWORD, TokenTypes.STRING_KEYWORD, TokenTypes.VOID_KEYWORD,
 			TokenTypes.ANY_KEYWORD, TokenTypes.ARRAY_KEYWORD, TokenTypes.LIST_KEYWORD, TokenTypes.STACK_KEYWORD);
 
