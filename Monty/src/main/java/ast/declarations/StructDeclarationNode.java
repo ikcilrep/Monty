@@ -17,11 +17,12 @@ limitations under the License.
 package ast.declarations;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import ast.Block;
 import ast.NodeTypes;
 
-public class StructDeclarationNode extends Block {
+public class StructDeclarationNode extends Block implements Cloneable {
 	private static final long serialVersionUID = -8205779269625980876L;
 	private static int number = -1;
 	private int instanceNumber;
@@ -48,4 +49,31 @@ public class StructDeclarationNode extends Block {
 		this.functions = functions;
 	}
 	
+	public StructDeclarationNode copy() {
+		StructDeclarationNode copied = null;
+		try {
+			copied = (StructDeclarationNode) clone();
+			var variables = new HashMap<String, VariableDeclarationNode>();
+			var variablesSet = copied.getVariables().entrySet();
+			for (Map.Entry<String, VariableDeclarationNode> entry : variablesSet) {
+				var key = entry.getKey();
+				variables.put(key, entry.getValue().copy());
+			}
+			copied.setVariables(variables);
+			var functions = new HashMap<String, FunctionDeclarationNode>();
+			var functionsSet = copied.getFunctions().entrySet();
+			for (Map.Entry<String, FunctionDeclarationNode> entry : functionsSet) {
+				var key = entry.getKey();
+				var value = entry.getValue().copy();
+				var body = value.getBody();
+				body.setParent(copied);
+				functions.put(key, value);
+			}
+			copied.setFunctions(functions);
+			 
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return copied;
+	}
 }

@@ -17,9 +17,6 @@ limitations under the License.
 package parser.parsing;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import ast.Block;
 import ast.NodeTypes;
 import ast.declarations.CustomFunctionDeclarationNode;
@@ -163,15 +160,18 @@ public abstract class AdderToBlock {
 			@Override
 			public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 				var newStruct = (StructDeclarationNode) struct.copy();
-				var variables = new HashMap<String, VariableDeclarationNode>();
-				var variablesSet = struct.getVariables().entrySet();
-				for (Map.Entry<String, VariableDeclarationNode> entry : variablesSet) {
-					String key = entry.getKey();
-					variables.put(key, entry.getValue().copy());
+				var thisVariable = new VariableDeclarationNode("this", DataTypes.ANY);
+				thisVariable.setValue(newStruct);
+				newStruct.addVariable(thisVariable);
+				if (newStruct.doesContainFunction("init")) {
+					var function = newStruct.getFunctionByName("init");
+					if (!function.getType().equals(DataTypes.VOID)) {
+						String[] fileNames = {function.getFileName(), callFileName};
+						int[] lines = {function.getLine(), callLine};
+						new LogError("Init method have to be void", fileNames, lines);
+					}
+					function.call(arguments, callFileName, callLine);
 				}
-				newStruct.setVariables(variables);
-				/*if (newStruct.doesContainFunction("init"))
-					newStruct.getFunctionByName("init").call(arguments, callFileName, callLine);*/
 				newStruct.incrementNumber();
 				return newStruct;
 			}
