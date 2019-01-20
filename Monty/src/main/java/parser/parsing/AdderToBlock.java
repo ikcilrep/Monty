@@ -33,19 +33,18 @@ import ast.statements.IfStatementNode;
 import ast.statements.ReturnStatementNode;
 import ast.statements.ThreadStatement;
 import ast.statements.WhileStatementNode;
-import lexer.Token;
+import lexer.OptimizedTokensArray;
 import lexer.TokenTypes;
 import parser.DataTypes;
 import parser.LogError;
 import parser.Tokens;
-import sml.data.array.Array;
 
 public abstract class AdderToBlock {
 	public static void addBreakStatement(Block block, String fileName, int line) {
 		block.addChild(new BreakStatementNode(fileName, line));
 	}
 
-	public static void addChangeToStatement(Block block, Array<Token> tokens) {
+	public static void addChangeToStatement(Block block, OptimizedTokensArray tokens) {
 		block.addChild(new ChangeToStatementNode(new VariableNode(tokens.get(1).getText()),
 				Tokens.getDataType(tokens.get(3).getType()), tokens.get(0).getFileName(), tokens.get(0).getLine()));
 	}
@@ -54,7 +53,7 @@ public abstract class AdderToBlock {
 		block.addChild(new ContinueStatementNode(fileName, line));
 	}
 
-	public static Block addDoWhileStatement(Block block, Array<Token> tokens) {
+	public static Block addDoWhileStatement(Block block, OptimizedTokensArray tokens) {
 		var whileStatement = new DoWhileStatementNode(ExpressionParser.parse(block, tokens.subarray(2, tokens.length())),
 				tokens.get(0).getFileName(), tokens.get(0).getLine());
 		whileStatement.setBody(new Block(block));
@@ -63,7 +62,7 @@ public abstract class AdderToBlock {
 
 	}
 
-	public static Block addElseStatement(Block block, Array<Token> tokens) {
+	public static Block addElseStatement(Block block, OptimizedTokensArray tokens) {
 		if (!block.getNodeType().equals(NodeTypes.IF_STATEMENT))
 			new LogError("Unexpected \"else\" keyword", tokens.get(0));
 		var elseBlock = new Block(block.getParent(), NodeTypes.ELSE_BLOCK);
@@ -74,11 +73,11 @@ public abstract class AdderToBlock {
 		return elseBlock;
 	}
 
-	public static void addExpression(Block block, Array<Token> tokensBeforeSemicolon) {
+	public static void addExpression(Block block, OptimizedTokensArray tokensBeforeSemicolon) {
 		block.addChild(ExpressionParser.parse(block, tokensBeforeSemicolon));
 	}
 
-	public static Block addForStatement(Block block, Array<Token> tokens) {
+	public static Block addForStatement(Block block, OptimizedTokensArray tokens) {
 		var forStatement = new ForStatementNode(tokens.get(1).getText(),
 				ExpressionParser.parse(block, tokens.subarray(3, tokens.length())), tokens.get(0).getFileName(),
 				tokens.get(0).getLine());
@@ -88,7 +87,7 @@ public abstract class AdderToBlock {
 		return forStatement.getBody();
 	}
 
-	public static Block addFunctionDeclaration(Block block, Array<Token> tokens) {
+	public static Block addFunctionDeclaration(Block block, OptimizedTokensArray tokens) {
 		var function = new CustomFunctionDeclarationNode(tokens.get(2).getText(),
 				Tokens.getDataType(tokens.get(1).getType()));
 		DataTypes type = null;
@@ -108,7 +107,7 @@ public abstract class AdderToBlock {
 		return function.getBody();
 	}
 
-	public static Block addIfStatement(Block block, Array<Token> tokens) {
+	public static Block addIfStatement(Block block, OptimizedTokensArray tokens) {
 		var ifStatement = new IfStatementNode(block, ExpressionParser.parse(block, tokens.subarray(1, tokens.length())),
 				tokens.get(0).getFileName(), tokens.get(0).getLine());
 		block.addChild(ifStatement);
@@ -116,7 +115,7 @@ public abstract class AdderToBlock {
 
 	}
 
-	public static void addReturnStatement(Block block, Array<Token> tokens) {
+	public static void addReturnStatement(Block block, OptimizedTokensArray tokens) {
 		OperationNode expression = null;
 		if (tokens.length() > 1)
 			expression = ExpressionParser.parse(block, tokens.subarray(1, tokens.length()));
@@ -125,12 +124,12 @@ public abstract class AdderToBlock {
 		block.addChild(new ReturnStatementNode(expression, tokens.get(0).getFileName(), tokens.get(0).getLine()));
 	}
 
-	public static void addThreadStatement(Block block, Array<Token> tokens) {
+	public static void addThreadStatement(Block block, OptimizedTokensArray tokens) {
 		block.addChild(new ThreadStatement(ExpressionParser.parse(block, tokens.subarray(1, tokens.length())),
 				tokens.get(0).getFileName(), tokens.get(0).getLine()));
 	}
 
-	public static void addVariableDeclaration(Block block, Array<Token> tokens) {
+	public static void addVariableDeclaration(Block block, OptimizedTokensArray tokens) {
 		var dataType = Tokens.getDataType(tokens.get(1).getType());
 		var variable = new VariableDeclarationNode(tokens.get(2).getText(), dataType);
 		variable.setDynamic(tokens.get(0).getType().equals(TokenTypes.DYNAMIC_KEYWORD));
@@ -142,7 +141,7 @@ public abstract class AdderToBlock {
 
 	}
 
-	public static Block addStructDeclaration(Block block, Array<Token> tokens) {
+	public static Block addStructDeclaration(Block block, OptimizedTokensArray tokens) {
 		var name = tokens.get(1).getText();
 		if (Character.isLowerCase(name.charAt(0)))
 			new LogError("Struct name should start with upper case", tokens.get(0));
@@ -152,7 +151,7 @@ public abstract class AdderToBlock {
 		return struct;
 	}
 
-	public static Block addWhileStatement(Block block, Array<Token> tokens) {
+	public static Block addWhileStatement(Block block, OptimizedTokensArray tokens) {
 		var whileStatement = new WhileStatementNode(ExpressionParser.parse(block, tokens.subarray(1, tokens.length())),
 				tokens.get(0).getFileName(), tokens.get(0).getLine());
 		whileStatement.setBody(new Block(block));

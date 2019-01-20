@@ -20,19 +20,19 @@ import java.util.HashMap;
 import ast.Block;
 import ast.NodeTypes;
 import ast.statements.IfStatementNode;
+import lexer.OptimizedTokensArray;
 import lexer.Token;
 import lexer.TokenTypes;
 import monty.Importing;
 import monty.Library;
 import parser.Identificator;
 import parser.LogError;
-import sml.data.array.Array;
 
 public class Parser {
 	public static HashMap<String, Library> libraries = new HashMap<>();
 
-	public static Block parse(Array<Token> tokens) {
-		var tokensBeforeSemicolon = new Array<Token>();
+	public static Block parse(OptimizedTokensArray tokens) {
+		var tokensBeforeSemicolon = new OptimizedTokensArray();
 		var block = new Block(null);
 		for (Token token : tokens) {
 			if (token.getType().equals(TokenTypes.SEMICOLON)) {

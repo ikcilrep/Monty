@@ -16,9 +16,9 @@ limitations under the License.
 
 package parser;
 
+import lexer.OptimizedTokensArray;
 import lexer.Token;
 import lexer.TokenTypes;
-import sml.data.array.Array;
 
 public class Tokens {
 	public static DataTypes getDataType(TokenTypes type) {
@@ -50,7 +50,7 @@ public class Tokens {
 		}
 	}
 
-	public static String getText(Array<Token> array) {
+	public static String getText(OptimizedTokensArray array) {
 		var result = new StringBuilder();
 		Token next = null;
 		int i = 0;
@@ -69,7 +69,7 @@ public class Tokens {
 		return result.toString();
 	}
 
-	public static String getTypesToString(Array<Token> array) {
+	public static String getTypesToString(OptimizedTokensArray array) {
 		var result = new StringBuilder();
 		for (Token token : array) {
 			result.append(token.getType());

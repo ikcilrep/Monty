@@ -31,12 +31,12 @@ import java.util.jar.JarFile;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
+import lexer.OptimizedTokensArray;
 import lexer.Lexer;
 import lexer.Token;
 import parser.LogError;
 import parser.Tokens;
 import parser.parsing.Parser;
-import sml.data.array.Array;
 
 public class Importing {
 	private static String mainPath = Paths.get("").toAbsolutePath().toString();
@@ -55,7 +55,7 @@ public class Importing {
 
 	private static void addFunctionFromFile(Block block, String path) {
 		var file = new File(path);
-		block.concat(Parser.parse(Lexer.lex(FileIO.readFile(file.getAbsolutePath()), path, 1, new Array<>(), 0)));
+		block.concat(Parser.parse(Lexer.lex(FileIO.readFile(file.getAbsolutePath()), path, 1, new OptimizedTokensArray(), 0)));
 	}
 
 	private static void addFunctionsFromDirectory(Block block, File directory) {
@@ -72,7 +72,7 @@ public class Importing {
 		}
 	}
 
-	public static void addLibrary(Array<Token> tokens) {
+	public static void addLibrary(OptimizedTokensArray tokens) {
 		var partOfPath = Tokens.getText(tokens.subarray(1, tokens.length()));
 		var path = mainFileLocation + partOfPath.replace('.', File.separatorChar) + ".jar";
 		try {
@@ -155,7 +155,7 @@ public class Importing {
 		}
 	}
 
-	public static void importFile(Block block, Array<Token> tokensBeforeSemicolon) {
+	public static void importFile(Block block, OptimizedTokensArray tokensBeforeSemicolon) {
 		var partOfPath = Tokens.getText(tokensBeforeSemicolon.subarray(1, tokensBeforeSemicolon.length()));
 		var path = mainFileLocation + partOfPath.replace('.', File.separatorChar);
 		var file = new File(path + ".mt");
@@ -176,7 +176,7 @@ public class Importing {
 		} else if (parent_file.exists() && parent_file.isFile()) {
 			var name = file.getName().substring(0, file.getName().length() - 3);
 			var importedBlock = Parser.parse(Lexer.lex(FileIO.readFile(parent_file.getAbsolutePath()),
-					parent_file.getName(), 1, new Array<>(), 0));
+					parent_file.getName(), 1, new OptimizedTokensArray(), 0));
 			addSpecifiedFunctionOrVariableFromFile(block, importedBlock, parent_file.getPath(), name);
 		} else {
 			var splited = partOfPath.split("\\.");

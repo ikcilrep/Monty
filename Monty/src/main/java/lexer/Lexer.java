@@ -5,13 +5,12 @@ import java.util.Set;
 import org.apache.commons.text.StringEscapeUtils;
 
 import parser.LogError;
-import sml.data.array.Array;
 
 public class Lexer {
 	private static Set<Character> operatorsParts = Set.of('+', '-', '*', '/', '!', '<', '>', '=', '|', '&', '%', '^');
 
-	private static Array<Token> floatLiteral(String code, String integer, String fileName, int line,
-			Array<Token> tokens, int i) {
+	private static OptimizedTokensArray floatLiteral(String code, String integer, String fileName, int line,
+			OptimizedTokensArray tokens, int i) {
 		var tokenText = integer;
 		while (++i < code.length() && Character.isDigit(code.charAt(i)))
 			tokenText += code.charAt(i);
@@ -19,8 +18,8 @@ public class Lexer {
 		return lex(code, fileName, line, tokens, i);
 	}
 
-	private static Array<Token> identifierOrKeyword(String code, String fileName, int line,
-			Array<Token> tokens, int i) {
+	private static OptimizedTokensArray identifierOrKeyword(String code, String fileName, int line,
+			OptimizedTokensArray tokens, int i) {
 		var tokenText = "" + code.charAt(i);
 		while (++i < code.length() && Character.isJavaIdentifierPart(code.charAt(i)))
 			tokenText += code.charAt(i);
@@ -109,7 +108,7 @@ public class Lexer {
 		}
 	}
 
-	public static Array<Token> lex(String code, String fileName, int line, Array<Token> tokens, int i) {
+	public static OptimizedTokensArray lex(String code, String fileName, int line, OptimizedTokensArray tokens, int i) {
 		var isInComment = false;
 		for (; i < code.length(); i++) {
 			char c = code.charAt(i);
@@ -133,10 +132,11 @@ public class Lexer {
 					return identifierOrKeyword(code, fileName, line, tokens, i);
 			}
 		}
+		tokens.trimToSize();
 		return tokens;
 	}
 
-	private static Array<Token> number(String code, String fileName, int line, Array<Token> tokens, int i) {
+	private static OptimizedTokensArray number(String code, String fileName, int line, OptimizedTokensArray tokens, int i) {
 		var tokenText = "" + code.charAt(i);
 		while (++i < code.length() && Character.isDigit(code.charAt(i)))
 			tokenText += code.charAt(i);
@@ -146,7 +146,7 @@ public class Lexer {
 		return lex(code, fileName, line, tokens, i);
 	}
 
-	private static Array<Token> operator(String code, String fileName, int line, Array<Token> tokens, int i) {
+	private static OptimizedTokensArray operator(String code, String fileName, int line, OptimizedTokensArray tokens, int i) {
 		var tokenText = "" + code.charAt(i);
 		while (++i < code.length() && operatorsParts.contains((Character) code.charAt(i)))
 			tokenText += code.charAt(i);
@@ -190,7 +190,7 @@ public class Lexer {
 		return null;
 	}
 
-	private static Array<Token> stringLiteral(String code, String fileName, int line, Array<Token> tokens,
+	private static OptimizedTokensArray stringLiteral(String code, String fileName, int line, OptimizedTokensArray tokens,
 			int i) {
 		var tokenText = "";
 		try {

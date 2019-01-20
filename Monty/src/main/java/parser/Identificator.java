@@ -19,9 +19,9 @@ package parser;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import lexer.OptimizedTokensArray;
 import lexer.Token;
 import lexer.TokenTypes;
-import sml.data.array.Array;
 
 public abstract class Identificator {
 	public static final Pattern importRegex = Pattern.compile("^[A-Z_]+ (DOT [A-Z_]+ )*$");
@@ -29,7 +29,7 @@ public abstract class Identificator {
 			TokenTypes.FLOAT_KEYWORD, TokenTypes.BOOLEAN_KEYWORD, TokenTypes.STRING_KEYWORD, TokenTypes.VOID_KEYWORD,
 			TokenTypes.ANY_KEYWORD, TokenTypes.ARRAY_KEYWORD, TokenTypes.LIST_KEYWORD, TokenTypes.STACK_KEYWORD);
 
-	public static boolean isBreakStatement(Array<Token> tokens) {
+	public static boolean isBreakStatement(OptimizedTokensArray tokens) {
 		if (!tokens.get(0).getType().equals(TokenTypes.BREAK_KEYWORD))
 			return false;
 		if (tokens.length() > 1)
@@ -38,7 +38,7 @@ public abstract class Identificator {
 
 	}
 
-	public static boolean isChangeToStatement(Array<Token> tokens) {
+	public static boolean isChangeToStatement(OptimizedTokensArray tokens) {
 		var tokensSize = tokens.length();
 		if (!tokens.get(0).getType().equals(TokenTypes.CHANGE_KEYWORD))
 			return false;
@@ -54,7 +54,7 @@ public abstract class Identificator {
 		return true;
 	}
 
-	public static boolean isContinueStatement(Array<Token> tokens) {
+	public static boolean isContinueStatement(OptimizedTokensArray tokens) {
 		if (!tokens.get(0).getType().equals(TokenTypes.CONTINUE_KEYWORD))
 			return false;
 		if (tokens.length() > 1)
@@ -63,7 +63,7 @@ public abstract class Identificator {
 
 	}
 
-	public static boolean isDoWhileStatement(Array<Token> tokens) {
+	public static boolean isDoWhileStatement(OptimizedTokensArray tokens) {
 		if (!tokens.get(0).getType().equals(TokenTypes.DO_KEYWORD))
 			return false;
 		if (tokens.length() == 1 || !tokens.get(1).getType().equals(TokenTypes.WHILE_KEYWORD))
@@ -75,7 +75,7 @@ public abstract class Identificator {
 
 	}
 
-	public static boolean isElseStatement(Array<Token> tokens) {
+	public static boolean isElseStatement(OptimizedTokensArray tokens) {
 		if (!tokens.get(0).getType().equals(TokenTypes.ELSE_KEYWORD))
 			return false;
 		if (tokens.length() > 1 && !isIfStatement(tokens.subarray(1, tokens.length())))
@@ -85,7 +85,7 @@ public abstract class Identificator {
 
 	}
 
-	public static boolean isEndKeyword(Array<Token> tokens) {
+	public static boolean isEndKeyword(OptimizedTokensArray tokens) {
 		if (!tokens.get(0).getType().equals(TokenTypes.END_KEYWORD))
 			return false;
 		if (tokens.length() > 1)
@@ -93,7 +93,7 @@ public abstract class Identificator {
 		return true;
 	}
 
-	public static boolean isExpression(Array<Token> tokensBeforeSemicolon) {
+	public static boolean isExpression(OptimizedTokensArray tokensBeforeSemicolon) {
 		Token last = null;
 		int i = 0;
 		for (Token token : tokensBeforeSemicolon) {
@@ -136,7 +136,7 @@ public abstract class Identificator {
 
 	}
 
-	public static boolean isForStatement(Array<Token> tokens) {
+	public static boolean isForStatement(OptimizedTokensArray tokens) {
 		if (!tokens.get(0).getType().equals(TokenTypes.FOR_KEYWORD))
 			return false;
 
@@ -152,7 +152,7 @@ public abstract class Identificator {
 		return true;
 	}
 
-	public static boolean isFunctionDeclaration(Array<Token> tokensBeforeSemicolon) {
+	public static boolean isFunctionDeclaration(OptimizedTokensArray tokensBeforeSemicolon) {
 		var isFirstTokenFuncKeyword = tokensBeforeSemicolon.get(0).getType().equals(TokenTypes.FUNC_KEYWORD);
 		TokenTypes secondTokenType = null;
 		if (tokensBeforeSemicolon.length() >= 2)
@@ -191,7 +191,7 @@ public abstract class Identificator {
 
 	}
 
-	public static boolean isIfStatement(Array<Token> tokens) {
+	public static boolean isIfStatement(OptimizedTokensArray tokens) {
 		if (!tokens.get(0).getType().equals(TokenTypes.IF_KEYWORD))
 			return false;
 		if (tokens.length() == 1 || !isExpression(tokens.subarray(1, tokens.length())))
@@ -201,17 +201,17 @@ public abstract class Identificator {
 
 	}
 
-	public static boolean isImport(Array<Token> tokens) {
+	public static boolean isImport(OptimizedTokensArray tokens) {
 		return tokens.get(0).getType().equals(TokenTypes.IMPORT_KEYWORD)
 				&& importRegex.matcher(Tokens.getTypesToString(tokens.subarray(1, tokens.length()))).matches();
 	}
 
-	public static boolean isJar(Array<Token> tokens) {
+	public static boolean isJar(OptimizedTokensArray tokens) {
 		return tokens.get(0).getType().equals(TokenTypes.JAR_KEYWORD)
 				&& importRegex.matcher(Tokens.getTypesToString(tokens.subarray(1, tokens.length()))).matches();
 	}
 
-	public static boolean isReturnStatement(Array<Token> tokensBeforeSemicolon) {
+	public static boolean isReturnStatement(OptimizedTokensArray tokensBeforeSemicolon) {
 		var isFirstTokenReturnKeyword = tokensBeforeSemicolon.get(0).getType().equals(TokenTypes.RETURN_KEYWORD);
 
 		if (!isFirstTokenReturnKeyword)
@@ -222,7 +222,7 @@ public abstract class Identificator {
 		return true;
 	}
 
-	public static boolean isThreadStatement(Array<Token> tokens) {
+	public static boolean isThreadStatement(OptimizedTokensArray tokens) {
 		if (!tokens.get(0).getType().equals(TokenTypes.THREAD_KEYWORD))
 			return false;
 		if (tokens.length() == 1 || !isExpression(tokens.subarray(1, tokens.length())))
@@ -232,7 +232,7 @@ public abstract class Identificator {
 		return true;
 	}
 
-	public static boolean isVariableDeclaration(Array<Token> tokensBeforeSemicolon) {
+	public static boolean isVariableDeclaration(OptimizedTokensArray tokensBeforeSemicolon) {
 		var firstTokenType = tokensBeforeSemicolon.get(0).getType();
 		var isFirstTokenStaticOrDynamicKeyword = firstTokenType.equals(TokenTypes.STATIC_KEYWORD)
 				|| firstTokenType.equals(TokenTypes.DYNAMIC_KEYWORD);
@@ -261,7 +261,7 @@ public abstract class Identificator {
 		return true;
 	}
 	
-	public static boolean isStructDeclaration(Array<Token> tokens) {
+	public static boolean isStructDeclaration(OptimizedTokensArray tokens) {
 		if (!tokens.get(0).getType().equals(TokenTypes.STRUCT_KEYWORD))
 			return false;
 		if (tokens.length() == 1 || !tokens.get(1).getType().equals(TokenTypes.IDENTIFIER))
@@ -270,7 +270,7 @@ public abstract class Identificator {
 
 		return true;
 	}
-	public static boolean isWhileStatement(Array<Token> tokens) {
+	public static boolean isWhileStatement(OptimizedTokensArray tokens) {
 		if (!tokens.get(0).getType().equals(TokenTypes.WHILE_KEYWORD))
 			return false;
 		if (tokens.length() == 1 || !isExpression(tokens.subarray(1, tokens.length())))
