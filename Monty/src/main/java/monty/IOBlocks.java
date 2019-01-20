@@ -7,8 +7,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import ast.Block;
-import lexer.OptimizedTokensArray;
 import lexer.Lexer;
+import lexer.OptimizedTokensArray;
 import parser.LogError;
 import parser.parsing.Parser;
 
