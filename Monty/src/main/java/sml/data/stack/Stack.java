@@ -126,8 +126,8 @@ public class Stack implements Cloneable, Iterable<Object>, Serializable {
 		return newStack;
 	}
 
-	public Array<Object> toArray() {
-		return new Array<Object>(array).subarray(0, top + 1);
+	public Array toArray() {
+		return new Array(array).subarray(0, top + 1);
 	}
 
 	@Override

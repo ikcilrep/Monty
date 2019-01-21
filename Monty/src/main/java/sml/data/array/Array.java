@@ -9,7 +9,7 @@ You may obtain a copy of the License at
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+WITHOUObject WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
@@ -23,7 +23,7 @@ import sml.data.list.List;
 import sml.data.returning.Nothing;
 import sml.data.stack.Stack;
 
-public class Array<T> implements Iterable<T>, Cloneable, Serializable {
+public class Array implements Iterable<Object>, Cloneable, Serializable {
 	/**
 	 * 
 	 */
@@ -41,7 +41,7 @@ public class Array<T> implements Iterable<T>, Cloneable, Serializable {
 	/*
 	 * Description.
 	 */
-	public Array(Array<T> array) {
+	public Array(Array array) {
 		this.array = array.toArray();
 		top = array.top;
 	}
@@ -73,7 +73,7 @@ public class Array<T> implements Iterable<T>, Cloneable, Serializable {
 	/*
 	 * Description.
 	 */
-	public Array<T> append(Array<T> elements) {
+	public Array append(Array elements) {
 		var length = array.length+elements.length();
 		top += elements.length();
 		if (length >= top)
@@ -86,7 +86,7 @@ public class Array<T> implements Iterable<T>, Cloneable, Serializable {
 	/*
 	 * Description.
 	 */
-	public Array<T> append(T element) {
+	public Array append(Object element) {
 		top++;
 
 		if (array.length == top)
@@ -98,7 +98,7 @@ public class Array<T> implements Iterable<T>, Cloneable, Serializable {
 	/*
 	 * Description.
 	 */
-	public boolean contains(T toSearch) {
+	public boolean contains(Object toSearch) {
 		for (int i = 0; i <= top; i++)
 			if (array[i].equals(toSearch))
 				return true;
@@ -106,10 +106,9 @@ public class Array<T> implements Iterable<T>, Cloneable, Serializable {
 
 	}
 
-	@SuppressWarnings("unchecked")
-	public Array<T> copy() {
+	public Array copy() {
 		try {
-			return (Array<T>) clone();
+			return (Array) clone();
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
@@ -119,12 +118,11 @@ public class Array<T> implements Iterable<T>, Cloneable, Serializable {
 	/*
 	 * Description.
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(Object other) {
-		Array<Object> otherArray = null;
+		Array otherArray = null;
 		if (other instanceof Array)
-			otherArray = (Array<Object>) other;
+			otherArray = (Array) other;
 		else
 			return false;
 		if (top != otherArray.top)
@@ -140,14 +138,13 @@ public class Array<T> implements Iterable<T>, Cloneable, Serializable {
 	/*
 	 * Description.
 	 */
-	@SuppressWarnings("unchecked")
-	public T get(int index) {
-		return (T)array[index];
+	public Object get(int index) {
+		return array[index];
 	}
 
 	@Override
-	public Iterator<T> iterator() {
-		return new Iterator<T>() {
+	public Iterator<Object> iterator() {
+		return new Iterator<Object>() {
 			int counter = 0;
 
 			@Override
@@ -156,10 +153,9 @@ public class Array<T> implements Iterable<T>, Cloneable, Serializable {
 
 			}
 
-			@SuppressWarnings("unchecked")
 			@Override
-			public T next() {
-				return (T)array[counter++];
+			public Object next() {
+				return (Object)array[counter++];
 			}
 		};
 	}
@@ -174,7 +170,7 @@ public class Array<T> implements Iterable<T>, Cloneable, Serializable {
 	/*
 	 * Description.
 	 */
-	public Array<T> replaceAll(T toBeReplaced, T replacement) {
+	public Array replaceAll(Object toBeReplaced, Object replacement) {
 		for (int i = 0; i < length(); i++)
 			if (array[i].equals(toBeReplaced))
 				array[i] = replacement;
@@ -184,7 +180,7 @@ public class Array<T> implements Iterable<T>, Cloneable, Serializable {
 	/*
 	 * Description.
 	 */
-	public Array<T> replaceFirst(T toBeReplaced, T replacement) {
+	public Array replaceFirst(Object toBeReplaced, Object replacement) {
 		for (int i = 0; i < length(); i++)
 			if (array[i].equals(toBeReplaced)) {
 				array[i] = replacement;
@@ -196,7 +192,7 @@ public class Array<T> implements Iterable<T>, Cloneable, Serializable {
 	/*
 	 * Description.
 	 */
-	public Array<T> replaceLast(T toBeReplaced, T replacement) {
+	public Array replaceLast(Object toBeReplaced, Object replacement) {
 		for (int i = top; i < length(); i++)
 			if (array[i].equals(toBeReplaced)) {
 				array[i] = replacement;
@@ -205,17 +201,17 @@ public class Array<T> implements Iterable<T>, Cloneable, Serializable {
 		return this;
 	}
 
-	public Array<T> reversed() {
-		var arr = new Array<T>(length());
+	public Array reversed() {
+		var arr = new Array(length());
 		for (int i = 0; i < length(); i++)
-			arr.set(length() - i, (T) get(i));
+			arr.set(length() - i,  get(i));
 		return arr;
 	}
 
 	/*
 	 * Description.
 	 */
-	public Array<T> set(int index, T element) {
+	public Array set(int index, Object element) {
 		array[index] = element;
 		return this;
 	}
@@ -223,8 +219,8 @@ public class Array<T> implements Iterable<T>, Cloneable, Serializable {
 	/*
 	 * Description.
 	 */
-	public Array<T> subarray(int begin, int end) {
-		Array<T> newArray = new Array<T>();
+	public Array subarray(int begin, int end) {
+		Array newArray = new Array();
 		for (int i = begin; i < end; i++)
 			newArray.append(get(i));
 

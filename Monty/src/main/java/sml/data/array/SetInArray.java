@@ -40,12 +40,12 @@ public class SetInArray extends FunctionDeclarationNode {
 		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
 	}
 
-	@SuppressWarnings("unchecked")
+
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var arr = (Array<Object>) body.getVariableByName("arr").getValue();
+		var arr = (Array) body.getVariableByName("arr").getValue();
 		var index = ((BigInteger) body.getVariableByName("index").getValue()).intValue();
 		var element = body.getVariableByName("element").getValue();
 		return arr.set(index, element);

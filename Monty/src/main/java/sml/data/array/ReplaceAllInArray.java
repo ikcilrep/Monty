@@ -40,12 +40,12 @@ public class ReplaceAllInArray extends FunctionDeclarationNode {
 
 	}
 
-	@SuppressWarnings("unchecked")
+
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var arr = (Array<Object>) body.getVariableByName("arr").getValue();
+		var arr = (Array) body.getVariableByName("arr").getValue();
 		var toBeReplaced = body.getVariableByName("toBeReplaced").getValue();
 		var replacement = body.getVariableByName("replacement").getValue();
 

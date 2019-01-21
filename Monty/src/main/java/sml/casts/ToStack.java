@@ -34,12 +34,11 @@ public class ToStack extends FunctionDeclarationNode {
 	 */
 	private static final long serialVersionUID = -3165880297105294653L;
 
-	@SuppressWarnings("unchecked")
 	public static Object toStack(Object a, String callFileName, int callLine) {
 		if (a instanceof Stack)
 			return a;
 		if (a instanceof Array)
-			return ((Array<Object>) a).toStack();
+			return ((Array) a).toStack();
 		if (a instanceof List)
 			return ((List) a).toArray().toStack();
 		return new Stack().push(a);

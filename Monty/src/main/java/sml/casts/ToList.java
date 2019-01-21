@@ -34,12 +34,11 @@ public class ToList extends FunctionDeclarationNode {
 	 */
 	private static final long serialVersionUID = -3165880297105294653L;
 
-	@SuppressWarnings("unchecked")
 	public static Object toList(Object a, String callFileName, int callLine) {
 		if (a instanceof List)
 			return a;
 		if (a instanceof Array)
-			return ((Array<Object>) a).toList();
+			return ((Array) a).toList();
 		if (a instanceof Stack)
 			return ((Stack) a).toArray().toList();
 		return new List(a);

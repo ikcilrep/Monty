@@ -41,7 +41,7 @@ public class ToArray extends FunctionDeclarationNode {
 			return ((List) a).toArray();
 		if (a instanceof Stack)
 			return ((Stack) a).toArray();
-		return new Array<Object>().append(a);
+		return new Array().append(a);
 	}
 
 	public ToArray() {

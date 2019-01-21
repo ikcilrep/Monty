@@ -59,7 +59,7 @@ public enum DataTypes {
 		case BOOLEAN:
 			return false;
 		case ARRAY:
-			return new Array<Object>().append(Nothing.nothing);
+			return new Array().append(Nothing.nothing);
 		case LIST:
 			return new List();
 		case STACK:

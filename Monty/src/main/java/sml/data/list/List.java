@@ -164,8 +164,8 @@ public class List implements Iterable<Object>, Cloneable, Serializable {
 		return sublist(begin).reversed().sublist(length() - end).reversed();
 	}
 
-	public Array<Object> toArray() {
-		Array<Object> array = new Array<Object>(length());
+	public Array toArray() {
+		Array array = new Array(length());
 		var list = this;
 		int i = 0;
 		while (i < array.length()) {
