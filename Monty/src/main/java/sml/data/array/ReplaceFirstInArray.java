@@ -30,11 +30,11 @@ public class ReplaceFirstInArray extends FunctionDeclarationNode {
 	 * 
 	 */
 	private static final long serialVersionUID = -467448772656923164L;
-
-	public ReplaceFirstInArray() {
-		super("replaceFirstInArray", DataTypes.ARRAY);
-		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("arr", DataTypes.ARRAY));
+	Array array;
+	public ReplaceFirstInArray(Array array) {
+		super("replaceFirst", DataTypes.ARRAY);
+		this.array = array;
+		setBody(new Block(array));
 		addParameter(new VariableDeclarationNode("toBeReplaced", DataTypes.ANY));
 		addParameter(new VariableDeclarationNode("replacement", DataTypes.ANY));
 
@@ -45,11 +45,10 @@ public class ReplaceFirstInArray extends FunctionDeclarationNode {
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var arr = (Array) body.getVariableByName("arr").getValue();
 		var toBeReplaced = body.getVariableByName("toBeReplaced").getValue();
 		var replacement = body.getVariableByName("replacement").getValue();
 
-		return arr.replaceFirst(toBeReplaced, replacement);
+		return array.replaceFirst(toBeReplaced, replacement);
 	}
 
 }

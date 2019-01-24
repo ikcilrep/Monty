@@ -30,15 +30,6 @@ import sml.casts.ToList;
 import sml.casts.ToStack;
 import sml.casts.ToString;
 import sml.data.array.ArrayOf;
-import sml.data.array.ExtendArray;
-import sml.data.array.GetFromArray;
-import sml.data.array.IsInArray;
-import sml.data.array.LengthOfArray;
-import sml.data.array.ReplaceAllInArray;
-import sml.data.array.ReplaceFirstInArray;
-import sml.data.array.ReplaceLastInArray;
-import sml.data.array.SetInArray;
-import sml.data.array.Subarray;
 import sml.data.checking.IsArray;
 import sml.data.checking.IsFloat;
 import sml.data.checking.IsInt;
@@ -121,24 +112,11 @@ public class Sml extends Library implements Serializable {
 		casts.put("ord", new Ord());
 
 		var data = (HashMap<String, Object>) children.get("data");
-		data.put("array", new HashMap<>());
+		data.put("Array", new ArrayOf());
 		data.put("list", new HashMap<>());
 		data.put("checking", new HashMap<>());
 		data.put("string", new HashMap<>());
 		data.put("stack", new HashMap<>());
-
-		var array = (HashMap<String, Object>) data.get("array");
-		array.put("arrayOf", new ArrayOf());
-		array.put("extendArray", new ExtendArray());
-		array.put("getFromArray", new GetFromArray());
-		array.put("setInArray", new SetInArray());
-
-		array.put("lengthOfArray", new LengthOfArray());
-		array.put("subarray", new Subarray());
-		array.put("isInArray", new IsInArray());
-		array.put("replaceAllInArray", new ReplaceAllInArray());
-		array.put("replaceFirstInArray", new ReplaceFirstInArray());
-		array.put("replaceLastInArray", new ReplaceLastInArray());
 
 		var list = (HashMap<String, Object>) data.get("list");
 		list.put("listOf", new ListOf());

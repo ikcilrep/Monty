@@ -1,8 +1,7 @@
 import sml.io.println;
-import sml.data.array.arrayOf;
+import sml.data.Array;
 
 
-for x in arrayOf(1,2,3);
+for x in Array(1,2,3);
 	println(x);
 end;
-println(12);

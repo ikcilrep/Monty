@@ -30,22 +30,19 @@ public class ExtendArray extends FunctionDeclarationNode {
 	 * 
 	 */
 	private static final long serialVersionUID = -4407198079905020979L;
-
-	public ExtendArray() {
-		super("extendArray", DataTypes.VOID);
-		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("arrayToBeExtended", DataTypes.ARRAY));
+	Array array;
+	public ExtendArray(Array array) {
+		super("extend", DataTypes.VOID);
+		this.array = array;
+		setBody(new Block(array));
 		addParameter(new VariableDeclarationNode("arrayToExtend", DataTypes.ARRAY));
-
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var arrayToBeExtended = (Array) getBody().getVariableByName("arrayToBeExtended").getValue();
 		var arrayToExtend = (Array) getBody().getVariableByName("arrayToExtend").getValue();
-
-		return arrayToBeExtended.copy().append(arrayToExtend);
+		return array.extend(arrayToExtend);
 	}
 
 }

@@ -32,11 +32,11 @@ public class GetFromArray extends FunctionDeclarationNode {
 	 * 
 	 */
 	private static final long serialVersionUID = 1255006650808150230L;
-
-	public GetFromArray() {
-		super("getFromArray", DataTypes.ANY);
-		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("arr", DataTypes.ARRAY));
+	Array array;
+	public GetFromArray(Array array) {
+		super("get", DataTypes.ANY);
+		this.array = array;
+		setBody(new Block(array));
 		addParameter(new VariableDeclarationNode("index", DataTypes.INTEGER));
 	}
 
@@ -44,11 +44,10 @@ public class GetFromArray extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var arr = (Array) getBody().getVariableByName("arr").getValue();
 		var index = (BigInteger) getBody().getVariableByName("index").getValue();
-		if (index.compareTo(BigInteger.valueOf(arr.length())) >= 0)
-			new LogError("Index " + index + " is too large for length " + arr.length(), callFileName, callLine);
-		return arr.get(index.intValue());
+		if (index.compareTo(BigInteger.valueOf(array.length())) >= 0)
+			new LogError("Index " + index + " is too large for length " + array.length(), callFileName, callLine);
+		return array.get(index.intValue());
 	}
 
 }

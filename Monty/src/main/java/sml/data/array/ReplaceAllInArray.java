@@ -26,15 +26,14 @@ import parser.DataTypes;
 
 public class ReplaceAllInArray extends FunctionDeclarationNode {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -4514206011012649301L;
 
-	public ReplaceAllInArray() {
-		super("replaceAllInArray", DataTypes.ARRAY);
-		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("arr", DataTypes.ARRAY));
+	Array array;
+	
+	public ReplaceAllInArray(Array array) {
+		super("replace", DataTypes.ARRAY);
+		this.array = array;
+		setBody(new Block(array));
 		addParameter(new VariableDeclarationNode("toBeReplaced", DataTypes.ANY));
 		addParameter(new VariableDeclarationNode("replacement", DataTypes.ANY));
 
@@ -45,11 +44,9 @@ public class ReplaceAllInArray extends FunctionDeclarationNode {
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var arr = (Array) body.getVariableByName("arr").getValue();
 		var toBeReplaced = body.getVariableByName("toBeReplaced").getValue();
 		var replacement = body.getVariableByName("replacement").getValue();
-
-		return arr.replaceAll(toBeReplaced, replacement);
+		return array.replaceAll(toBeReplaced, replacement);
 	}
 
 }

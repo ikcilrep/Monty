@@ -28,9 +28,8 @@ public class ArrayOf extends FunctionDeclarationNode {
 	 * 
 	 */
 	private static final long serialVersionUID = -2800567535503129630L;
-
 	public ArrayOf() {
-		super("arrayOf", DataTypes.ARRAY);
+		super("Array", DataTypes.ARRAY);
 	}
 
 	@Override

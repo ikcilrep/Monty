@@ -633,9 +633,8 @@ public class OperatorOverloading {
 		case STACK:
 			var stack = ((Stack) leftValue).copy().reversed();
 			var value = ((BigInteger) rightValue).intValue();
-			for (int i = 0; i < value; i++) {
+			for (int i = 0; i < value; i++)
 				stack.pop();
-			}
 			return stack.reversed();
 		case ARRAY:
 			var arr = ((Array) leftValue);

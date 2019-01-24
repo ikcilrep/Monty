@@ -27,15 +27,12 @@ import parser.DataTypes;
 
 public class Subarray extends FunctionDeclarationNode {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -92018-201966361416331207L;
-
-	public Subarray() {
-		super("subArray", DataTypes.ARRAY);
-		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("arr", DataTypes.ARRAY));
+	Array array;
+	public Subarray(Array array) {
+		super("subarray", DataTypes.ARRAY);
+		this.array = array;
+		setBody(new Block(array));
 		addParameter(new VariableDeclarationNode("begin", DataTypes.INTEGER));
 		addParameter(new VariableDeclarationNode("end", DataTypes.INTEGER));
 
@@ -46,10 +43,9 @@ public class Subarray extends FunctionDeclarationNode {
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var arr = (Array) body.getVariableByName("arr").getValue();
 		var begin = ((BigInteger) body.getVariableByName("begin").getValue()).intValue();
 		var end = ((BigInteger) body.getVariableByName("end").getValue()).intValue();
-		return arr.subarray(begin, end);
+		return array.subarray(begin, end);
 	}
 
 }

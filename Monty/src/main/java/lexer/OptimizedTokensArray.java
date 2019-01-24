@@ -29,8 +29,9 @@ public class OptimizedTokensArray implements Iterable<Token> {
 
 	public void setLength(int length) {
 		var newArray = new Token[length];
-		for (int i = 0; i < length; i++)
+		for (int i = 0; i < array.length && i < length; i++) {
 			newArray[i] = array[i];
+		}
 		array = newArray;
 	}
 

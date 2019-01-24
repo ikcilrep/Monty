@@ -48,9 +48,6 @@ import sml.data.returning.Nothing;
 import sml.threading.MontyThread;
 
 public class Block extends Node implements Serializable,Cloneable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -1974629623424063560L;
 	private LinkedList<Node> children = new LinkedList<>();
 	protected HashMap<String, FunctionDeclarationNode> functions = new HashMap<>();
@@ -70,14 +67,10 @@ public class Block extends Node implements Serializable,Cloneable {
 		children.add(child);
 	}
 
-	private void addFunction(FunctionDeclarationNode function) {
+	public void addFunction(FunctionDeclarationNode function) {
 		String name = function.getName();
-		if (functions.containsKey(name)) {
-			var existing_function = functions.get(name);
-			int[] lines = { existing_function.getLine(), function.getLine() };
-			String[] fileNames = { existing_function.getFileName(), function.getFileName() };
-			new LogError("Function " + name + " already exists", fileNames, lines);
-		}
+		if (functions.containsKey(name))
+			new LogError("Function " + name + " already exists");
 		functions.put(name, function);
 	}
 

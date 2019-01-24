@@ -29,12 +29,12 @@ public class ReplaceLastInArray extends FunctionDeclarationNode {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 268032436604437625L;
-
-	public ReplaceLastInArray() {
-		super("replaceLastInArray", DataTypes.ARRAY);
-		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("arr", DataTypes.ARRAY));
+	private static final long serialVersionUID = -467448772656923164L;
+	Array array;
+	public ReplaceLastInArray(Array array) {
+		super("replaceLast", DataTypes.ARRAY);
+		this.array = array;
+		setBody(new Block(array));
 		addParameter(new VariableDeclarationNode("toBeReplaced", DataTypes.ANY));
 		addParameter(new VariableDeclarationNode("replacement", DataTypes.ANY));
 
@@ -45,11 +45,10 @@ public class ReplaceLastInArray extends FunctionDeclarationNode {
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var arr = (Array) body.getVariableByName("arr").getValue();
 		var toBeReplaced = body.getVariableByName("toBeReplaced").getValue();
 		var replacement = body.getVariableByName("replacement").getValue();
 
-		return arr.replaceLast(toBeReplaced, replacement);
+		return array.replaceLast(toBeReplaced, replacement);
 	}
 
 }

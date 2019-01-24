@@ -24,17 +24,17 @@ import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class IsInArray extends FunctionDeclarationNode {
+public class DoesArrayContains extends FunctionDeclarationNode {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7038852480570338076L;
-
-	public IsInArray() {
-		super("isInArray", DataTypes.BOOLEAN);
-		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("arr", DataTypes.ARRAY));
+	Array array;
+	public DoesArrayContains(Array array) {
+		super("contains", DataTypes.BOOLEAN);
+		this.array = array;
+		setBody(new Block(array));
 		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
 
 	}
@@ -43,11 +43,8 @@ public class IsInArray extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var body = getBody();
-		var arr = (Array) body.getVariableByName("arr").getValue();
-		var element = body.getVariableByName("element").getValue();
-
-		return arr.contains(element);
+		var element = getBody().getVariableByName("element").getValue();
+		return array.contains(element);
 	}
 
 }

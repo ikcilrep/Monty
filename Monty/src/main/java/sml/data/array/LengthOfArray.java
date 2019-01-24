@@ -17,29 +17,24 @@ import java.util.ArrayList;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
-import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
 public class LengthOfArray extends FunctionDeclarationNode {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -4759997709261414161L;
-
-	public LengthOfArray() {
-		super("lengthOfArray", DataTypes.INTEGER);
-		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("arr", DataTypes.ARRAY));
+	Array array;
+	public LengthOfArray(Array array) {
+		super("length", DataTypes.INTEGER);
+		this.array = array;
+		setBody(new Block(array));
 	}
 
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var arr = (Array) getBody().getVariableByName("arr").getValue();
-		return arr.length();
+		return array.length();
 	}
 
 }

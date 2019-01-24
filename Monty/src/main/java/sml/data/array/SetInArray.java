@@ -31,11 +31,11 @@ public class SetInArray extends FunctionDeclarationNode {
 	 * 
 	 */
 	private static final long serialVersionUID = -4263197015723594960L;
-
-	public SetInArray() {
-		super("setInArray", DataTypes.ARRAY);
-		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("arr", DataTypes.ARRAY));
+	Array array;
+	public SetInArray(Array array) {
+		super("set", DataTypes.ARRAY);
+		this.array = array;
+		setBody(new Block(array));
 		addParameter(new VariableDeclarationNode("index", DataTypes.INTEGER));
 		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
 	}
