@@ -27,11 +27,6 @@ import sml.data.returning.Nothing;
 
 public class Print extends FunctionDeclarationNode {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5657836899374280597L;
-
 	public Print() {
 		super("print", DataTypes.VOID);
 		setBody(new Block(null));

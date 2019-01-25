@@ -20,10 +20,6 @@ import ast.NodeTypes;
 import parser.DataTypes;
 
 public class VariableDeclarationNode extends DeclarationNode implements Cloneable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1726024535086196828L;
 
 	private boolean isDynamic = false;
 

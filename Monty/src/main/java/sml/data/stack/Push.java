@@ -25,7 +25,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 
 public class Push extends FunctionDeclarationNode {
-	private static final long serialVersionUID = -7764843602030320679L;
+
 	Stack stack;
 
 	public Push(Stack stack) {

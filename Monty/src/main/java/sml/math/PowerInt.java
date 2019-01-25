@@ -27,11 +27,6 @@ import parser.DataTypes;
 
 public class PowerInt extends FunctionDeclarationNode {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -978562413881839627L;
-
 	public PowerInt() {
 		super("powerInt", DataTypes.INTEGER);
 		setBody(new Block(null));

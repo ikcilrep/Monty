@@ -16,7 +16,6 @@ limitations under the License.
 
 package ast;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -44,8 +43,8 @@ import sml.data.returning.BreakType;
 import sml.data.returning.Nothing;
 import sml.threading.MontyThread;
 
-public class Block extends Node implements Serializable, Cloneable {
-	private static final long serialVersionUID = -1974629623424063560L;
+public class Block extends Node implements Cloneable {
+
 	private LinkedList<Node> children = new LinkedList<>();
 	protected HashMap<String, FunctionDeclarationNode> functions = new HashMap<>();
 	private Block parent;

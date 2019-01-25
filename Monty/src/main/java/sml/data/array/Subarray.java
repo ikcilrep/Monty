@@ -26,8 +26,6 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 
 public class Subarray extends FunctionDeclarationNode {
-
-	private static final long serialVersionUID = -92018 - 201966361416331207L;
 	Array array;
 
 	public Subarray(Array array) {

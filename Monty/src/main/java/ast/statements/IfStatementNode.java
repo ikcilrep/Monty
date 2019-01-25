@@ -21,10 +21,7 @@ import ast.NodeTypes;
 import ast.expressions.OperationNode;
 
 public class IfStatementNode extends Block {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2857473091602756554L;
+
 	private OperationNode condition;
 	private Block elseBody;
 

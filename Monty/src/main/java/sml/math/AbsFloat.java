@@ -26,11 +26,6 @@ import parser.DataTypes;
 
 public class AbsFloat extends FunctionDeclarationNode {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1085302614805452237L;
-
 	public AbsFloat() {
 		super("absFloat", DataTypes.FLOAT);
 		setBody(new Block(null));

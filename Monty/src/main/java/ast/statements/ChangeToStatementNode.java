@@ -21,10 +21,7 @@ import ast.expressions.VariableNode;
 import parser.DataTypes;
 
 public class ChangeToStatementNode extends StatementNode {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 532657758693667088L;
+
 	private VariableNode toChangeType;
 	private DataTypes dataType;
 

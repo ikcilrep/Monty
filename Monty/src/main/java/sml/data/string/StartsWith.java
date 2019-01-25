@@ -26,11 +26,6 @@ import parser.DataTypes;
 
 public class StartsWith extends FunctionDeclarationNode {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2142637919242098762L;
-
 	public StartsWith() {
 		super("startsWith", DataTypes.BOOLEAN);
 		setBody(new Block(null));

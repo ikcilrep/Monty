@@ -29,7 +29,7 @@ public class ReplaceFirstInArray extends FunctionDeclarationNode {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -467448772656923164L;
+
 	Array array;
 
 	public ReplaceFirstInArray(Array array) {

@@ -20,10 +20,6 @@ import ast.NodeTypes;
 import ast.expressions.OperationNode;
 
 public class ThreadStatement extends StatementNode {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5935370042825970627L;
 	private OperationNode expression;
 
 	public ThreadStatement(OperationNode expression, String fileName, int line) {

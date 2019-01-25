@@ -16,7 +16,6 @@ limitations under the License.
 
 package sml.data.array;
 
-import java.io.Serializable;
 import java.util.Iterator;
 
 import ast.Block;
@@ -24,8 +23,8 @@ import ast.declarations.StructDeclarationNode;
 import sml.data.returning.Nothing;
 import sml.data.stack.Stack;
 
-public class Array extends StructDeclarationNode implements Iterable<Object>, Cloneable, Serializable {
-	private static final long serialVersionUID = -114997948039751189L;
+public class Array extends StructDeclarationNode implements Iterable<Object>, Cloneable {
+
 	protected Object[] array;
 
 	public void addFunctions() {

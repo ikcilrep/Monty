@@ -29,7 +29,7 @@ public class DoesArrayContains extends FunctionDeclarationNode {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -7038852480570338076L;
+
 	Array array;
 
 	public DoesArrayContains(Array array) {

@@ -20,10 +20,6 @@ import ast.NodeTypes;
 import parser.DataTypes;
 
 public class ConstantNode extends ExpressionNode {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 673940273040626993L;
 	private Object value;
 	private DataTypes type;
 

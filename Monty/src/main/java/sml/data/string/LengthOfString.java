@@ -27,11 +27,6 @@ import parser.DataTypes;
 
 public class LengthOfString extends FunctionDeclarationNode {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 9007004559502120471L;
-
 	public LengthOfString() {
 		super("lengthOfString", DataTypes.INTEGER);
 		setBody(new Block(null));

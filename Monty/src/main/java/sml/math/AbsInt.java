@@ -27,11 +27,6 @@ import parser.DataTypes;
 
 public class AbsInt extends FunctionDeclarationNode {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5362081064637205906L;
-
 	public AbsInt() {
 		super("absInt", DataTypes.INTEGER);
 		setBody(new Block(null));

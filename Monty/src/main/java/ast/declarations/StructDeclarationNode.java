@@ -28,7 +28,7 @@ import parser.DataTypes;
 import parser.LogError;
 
 public class StructDeclarationNode extends Block implements Cloneable {
-	private static final long serialVersionUID = -8205779269625980876L;
+
 	private static int actualStructNumber = -1;
 	private int structNumber;
 	private static int number = -1;
@@ -38,7 +38,6 @@ public class StructDeclarationNode extends Block implements Cloneable {
 	public void addNewStruct(Block block, Token token) {
 		var struct = this;
 		block.addFunction(new FunctionDeclarationNode(name, DataTypes.ANY) {
-			private static final long serialVersionUID = 2786609094600151036L;
 
 			@Override
 			public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
@@ -61,8 +60,6 @@ public class StructDeclarationNode extends Block implements Cloneable {
 
 		}, token);
 		var function = new FunctionDeclarationNode("is" + name, DataTypes.BOOLEAN) {
-
-			private static final long serialVersionUID = 7506903400263027675L;
 
 			@Override
 			public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {

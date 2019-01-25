@@ -26,11 +26,6 @@ import parser.DataTypes;
 
 public class UnixTimeMillis extends FunctionDeclarationNode {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8707892100905230495L;
-
 	public UnixTimeMillis() {
 		super("unixTimeMillis", DataTypes.INTEGER);
 		setBody(new Block(null));

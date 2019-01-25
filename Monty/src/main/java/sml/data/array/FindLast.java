@@ -26,8 +26,6 @@ import parser.DataTypes;
 
 public class FindLast extends FunctionDeclarationNode {
 
-	private static final long serialVersionUID = -4514206011012649301L;
-
 	Array array;
 
 	public FindLast(Array array) {

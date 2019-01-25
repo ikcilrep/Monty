@@ -34,7 +34,6 @@ public class ToInt extends FunctionDeclarationNode {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 9063163249840188097L;
 
 	public ToInt() {
 		super("toInt", DataTypes.INTEGER);

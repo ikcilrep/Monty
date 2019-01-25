@@ -19,10 +19,4 @@ package ast.statements;
 import ast.Node;
 
 public abstract class StatementNode extends Node {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1627364483169297448L;
-
 }

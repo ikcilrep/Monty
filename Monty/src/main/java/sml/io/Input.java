@@ -25,10 +25,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 
 public class Input extends FunctionDeclarationNode {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3828117920701744335L;
+
 	public static Scanner scanner = new Scanner(System.in);
 
 	public Input() {

@@ -34,7 +34,6 @@ public class ToFloat extends FunctionDeclarationNode {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -8735792965162262066L;
 
 	public ToFloat() {
 		super("toFloat", DataTypes.FLOAT);

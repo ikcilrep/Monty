@@ -27,11 +27,6 @@ import parser.DataTypes;
 
 public class IsInt extends FunctionDeclarationNode {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -304605979582932268L;
-
 	public IsInt() {
 		super("isInt", DataTypes.BOOLEAN);
 		setBody(new Block(null));

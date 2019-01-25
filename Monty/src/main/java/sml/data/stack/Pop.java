@@ -24,7 +24,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 
 public class Pop extends FunctionDeclarationNode {
-	private static final long serialVersionUID = -7764843602030320679L;
+
 	Stack stack;
 
 	public Pop(Stack stack) {

@@ -29,11 +29,6 @@ import sml.data.returning.Nothing;
 
 public class WriteFile extends FunctionDeclarationNode {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3412784350867342486L;
-
 	public WriteFile() {
 		super("writeFile", DataTypes.VOID);
 		setBody(new Block(null));

@@ -19,10 +19,7 @@ package ast.expressions;
 import ast.NodeTypes;
 
 public class VariableNode extends ExpressionNode implements StructContainer {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8300892680278895019L;
+
 	private String name;
 	private OperationNode next = null;
 

@@ -26,11 +26,6 @@ import parser.DataTypes;
 
 public class ToLowerCase extends FunctionDeclarationNode {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3888979516464258326L;
-
 	public ToLowerCase() {
 		super("toLowerCase", DataTypes.STRING);
 		setBody(new Block(null));

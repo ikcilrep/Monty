@@ -16,13 +16,7 @@ limitations under the License.
 
 package ast;
 
-import java.io.Serializable;
-
-public class Node implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1062901583007944186L;
+public class Node {
 	protected NodeTypes nodeType;
 	protected int line;
 	protected String fileName;

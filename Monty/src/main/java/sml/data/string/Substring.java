@@ -28,11 +28,6 @@ import parser.LogError;
 
 public class Substring extends FunctionDeclarationNode {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6794869662172701459L;
-
 	public Substring() {
 		super("substring", DataTypes.STRING);
 		setBody(new Block(null));

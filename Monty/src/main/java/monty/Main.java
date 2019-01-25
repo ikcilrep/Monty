@@ -18,7 +18,6 @@ package monty;
 
 import java.io.FileNotFoundException;
 
-import ast.Block;
 import parser.parsing.Parser;
 
 public class Main {
@@ -27,21 +26,14 @@ public class Main {
 	public static String path;
 
 	public static void main(String[] args) throws FileNotFoundException {
-		boolean isItToRun = false;
-		if ((args.length < 2 || !(isItToRun = args[0].equals("-r"))) && (args.length < 3 || !args[0].equals("-c"))) {
-			System.out.println(
-					"To run:\tjava -jar Monty.jar [file_name.(mt|mtc)]\nTo compile:\\tjava -jar Monty.jar [input_file_name.mt] -o [output_file_name.mtc]");
+		if (args.length < 1) {
+			System.out.println("To run:\tjava -jar Monty.jar [file_name.mt]");
 			System.exit(1);
 		}
 		Parser.libraries.put("sml", new sml.Sml());
-		path = args[1];
+		path = args[0];
 		argv = args;
-		Block block = null;
-		block = IOBlocks.readBlock(args[1]);
-		if (isItToRun)
-			block.run();
-		else
-			IOBlocks.compileAndWriteBlock(block, args[2]);
+		IOBlocks.readBlockFromFile(path).run();
 	}
 
 }

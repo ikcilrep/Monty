@@ -21,10 +21,7 @@ import ast.NodeTypes;
 import ast.expressions.OperationNode;
 
 public class ForStatementNode extends StatementNode {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5277131626875647624L;
+
 	private OperationNode array;
 	private String variableName;
 	private Block body;

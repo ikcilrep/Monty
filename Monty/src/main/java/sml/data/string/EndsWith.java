@@ -26,11 +26,6 @@ import parser.DataTypes;
 
 public class EndsWith extends FunctionDeclarationNode {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 7585895937224116923L;
-
 	public EndsWith() {
 		super("endsWith", DataTypes.BOOLEAN);
 		setBody(new Block(null));

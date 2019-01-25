@@ -26,7 +26,6 @@ import parser.LogError;
 
 public class OperationNode extends ExpressionNode {
 
-	private static final long serialVersionUID = 2708343059798065830L;
 	private OperationNode left = null;
 	private Object operand;
 	private Block parent = null;

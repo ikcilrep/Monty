@@ -26,10 +26,6 @@ import parser.DataTypes;
 import sml.data.returning.Nothing;
 
 public class Println extends FunctionDeclarationNode {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1275811232488303537L;
 
 	public Println() {
 		super("println", DataTypes.VOID);

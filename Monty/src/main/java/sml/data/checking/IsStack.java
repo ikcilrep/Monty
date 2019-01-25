@@ -27,11 +27,6 @@ import sml.data.stack.Stack;
 
 public class IsStack extends FunctionDeclarationNode {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3631208014701476121L;
-
 	public IsStack() {
 		super("isStack", DataTypes.BOOLEAN);
 		setBody(new Block(null));

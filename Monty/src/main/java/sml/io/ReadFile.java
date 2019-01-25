@@ -28,11 +28,6 @@ import parser.DataTypes;
 
 public class ReadFile extends FunctionDeclarationNode {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -111484253001907349L;
-
 	public ReadFile() {
 		super("readFile", DataTypes.STRING);
 		setBody(new Block(null));

@@ -16,7 +16,6 @@ limitations under the License.
 
 package sml.data.stack;
 
-import java.io.Serializable;
 import java.util.Iterator;
 
 import ast.Block;
@@ -24,11 +23,8 @@ import ast.declarations.StructDeclarationNode;
 import parser.LogError;
 import sml.data.array.Array;
 
-public class Stack extends StructDeclarationNode implements Iterable<Object>, Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 9022992871505654219L;
+public class Stack extends StructDeclarationNode implements Iterable<Object> {
+
 	Object[] array;
 	int top;
 

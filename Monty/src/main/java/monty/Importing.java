@@ -65,8 +65,6 @@ public class Importing {
 				addFunctionsFromDirectory(block, fileEntry);
 			else if (fileEntry.getName().endsWith(".mt"))
 				addFunctionFromFile(block, fileEntry.getAbsolutePath());
-			else if (fileEntry.getName().endsWith(".mtc"))
-				block.concat(IOBlocks.readCompiledBlockFromFile(fileEntry.getAbsolutePath()));
 			else
 				new LogError(
 						"File with wrong extension: " + directory.getPath() + File.separator + fileEntry.getName());
@@ -161,20 +159,12 @@ public class Importing {
 		var path = mainFileLocation + partOfPath.replace('.', File.separatorChar);
 		var file = new File(path + ".mt");
 		var parent_file = new File(file.getParent() + ".mt");
-		var compiled_file = new File(path + ".mtc");
-		var parent_compiled_file = new File(compiled_file.getParent() + ".mtc");
 		var directory = new File(path);
 		if (directory.exists() && directory.isDirectory())
 			addFunctionsFromDirectory(block, directory);
-		else if (compiled_file.exists() && compiled_file.isFile())
-			block.concat(IOBlocks.readCompiledBlockFromFile(compiled_file.getPath()));
 		else if (file.exists() && file.isFile())
 			addFunctionFromFile(block, file.getPath());
-		else if (parent_compiled_file.exists() && parent_compiled_file.isFile()) {
-			var name = compiled_file.getName().substring(0, compiled_file.getName().length() - 4);
-			var importedBlock = IOBlocks.readCompiledBlockFromFile(parent_compiled_file.getPath());
-			addSpecifiedFunctionOrVariableFromFile(block, importedBlock, parent_compiled_file.getPath(), name);
-		} else if (parent_file.exists() && parent_file.isFile()) {
+		else if (parent_file.exists() && parent_file.isFile()) {
 			var name = file.getName().substring(0, file.getName().length() - 3);
 			var importedBlock = Parser.parse(Lexer.lex(FileIO.readFile(parent_file.getAbsolutePath()),
 					parent_file.getName(), 1, new OptimizedTokensArray(), 0));

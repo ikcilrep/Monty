@@ -16,7 +16,6 @@ limitations under the License.
 
 package sml;
 
-import java.io.Serializable;
 import java.util.HashMap;
 
 import monty.Library;
@@ -60,12 +59,7 @@ import sml.threading.Sleep;
 import sml.time.UnixTime;
 import sml.time.UnixTimeMillis;
 
-public class Sml extends Library implements Serializable {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 9055473117351035776L;
+public class Sml extends Library {
 
 	public Sml() {
 		super("sml");

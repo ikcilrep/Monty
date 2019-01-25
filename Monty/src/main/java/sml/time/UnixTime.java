@@ -26,11 +26,6 @@ import parser.DataTypes;
 
 public class UnixTime extends FunctionDeclarationNode {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8707892100905230495L;
-
 	public UnixTime() {
 		super("unixTime", DataTypes.INTEGER);
 		setBody(new Block(null));

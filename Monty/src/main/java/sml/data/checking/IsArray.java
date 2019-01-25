@@ -27,11 +27,6 @@ import sml.data.array.Array;
 
 public class IsArray extends FunctionDeclarationNode {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3631208014701476121L;
-
 	public IsArray() {
 		super("isArray", DataTypes.BOOLEAN);
 		setBody(new Block(null));

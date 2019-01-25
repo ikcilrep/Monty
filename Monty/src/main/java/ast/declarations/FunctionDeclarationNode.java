@@ -27,10 +27,6 @@ import parser.DataTypes;
 import parser.LogError;
 
 public abstract class FunctionDeclarationNode extends DeclarationNode implements Cloneable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3950386734423560272L;
 	Block body;
 
 	public ArrayList<VariableDeclarationNode> parameters = new ArrayList<>();

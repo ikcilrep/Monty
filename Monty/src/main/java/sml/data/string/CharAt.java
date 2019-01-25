@@ -27,11 +27,6 @@ import parser.LogError;
 
 public class CharAt extends FunctionDeclarationNode {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6583669772871286556L;
-
 	public CharAt() {
 		super("charAt", DataTypes.STRING);
 		setBody(new Block(null));

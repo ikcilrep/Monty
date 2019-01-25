@@ -31,7 +31,7 @@ public class GetFromArray extends FunctionDeclarationNode {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1255006650808150230L;
+
 	Array array;
 
 	public GetFromArray(Array array) {
