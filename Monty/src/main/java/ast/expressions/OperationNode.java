@@ -226,7 +226,6 @@ public class OperationNode extends ExpressionNode {
 		Object rightValue = getLiteral(b);
 		DataTypes leftType = getDataType(leftValue);
 		DataTypes rightType = getDataType(rightValue);
-		System.out.println(leftType);
 		if (!leftType.equals(rightType))
 			new LogError("Type mismatch:\t" + leftType + " and " + rightType, getFileName(), getLine());
 

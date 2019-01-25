@@ -43,7 +43,7 @@ public class ExtendArray extends FunctionDeclarationNode {
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var arrayToExtend = (Array) getBody().getVariableByName("arrayToExtend").getValue();
-		if (arrayToExtend instanceof Array)
+		if (!(arrayToExtend instanceof Array))
 			new LogError("Can't extend array with something that isn't array", callFileName, callLine);
 		return array.extend(arrayToExtend);
 	}
