@@ -29,7 +29,7 @@ public class FindAll extends FunctionDeclarationNode {
 	private static final long serialVersionUID = -4514206011012649301L;
 
 	Array array;
-	
+
 	public FindAll(Array array) {
 		super("find", DataTypes.ANY);
 		this.array = array;
@@ -37,7 +37,6 @@ public class FindAll extends FunctionDeclarationNode {
 		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
 
 	}
-
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {

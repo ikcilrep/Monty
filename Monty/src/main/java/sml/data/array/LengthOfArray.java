@@ -24,12 +24,12 @@ public class LengthOfArray extends FunctionDeclarationNode {
 
 	private static final long serialVersionUID = -4759997709261414161L;
 	Array array;
+
 	public LengthOfArray(Array array) {
 		super("length", DataTypes.INTEGER);
 		this.array = array;
 		setBody(new Block(array));
 	}
-
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {

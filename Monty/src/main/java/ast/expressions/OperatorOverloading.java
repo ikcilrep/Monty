@@ -434,7 +434,6 @@ public class OperatorOverloading {
 		}
 	}
 
-
 	public static Object negationOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
 		switch (type) {
@@ -506,7 +505,6 @@ public class OperatorOverloading {
 		return result.toString();
 	}
 
-
 	public static Object shiftLeftOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
 		switch (type) {
@@ -528,7 +526,6 @@ public class OperatorOverloading {
 			return null;
 		}
 	}
-
 
 	public static Object shiftRightOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {

@@ -28,7 +28,7 @@ public class FunctionCallNode extends ExpressionNode implements StructContainer 
 	private String name;
 	private ArrayList<OperationNode> arguments = new ArrayList<>();
 	private OperationNode next;
-	
+
 	public FunctionCallNode(String name) {
 		this.name = name;
 		super.nodeType = NodeTypes.FUNCTION_CALL;

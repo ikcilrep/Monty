@@ -65,5 +65,4 @@ public class Token implements Cloneable {
 		this.text = text;
 	}
 
-
 }

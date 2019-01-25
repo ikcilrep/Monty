@@ -32,6 +32,7 @@ public class ExtendArray extends FunctionDeclarationNode {
 	 */
 	private static final long serialVersionUID = -4407198079905020979L;
 	Array array;
+
 	public ExtendArray(Array array) {
 		super("extend", DataTypes.VOID);
 		this.array = array;

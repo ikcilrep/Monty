@@ -25,9 +25,9 @@ import lexer.TokenTypes;
 
 public abstract class Identificator {
 	public static final Pattern importRegex = Pattern.compile("^[A-Z_]+ (DOT [A-Z_]+ )*$");
-	public static final Set<TokenTypes> dataTypesKeywords = Set.of(TokenTypes.INT_KEYWORD,
-			TokenTypes.FLOAT_KEYWORD, TokenTypes.BOOLEAN_KEYWORD, TokenTypes.STRING_KEYWORD, TokenTypes.VOID_KEYWORD,
-			TokenTypes.ANY_KEYWORD, TokenTypes.ARRAY_KEYWORD, TokenTypes.LIST_KEYWORD, TokenTypes.STACK_KEYWORD);
+	public static final Set<TokenTypes> dataTypesKeywords = Set.of(TokenTypes.INT_KEYWORD, TokenTypes.FLOAT_KEYWORD,
+			TokenTypes.BOOLEAN_KEYWORD, TokenTypes.STRING_KEYWORD, TokenTypes.VOID_KEYWORD, TokenTypes.ANY_KEYWORD,
+			TokenTypes.ARRAY_KEYWORD, TokenTypes.LIST_KEYWORD, TokenTypes.STACK_KEYWORD);
 
 	public static boolean isBreakStatement(OptimizedTokensArray tokens) {
 		if (!tokens.get(0).getType().equals(TokenTypes.BREAK_KEYWORD))
@@ -110,17 +110,19 @@ public abstract class Identificator {
 				break;
 			case BRACKET:
 				if (last == null)
-					new LogError("Unexpected bracket:\t" + Tokens.getText(tokensBeforeSemicolon.subarray(0, i + 1)), token);
-				if (last.getType().equals(TokenTypes.COMMA))
-					new LogError("Unexpected comma before bracket:\t" + Tokens.getText(tokensBeforeSemicolon.subarray(0, i + 1)),
+					new LogError("Unexpected bracket:\t" + Tokens.getText(tokensBeforeSemicolon.subarray(0, i + 1)),
 							token);
+				if (last.getType().equals(TokenTypes.COMMA))
+					new LogError("Unexpected comma before bracket:\t"
+							+ Tokens.getText(tokensBeforeSemicolon.subarray(0, i + 1)), token);
 				break;
 			case COMMA:
 				if (last == null)
-					new LogError("Unexpected comma:\t" + Tokens.getText(tokensBeforeSemicolon.subarray(0, i + 1)), token);
-				if ((last.getType().equals(TokenTypes.BRACKET) && last.getText().equals("(")))
-					new LogError("Unexpected bracket before comma:\t" + Tokens.getText(tokensBeforeSemicolon.subarray(0, i + 1)),
+					new LogError("Unexpected comma:\t" + Tokens.getText(tokensBeforeSemicolon.subarray(0, i + 1)),
 							token);
+				if ((last.getType().equals(TokenTypes.BRACKET) && last.getText().equals("(")))
+					new LogError("Unexpected bracket before comma:\t"
+							+ Tokens.getText(tokensBeforeSemicolon.subarray(0, i + 1)), token);
 				break;
 			case DOT:
 				if (last == null || (!last.getType().equals(TokenTypes.IDENTIFIER) && !last.getText().equals(")")))
@@ -157,16 +159,22 @@ public abstract class Identificator {
 		TokenTypes secondTokenType = null;
 		if (tokensBeforeSemicolon.length() >= 2)
 			secondTokenType = tokensBeforeSemicolon.get(1).getType();
-		var isSecondTokenDataTypeKeyword = tokensBeforeSemicolon.length() > 1 && dataTypesKeywords.contains(secondTokenType);
-		var isThirdTokenIdentifier = tokensBeforeSemicolon.length() > 2 && tokensBeforeSemicolon.get(2).getType().equals(TokenTypes.IDENTIFIER);
+		var isSecondTokenDataTypeKeyword = tokensBeforeSemicolon.length() > 1
+				&& dataTypesKeywords.contains(secondTokenType);
+		var isThirdTokenIdentifier = tokensBeforeSemicolon.length() > 2
+				&& tokensBeforeSemicolon.get(2).getType().equals(TokenTypes.IDENTIFIER);
 		if (!isFirstTokenFuncKeyword)
 			return false;
 		if (!isSecondTokenDataTypeKeyword)
-			new LogError("Expected data type declaration after \"func\" keyword:\t"
-					+ Tokens.getText(tokensBeforeSemicolon.subarray(1, tokensBeforeSemicolon.length())), tokensBeforeSemicolon.get(1));
+			new LogError(
+					"Expected data type declaration after \"func\" keyword:\t"
+							+ Tokens.getText(tokensBeforeSemicolon.subarray(1, tokensBeforeSemicolon.length())),
+					tokensBeforeSemicolon.get(1));
 		if (!isThirdTokenIdentifier)
-			new LogError("Expected identifier after data type declaration keyword:\t"
-					+ Tokens.getText(tokensBeforeSemicolon.subarray(2, tokensBeforeSemicolon.length())), tokensBeforeSemicolon.get(2));
+			new LogError(
+					"Expected identifier after data type declaration keyword:\t"
+							+ Tokens.getText(tokensBeforeSemicolon.subarray(2, tokensBeforeSemicolon.length())),
+					tokensBeforeSemicolon.get(2));
 		var last = (TokenTypes) null;
 		var isLastTokenDataTypeDeclaration = false;
 		for (int i = 3; i < tokensBeforeSemicolon.length(); i++) {
@@ -175,12 +183,17 @@ public abstract class Identificator {
 				isLastTokenDataTypeDeclaration = true;
 			else if (t.getType().equals(TokenTypes.IDENTIFIER)) {
 				if (!isLastTokenDataTypeDeclaration)
-					new LogError("Expected data type declaration before identifer:\t"
-							+ Tokens.getText(tokensBeforeSemicolon.subarray(i, tokensBeforeSemicolon.length())), t);
+					new LogError(
+							"Expected data type declaration before identifer:\t"
+									+ Tokens.getText(tokensBeforeSemicolon.subarray(i, tokensBeforeSemicolon.length())),
+							t);
 				isLastTokenDataTypeDeclaration = false;
 			} else if (t.getType().equals(TokenTypes.COMMA)) {
 				if (!(last.equals(TokenTypes.IDENTIFIER) && i + 1 < tokensBeforeSemicolon.length()))
-					new LogError("Unexpected comma:\t" + Tokens.getText(tokensBeforeSemicolon.subarray(i, tokensBeforeSemicolon.length())), t);
+					new LogError(
+							"Unexpected comma:\t"
+									+ Tokens.getText(tokensBeforeSemicolon.subarray(i, tokensBeforeSemicolon.length())),
+							t);
 				isLastTokenDataTypeDeclaration = false;
 			} else
 				new LogError("Unexpected token:\t" + t.getText(), t);
@@ -216,8 +229,11 @@ public abstract class Identificator {
 
 		if (!isFirstTokenReturnKeyword)
 			return false;
-		if (tokensBeforeSemicolon.length() > 1 && !isExpression(tokensBeforeSemicolon.subarray(1, tokensBeforeSemicolon.length())))
-			new LogError("Expected expression or nothing after \"return\" keyword:\t" + Tokens.getText(tokensBeforeSemicolon),
+		if (tokensBeforeSemicolon.length() > 1
+				&& !isExpression(tokensBeforeSemicolon.subarray(1, tokensBeforeSemicolon.length())))
+			new LogError(
+					"Expected expression or nothing after \"return\" keyword:\t"
+							+ Tokens.getText(tokensBeforeSemicolon),
 					tokensBeforeSemicolon.get(tokensBeforeSemicolon.length() > 1 ? 1 : 0));
 		return true;
 	}
@@ -249,9 +265,11 @@ public abstract class Identificator {
 			new LogError("Expected data type declaration after  \"dynamic\" or \"static\" keyword:\t"
 					+ Tokens.getText(tokensBeforeSemicolon), tokensBeforeSemicolon.get(1));
 		if (tokensSize == 2)
-			new LogError("Expected expression after data type declaration:\t" + Tokens.getText(tokensBeforeSemicolon), tokensBeforeSemicolon.get(1));
+			new LogError("Expected expression after data type declaration:\t" + Tokens.getText(tokensBeforeSemicolon),
+					tokensBeforeSemicolon.get(1));
 		if (!tokensBeforeSemicolon.get(2).getType().equals(TokenTypes.IDENTIFIER))
-			new LogError("Expected identifier after data type declaration:\t" + Tokens.getText(tokensBeforeSemicolon), tokensBeforeSemicolon.get(2));
+			new LogError("Expected identifier after data type declaration:\t" + Tokens.getText(tokensBeforeSemicolon),
+					tokensBeforeSemicolon.get(2));
 		if (tokensSize > 3) {
 			var expression = tokensBeforeSemicolon.subarray(2, tokensBeforeSemicolon.length());
 			if (!isExpression(expression))
@@ -260,7 +278,7 @@ public abstract class Identificator {
 		}
 		return true;
 	}
-	
+
 	public static boolean isStructDeclaration(OptimizedTokensArray tokens) {
 		if (!tokens.get(0).getType().equals(TokenTypes.STRUCT_KEYWORD))
 			return false;
@@ -270,6 +288,7 @@ public abstract class Identificator {
 
 		return true;
 	}
+
 	public static boolean isWhileStatement(OptimizedTokensArray tokens) {
 		if (!tokens.get(0).getType().equals(TokenTypes.WHILE_KEYWORD))
 			return false;

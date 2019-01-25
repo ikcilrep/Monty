@@ -25,6 +25,7 @@ public class VariableNode extends ExpressionNode implements StructContainer {
 	private static final long serialVersionUID = -8300892680278895019L;
 	private String name;
 	private OperationNode next = null;
+
 	public VariableNode(String name) {
 		this.name = name;
 		super.nodeType = NodeTypes.VARIABLE;
@@ -45,7 +46,7 @@ public class VariableNode extends ExpressionNode implements StructContainer {
 
 	@Override
 	public void setNext(OperationNode variableOrFunction) {
-		next =  variableOrFunction;
+		next = variableOrFunction;
 	}
 
 }

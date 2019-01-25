@@ -27,8 +27,9 @@ import parser.DataTypes;
 
 public class Subarray extends FunctionDeclarationNode {
 
-	private static final long serialVersionUID = -92018-201966361416331207L;
+	private static final long serialVersionUID = -92018 - 201966361416331207L;
 	Array array;
+
 	public Subarray(Array array) {
 		super("subarray", DataTypes.ANY);
 		this.array = array;
@@ -37,7 +38,6 @@ public class Subarray extends FunctionDeclarationNode {
 		addParameter(new VariableDeclarationNode("end", DataTypes.INTEGER));
 
 	}
-
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {

@@ -31,6 +31,7 @@ public class DoesArrayContains extends FunctionDeclarationNode {
 	 */
 	private static final long serialVersionUID = -7038852480570338076L;
 	Array array;
+
 	public DoesArrayContains(Array array) {
 		super("contains", DataTypes.BOOLEAN);
 		this.array = array;
@@ -38,7 +39,6 @@ public class DoesArrayContains extends FunctionDeclarationNode {
 		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
 
 	}
-
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {

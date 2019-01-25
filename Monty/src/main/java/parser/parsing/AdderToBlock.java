@@ -54,8 +54,9 @@ public abstract class AdderToBlock {
 	}
 
 	public static Block addDoWhileStatement(Block block, OptimizedTokensArray tokens) {
-		var whileStatement = new DoWhileStatementNode(ExpressionParser.parse(block, tokens.subarray(2, tokens.length())),
-				tokens.get(0).getFileName(), tokens.get(0).getLine());
+		var whileStatement = new DoWhileStatementNode(
+				ExpressionParser.parse(block, tokens.subarray(2, tokens.length())), tokens.get(0).getFileName(),
+				tokens.get(0).getLine());
 		whileStatement.setBody(new Block(block));
 		block.addChild(whileStatement);
 		return whileStatement.getBody();

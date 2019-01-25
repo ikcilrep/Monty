@@ -29,7 +29,7 @@ public class ReplaceAllInArray extends FunctionDeclarationNode {
 	private static final long serialVersionUID = -4514206011012649301L;
 
 	Array array;
-	
+
 	public ReplaceAllInArray(Array array) {
 		super("replace", DataTypes.ANY);
 		this.array = array;
@@ -38,7 +38,6 @@ public class ReplaceAllInArray extends FunctionDeclarationNode {
 		addParameter(new VariableDeclarationNode("replacement", DataTypes.ANY));
 
 	}
-
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {

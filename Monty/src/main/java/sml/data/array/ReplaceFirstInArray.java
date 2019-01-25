@@ -31,6 +31,7 @@ public class ReplaceFirstInArray extends FunctionDeclarationNode {
 	 */
 	private static final long serialVersionUID = -467448772656923164L;
 	Array array;
+
 	public ReplaceFirstInArray(Array array) {
 		super("replaceFirst", DataTypes.ANY);
 		this.array = array;
@@ -39,7 +40,6 @@ public class ReplaceFirstInArray extends FunctionDeclarationNode {
 		addParameter(new VariableDeclarationNode("replacement", DataTypes.ANY));
 
 	}
-
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {

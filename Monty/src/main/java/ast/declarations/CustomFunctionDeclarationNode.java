@@ -47,8 +47,8 @@ public class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
 			variables.put(key, value.copy());
 		}
 		setArguments(arguments, callFileName, callLine);
-		String[] fileNames = {callFileName, getFileName()};
-		int[] lines=  {callLine, getLine()};
+		String[] fileNames = { callFileName, getFileName() };
+		int[] lines = { callLine, getLine() };
 		Object result = null;
 		try {
 			result = body.run();

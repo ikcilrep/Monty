@@ -31,12 +31,12 @@ public class Stack extends StructDeclarationNode implements Iterable<Object>, Se
 	private static final long serialVersionUID = 9022992871505654219L;
 	Object[] array;
 	int top;
-	
+
 	public void addFunctions() {
 		addFunction(new Pop(this));
 		addFunction(new Peek(this));
 	}
-	
+
 	public Stack() {
 		super(new Block(null), "Stack");
 		array = new Object[128];

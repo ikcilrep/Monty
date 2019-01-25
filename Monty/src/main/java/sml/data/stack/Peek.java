@@ -27,6 +27,7 @@ public class Peek extends FunctionDeclarationNode {
 	private static final long serialVersionUID = -7764843602030320679L;
 
 	Stack stack;
+
 	public Peek(Stack stack) {
 		super("peek", DataTypes.ANY);
 		this.stack = stack;

@@ -44,7 +44,7 @@ import sml.data.returning.BreakType;
 import sml.data.returning.Nothing;
 import sml.threading.MontyThread;
 
-public class Block extends Node implements Serializable,Cloneable {
+public class Block extends Node implements Serializable, Cloneable {
 	private static final long serialVersionUID = -1974629623424063560L;
 	private LinkedList<Node> children = new LinkedList<>();
 	protected HashMap<String, FunctionDeclarationNode> functions = new HashMap<>();
@@ -97,7 +97,6 @@ public class Block extends Node implements Serializable,Cloneable {
 		functions.put(name, function);
 	}
 
-	
 	public void addVariable(VariableDeclarationNode variable) {
 		String name = variable.getName();
 		if (variables.containsKey(name))
@@ -160,7 +159,7 @@ public class Block extends Node implements Serializable,Cloneable {
 	public boolean doesContainVariable(String name) {
 		return variables.containsKey(name);
 	}
-	
+
 	public LinkedList<Node> getChildren() {
 		return children;
 	}
@@ -188,7 +187,7 @@ public class Block extends Node implements Serializable,Cloneable {
 		return block.functions.get(name);
 
 	}
-	
+
 	public HashMap<String, FunctionDeclarationNode> getFunctions() {
 		return functions;
 	}
@@ -349,7 +348,7 @@ public class Block extends Node implements Serializable,Cloneable {
 	public void setVariables(HashMap<String, VariableDeclarationNode> variables) {
 		this.variables = variables;
 	}
-	
+
 	public Block copy() {
 		try {
 			return (Block) clone();

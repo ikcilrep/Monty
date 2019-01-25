@@ -33,13 +33,13 @@ public class GetFromArray extends FunctionDeclarationNode {
 	 */
 	private static final long serialVersionUID = 1255006650808150230L;
 	Array array;
+
 	public GetFromArray(Array array) {
 		super("get", DataTypes.ANY);
 		this.array = array;
 		setBody(new Block(array));
 		addParameter(new VariableDeclarationNode("index", DataTypes.INTEGER));
 	}
-
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {

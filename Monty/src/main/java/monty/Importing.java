@@ -55,7 +55,8 @@ public class Importing {
 
 	private static void addFunctionFromFile(Block block, String path) {
 		var file = new File(path);
-		block.concat(Parser.parse(Lexer.lex(FileIO.readFile(file.getAbsolutePath()), path, 1, new OptimizedTokensArray(), 0)));
+		block.concat(Parser
+				.parse(Lexer.lex(FileIO.readFile(file.getAbsolutePath()), path, 1, new OptimizedTokensArray(), 0)));
 	}
 
 	private static void addFunctionsFromDirectory(Block block, File directory) {
@@ -182,7 +183,8 @@ public class Importing {
 			var splited = partOfPath.split("\\.");
 			if (!Parser.libraries.containsKey(splited[0]))
 				new LogError("There isn't file to import:\t" + path, tokensBeforeSemicolon.get(1));
-			findAndAddFunctions(block, subArray(splited, 1), path, Parser.libraries.get(splited[0]), tokensBeforeSemicolon.get(1));
+			findAndAddFunctions(block, subArray(splited, 1), path, Parser.libraries.get(splited[0]),
+					tokensBeforeSemicolon.get(1));
 		}
 	}
 

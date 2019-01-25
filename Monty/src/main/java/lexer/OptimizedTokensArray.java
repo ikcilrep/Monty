@@ -25,7 +25,6 @@ public class OptimizedTokensArray implements Iterable<Token> {
 	public OptimizedTokensArray() {
 		clear();
 	}
-	
 
 	public void setLength(int length) {
 		var newArray = new Token[length];
@@ -43,7 +42,6 @@ public class OptimizedTokensArray implements Iterable<Token> {
 		array[top] = element;
 		return this;
 	}
-
 
 	public Token get(int index) {
 		return array[index];
@@ -68,7 +66,7 @@ public class OptimizedTokensArray implements Iterable<Token> {
 	}
 
 	public int length() {
-		return top+1;
+		return top + 1;
 	}
 
 	public OptimizedTokensArray subarray(int begin, int end) {
@@ -78,13 +76,12 @@ public class OptimizedTokensArray implements Iterable<Token> {
 		return newArray;
 	}
 
-	
 	public void clear() {
 		top = -1;
 		array = new Token[64];
 	}
-	
+
 	public void trimToSize() {
-		setLength(top+1);
+		setLength(top + 1);
 	}
 }

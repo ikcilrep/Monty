@@ -59,7 +59,8 @@ public class ExpressionParser {
 		for (j = i.i + 2; openBracketCounter > closeBracketCounter; j++) {
 			if (j >= array.length()) {
 				if (openBracketCounter > closeBracketCounter)
-					new LogError("Expected closing bracket:\t" + Tokens.getText(array.subarray(i.i + 1, array.length())),
+					new LogError(
+							"Expected closing bracket:\t" + Tokens.getText(array.subarray(i.i + 1, array.length())),
 							token);
 				break;
 			}
@@ -98,8 +99,8 @@ public class ExpressionParser {
 		return node;
 	}
 
-	private static OperationNode parseAfterDot(Block parent, StructContainer structContainer, OptimizedTokensArray array,
-			IntegerHolder i) {
+	private static OperationNode parseAfterDot(Block parent, StructContainer structContainer,
+			OptimizedTokensArray array, IntegerHolder i) {
 		if (i.i + 1 < array.length() && array.get(i.i + 1).getType().equals(TokenTypes.DOT))
 			if ((i.i += 2) < array.length() && array.get(i.i).getType().equals(TokenTypes.IDENTIFIER)) {
 				var variableOrFunctionOperationNode = parseIdentifier(parent, array, i);
@@ -120,14 +121,15 @@ public class ExpressionParser {
 		return node;
 	}
 
-	private static OperationNode recParseIdentifier(Block parent, OptimizedTokensArray array, Stack<OperationNode> stack,
-			IntegerHolder i) {
+	private static OperationNode recParseIdentifier(Block parent, OptimizedTokensArray array,
+			Stack<OperationNode> stack, IntegerHolder i) {
 		stack.push(parseIdentifier(parent, array, i));
 		i.i++;
 		return parse(parent, array, stack, i);
 	}
 
-	public static OperationNode parse(Block parent, OptimizedTokensArray array, Stack<OperationNode> stack, IntegerHolder i) {
+	public static OperationNode parse(Block parent, OptimizedTokensArray array, Stack<OperationNode> stack,
+			IntegerHolder i) {
 		if (i.i < array.length()) {
 			var token = array.get(i.i);
 			OperationNode node = null;

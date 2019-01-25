@@ -28,6 +28,7 @@ public class AppendToArray extends FunctionDeclarationNode {
 
 	private static final long serialVersionUID = -618420023963314972L;
 	Array array;
+
 	public AppendToArray(Array array) {
 		super("append", DataTypes.VOID);
 		this.array = array;

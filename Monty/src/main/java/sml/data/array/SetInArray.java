@@ -32,6 +32,7 @@ public class SetInArray extends FunctionDeclarationNode {
 	 */
 	private static final long serialVersionUID = -4263197015723594960L;
 	Array array;
+
 	public SetInArray(Array array) {
 		super("set", DataTypes.ANY);
 		this.array = array;
@@ -39,7 +40,6 @@ public class SetInArray extends FunctionDeclarationNode {
 		addParameter(new VariableDeclarationNode("index", DataTypes.INTEGER));
 		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
 	}
-
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {

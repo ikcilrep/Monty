@@ -34,7 +34,7 @@ public class StructDeclarationNode extends Block implements Cloneable {
 	private static int number = -1;
 	private int instanceNumber;
 	private String name;
-	
+
 	public void addNewStruct(Block block, Token token) {
 		var struct = this;
 		block.addFunction(new FunctionDeclarationNode(name, DataTypes.ANY) {
@@ -49,8 +49,8 @@ public class StructDeclarationNode extends Block implements Cloneable {
 				if (newStruct.doesContainFunction("init")) {
 					var function = newStruct.getFunctionByName("init");
 					if (!function.getType().equals(DataTypes.VOID)) {
-						String[] fileNames = {function.getFileName(), callFileName};
-						int[] lines = {function.getLine(), callLine};
+						String[] fileNames = { function.getFileName(), callFileName };
+						int[] lines = { function.getLine(), callLine };
 						new LogError("Init method have to be void", fileNames, lines);
 					}
 					function.call(arguments, callFileName, callLine);
@@ -60,8 +60,8 @@ public class StructDeclarationNode extends Block implements Cloneable {
 			}
 
 		}, token);
-		var function = new FunctionDeclarationNode("is"+name, DataTypes.BOOLEAN) {
-			
+		var function = new FunctionDeclarationNode("is" + name, DataTypes.BOOLEAN) {
+
 			private static final long serialVersionUID = 7506903400263027675L;
 
 			@Override
@@ -78,7 +78,7 @@ public class StructDeclarationNode extends Block implements Cloneable {
 		function.addParameter(new VariableDeclarationNode("other", DataTypes.ANY));
 		block.addFunction(function, token);
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -86,7 +86,7 @@ public class StructDeclarationNode extends Block implements Cloneable {
 	public int getInstanceNumber() {
 		return instanceNumber;
 	}
-	
+
 	public void incrementNumber() {
 		instanceNumber = ++number;
 	}
@@ -101,11 +101,11 @@ public class StructDeclarationNode extends Block implements Cloneable {
 	public void setFunctions(HashMap<String, FunctionDeclarationNode> functions) {
 		this.functions = functions;
 	}
-	
+
 	public boolean instanceOfMe(StructDeclarationNode s) {
 		return s.getStructNumber() == structNumber;
 	}
-	
+
 	public int getStructNumber() {
 		return structNumber;
 	}
@@ -131,13 +131,13 @@ public class StructDeclarationNode extends Block implements Cloneable {
 				functions.put(key, value);
 			}
 			copied.setFunctions(functions);
-			
-			 
+
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
 		return copied;
 	}
+
 	@Override
 	public String toString() {
 		return name + "#" + getInstanceNumber();
