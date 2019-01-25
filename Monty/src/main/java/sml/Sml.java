@@ -21,34 +21,18 @@ import java.util.HashMap;
 
 import monty.Library;
 import sml.casts.Ord;
-import sml.casts.ToArray;
 import sml.casts.ToBoolean;
 import sml.casts.ToChar;
 import sml.casts.ToFloat;
 import sml.casts.ToInt;
-import sml.casts.ToList;
-import sml.casts.ToStack;
 import sml.casts.ToString;
 import sml.data.array.ArrayOf;
 import sml.data.checking.IsArray;
 import sml.data.checking.IsFloat;
 import sml.data.checking.IsInt;
-import sml.data.checking.IsList;
 import sml.data.checking.IsStack;
 import sml.data.checking.IsString;
-import sml.data.list.ExtendList;
-import sml.data.list.GetFromList;
-import sml.data.list.IsInList;
-import sml.data.list.LengthOfList;
-import sml.data.list.ListOf;
-import sml.data.list.ReplaceAllInList;
-import sml.data.list.ReplaceFirstInList;
-import sml.data.list.ReplaceLastInList;
-import sml.data.list.SetInList;
-import sml.data.list.Sublist;
 import sml.data.stack.NewStack;
-import sml.data.stack.Peek;
-import sml.data.stack.Pop;
 import sml.data.string.CharAt;
 import sml.data.string.EndsWith;
 import sml.data.string.EqualsIgnoreCase;
@@ -101,10 +85,6 @@ public class Sml extends Library implements Serializable {
 		var casts = (HashMap<String, Object>) children.get("casts");
 
 		casts.put("toBoolean", new ToBoolean());
-		casts.put("toArray", new ToArray());
-		casts.put("toList", new ToList());
-		casts.put("toStack", new ToStack());
-
 		casts.put("toFloat", new ToFloat());
 		casts.put("toInt", new ToInt());
 		casts.put("toString", new ToString());
@@ -113,30 +93,15 @@ public class Sml extends Library implements Serializable {
 
 		var data = (HashMap<String, Object>) children.get("data");
 		data.put("Array", new ArrayOf());
-		data.put("list", new HashMap<>());
+		data.put("Stack", new NewStack());
 		data.put("checking", new HashMap<>());
 		data.put("string", new HashMap<>());
-		data.put("stack", new HashMap<>());
-
-		var list = (HashMap<String, Object>) data.get("list");
-		list.put("listOf", new ListOf());
-		list.put("extendList", new ExtendList());
-		list.put("getFromList", new GetFromList());
-		list.put("setInList", new SetInList());
-
-		list.put("lengthOfList", new LengthOfList());
-		list.put("sublist", new Sublist());
-		list.put("isInList", new IsInList());
-		list.put("replaceAllInList", new ReplaceAllInList());
-		list.put("replaceFirstInList", new ReplaceFirstInList());
-		list.put("replaceLastInList", new ReplaceLastInList());
 
 		var checking = (HashMap<String, Object>) data.get("checking");
 		checking.put("isInt", new IsInt());
 		checking.put("isFloat", new IsFloat());
 		checking.put("isString", new IsString());
 		checking.put("isArray", new IsArray());
-		checking.put("isList", new IsList());
 		checking.put("isStack", new IsStack());
 
 		var string = (HashMap<String, Object>) data.get("string");
@@ -149,11 +114,6 @@ public class Sml extends Library implements Serializable {
 		string.put("substring", new Substring());
 		string.put("toLowerCase", new ToLowerCase());
 		string.put("toUpperCase", new ToUpperCase());
-
-		var stack = (HashMap<String, Object>) data.get("stack");
-		stack.put("newStack", new NewStack());
-		stack.put("pop", new Pop());
-		stack.put("peek", new Peek());
 
 		var io = (HashMap<String, Object>) children.get("io");
 		io.put("input", new Input());

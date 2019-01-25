@@ -26,9 +26,6 @@ import parser.LogError;
 
 public class OperationNode extends ExpressionNode {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2708343059798065830L;
 	private OperationNode left = null;
 	private Object operand;
@@ -126,16 +123,8 @@ public class OperationNode extends ExpressionNode {
 
 	private DataTypes getDataType(Object expression) {
 		// Returns data type of expression.
-		if (expression instanceof Node)
-			switch (((Node) expression).getNodeType()) {
-			case VARIABLE_DECLARATION:
-				return ((VariableDeclarationNode) expression).getType();
-			case STRUCT_DECLARATION:
-				return DataTypes.ANY;
-			default:
-				return null;
-			}
-
+		if (expression instanceof Node && ((Node) expression).getNodeType().equals(NodeTypes.VARIABLE_DECLARATION))
+			return ((VariableDeclarationNode) expression).getType();
 		return DataTypes.getDataType(expression);
 	}
 
@@ -235,17 +224,18 @@ public class OperationNode extends ExpressionNode {
 				|| operator.toString().equals(">") || operator.toString().equals("<");
 		Object leftValue = getLiteral(a);
 		Object rightValue = getLiteral(b);
-		DataTypes type = getDataType(leftValue); // If type isn't array and type of a and b aren't equals.
-		if (!(type.equals(DataTypes.ARRAY) || type.equals(DataTypes.LIST) || type.equals(DataTypes.STACK)
-				|| type.equals(getDataType(rightValue))))
-			new LogError("Type mismatch:\t" + type + " and " + getDataType(rightValue), getFileName(), getLine());
+		DataTypes leftType = getDataType(leftValue);
+		DataTypes rightType = getDataType(rightValue);
+		System.out.println(leftType);
+		if (!leftType.equals(rightType))
+			new LogError("Type mismatch:\t" + leftType + " and " + rightType, getFileName(), getLine());
 
 		if (!operator.toString().contains("=") || isComparison)
 			if (leftValue instanceof VariableDeclarationNode)
 				leftValue = ((VariableDeclarationNode) leftValue).getValue();
 		if (rightValue instanceof VariableDeclarationNode)
 			rightValue = ((VariableDeclarationNode) rightValue).getValue();
-		return calculate(leftValue, rightValue, getOperand(), type);
+		return calculate(leftValue, rightValue, getOperand(), leftType);
 
 	}
 

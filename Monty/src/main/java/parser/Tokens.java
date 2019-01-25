@@ -35,12 +35,6 @@ public class Tokens {
 		case STRING_LITERAL:
 		case STRING_KEYWORD:
 			return DataTypes.STRING;
-		case ARRAY_KEYWORD:
-			return DataTypes.ARRAY;
-		case STACK_KEYWORD:
-			return DataTypes.STACK;
-		case LIST_KEYWORD:
-			return DataTypes.LIST;
 		case ANY_KEYWORD:
 			return DataTypes.ANY;
 		case VOID_KEYWORD:

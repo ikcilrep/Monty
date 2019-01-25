@@ -23,6 +23,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
+import parser.LogError;
 
 public class ExtendArray extends FunctionDeclarationNode {
 
@@ -35,13 +36,15 @@ public class ExtendArray extends FunctionDeclarationNode {
 		super("extend", DataTypes.VOID);
 		this.array = array;
 		setBody(new Block(array));
-		addParameter(new VariableDeclarationNode("arrayToExtend", DataTypes.ARRAY));
+		addParameter(new VariableDeclarationNode("arrayToExtend", DataTypes.ANY));
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var arrayToExtend = (Array) getBody().getVariableByName("arrayToExtend").getValue();
+		if (arrayToExtend instanceof Array)
+			new LogError("Can't extend array with something that isn't array", callFileName, callLine);
 		return array.extend(arrayToExtend);
 	}
 

@@ -19,14 +19,12 @@ package parser;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import sml.data.array.Array;
-import sml.data.list.List;
+import ast.declarations.StructDeclarationNode;
 import sml.data.returning.Nothing;
 import sml.data.returning.VoidType;
-import sml.data.stack.Stack;
 
 public enum DataTypes {
-	BOOLEAN, INTEGER, FLOAT, STRING, VOID, ARRAY, ANY, LIST, STACK;
+	BOOLEAN, INTEGER, FLOAT, STRING, VOID, ANY;
 	public static DataTypes getDataType(Object value) {
 		if (value instanceof VoidType)
 			return DataTypes.VOID;
@@ -38,12 +36,8 @@ public enum DataTypes {
 			return DataTypes.STRING;
 		if (value instanceof Boolean)
 			return DataTypes.BOOLEAN;
-		if (value instanceof Array)
-			return DataTypes.ARRAY;
-		if (value instanceof Stack)
-			return DataTypes.STACK;
-		if (value instanceof List)
-			return DataTypes.LIST;
+		if (value instanceof StructDeclarationNode)
+			return DataTypes.ANY;
 		return null;
 
 	}
@@ -58,12 +52,6 @@ public enum DataTypes {
 			return "";
 		case BOOLEAN:
 			return false;
-		case ARRAY:
-			return new Array(0).append(Nothing.nothing);
-		case LIST:
-			return new List();
-		case STACK:
-			return new Stack().push(Nothing.nothing);
 		default:
 			return Nothing.nothing;
 		}

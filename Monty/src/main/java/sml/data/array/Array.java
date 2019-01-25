@@ -21,13 +21,13 @@ import java.util.Iterator;
 
 import ast.Block;
 import ast.declarations.StructDeclarationNode;
-import sml.data.list.List;
 import sml.data.returning.Nothing;
 import sml.data.stack.Stack;
 
 public class Array extends StructDeclarationNode implements Iterable<Object>, Cloneable, Serializable {
 	private static final long serialVersionUID = -114997948039751189L;
 	protected Object[] array;
+
 	public void addFunctions() {
 		addFunction(new AppendToArray(this));
 		addFunction(new ExtendArray(this));
@@ -39,7 +39,11 @@ public class Array extends StructDeclarationNode implements Iterable<Object>, Cl
 		addFunction(new ReplaceLastInArray(this));
 		addFunction(new SetInArray(this));
 		addFunction(new Subarray(this));
+		addFunction(new FindAll(this));
+		addFunction(new FindFirst(this));
+		addFunction(new FindLast(this));
 	}
+
 	public Array(int length) {
 		super(new Block(null), "Array");
 		addFunctions();
@@ -53,7 +57,7 @@ public class Array extends StructDeclarationNode implements Iterable<Object>, Cl
 		addFunctions();
 		this.array = array;
 	}
-	
+
 	public void setLength(int length) {
 		int i = 0;
 		var newArray = new Object[length];
@@ -61,19 +65,19 @@ public class Array extends StructDeclarationNode implements Iterable<Object>, Cl
 			newArray[i++] = e;
 		array = newArray;
 	}
-	
+
 	public Array extend(Array elements) {
 		var length = length();
-		setLength(array.length+elements.length());
+		setLength(array.length + elements.length());
 		var newLength = length();
-		for(int i = length, j = 0; i < newLength; i++, j++)
+		for (int i = length, j = 0; i < newLength; i++, j++)
 			array[i] = elements.get(j);
 		return this;
 	}
-	
+
 	public Array append(Object element) {
-		setLength(length()+1);
-		array[length()-1] = element;
+		setLength(length() + 1);
+		array[length() - 1] = element;
 		return this;
 	}
 
@@ -128,7 +132,7 @@ public class Array extends StructDeclarationNode implements Iterable<Object>, Cl
 
 			@Override
 			public Object next() {
-				return (Object)array[counter++];
+				return (Object) array[counter++];
 			}
 		};
 	}
@@ -154,7 +158,7 @@ public class Array extends StructDeclarationNode implements Iterable<Object>, Cl
 	}
 
 	public Array replaceLast(Object toBeReplaced, Object replacement) {
-		for (int i = length()-1; i >= 0; i--)
+		for (int i = length() - 1; i >= 0; i--)
 			if (array[i].equals(toBeReplaced)) {
 				array[i] = replacement;
 				break;
@@ -162,10 +166,32 @@ public class Array extends StructDeclarationNode implements Iterable<Object>, Cl
 		return this;
 	}
 
+	public Array findAll(Object element) {
+		Array result = new Array(0);
+		for (int i = 0; i < length(); i++)
+			if (array[i].equals(element))
+				result.append(i);
+		return result;
+	}
+
+	public int findFirst(Object element) {
+		for (int i = 0; i < length(); i++)
+			if (array[i].equals(element))
+				return i;
+		return -1;
+	}
+
+	public int findLast(Object element) {
+		for (int i = length() - 1; i >= 0; i--)
+			if (array[i].equals(element))
+				return i;
+		return -1;
+	}
+
 	public Array reversed() {
 		var arr = new Array(length());
-		for (int i = 0, j = length()-1; i < length(); i++, j--)
-			arr.set(j,  array[i]);
+		for (int i = 0, j = length() - 1; i < length(); i++, j--)
+			arr.set(j, array[i]);
 		return arr;
 	}
 
@@ -175,22 +201,14 @@ public class Array extends StructDeclarationNode implements Iterable<Object>, Cl
 	}
 
 	public Array subarray(int begin, int end) {
-		Array newArray = new Array(end-begin+1);
-		for (int i = begin,j =0; i < end; i++, j++)
+		Array newArray = new Array(end - begin);
+		for (int i = begin, j = 0; i < end; i++, j++)
 			newArray.set(j, array[i]);
 		return newArray;
 	}
 
 	public Object[] toArray() {
 		return array;
-	}
-
-	public List toList() {
-		var list = new List(array[0]);
-		for (Object e : array)
-			list.append(e);
-		return list.getNext();
-
 	}
 
 	public Stack toStack() {

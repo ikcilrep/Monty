@@ -14,9 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sml.data.list;
+package sml.data.array;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 
 import ast.Block;
@@ -24,30 +23,28 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
-import parser.LogError;
 
-public class GetFromList extends FunctionDeclarationNode {
+public class FindLast extends FunctionDeclarationNode {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1255006650808150230L;
+	private static final long serialVersionUID = -4514206011012649301L;
 
-	public GetFromList() {
-		super("getFromList", DataTypes.ANY);
-		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("lst", DataTypes.LIST));
-		addParameter(new VariableDeclarationNode("index", DataTypes.INTEGER));
+	Array array;
+	
+	public FindLast(Array array) {
+		super("findLast", DataTypes.ANY);
+		this.array = array;
+		setBody(new Block(array));
+		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
+
 	}
+
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var lst = (List) getBody().getVariableByName("lst").getValue();
-		var index = (BigInteger) getBody().getVariableByName("index").getValue();
-		if (index.compareTo(BigInteger.valueOf(lst.length())) >= 0)
-			new LogError("Index " + index + " is too large for length " + lst.length(), callFileName, callLine);
-		return lst.get(index.intValue());
+		var body = getBody();
+		var element = body.getVariableByName("element").getValue();
+		return array.findLast(element);
 	}
 
 }

@@ -24,16 +24,9 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 
 public class NewStack extends FunctionDeclarationNode {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7764843602030320679L;
-
-	/**
-	 * 
-	 */
 	public NewStack() {
-		super("newStack", DataTypes.STACK);
+		super("Stack", DataTypes.ANY);
 		setBody(new Block(null));
 	}
 

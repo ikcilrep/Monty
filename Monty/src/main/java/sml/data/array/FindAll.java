@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sml.casts;
+package sml.data.array;
 
 import java.util.ArrayList;
 
@@ -23,38 +23,28 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
-import sml.data.array.Array;
-import sml.data.list.List;
-import sml.data.stack.Stack;
 
-public class ToArray extends FunctionDeclarationNode {
+public class FindAll extends FunctionDeclarationNode {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3165880297105294653L;
+	private static final long serialVersionUID = -4514206011012649301L;
 
-	public static Object toArray(Object a, String callFileName, int callLine) {
-		if (a instanceof Array)
-			return a;
-		if (a instanceof List)
-			return ((List) a).toArray();
-		if (a instanceof Stack)
-			return ((Stack) a).toArray();
-		return new Array(0).append(a);
+	Array array;
+	
+	public FindAll(Array array) {
+		super("find", DataTypes.ANY);
+		this.array = array;
+		setBody(new Block(array));
+		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
+
 	}
 
-	public ToArray() {
-		super("toArray", DataTypes.ARRAY);
-		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("a", DataTypes.ANY));
-	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var a = getBody().getVariableByName("a").getValue();
-		return toArray(a, callFileName, callLine);
+		var body = getBody();
+		var element = body.getVariableByName("element").getValue();
+		return array.findAll(element);
 	}
 
 }

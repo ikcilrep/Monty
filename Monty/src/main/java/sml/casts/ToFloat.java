@@ -27,7 +27,6 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
 import sml.data.array.Array;
-import sml.data.list.List;
 import sml.data.stack.Stack;
 
 public class ToFloat extends FunctionDeclarationNode {
@@ -63,8 +62,6 @@ public class ToFloat extends FunctionDeclarationNode {
 			return StringToFloat.stringToFloat((String) a, callFileName, callLine);
 		if (a instanceof Array)
 			new LogError("Can't cast array to float:\t" + a.toString(), callFileName, callLine);
-		if (a instanceof List)
-			new LogError("Can't cast list to float:\t" + a.toString(), callFileName, callLine);
 		if (a instanceof Stack)
 			new LogError("Can't cast stack to float:\t" + a.toString(), callFileName, callLine);
 		return null;

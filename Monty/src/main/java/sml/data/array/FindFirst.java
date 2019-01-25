@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sml.data.list;
+package sml.data.array;
 
 import java.util.ArrayList;
 
@@ -24,31 +24,27 @@ import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class ReplaceAllInList extends FunctionDeclarationNode {
+public class FindFirst extends FunctionDeclarationNode {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -4514206011012649301L;
 
-	public ReplaceAllInList() {
-		super("replaceAllInList", DataTypes.ARRAY);
-		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("lst", DataTypes.LIST));
-		addParameter(new VariableDeclarationNode("toBeReplaced", DataTypes.ANY));
-		addParameter(new VariableDeclarationNode("replacement", DataTypes.ANY));
+	Array array;
+	
+	public FindFirst(Array array) {
+		super("findFirst", DataTypes.ANY);
+		this.array = array;
+		setBody(new Block(array));
+		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
 
 	}
+
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var lst = (List) body.getVariableByName("lst").getValue();
-		var toBeReplaced = body.getVariableByName("toBeReplaced").getValue();
-		var replacement = body.getVariableByName("replacement").getValue();
-
-		return lst.replaceAll(toBeReplaced, replacement);
+		var element = body.getVariableByName("element").getValue();
+		return array.findFirst(element);
 	}
 
 }

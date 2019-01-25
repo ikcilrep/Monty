@@ -36,12 +36,9 @@ import ast.statements.WhileStatementNode;
 import lexer.Token;
 import parser.DataTypes;
 import parser.LogError;
-import sml.casts.ToArray;
 import sml.casts.ToBoolean;
 import sml.casts.ToFloat;
 import sml.casts.ToInt;
-import sml.casts.ToList;
-import sml.casts.ToStack;
 import sml.casts.ToString;
 import sml.data.returning.BreakType;
 import sml.data.returning.Nothing;
@@ -328,15 +325,6 @@ public class Block extends Node implements Serializable,Cloneable {
 				case STRING:
 					variable.setValue(
 							new ToString().toString(variable.getValue(), child.getFileName(), child.getLine()));
-					break;
-				case ARRAY:
-					variable.setValue(ToArray.toArray(variable.getValue(), child.getFileName(), child.getLine()));
-					break;
-				case LIST:
-					variable.setValue(ToList.toList(variable.getValue(), child.getFileName(), child.getLine()));
-					break;
-				case STACK:
-					variable.setValue(ToStack.toStack(variable.getValue(), child.getFileName(), child.getLine()));
 					break;
 				default:
 					break;

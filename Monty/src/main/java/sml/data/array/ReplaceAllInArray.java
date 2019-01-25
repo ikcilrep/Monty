@@ -31,7 +31,7 @@ public class ReplaceAllInArray extends FunctionDeclarationNode {
 	Array array;
 	
 	public ReplaceAllInArray(Array array) {
-		super("replace", DataTypes.ARRAY);
+		super("replace", DataTypes.ANY);
 		this.array = array;
 		setBody(new Block(array));
 		addParameter(new VariableDeclarationNode("toBeReplaced", DataTypes.ANY));

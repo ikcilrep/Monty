@@ -20,29 +20,22 @@ import java.util.ArrayList;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
-import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
 public class Peek extends FunctionDeclarationNode {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7764843602030320679L;
 
-	/**
-	 * 
-	 */
-	public Peek() {
+	Stack stack;
+	public Peek(Stack stack) {
 		super("peek", DataTypes.ANY);
-		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("stack", DataTypes.STACK));
+		this.stack = stack;
+		setBody(new Block(stack));
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var stack = (Stack) getBody().getVariableByName("stack").getValue();
 		return stack.peek();
 	}
 

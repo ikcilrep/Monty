@@ -60,7 +60,7 @@ public class StructDeclarationNode extends Block implements Cloneable {
 			}
 
 		}, token);
-		var function = new FunctionDeclarationNode("isInstanceOf"+name, DataTypes.BOOLEAN) {
+		var function = new FunctionDeclarationNode("is"+name, DataTypes.BOOLEAN) {
 			
 			private static final long serialVersionUID = 7506903400263027675L;
 

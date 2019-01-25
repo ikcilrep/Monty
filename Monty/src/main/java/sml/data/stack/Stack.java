@@ -19,34 +19,34 @@ package sml.data.stack;
 import java.io.Serializable;
 import java.util.Iterator;
 
+import ast.Block;
+import ast.declarations.StructDeclarationNode;
 import parser.LogError;
 import sml.data.array.Array;
 
-public class Stack implements Cloneable, Iterable<Object>, Serializable {
+public class Stack extends StructDeclarationNode implements Iterable<Object>, Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 9022992871505654219L;
 	Object[] array;
 	int top;
-
+	
+	public void addFunctions() {
+		addFunction(new Pop(this));
+		addFunction(new Peek(this));
+	}
+	
 	public Stack() {
+		super(new Block(null), "Stack");
 		array = new Object[128];
 		top = -1;
 	}
 
 	public Stack(Object[] array) {
+		super(new Block(null), "Stack");
 		this.array = array;
 		top = array.length - 1;
-	}
-
-	public Stack copy() {
-		try {
-			return (Stack) clone();
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 	@Override
@@ -121,7 +121,8 @@ public class Stack implements Cloneable, Iterable<Object>, Serializable {
 		Object[] newArray = new Object[array.length];
 		for (int j = top, i = 0; j >= 0; j--, i++)
 			newArray[i] = array[j];
-		Stack newStack = copy();
+		Stack newStack = new Stack();
+		newStack.top = top;
 		newStack.array = newArray;
 		return newStack;
 	}

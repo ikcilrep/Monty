@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sml.data.checking;
+package sml.data.stack;
 
 import java.util.ArrayList;
 
@@ -23,26 +23,22 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
-import sml.data.list.List;
 
-public class IsList extends FunctionDeclarationNode {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3631208014701476121L;
-
-	public IsList() {
-		super("isList", DataTypes.BOOLEAN);
-		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("toCheck", DataTypes.ANY));
+public class Push extends FunctionDeclarationNode {
+	private static final long serialVersionUID = -7764843602030320679L;
+	Stack stack;
+	public Push(Stack stack) {
+		super("push", DataTypes.ANY);
+		this.stack = stack;
+		setBody(new Block(stack));
+		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var toCheck = getBody().getVariableByName("toCheck").getValue();
-		return toCheck instanceof List;
+		var element = getBody().getVariableByName("element").getValue();
+		return stack.push(element);
 	}
 
 }
