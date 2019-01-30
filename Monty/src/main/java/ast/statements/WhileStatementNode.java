@@ -20,27 +20,12 @@ import ast.Block;
 import ast.NodeTypes;
 import ast.expressions.OperationNode;
 
-public class WhileStatementNode extends StatementNode {
-	private OperationNode condition;
-	private Block body;
-
-	public WhileStatementNode(OperationNode condition, String fileName, int line) {
+public class WhileStatementNode extends ConditionalBlock {
+	public WhileStatementNode(OperationNode condition, String fileName, int line, NodeTypes whileOrDoWhile, Block parent) {
+		super(condition, parent, whileOrDoWhile);
 		this.condition = condition;
-		super.nodeType = NodeTypes.WHILE_STATEMENT;
 		this.fileName = fileName;
 		this.line = line;
-	}
-
-	public Block getBody() {
-		return body;
-	}
-
-	public OperationNode getCondition() {
-		return condition;
-	}
-
-	public void setBody(Block body) {
-		this.body = body;
 	}
 
 }

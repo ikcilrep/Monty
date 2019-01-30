@@ -20,23 +20,17 @@ import ast.Block;
 import ast.NodeTypes;
 import ast.expressions.OperationNode;
 
-public class IfStatementNode extends Block {
+public class IfStatementNode extends ConditionalBlock {
 
-	private OperationNode condition;
 	private Block elseBody;
 
 	private boolean isInElse = false;
 
 	public IfStatementNode(Block parent, OperationNode condition, String fileName, int line) {
-		super(parent);
+		super(condition, parent, NodeTypes.IF_STATEMENT);
 		this.condition = condition;
-		super.nodeType = NodeTypes.IF_STATEMENT;
 		this.fileName = fileName;
 		this.line = line;
-	}
-
-	public OperationNode getCondition() {
-		return condition;
 	}
 
 	public Block getElseBody() {

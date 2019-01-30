@@ -44,7 +44,7 @@ public class ToString extends FunctionDeclarationNode {
 		return toString(a, callFileName, callLine);
 	}
 
-	public String toString(Object a, String callFileName, int callLine) {
+	public static String toString(Object a, String callFileName, int callLine) {
 		if (a == null)
 			new LogError("Can't cast void to string.", callFileName, callLine);
 		return a.toString();

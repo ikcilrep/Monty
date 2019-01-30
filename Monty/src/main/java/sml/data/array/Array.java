@@ -125,7 +125,7 @@ public class Array extends StructDeclarationNode implements Iterable<Object>, Cl
 
 			@Override
 			public boolean hasNext() {
-				return counter <= length();
+				return counter < length();
 
 			}
 

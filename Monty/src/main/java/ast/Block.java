@@ -25,8 +25,6 @@ import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import ast.statements.ChangeToStatementNode;
-import ast.statements.ContinueStatementNode;
-import ast.statements.DoWhileStatementNode;
 import ast.statements.ForStatementNode;
 import ast.statements.IfStatementNode;
 import ast.statements.ReturnStatementNode;
@@ -40,6 +38,7 @@ import sml.casts.ToFloat;
 import sml.casts.ToInt;
 import sml.casts.ToString;
 import sml.data.returning.BreakType;
+import sml.data.returning.ContinueType;
 import sml.data.returning.Nothing;
 import sml.threading.MontyThread;
 
@@ -235,7 +234,7 @@ public class Block extends Node implements Cloneable {
 			case IF_STATEMENT:
 				var childCastedToIfStatement = ((IfStatementNode) child);
 				var elseBody = childCastedToIfStatement.getElseBody();
-				if ((boolean) childCastedToIfStatement.getCondition().run()) {
+				if (childCastedToIfStatement.runnedCondition()) {
 					var result = childCastedToIfStatement.run();
 					if (result != null)
 						return result;
@@ -247,29 +246,27 @@ public class Block extends Node implements Cloneable {
 				break;
 			case WHILE_STATEMENT:
 				var childCastedToWhileStatement = ((WhileStatementNode) child);
-				loop: while ((boolean) childCastedToWhileStatement.getCondition().run()) {
-					var body = childCastedToWhileStatement.getBody();
-					var result = body.run();
+				while ((boolean) childCastedToWhileStatement.runnedCondition()) {
+					var result = childCastedToWhileStatement.run();
 					if (result instanceof BreakType)
-						break loop;
-					if (result instanceof ContinueStatementNode)
+						break;
+					if (result instanceof ContinueType)
 						continue;
 					if (result != null)
 						return result;
 				}
 				break;
 			case DO_WHILE_STATEMENT:
-				var childCastedToDoWhileStatement = ((DoWhileStatementNode) child);
-				loop: do {
-					var body = childCastedToDoWhileStatement.getBody();
-					var result = body.run();
+				var childCastedToDoWhileStatement = ((WhileStatementNode) child);
+				do {
+					var result = childCastedToDoWhileStatement.run();
 					if (result instanceof BreakType)
-						break loop;
-					if (result instanceof ContinueStatementNode)
+						break;
+					if (result instanceof ContinueType)
 						continue;
 					if (result != null)
 						return result;
-				} while ((boolean) childCastedToDoWhileStatement.getCondition().run());
+				} while ((boolean) childCastedToDoWhileStatement.runnedCondition());
 				break;
 			case FOR_STATEMENT:
 				var childCastedToForStatement = ((ForStatementNode) child);
@@ -279,18 +276,19 @@ public class Block extends Node implements Cloneable {
 					new LogError("Can't iterate over:\t" + toIter.getClass().getName(), child.getFileName(),
 							child.getLine());
 				var iterable = (Iterable<?>) toIter;
-				loop: for (Object e : iterable) {
-					var body = childCastedToForStatement.getBody();
-					if (body.doesContainVariable(name))
-						body.getVariableByName(name, body.getFileName(), body.getLine()).setValue(e);
+				for (Object e : iterable) {
+					if (childCastedToForStatement.doesContainVariable(name))
+						childCastedToForStatement.getVariableByName(name, childCastedToForStatement.getFileName(),
+								childCastedToForStatement.getLine()).setValue(e);
 					else {
-						body.addVariable(new VariableDeclarationNode(name, DataTypes.ANY));
-						body.getVariableByName(name, body.getFileName(), body.getLine()).setValue(e);
+						childCastedToForStatement.addVariable(new VariableDeclarationNode(name, DataTypes.ANY));
+						childCastedToForStatement.getVariableByName(name, childCastedToForStatement.getFileName(),
+								childCastedToForStatement.getLine()).setValue(e);
 					}
-					var result = body.run();
+					var result = childCastedToForStatement.run();
 					if (result instanceof BreakType)
-						break loop;
-					if (result instanceof ContinueStatementNode)
+						break;
+					if (result instanceof ContinueType)
 						continue;
 					if (result != null)
 						return result;
@@ -311,18 +309,16 @@ public class Block extends Node implements Cloneable {
 				variable.setType(newVariableType);
 				switch (newVariableType) {
 				case INTEGER:
-					variable.setValue(new ToInt().toInt(variable.getValue(), child.getFileName(), child.getLine()));
+					variable.setValue(ToInt.toInt(variable.getValue(), child.getFileName(), child.getLine()));
 					break;
 				case BOOLEAN:
-					variable.setValue(
-							new ToBoolean().toBoolean(variable.getValue(), child.getFileName(), child.getLine()));
+					variable.setValue(ToBoolean.toBoolean(variable.getValue(), child.getFileName(), child.getLine()));
 					break;
 				case FLOAT:
-					variable.setValue(new ToFloat().toFloat(variable.getValue(), child.getFileName(), child.getLine()));
+					variable.setValue(ToFloat.toFloat(variable.getValue(), child.getFileName(), child.getLine()));
 					break;
 				case STRING:
-					variable.setValue(
-							new ToString().toString(variable.getValue(), child.getFileName(), child.getLine()));
+					variable.setValue(ToString.toString(variable.getValue(), child.getFileName(), child.getLine()));
 					break;
 				default:
 					break;

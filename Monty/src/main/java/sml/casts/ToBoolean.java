@@ -48,7 +48,7 @@ public class ToBoolean extends FunctionDeclarationNode {
 		return toBoolean(a, callFileName, callLine);
 	}
 
-	public Object toBoolean(Object a, String callFileName, int callLine) {
+	public static Boolean toBoolean(Object a, String callFileName, int callLine) {
 		if (a == null)
 			new LogError("Can't cast void to boolean", callFileName, callLine);
 		if (a instanceof BigInteger)
@@ -56,7 +56,7 @@ public class ToBoolean extends FunctionDeclarationNode {
 		if (a instanceof BigDecimal)
 			return FloatToBoolean.floatToBoolean((BigDecimal) a);
 		if (a instanceof Boolean)
-			return a;
+			return (boolean) a;
 		if (a instanceof String)
 			return StringToBoolean.stringToBoolean((String) a, callFileName, callLine);
 		if (a instanceof Array)

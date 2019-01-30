@@ -18,8 +18,6 @@ package ast.declarations;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
-
 import ast.Block;
 import ast.NodeTypes;
 import ast.expressions.OperationNode;
@@ -72,10 +70,9 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 		}
 		for (int i = 0; i < runnedArguments.size(); i++) {
 			var name = parameters.get(i).getName();
-			var dataType = parameters.get(i).getType();
 			VariableDeclarationNode variable = null;
 			if (!body.doesContainVariable(name)) {
-				variable = new VariableDeclarationNode(name, dataType);
+				variable = new VariableDeclarationNode(name, parameters.get(i).getType());
 				body.addVariable(variable, fileName, line);
 			} else
 				variable = body.getVariableByName(name, getFileName(), getLine());

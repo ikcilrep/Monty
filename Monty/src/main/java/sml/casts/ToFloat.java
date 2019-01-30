@@ -48,7 +48,7 @@ public class ToFloat extends FunctionDeclarationNode {
 		return toFloat(a, callFileName, callLine);
 	}
 
-	public Object toFloat(Object a, String callFileName, int callLine) {
+	public static BigDecimal toFloat(Object a, String callFileName, int callLine) {
 		if (a == null)
 			new LogError("Can't cast void to float", callFileName, callLine);
 		if (a instanceof BigInteger)
@@ -56,7 +56,7 @@ public class ToFloat extends FunctionDeclarationNode {
 		if (a instanceof Boolean)
 			return BooleanToFloat.booleanToFloat((Boolean) a);
 		if (a instanceof BigDecimal)
-			return a;
+			return (BigDecimal) a;
 		if (a instanceof String)
 			return StringToFloat.stringToFloat((String) a, callFileName, callLine);
 		if (a instanceof Array)

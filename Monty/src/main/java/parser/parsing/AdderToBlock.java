@@ -27,7 +27,6 @@ import ast.expressions.VariableNode;
 import ast.statements.BreakStatementNode;
 import ast.statements.ChangeToStatementNode;
 import ast.statements.ContinueStatementNode;
-import ast.statements.DoWhileStatementNode;
 import ast.statements.ForStatementNode;
 import ast.statements.IfStatementNode;
 import ast.statements.ReturnStatementNode;
@@ -54,12 +53,10 @@ public abstract class AdderToBlock {
 	}
 
 	public static Block addDoWhileStatement(Block block, OptimizedTokensArray tokens) {
-		var whileStatement = new DoWhileStatementNode(
-				ExpressionParser.parse(block, tokens.subarray(2, tokens.length())), tokens.get(0).getFileName(),
-				tokens.get(0).getLine());
-		whileStatement.setBody(new Block(block));
+		var whileStatement = new WhileStatementNode(ExpressionParser.parse(block, tokens.subarray(2, tokens.length())),
+				tokens.get(0).getFileName(), tokens.get(0).getLine(), NodeTypes.DO_WHILE_STATEMENT, block);
 		block.addChild(whileStatement);
-		return whileStatement.getBody();
+		return whileStatement;
 
 	}
 
@@ -81,11 +78,9 @@ public abstract class AdderToBlock {
 	public static Block addForStatement(Block block, OptimizedTokensArray tokens) {
 		var forStatement = new ForStatementNode(tokens.get(1).getText(),
 				ExpressionParser.parse(block, tokens.subarray(3, tokens.length())), tokens.get(0).getFileName(),
-				tokens.get(0).getLine());
-		forStatement.setBody(new Block(block));
-
+				tokens.get(0).getLine(), block);
 		block.addChild(forStatement);
-		return forStatement.getBody();
+		return forStatement;
 	}
 
 	public static Block addFunctionDeclaration(Block block, OptimizedTokensArray tokens) {
@@ -154,10 +149,9 @@ public abstract class AdderToBlock {
 
 	public static Block addWhileStatement(Block block, OptimizedTokensArray tokens) {
 		var whileStatement = new WhileStatementNode(ExpressionParser.parse(block, tokens.subarray(1, tokens.length())),
-				tokens.get(0).getFileName(), tokens.get(0).getLine());
-		whileStatement.setBody(new Block(block));
+				tokens.get(0).getFileName(), tokens.get(0).getLine(), NodeTypes.WHILE_STATEMENT, block);
 		block.addChild(whileStatement);
-		return whileStatement.getBody();
+		return whileStatement;
 
 	}
 }

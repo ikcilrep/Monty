@@ -48,7 +48,7 @@ public class ToInt extends FunctionDeclarationNode {
 		return toInt(a, callFileName, callLine);
 	}
 
-	public BigInteger toInt(Object a, String callFileName, int callLine) {
+	public static BigInteger toInt(Object a, String callFileName, int callLine) {
 		if (a == null)
 			new LogError("Can't cast void to integer", callFileName, callLine);
 		if (a instanceof BigInteger)

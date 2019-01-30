@@ -20,16 +20,15 @@ import ast.Block;
 import ast.NodeTypes;
 import ast.expressions.OperationNode;
 
-public class ForStatementNode extends StatementNode {
+public class ForStatementNode extends Block {
 
 	private OperationNode array;
 	private String variableName;
-	private Block body;
 
-	public ForStatementNode(String variableName, OperationNode array, String fileName, int line) {
+	public ForStatementNode(String variableName, OperationNode array, String fileName, int line, Block parent) {
+		super(parent, NodeTypes.FOR_STATEMENT);
 		this.variableName = variableName;
 		this.array = array;
-		super.nodeType = NodeTypes.FOR_STATEMENT;
 		this.fileName = fileName;
 		this.line = line;
 	}
@@ -38,16 +37,10 @@ public class ForStatementNode extends StatementNode {
 		return array;
 	}
 
-	public Block getBody() {
-		return body;
-	}
+
 
 	public String getVariableName() {
 		return variableName;
 	}
-
-	public void setBody(Block body) {
-		this.body = body;
-	}
-
 }
+
