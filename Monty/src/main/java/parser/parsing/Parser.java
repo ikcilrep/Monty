@@ -68,8 +68,6 @@ public class Parser {
 					Importing.addLibrary(tokensBeforeSemicolon);
 				} else if (Identificator.isChangeToStatement(tokensBeforeSemicolon)) {
 					AdderToBlock.addChangeToStatement(block, tokensBeforeSemicolon);
-				} else if (Identificator.isThreadStatement(tokensBeforeSemicolon)) {
-					AdderToBlock.addThreadStatement(block, tokensBeforeSemicolon);
 				} else if (Identificator.isBreakStatement(tokensBeforeSemicolon)) {
 					AdderToBlock.addBreakStatement(block, tokensBeforeSemicolon.get(0).getFileName(),
 							tokensBeforeSemicolon.get(0).getLine());
