@@ -22,7 +22,6 @@ import java.util.LinkedList;
 import ast.Block;
 import ast.NodeTypes;
 import ast.expressions.OperationNode;
-import lexer.Token;
 import parser.DataTypes;
 import parser.LogError;
 
@@ -73,13 +72,13 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 		for (int i = 0; i < runnedArguments.size(); i++) {
 			var name = parameters.get(i).getName();
 			var dataType = parameters.get(i).getType();
+			VariableDeclarationNode variable = null;
 			if (!body.doesContainVariable(name)) {
-				var token = new Token(null);
-				token.setFileName(fileName);
-				token.setLine(line);
-				body.addVariable(new VariableDeclarationNode(name, dataType), token);
-			}
-			body.getVariableByName(name, getFileName(), getLine()).setValue(runnedArguments.get(i));
+				variable = new VariableDeclarationNode(name, dataType);
+				body.addVariable(variable, fileName, line);
+			} else
+				variable = body.getVariableByName(name, getFileName(), getLine());
+			variable.setValue(runnedArguments.get(i));
 		}
 	}
 
