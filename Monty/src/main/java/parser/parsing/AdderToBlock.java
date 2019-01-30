@@ -130,12 +130,14 @@ public abstract class AdderToBlock {
 	}
 
 	public static void addVariableDeclaration(Block block, OptimizedTokensArray tokens) {
-		var dataType = Tokens.getDataType(tokens.get(1).getType());
-		var variable = new VariableDeclarationNode(tokens.get(2).getText(), dataType);
-		variable.setDynamic(tokens.get(0).getType().equals(TokenTypes.DYNAMIC_KEYWORD));
-		block.addVariable(variable, tokens.get(1));
-		if (tokens.length() > 3)
-			addExpression(block, tokens.subarray(2, tokens.length()));
+		var isDynamic = tokens.get(0).getType().equals(TokenTypes.DYNAMIC_KEYWORD);
+		int n = isDynamic ? 3 : 2;
+		var dataType = Tokens.getDataType(tokens.get(n-2).getType());
+		var variable = new VariableDeclarationNode(tokens.get(n-1).getText(), dataType);
+		variable.setDynamic(isDynamic);
+		block.addVariable(variable, tokens.get(n-2));
+		if (tokens.length() > n)
+			addExpression(block, tokens.subarray(n-1, tokens.length()));
 		else
 			variable.setValue(DataTypes.getNeutralValue(dataType));
 

@@ -250,31 +250,35 @@ public abstract class Identificator {
 
 	public static boolean isVariableDeclaration(OptimizedTokensArray tokensBeforeSemicolon) {
 		var firstTokenType = tokensBeforeSemicolon.get(0).getType();
-		var isFirstTokenStaticOrDynamicKeyword = firstTokenType.equals(TokenTypes.STATIC_KEYWORD)
-				|| firstTokenType.equals(TokenTypes.DYNAMIC_KEYWORD);
+		var isFirstTokenDataTypeKeyword = dataTypesKeywords.contains(firstTokenType);
+		var isFirstTokenDynamicKeyword = firstTokenType.equals(TokenTypes.DYNAMIC_KEYWORD);
 		var tokensSize = tokensBeforeSemicolon.length();
 		TokenTypes secondTokenType = null;
 
 		if (tokensSize >= 2)
 			secondTokenType = tokensBeforeSemicolon.get(1).getType();
 
-		var isSecondTokenTypeDataTypeKeyword = secondTokenType != null && dataTypesKeywords.contains(secondTokenType);
-		if (!isFirstTokenStaticOrDynamicKeyword)
+		if (!(isFirstTokenDataTypeKeyword || isFirstTokenDynamicKeyword))
 			return false;
-		if (!isSecondTokenTypeDataTypeKeyword)
-			new LogError("Expected data type declaration after  \"dynamic\" or \"static\" keyword:\t"
-					+ Tokens.getText(tokensBeforeSemicolon), tokensBeforeSemicolon.get(1));
-		if (tokensSize == 2)
-			new LogError("Expected expression after data type declaration:\t" + Tokens.getText(tokensBeforeSemicolon),
-					tokensBeforeSemicolon.get(1));
-		if (!tokensBeforeSemicolon.get(2).getType().equals(TokenTypes.IDENTIFIER))
-			new LogError("Expected identifier after data type declaration:\t" + Tokens.getText(tokensBeforeSemicolon),
-					tokensBeforeSemicolon.get(2));
-		if (tokensSize > 3) {
-			var expression = tokensBeforeSemicolon.subarray(2, tokensBeforeSemicolon.length());
+		int n = 1;
+		if (isFirstTokenDynamicKeyword) {
+			if (!(secondTokenType != null && dataTypesKeywords.contains(secondTokenType)) || tokensSize == 2)
+				new LogError("Expected data type declaration after \"dynamic\" keyword:\t"
+						+ Tokens.getText(tokensBeforeSemicolon), tokensBeforeSemicolon.get(1));
+			n++;
+			
+		}
+		if (!tokensBeforeSemicolon.get(n).getType().equals(TokenTypes.IDENTIFIER))
+				new LogError(
+						"Expected identifier after data type declaration:\t" + Tokens.getText(tokensBeforeSemicolon),
+						tokensBeforeSemicolon.get(n));
+		
+		if (tokensSize > n+1) {
+			var expression = tokensBeforeSemicolon.subarray(n, tokensBeforeSemicolon.length());
 			if (!isExpression(expression))
 				new LogError("Wrong expression after data type declaration:\t" + Tokens.getText(expression),
-						tokensBeforeSemicolon.get(2));
+						tokensBeforeSemicolon.get(n));
+
 		}
 		return true;
 	}

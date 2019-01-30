@@ -66,12 +66,6 @@ public class Lexer {
 			return TokenTypes.STRING_KEYWORD;
 		case "boolean":
 			return TokenTypes.BOOLEAN_KEYWORD;
-		case "array":
-			return TokenTypes.ARRAY_KEYWORD;
-		case "list":
-			return TokenTypes.LIST_KEYWORD;
-		case "stack":
-			return TokenTypes.STACK_KEYWORD;
 		case "any":
 			return TokenTypes.ANY_KEYWORD;
 		case "for":
@@ -90,8 +84,6 @@ public class Lexer {
 			return TokenTypes.JAR_KEYWORD;
 		case "dynamic":
 			return TokenTypes.DYNAMIC_KEYWORD;
-		case "static":
-			return TokenTypes.STATIC_KEYWORD;
 		case "change":
 			return TokenTypes.CHANGE_KEYWORD;
 		case "do":
