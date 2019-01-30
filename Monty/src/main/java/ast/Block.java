@@ -21,9 +21,7 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import ast.declarations.FunctionDeclarationNode;
-import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
-import ast.expressions.OperationNode;
 import ast.statements.ChangeToStatementNode;
 import ast.statements.ForStatementNode;
 import ast.statements.IfStatementNode;
@@ -40,7 +38,7 @@ import sml.data.returning.BreakType;
 import sml.data.returning.ContinueType;
 import sml.data.returning.Nothing;
 
-public class Block extends Node implements Cloneable {
+public class Block extends Node implements Cloneable, RunnableNode {
 
 	private LinkedList<Node> children = new LinkedList<>();
 	protected HashMap<String, FunctionDeclarationNode> functions = new HashMap<>();
@@ -218,17 +216,14 @@ public class Block extends Node implements Cloneable {
 		return variables;
 	}
 
+	@Override
 	public Object run() {
 		for (Node child : children) {
 			Object result = null;
 			switch (child.getNodeType()) {
 			case OPERATION:
-				var childCastedToVariable = ((OperationNode) child);
-				childCastedToVariable.run();
-				break;
 			case STRUCT_DECLARATION:
-				var childCastedToStruct = ((StructDeclarationNode) child);
-				childCastedToStruct.run();
+				((RunnableNode) child).run();
 				break;
 			case IF_STATEMENT:
 				var childCastedToIfStatement = ((IfStatementNode) child);

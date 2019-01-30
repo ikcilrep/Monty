@@ -19,12 +19,13 @@ package ast.expressions;
 import ast.Block;
 import ast.Node;
 import ast.NodeTypes;
+import ast.RunnableNode;
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import parser.DataTypes;
 import parser.LogError;
 
-public class OperationNode extends ExpressionNode {
+public class OperationNode extends ExpressionNode implements RunnableNode{
 
 	private OperationNode left = null;
 	private Object operand;
@@ -190,6 +191,7 @@ public class OperationNode extends ExpressionNode {
 		return right;
 	}
 
+	@Override
 	public Object run() {
 		// Returns calculated value.
 		var operand = getOperand();
