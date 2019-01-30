@@ -17,6 +17,7 @@ limitations under the License.
 package ast.declarations;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 import ast.Block;
@@ -54,7 +55,7 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 			new LogError("Too many arguments in " + name + " function call", callFileName, callLine);
 		else if (arguments.size() < parameters.size())
 			new LogError("Too few arguments in " + name + " function call", callFileName, callLine);
-		var runnedArguments = new LinkedList<Object>();
+		var runnedArguments = new ArrayList<Object>(Arrays.asList(new Object[arguments.size()]));
 
 		for (int i = 0; i < arguments.size(); i++) {
 			var dataType = parameters.get(i).getType();
@@ -67,7 +68,7 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 							+ " function call expected " + dataType.toString().toLowerCase() + " got "
 							+ argumentDataType.toString().toLowerCase(), callFileName, callLine);
 
-			runnedArguments.add(value);
+			runnedArguments.set(i, value);
 		}
 		for (int i = 0; i < runnedArguments.size(); i++) {
 			var name = parameters.get(i).getName();
