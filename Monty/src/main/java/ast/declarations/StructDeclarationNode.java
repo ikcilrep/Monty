@@ -30,10 +30,17 @@ import parser.LogError;
 public class StructDeclarationNode extends Block implements Cloneable {
 
 	private static int actualStructNumber = -1;
-	private int structNumber;
 	private static int number = -1;
+	private int structNumber;
 	private int instanceNumber;
 	private String name;
+
+	public StructDeclarationNode(Block parent, String name) {
+		super(parent);
+		super.nodeType = NodeTypes.STRUCT_DECLARATION;
+		this.name = name;
+		structNumber = ++actualStructNumber;
+	}
 
 	public void addNewStruct(Block block, Token token) {
 		var struct = this;
@@ -76,37 +83,7 @@ public class StructDeclarationNode extends Block implements Cloneable {
 		block.addFunction(function, token);
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public int getInstanceNumber() {
-		return instanceNumber;
-	}
-
-	public void incrementNumber() {
-		instanceNumber = ++number;
-	}
-
-	public StructDeclarationNode(Block parent, String name) {
-		super(parent);
-		super.nodeType = NodeTypes.STRUCT_DECLARATION;
-		this.name = name;
-		structNumber = ++actualStructNumber;
-	}
-
-	public void setFunctions(HashMap<String, FunctionDeclarationNode> functions) {
-		this.functions = functions;
-	}
-
-	public boolean instanceOfMe(StructDeclarationNode s) {
-		return s.getStructNumber() == structNumber;
-	}
-
-	public int getStructNumber() {
-		return structNumber;
-	}
-
+	@Override
 	public StructDeclarationNode copy() {
 		StructDeclarationNode copied = null;
 		try {
@@ -133,6 +110,30 @@ public class StructDeclarationNode extends Block implements Cloneable {
 			e.printStackTrace();
 		}
 		return copied;
+	}
+
+	public int getInstanceNumber() {
+		return instanceNumber;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public int getStructNumber() {
+		return structNumber;
+	}
+
+	public void incrementNumber() {
+		instanceNumber = ++number;
+	}
+
+	public boolean instanceOfMe(StructDeclarationNode s) {
+		return s.getStructNumber() == structNumber;
+	}
+
+	public void setFunctions(HashMap<String, FunctionDeclarationNode> functions) {
+		this.functions = functions;
 	}
 
 	@Override

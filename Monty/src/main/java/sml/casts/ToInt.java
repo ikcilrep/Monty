@@ -31,23 +31,6 @@ import sml.data.stack.Stack;
 
 public class ToInt extends FunctionDeclarationNode {
 
-	/**
-	 * 
-	 */
-
-	public ToInt() {
-		super("toInt", DataTypes.INTEGER);
-		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("a", DataTypes.ANY));
-	}
-
-	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		var a = getBody().getVariableByName("a").getValue();
-		return toInt(a, callFileName, callLine);
-	}
-
 	public static BigInteger toInt(Object a, String callFileName, int callLine) {
 		if (a == null)
 			new LogError("Can't cast void to integer", callFileName, callLine);
@@ -64,6 +47,23 @@ public class ToInt extends FunctionDeclarationNode {
 		if (a instanceof Stack)
 			new LogError("Can't cast stack to integer:\t" + a.toString(), callFileName, callLine);
 		return null;
+	}
+
+	/**
+	 * 
+	 */
+
+	public ToInt() {
+		super("toInt", DataTypes.INTEGER);
+		setBody(new Block(null));
+		addParameter(new VariableDeclarationNode("a", DataTypes.ANY));
+	}
+
+	@Override
+	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+		setArguments(arguments, callFileName, callLine);
+		var a = getBody().getVariableByName("a").getValue();
+		return toInt(a, callFileName, callLine);
 	}
 
 }

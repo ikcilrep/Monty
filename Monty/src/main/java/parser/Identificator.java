@@ -175,7 +175,7 @@ public abstract class Identificator {
 					"Expected identifier after data type declaration keyword:\t"
 							+ Tokens.getText(tokensBeforeSemicolon.subarray(2, tokensBeforeSemicolon.length())),
 					tokensBeforeSemicolon.get(2));
-		var last = (TokenTypes) null;
+		TokenTypes last = null;
 		var isLastTokenDataTypeDeclaration = false;
 		for (int i = 3; i < tokensBeforeSemicolon.length(); i++) {
 			var t = tokensBeforeSemicolon.get(i);
@@ -238,6 +238,16 @@ public abstract class Identificator {
 		return true;
 	}
 
+	public static boolean isStructDeclaration(OptimizedTokensArray tokens) {
+		if (!tokens.get(0).getType().equals(TokenTypes.STRUCT_KEYWORD))
+			return false;
+		if (tokens.length() == 1 || !tokens.get(1).getType().equals(TokenTypes.IDENTIFIER))
+			new LogError("Expected name after \"struct\" keyword:\t" + Tokens.getText(tokens),
+					tokens.get(tokens.length() > 1 ? 1 : 0));
+
+		return true;
+	}
+
 	public static boolean isVariableDeclaration(OptimizedTokensArray tokensBeforeSemicolon) {
 		var firstTokenType = tokensBeforeSemicolon.get(0).getType();
 		var isFirstTokenStaticOrDynamicKeyword = firstTokenType.equals(TokenTypes.STATIC_KEYWORD)
@@ -266,16 +276,6 @@ public abstract class Identificator {
 				new LogError("Wrong expression after data type declaration:\t" + Tokens.getText(expression),
 						tokensBeforeSemicolon.get(2));
 		}
-		return true;
-	}
-
-	public static boolean isStructDeclaration(OptimizedTokensArray tokens) {
-		if (!tokens.get(0).getType().equals(TokenTypes.STRUCT_KEYWORD))
-			return false;
-		if (tokens.length() == 1 || !tokens.get(1).getType().equals(TokenTypes.IDENTIFIER))
-			new LogError("Expected name after \"struct\" keyword:\t" + Tokens.getText(tokens),
-					tokens.get(tokens.length() > 1 ? 1 : 0));
-
 		return true;
 	}
 

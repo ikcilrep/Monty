@@ -119,6 +119,16 @@ public abstract class AdderToBlock {
 		block.addChild(new ReturnStatementNode(expression, tokens.get(0).getFileName(), tokens.get(0).getLine()));
 	}
 
+	public static Block addStructDeclaration(Block block, OptimizedTokensArray tokens) {
+		var name = tokens.get(1).getText();
+		if (Character.isLowerCase(name.charAt(0)))
+			new LogError("Struct name should start with upper case", tokens.get(0));
+		var struct = new StructDeclarationNode(block, name);
+		struct.addNewStruct(block, tokens.get(0));
+		block.addChild(struct);
+		return struct;
+	}
+
 	public static void addVariableDeclaration(Block block, OptimizedTokensArray tokens) {
 		var dataType = Tokens.getDataType(tokens.get(1).getType());
 		var variable = new VariableDeclarationNode(tokens.get(2).getText(), dataType);
@@ -129,16 +139,6 @@ public abstract class AdderToBlock {
 		else
 			variable.setValue(DataTypes.getNeutralValue(dataType));
 
-	}
-
-	public static Block addStructDeclaration(Block block, OptimizedTokensArray tokens) {
-		var name = tokens.get(1).getText();
-		if (Character.isLowerCase(name.charAt(0)))
-			new LogError("Struct name should start with upper case", tokens.get(0));
-		var struct = new StructDeclarationNode(block, name);
-		struct.addNewStruct(block, tokens.get(0));
-		block.addChild(struct);
-		return struct;
 	}
 
 	public static Block addWhileStatement(Block block, OptimizedTokensArray tokens) {

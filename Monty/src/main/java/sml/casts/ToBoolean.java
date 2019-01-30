@@ -31,23 +31,6 @@ import sml.data.stack.Stack;
 
 public class ToBoolean extends FunctionDeclarationNode {
 
-	/**
-	 * 
-	 */
-
-	public ToBoolean() {
-		super("toBoolean", DataTypes.BOOLEAN);
-		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("a", DataTypes.ANY));
-	}
-
-	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		var a = getBody().getVariableByName("a").getValue();
-		return toBoolean(a, callFileName, callLine);
-	}
-
 	public static Boolean toBoolean(Object a, String callFileName, int callLine) {
 		if (a == null)
 			new LogError("Can't cast void to boolean", callFileName, callLine);
@@ -64,6 +47,23 @@ public class ToBoolean extends FunctionDeclarationNode {
 		if (a instanceof Stack)
 			new LogError("Can't cast stack to boolean:\t" + a.toString(), callFileName, callLine);
 		return null;
+	}
+
+	/**
+	 * 
+	 */
+
+	public ToBoolean() {
+		super("toBoolean", DataTypes.BOOLEAN);
+		setBody(new Block(null));
+		addParameter(new VariableDeclarationNode("a", DataTypes.ANY));
+	}
+
+	@Override
+	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+		setArguments(arguments, callFileName, callLine);
+		var a = getBody().getVariableByName("a").getValue();
+		return toBoolean(a, callFileName, callLine);
 	}
 
 }

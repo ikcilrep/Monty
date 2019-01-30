@@ -27,6 +27,20 @@ public class Array extends StructDeclarationNode implements Iterable<Object>, Cl
 
 	protected Object[] array;
 
+	public Array(int length) {
+		super(new Block(null), "Array");
+		addFunctions();
+		array = new Object[length];
+		for (int i = 0; i < length; i++)
+			array[i] = Nothing.nothing;
+	}
+
+	public Array(Object[] array) {
+		super(new Block(null), "Array");
+		addFunctions();
+		this.array = array;
+	}
+
 	public void addFunctions() {
 		addFunction(new AppendToArray(this));
 		addFunction(new ExtendArray(this));
@@ -43,37 +57,6 @@ public class Array extends StructDeclarationNode implements Iterable<Object>, Cl
 		addFunction(new FindLast(this));
 	}
 
-	public Array(int length) {
-		super(new Block(null), "Array");
-		addFunctions();
-		array = new Object[length];
-		for (int i = 0; i < length; i++)
-			array[i] = Nothing.nothing;
-	}
-
-	public Array(Object[] array) {
-		super(new Block(null), "Array");
-		addFunctions();
-		this.array = array;
-	}
-
-	public void setLength(int length) {
-		int i = 0;
-		var newArray = new Object[length];
-		for (Object e : array)
-			newArray[i++] = e;
-		array = newArray;
-	}
-
-	public Array extend(Array elements) {
-		var length = length();
-		setLength(array.length + elements.length());
-		var newLength = length();
-		for (int i = length, j = 0; i < newLength; i++, j++)
-			array[i] = elements.get(j);
-		return this;
-	}
-
 	public Array append(Object element) {
 		setLength(length() + 1);
 		array[length() - 1] = element;
@@ -88,6 +71,7 @@ public class Array extends StructDeclarationNode implements Iterable<Object>, Cl
 
 	}
 
+	@Override
 	public Array copy() {
 		try {
 			return (Array) clone();
@@ -114,6 +98,37 @@ public class Array extends StructDeclarationNode implements Iterable<Object>, Cl
 
 	}
 
+	public Array extend(Array elements) {
+		var length = length();
+		setLength(array.length + elements.length());
+		var newLength = length();
+		for (int i = length, j = 0; i < newLength; i++, j++)
+			array[i] = elements.get(j);
+		return this;
+	}
+
+	public Array findAll(Object element) {
+		Array result = new Array(0);
+		for (int i = 0; i < length(); i++)
+			if (array[i].equals(element))
+				result.append(i);
+		return result;
+	}
+
+	public int findFirst(Object element) {
+		for (int i = 0; i < length(); i++)
+			if (array[i].equals(element))
+				return i;
+		return -1;
+	}
+
+	public int findLast(Object element) {
+		for (int i = length() - 1; i >= 0; i--)
+			if (array[i].equals(element))
+				return i;
+		return -1;
+	}
+
 	public Object get(int index) {
 		return array[index];
 	}
@@ -131,7 +146,7 @@ public class Array extends StructDeclarationNode implements Iterable<Object>, Cl
 
 			@Override
 			public Object next() {
-				return (Object) array[counter++];
+				return array[counter++];
 			}
 		};
 	}
@@ -165,28 +180,6 @@ public class Array extends StructDeclarationNode implements Iterable<Object>, Cl
 		return this;
 	}
 
-	public Array findAll(Object element) {
-		Array result = new Array(0);
-		for (int i = 0; i < length(); i++)
-			if (array[i].equals(element))
-				result.append(i);
-		return result;
-	}
-
-	public int findFirst(Object element) {
-		for (int i = 0; i < length(); i++)
-			if (array[i].equals(element))
-				return i;
-		return -1;
-	}
-
-	public int findLast(Object element) {
-		for (int i = length() - 1; i >= 0; i--)
-			if (array[i].equals(element))
-				return i;
-		return -1;
-	}
-
 	public Array reversed() {
 		var arr = new Array(length());
 		for (int i = 0, j = length() - 1; i < length(); i++, j--)
@@ -197,6 +190,14 @@ public class Array extends StructDeclarationNode implements Iterable<Object>, Cl
 	public Array set(int index, Object element) {
 		array[index] = element;
 		return this;
+	}
+
+	public void setLength(int length) {
+		int i = 0;
+		var newArray = new Object[length];
+		for (Object e : array)
+			newArray[i++] = e;
+		array = newArray;
 	}
 
 	public Array subarray(int begin, int end) {

@@ -39,7 +39,7 @@ public class AppendToArray extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var element = (Object) getBody().getVariableByName("element").getValue();
+		var element = getBody().getVariableByName("element").getValue();
 
 		return array.append(element);
 	}

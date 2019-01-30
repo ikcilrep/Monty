@@ -32,13 +32,13 @@ public class VariableNode extends ExpressionNode implements StructContainer {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	@Override
 	public OperationNode getNext() {
 		return next;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@Override

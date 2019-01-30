@@ -28,11 +28,6 @@ public class Stack extends StructDeclarationNode implements Iterable<Object> {
 	Object[] array;
 	int top;
 
-	public void addFunctions() {
-		addFunction(new Pop(this));
-		addFunction(new Peek(this));
-	}
-
 	public Stack() {
 		super(new Block(null), "Stack");
 		array = new Object[128];
@@ -43,6 +38,11 @@ public class Stack extends StructDeclarationNode implements Iterable<Object> {
 		super(new Block(null), "Stack");
 		this.array = array;
 		top = array.length - 1;
+	}
+
+	public void addFunctions() {
+		addFunction(new Pop(this));
+		addFunction(new Peek(this));
 	}
 
 	@Override

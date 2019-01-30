@@ -18,6 +18,7 @@ package ast.declarations;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import ast.Block;
 import ast.NodeTypes;
 import ast.expressions.OperationNode;
@@ -39,6 +40,15 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 	}
 
 	public abstract Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine);
+
+	public FunctionDeclarationNode copy() {
+		try {
+			return (FunctionDeclarationNode) clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	public Block getBody() {
 		return body;
@@ -82,14 +92,5 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 
 	public void setBody(Block body) {
 		this.body = body;
-	}
-
-	public FunctionDeclarationNode copy() {
-		try {
-			return (FunctionDeclarationNode) clone();
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 }

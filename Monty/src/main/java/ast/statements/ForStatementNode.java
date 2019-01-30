@@ -37,10 +37,7 @@ public class ForStatementNode extends Block {
 		return array;
 	}
 
-
-
 	public String getVariableName() {
 		return variableName;
 	}
 }
-

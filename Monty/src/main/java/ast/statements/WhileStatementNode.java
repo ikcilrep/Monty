@@ -21,7 +21,8 @@ import ast.NodeTypes;
 import ast.expressions.OperationNode;
 
 public class WhileStatementNode extends ConditionalBlock {
-	public WhileStatementNode(OperationNode condition, String fileName, int line, NodeTypes whileOrDoWhile, Block parent) {
+	public WhileStatementNode(OperationNode condition, String fileName, int line, NodeTypes whileOrDoWhile,
+			Block parent) {
 		super(condition, parent, whileOrDoWhile);
 		this.condition = condition;
 		this.fileName = fileName;

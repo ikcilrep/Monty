@@ -7,6 +7,7 @@ import sml.casts.ToBoolean;
 
 public class ConditionalBlock extends Block {
 	OperationNode condition;
+
 	public ConditionalBlock(OperationNode condition, Block parent, NodeTypes nodeType) {
 		super(parent, nodeType);
 		this.condition = condition;
@@ -14,6 +15,6 @@ public class ConditionalBlock extends Block {
 
 	public boolean runnedCondition() {
 		return ToBoolean.toBoolean(condition.run(), getFileName(), getLine());
-		
+
 	}
 }

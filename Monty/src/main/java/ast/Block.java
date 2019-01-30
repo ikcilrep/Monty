@@ -98,10 +98,6 @@ public class Block extends Node implements Cloneable, RunnableNode {
 		variables.put(name, variable);
 	}
 
-	public void setParent(Block parent) {
-		this.parent = parent;
-	}
-
 	public void addVariable(VariableDeclarationNode variable, String fileName, int line) {
 		String name = variable.getName();
 		variable.setFileName(fileName);
@@ -139,6 +135,15 @@ public class Block extends Node implements Cloneable, RunnableNode {
 		for (Map.Entry<String, FunctionDeclarationNode> entry : functionsSet) {
 			addFunction(entry.getValue());
 		}
+	}
+
+	public Block copy() {
+		try {
+			return (Block) clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public boolean doesContainFunction(String name) {
@@ -238,7 +243,7 @@ public class Block extends Node implements Cloneable, RunnableNode {
 				var childCastedToWhileStatement = ((WhileStatementNode) child);
 				if (child.getNodeType().equals(NodeTypes.DO_WHILE_STATEMENT))
 					childCastedToWhileStatement.run();
-				while ((boolean) childCastedToWhileStatement.runnedCondition()) {
+				while (childCastedToWhileStatement.runnedCondition()) {
 					result = childCastedToWhileStatement.run();
 					if (result instanceof BreakType)
 						break;
@@ -317,16 +322,11 @@ public class Block extends Node implements Cloneable, RunnableNode {
 		return null;
 	}
 
-	public void setVariables(HashMap<String, VariableDeclarationNode> variables) {
-		this.variables = variables;
+	public void setParent(Block parent) {
+		this.parent = parent;
 	}
 
-	public Block copy() {
-		try {
-			return (Block) clone();
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
-		return null;
+	public void setVariables(HashMap<String, VariableDeclarationNode> variables) {
+		this.variables = variables;
 	}
 }

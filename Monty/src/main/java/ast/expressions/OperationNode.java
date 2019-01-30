@@ -25,7 +25,7 @@ import ast.declarations.VariableDeclarationNode;
 import parser.DataTypes;
 import parser.LogError;
 
-public class OperationNode extends ExpressionNode implements RunnableNode{
+public class OperationNode extends ExpressionNode implements RunnableNode {
 
 	private OperationNode left = null;
 	private Object operand;
@@ -132,6 +132,10 @@ public class OperationNode extends ExpressionNode implements RunnableNode{
 		return left;
 	}
 
+	private Object getLiteral(Object expression) {
+		return getLiteral(expression, parent);
+	}
+
 	private Object getLiteral(Object expression, Block parent) {
 		// Returns value of expression.
 		if (expression instanceof Node)
@@ -175,10 +179,6 @@ public class OperationNode extends ExpressionNode implements RunnableNode{
 			return expression;
 	}
 
-	private Object getLiteral(Object expression) {
-		return getLiteral(expression, parent);
-	}
-
 	public Object getOperand() {
 		return operand;
 	}
@@ -210,6 +210,10 @@ public class OperationNode extends ExpressionNode implements RunnableNode{
 		this.left = left;
 	}
 
+	public void setParent(Block parent) {
+		this.parent = parent;
+	}
+
 	public void setRightOperand(OperationNode right) {
 		this.right = right;
 	}
@@ -237,9 +241,5 @@ public class OperationNode extends ExpressionNode implements RunnableNode{
 			rightValue = ((VariableDeclarationNode) rightValue).getValue();
 		return calculate(leftValue, rightValue, getOperand(), leftType);
 
-	}
-
-	public void setParent(Block parent) {
-		this.parent = parent;
 	}
 }

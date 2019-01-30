@@ -44,10 +44,56 @@ public class ExpressionParser {
 		return i + 1 < array.length() && array.get(i + 1).getType().equals(TokenTypes.BRACKET);
 	}
 
-	private static OperationNode parseIdentifier(Block parent, OptimizedTokensArray array, IntegerHolder i) {
-		if (isFunction(array, i.i))
-			return parseFunction(parent, array, i);
-		return parseVariable(parent, array, i);
+	public static OperationNode parse(Block parent, OptimizedTokensArray array) {
+		return parse(parent, array, new Stack<>(), new IntegerHolder());
+	}
+
+	public static OperationNode parse(Block parent, OptimizedTokensArray array, Stack<OperationNode> stack,
+			IntegerHolder i) {
+		if (i.i < array.length()) {
+			var token = array.get(i.i);
+			OperationNode node = null;
+			switch (token.getType()) {
+			case OPERATOR: // If token is operator
+				node = new OperationNode(token.getText(), parent);
+				if (!token.getText().equals("!")) {
+					if (stack.isEmpty())
+						new LogError("There isn't right operand", token);
+					node.setRightOperand(stack.pop());
+				}
+				if (stack.isEmpty())
+					new LogError("There isn't left operand", token);
+				node.setLeftOperand(stack.pop());
+				break;
+			case IDENTIFIER: // If token is identifier
+				return recParseIdentifier(parent, array, stack, i);
+			default:
+				// Otherwise token in expression can be only constant.
+				var dataType = Tokens.getDataType(token.getType());
+				node = new OperationNode(new ConstantNode(toDataType(token.getText(), dataType), dataType), parent);
+				break;
+			}
+			stack.push(node);
+			node.setFileName(token.getFileName());
+			node.setLine(token.getLine());
+			i.i++;
+			return parse(parent, array, stack, i);
+		}
+		if (stack.size() != 1)
+			new LogError("Ambiguous result for this operation:\t" + Tokens.getText(array), array.get(0));
+		return stack.pop();
+	}
+
+	private static OperationNode parseAfterDot(Block parent, StructContainer structContainer,
+			OptimizedTokensArray array, IntegerHolder i) {
+		if (i.i + 1 < array.length() && array.get(i.i + 1).getType().equals(TokenTypes.DOT))
+			if ((i.i += 2) < array.length() && array.get(i.i).getType().equals(TokenTypes.IDENTIFIER)) {
+				var variableOrFunctionOperationNode = parseIdentifier(parent, array, i);
+				structContainer.setNext(variableOrFunctionOperationNode);
+				return variableOrFunctionOperationNode;
+			} else
+				new LogError("Expression after dot have to be function or variable", array.get(i.i - 1));
+		return null;
 	}
 
 	private static OperationNode parseFunction(Block parent, OptimizedTokensArray array, IntegerHolder i) {
@@ -99,16 +145,10 @@ public class ExpressionParser {
 		return node;
 	}
 
-	private static OperationNode parseAfterDot(Block parent, StructContainer structContainer,
-			OptimizedTokensArray array, IntegerHolder i) {
-		if (i.i + 1 < array.length() && array.get(i.i + 1).getType().equals(TokenTypes.DOT))
-			if ((i.i += 2) < array.length() && array.get(i.i).getType().equals(TokenTypes.IDENTIFIER)) {
-				var variableOrFunctionOperationNode = parseIdentifier(parent, array, i);
-				structContainer.setNext(variableOrFunctionOperationNode);
-				return variableOrFunctionOperationNode;
-			} else
-				new LogError("Expression after dot have to be function or variable", array.get(i.i - 1));
-		return null;
+	private static OperationNode parseIdentifier(Block parent, OptimizedTokensArray array, IntegerHolder i) {
+		if (isFunction(array, i.i))
+			return parseFunction(parent, array, i);
+		return parseVariable(parent, array, i);
 	}
 
 	private static OperationNode parseVariable(Block parent, OptimizedTokensArray array, IntegerHolder i) {
@@ -126,46 +166,6 @@ public class ExpressionParser {
 		stack.push(parseIdentifier(parent, array, i));
 		i.i++;
 		return parse(parent, array, stack, i);
-	}
-
-	public static OperationNode parse(Block parent, OptimizedTokensArray array, Stack<OperationNode> stack,
-			IntegerHolder i) {
-		if (i.i < array.length()) {
-			var token = array.get(i.i);
-			OperationNode node = null;
-			switch (token.getType()) {
-			case OPERATOR: // If token is operator
-				node = new OperationNode(token.getText(), parent);
-				if (!token.getText().equals("!")) {
-					if (stack.isEmpty())
-						new LogError("There isn't right operand", token);
-					node.setRightOperand(stack.pop());
-				}
-				if (stack.isEmpty())
-					new LogError("There isn't left operand", token);
-				node.setLeftOperand(stack.pop());
-				break;
-			case IDENTIFIER: // If token is identifier
-				return recParseIdentifier(parent, array, stack, i);
-			default:
-				// Otherwise token in expression can be only constant.
-				var dataType = Tokens.getDataType(token.getType());
-				node = new OperationNode(new ConstantNode(toDataType(token.getText(), dataType), dataType), parent);
-				break;
-			}
-			stack.push(node);
-			node.setFileName(token.getFileName());
-			node.setLine(token.getLine());
-			i.i++;
-			return parse(parent, array, stack, i);
-		}
-		if (stack.size() != 1)
-			new LogError("Ambiguous result for this operation:\t" + Tokens.getText(array), array.get(0));
-		return stack.pop();
-	}
-
-	public static OperationNode parse(Block parent, OptimizedTokensArray array) {
-		return parse(parent, array, new Stack<>(), new IntegerHolder());
 	}
 
 	private static ArrayList<OptimizedTokensArray> splitArguments(OptimizedTokensArray array) {

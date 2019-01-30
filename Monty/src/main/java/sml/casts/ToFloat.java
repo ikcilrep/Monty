@@ -31,23 +31,6 @@ import sml.data.stack.Stack;
 
 public class ToFloat extends FunctionDeclarationNode {
 
-	/**
-	 * 
-	 */
-
-	public ToFloat() {
-		super("toFloat", DataTypes.FLOAT);
-		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("a", DataTypes.ANY));
-	}
-
-	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		var a = getBody().getVariableByName("a").getValue();
-		return toFloat(a, callFileName, callLine);
-	}
-
 	public static BigDecimal toFloat(Object a, String callFileName, int callLine) {
 		if (a == null)
 			new LogError("Can't cast void to float", callFileName, callLine);
@@ -64,6 +47,23 @@ public class ToFloat extends FunctionDeclarationNode {
 		if (a instanceof Stack)
 			new LogError("Can't cast stack to float:\t" + a.toString(), callFileName, callLine);
 		return null;
+	}
+
+	/**
+	 * 
+	 */
+
+	public ToFloat() {
+		super("toFloat", DataTypes.FLOAT);
+		setBody(new Block(null));
+		addParameter(new VariableDeclarationNode("a", DataTypes.ANY));
+	}
+
+	@Override
+	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+		setArguments(arguments, callFileName, callLine);
+		var a = getBody().getVariableByName("a").getValue();
+		return toFloat(a, callFileName, callLine);
 	}
 
 }

@@ -124,7 +124,7 @@ public class Lexer {
 				if (Character.isDigit(c)
 						|| ((c == '+' || c == '-') && (i + 1 < code.length() && Character.isDigit(code.charAt(i + 1)))))
 					return number(code, fileName, line, tokens, i);
-				if (operatorsParts.contains((Character) c))
+				if (operatorsParts.contains(c))
 					return operator(code, fileName, line, tokens, i);
 				if (Character.isJavaIdentifierStart(c))
 					return identifierOrKeyword(code, fileName, line, tokens, i);
@@ -148,7 +148,7 @@ public class Lexer {
 	private static OptimizedTokensArray operator(String code, String fileName, int line, OptimizedTokensArray tokens,
 			int i) {
 		var tokenText = "" + code.charAt(i);
-		while (++i < code.length() && operatorsParts.contains((Character) code.charAt(i)))
+		while (++i < code.length() && operatorsParts.contains(code.charAt(i)))
 			tokenText += code.charAt(i);
 		Token token = new Token(operatorToTokenType(tokenText, fileName, line), tokenText, fileName, line);
 		tokens.append(token);
