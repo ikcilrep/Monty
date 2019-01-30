@@ -37,10 +37,6 @@ public abstract class DeclarationNode extends Node {
 		return type;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public void setType(DataTypes type) {
 		this.type = type;
 	}

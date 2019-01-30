@@ -16,8 +16,8 @@ limitations under the License.
 
 package ast;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 import ast.declarations.FunctionDeclarationNode;
@@ -40,7 +40,7 @@ import sml.data.returning.Nothing;
 
 public class Block extends Node implements Cloneable, RunnableNode {
 
-	private LinkedList<Node> children = new LinkedList<>();
+	private ArrayList<Node> children = new ArrayList<>();
 	protected HashMap<String, FunctionDeclarationNode> functions = new HashMap<>();
 	private Block parent;
 	private HashMap<String, VariableDeclarationNode> variables = new HashMap<>();
@@ -139,11 +139,6 @@ public class Block extends Node implements Cloneable, RunnableNode {
 		for (Map.Entry<String, FunctionDeclarationNode> entry : functionsSet) {
 			addFunction(entry.getValue());
 		}
-
-		var children = block.getChildren();
-		for (Node child : children) {
-			addChild(child);
-		}
 	}
 
 	public boolean doesContainFunction(String name) {
@@ -154,7 +149,7 @@ public class Block extends Node implements Cloneable, RunnableNode {
 		return variables.containsKey(name);
 	}
 
-	public LinkedList<Node> getChildren() {
+	public ArrayList<Node> getChildren() {
 		return children;
 	}
 
