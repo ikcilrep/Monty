@@ -98,8 +98,6 @@ public class Lexer {
 			return TokenTypes.DO_KEYWORD;
 		case "to":
 			return TokenTypes.TO_KEYWORD;
-		case "thread":
-			return TokenTypes.THREAD_KEYWORD;
 		case "true":
 		case "false":
 			return TokenTypes.BOOLEAN_LITERAL;

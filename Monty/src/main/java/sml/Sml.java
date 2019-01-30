@@ -54,7 +54,6 @@ import sml.math.SqrtFloat;
 import sml.math.SqrtInt;
 import sml.system.Argv;
 import sml.system.Exit;
-import sml.threading.Join;
 import sml.threading.Sleep;
 import sml.time.UnixTime;
 import sml.time.UnixTimeMillis;
@@ -131,7 +130,6 @@ public class Sml extends Library {
 
 		var threading = (HashMap<String, Object>) children.get("threading");
 		threading.put("sleep", new Sleep());
-		threading.put("join", new Join());
 
 		var time = (HashMap<String, Object>) children.get("time");
 		time.put("unixTime", new UnixTime());

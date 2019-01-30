@@ -30,7 +30,6 @@ import ast.statements.ContinueStatementNode;
 import ast.statements.ForStatementNode;
 import ast.statements.IfStatementNode;
 import ast.statements.ReturnStatementNode;
-import ast.statements.ThreadStatement;
 import ast.statements.WhileStatementNode;
 import lexer.OptimizedTokensArray;
 import lexer.TokenTypes;
@@ -118,11 +117,6 @@ public abstract class AdderToBlock {
 		else
 			expression = new OperationNode(new FunctionCallNode("nothing"), block);
 		block.addChild(new ReturnStatementNode(expression, tokens.get(0).getFileName(), tokens.get(0).getLine()));
-	}
-
-	public static void addThreadStatement(Block block, OptimizedTokensArray tokens) {
-		block.addChild(new ThreadStatement(ExpressionParser.parse(block, tokens.subarray(1, tokens.length())),
-				tokens.get(0).getFileName(), tokens.get(0).getLine()));
 	}
 
 	public static void addVariableDeclaration(Block block, OptimizedTokensArray tokens) {

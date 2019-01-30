@@ -28,7 +28,6 @@ import ast.statements.ChangeToStatementNode;
 import ast.statements.ForStatementNode;
 import ast.statements.IfStatementNode;
 import ast.statements.ReturnStatementNode;
-import ast.statements.ThreadStatement;
 import ast.statements.WhileStatementNode;
 import lexer.Token;
 import parser.DataTypes;
@@ -40,7 +39,6 @@ import sml.casts.ToString;
 import sml.data.returning.BreakType;
 import sml.data.returning.ContinueType;
 import sml.data.returning.Nothing;
-import sml.threading.MontyThread;
 
 public class Block extends Node implements Cloneable {
 
@@ -222,6 +220,7 @@ public class Block extends Node implements Cloneable {
 
 	public Object run() {
 		for (Node child : children) {
+			Object result = null;
 			switch (child.getNodeType()) {
 			case OPERATION:
 				var childCastedToVariable = ((OperationNode) child);
@@ -235,38 +234,29 @@ public class Block extends Node implements Cloneable {
 				var childCastedToIfStatement = ((IfStatementNode) child);
 				var elseBody = childCastedToIfStatement.getElseBody();
 				if (childCastedToIfStatement.runnedCondition()) {
-					var result = childCastedToIfStatement.run();
+					result = childCastedToIfStatement.run();
 					if (result != null)
 						return result;
 				} else if (elseBody != null) {
-					var result = elseBody.run();
-					if (result != null)
-						return result;
-				}
-				break;
-			case WHILE_STATEMENT:
-				var childCastedToWhileStatement = ((WhileStatementNode) child);
-				while ((boolean) childCastedToWhileStatement.runnedCondition()) {
-					var result = childCastedToWhileStatement.run();
-					if (result instanceof BreakType)
-						break;
-					if (result instanceof ContinueType)
-						continue;
+					result = elseBody.run();
 					if (result != null)
 						return result;
 				}
 				break;
 			case DO_WHILE_STATEMENT:
-				var childCastedToDoWhileStatement = ((WhileStatementNode) child);
-				do {
-					var result = childCastedToDoWhileStatement.run();
+			case WHILE_STATEMENT:
+				var childCastedToWhileStatement = ((WhileStatementNode) child);
+				if (child.getNodeType().equals(NodeTypes.DO_WHILE_STATEMENT))
+					childCastedToWhileStatement.run();
+				while ((boolean) childCastedToWhileStatement.runnedCondition()) {
+					result = childCastedToWhileStatement.run();
 					if (result instanceof BreakType)
 						break;
 					if (result instanceof ContinueType)
 						continue;
 					if (result != null)
 						return result;
-				} while ((boolean) childCastedToDoWhileStatement.runnedCondition());
+				}
 				break;
 			case FOR_STATEMENT:
 				var childCastedToForStatement = ((ForStatementNode) child);
@@ -277,15 +267,14 @@ public class Block extends Node implements Cloneable {
 							child.getLine());
 				var iterable = (Iterable<?>) toIter;
 				for (Object e : iterable) {
+					VariableDeclarationNode variable = null;
 					if (childCastedToForStatement.doesContainVariable(name))
-						childCastedToForStatement.getVariableByName(name, childCastedToForStatement.getFileName(),
-								childCastedToForStatement.getLine()).setValue(e);
-					else {
-						childCastedToForStatement.addVariable(new VariableDeclarationNode(name, DataTypes.ANY));
-						childCastedToForStatement.getVariableByName(name, childCastedToForStatement.getFileName(),
-								childCastedToForStatement.getLine()).setValue(e);
-					}
-					var result = childCastedToForStatement.run();
+						variable = childCastedToForStatement.getVariableByName(name,
+								childCastedToForStatement.getFileName(), childCastedToForStatement.getLine());
+					else
+						variable = new VariableDeclarationNode(name, DataTypes.ANY);
+					variable.setValue(e);
+					result = childCastedToForStatement.run();
 					if (result instanceof BreakType)
 						break;
 					if (result instanceof ContinueType)
@@ -331,8 +320,6 @@ public class Block extends Node implements Cloneable {
 				return Nothing.continueType;
 			case RETURN_STATEMENT:
 				return ((ReturnStatementNode) child).getExpression().run();
-			case THREAD_STATEMENT:
-				new MontyThread(((ThreadStatement) child).getExpression());
 			default:
 				break;
 			}

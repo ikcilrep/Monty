@@ -238,16 +238,6 @@ public abstract class Identificator {
 		return true;
 	}
 
-	public static boolean isThreadStatement(OptimizedTokensArray tokens) {
-		if (!tokens.get(0).getType().equals(TokenTypes.THREAD_KEYWORD))
-			return false;
-		if (tokens.length() == 1 || !isExpression(tokens.subarray(1, tokens.length())))
-			new LogError("Expected expression after \"thread\" keyword:\t" + Tokens.getText(tokens),
-					tokens.get(tokens.length() > 1 ? 1 : 0));
-
-		return true;
-	}
-
 	public static boolean isVariableDeclaration(OptimizedTokensArray tokensBeforeSemicolon) {
 		var firstTokenType = tokensBeforeSemicolon.get(0).getType();
 		var isFirstTokenStaticOrDynamicKeyword = firstTokenType.equals(TokenTypes.STATIC_KEYWORD)
