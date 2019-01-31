@@ -13,6 +13,7 @@ limitations under the License.
 */
 package sml.data.array;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 import ast.Block;
@@ -33,7 +34,7 @@ public class LengthOfArray extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return array.length();
+		return BigInteger.valueOf(array.length());
 	}
 
 }

@@ -44,14 +44,6 @@ import sml.data.string.ToUpperCase;
 import sml.io.Input;
 import sml.io.Print;
 import sml.io.Println;
-import sml.io.ReadFile;
-import sml.io.WriteFile;
-import sml.math.AbsInt;
-import sml.math.PI;
-import sml.math.PowerFloat;
-import sml.math.PowerInt;
-import sml.math.SqrtFloat;
-import sml.math.SqrtInt;
 import sml.system.Argv;
 import sml.system.Exit;
 import sml.threading.Sleep;
@@ -112,17 +104,7 @@ public class Sml extends Library {
 		io.put("input", new Input());
 		io.put("print", new Print());
 		io.put("println", new Println());
-		io.put("readFile", new ReadFile());
-		io.put("writeFile", new WriteFile());
 
-		var math = (HashMap<String, Object>) children.get("math");
-		math.put("absFloat", new sml.math.AbsFloat());
-		math.put("absInt", new AbsInt());
-		math.put("PI", new PI());
-		math.put("powerFloat", new PowerFloat());
-		math.put("powerInt", new PowerInt());
-		math.put("sqrtFloat", new SqrtFloat());
-		math.put("sqrtInt", new SqrtInt());
 
 		var system = (HashMap<String, Object>) children.get("system");
 		system.put("argv", new Argv());

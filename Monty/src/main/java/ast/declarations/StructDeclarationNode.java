@@ -44,7 +44,7 @@ public class StructDeclarationNode extends Block implements Cloneable {
 
 	public void addNewStruct(Block block, Token token) {
 		var struct = this;
-		block.addFunction(new FunctionDeclarationNode(name, DataTypes.ANY) {
+		var newStructFunction = new FunctionDeclarationNode(name, DataTypes.ANY) {
 
 			@Override
 			public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
@@ -64,9 +64,10 @@ public class StructDeclarationNode extends Block implements Cloneable {
 				newStruct.incrementNumber();
 				return newStruct;
 			}
-
-		}, token);
-		var function = new FunctionDeclarationNode("is" + name, DataTypes.BOOLEAN) {
+		};
+		newStructFunction.setBody(new Block(null));
+		block.addFunction(newStructFunction, token);
+		var checkingFunction = new FunctionDeclarationNode("is" + name, DataTypes.BOOLEAN) {
 
 			@Override
 			public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
@@ -78,9 +79,9 @@ public class StructDeclarationNode extends Block implements Cloneable {
 			}
 
 		};
-		function.setBody(new Block(null));
-		function.addParameter(new VariableDeclarationNode("other", DataTypes.ANY));
-		block.addFunction(function, token);
+		checkingFunction.setBody(new Block(null));
+		checkingFunction.addParameter(new VariableDeclarationNode("other", DataTypes.ANY));
+		block.addFunction(checkingFunction, token);
 	}
 
 	@Override

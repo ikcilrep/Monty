@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ast.declarations.FunctionDeclarationNode;
+import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.statements.ChangeToStatementNode;
 import ast.statements.ForStatementNode;
@@ -256,28 +257,48 @@ public class Block extends Node implements Cloneable, RunnableNode {
 			case FOR_STATEMENT:
 				var childCastedToForStatement = ((ForStatementNode) child);
 				var name = childCastedToForStatement.getVariableName();
+				var isNotNameUnderscore = !name.equals("_");
 				var toIter = childCastedToForStatement.getArray().run();
-				if (!(toIter instanceof Iterable<?>))
-					new LogError("Can't iterate over:\t" + toIter.getClass().getName(), child.getFileName(),
-							child.getLine());
-				var iterable = (Iterable<?>) toIter;
-				for (Object e : iterable) {
-					VariableDeclarationNode variable = null;
-					if (childCastedToForStatement.doesContainVariable(name))
-						variable = childCastedToForStatement.getVariableByName(name,
-								childCastedToForStatement.getFileName(), childCastedToForStatement.getLine());
-					else
-						variable = new VariableDeclarationNode(name, DataTypes.ANY);
-					variable.setValue(e);
-					result = childCastedToForStatement.run();
-					if (result instanceof BreakType)
-						break;
-					if (result instanceof ContinueType)
-						continue;
-					if (result != null)
-						return result;
+				if (toIter instanceof StructDeclarationNode) {
+					var struct = (StructDeclarationNode) toIter;
+					if (struct.doesContainFunction("Iterator")) {
+						var iterator = (StructDeclarationNode) struct.getFunctionByName("Iterator").call(
+								new ArrayList<>(), childCastedToForStatement.fileName, childCastedToForStatement.line);
+						if (iterator.doesContainFunction("hasNext") && iterator.doesContainFunction("next")) {
+							var hasNext = iterator.getFunctionByName("hasNext");
+							var next = iterator.getFunctionByName("next");
+							if (hasNext.getType().equals(DataTypes.BOOLEAN) && !next.getType().equals(DataTypes.VOID))
+								while ((boolean) hasNext.call(new ArrayList<>(), childCastedToForStatement.fileName,
+										childCastedToForStatement.line)) {
+										Object e = next.call(new ArrayList<>(), childCastedToForStatement.fileName,
+												childCastedToForStatement.line);
+									if (isNotNameUnderscore) {
+										VariableDeclarationNode variable = null;
+										if (childCastedToForStatement.doesContainVariable(name))
+											variable = childCastedToForStatement.getVariableByName(name,
+													childCastedToForStatement.getFileName(),
+													childCastedToForStatement.getLine());
+										else {
+											variable = new VariableDeclarationNode(name, DataTypes.ANY);
+											childCastedToForStatement.addVariable(variable);
+										}
+										variable.setValue(e);
+									}
+									result = childCastedToForStatement.run();
+									if (result instanceof BreakType)
+										break;
+									if (result instanceof ContinueType)
+										continue;
+									if (result != null)
+										return result;
+								}
+							break;
+
+						}
+					}
 				}
-				break;
+				new LogError("Iterable object have to has nested struct Iterator with next and hasNext methods",
+						childCastedToForStatement.fileName, childCastedToForStatement.line);
 			case CHANGE_TO_STATEMENT:
 				var childCastedToChangeToStatement = ((ChangeToStatementNode) child);
 				var newVariableType = childCastedToChangeToStatement.getDataType();

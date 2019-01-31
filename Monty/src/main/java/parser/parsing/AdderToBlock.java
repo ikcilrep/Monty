@@ -94,6 +94,8 @@ public abstract class AdderToBlock {
 				name = tokens.get(i).getText();
 			else if (!isTokenTypeEqualsComma)
 				type = Tokens.getDataType(tokenType);
+			if (Character.isUpperCase(name.charAt(0)))
+				new LogError("Function name " + name +" should start with lower case", tokens.get(1));
 			if (isTokenTypeEqualsComma || i + 1 >= tokens.length())
 				function.addParameter(new VariableDeclarationNode(name, type));
 		}
@@ -133,7 +135,10 @@ public abstract class AdderToBlock {
 		var isDynamic = tokens.get(0).getType().equals(TokenTypes.DYNAMIC_KEYWORD);
 		int n = isDynamic ? 3 : 2;
 		var dataType = Tokens.getDataType(tokens.get(n-2).getType());
-		var variable = new VariableDeclarationNode(tokens.get(n-1).getText(), dataType);
+		var name = tokens.get(n-1).getText();
+		if (Character.isUpperCase(name.charAt(0)))
+			new LogError("Variable name " + name +" should start with lower case", tokens.get(1));
+		var variable = new VariableDeclarationNode(name, dataType);
 		variable.setDynamic(isDynamic);
 		block.addVariable(variable, tokens.get(n-2));
 		if (tokens.length() > n)

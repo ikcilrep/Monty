@@ -16,14 +16,12 @@ limitations under the License.
 
 package sml.data.array;
 
-import java.util.Iterator;
-
 import ast.Block;
 import ast.declarations.StructDeclarationNode;
 import sml.data.returning.Nothing;
 import sml.data.stack.Stack;
 
-public class Array extends StructDeclarationNode implements Iterable<Object>, Cloneable {
+public class Array extends StructDeclarationNode implements Cloneable {
 
 	protected Object[] array;
 
@@ -55,6 +53,7 @@ public class Array extends StructDeclarationNode implements Iterable<Object>, Cl
 		addFunction(new FindAll(this));
 		addFunction(new FindFirst(this));
 		addFunction(new FindLast(this));
+		addFunction(new NewIterator(this));
 	}
 
 	public Array append(Object element) {
@@ -90,9 +89,8 @@ public class Array extends StructDeclarationNode implements Iterable<Object>, Cl
 			return false;
 		if (length() != otherArray.length())
 			return false;
-		int i = 0;
-		for (Object e : otherArray)
-			if (!array[i++].equals(e))
+		for (int i = 0; i < otherArray.length(); i++)
+			if (!array[i].equals(otherArray.get(i)))
 				return false;
 		return true;
 
@@ -131,24 +129,6 @@ public class Array extends StructDeclarationNode implements Iterable<Object>, Cl
 
 	public Object get(int index) {
 		return array[index];
-	}
-
-	@Override
-	public Iterator<Object> iterator() {
-		return new Iterator<Object>() {
-			int counter = 0;
-
-			@Override
-			public boolean hasNext() {
-				return counter < length();
-
-			}
-
-			@Override
-			public Object next() {
-				return array[counter++];
-			}
-		};
 	}
 
 	public int length() {
@@ -218,7 +198,7 @@ public class Array extends StructDeclarationNode implements Iterable<Object>, Cl
 	@Override
 	public String toString() {
 		var length = length();
-		var stringBuilder = new StringBuilder(array.length + 2);
+		var stringBuilder = new StringBuilder(array.length * 2 + 1);
 		stringBuilder.append('[');
 		int i = 0;
 		while (true) {

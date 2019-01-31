@@ -266,8 +266,12 @@ public class OperatorOverloading {
 
 		switch (type) {
 		case INTEGER:
+			if (rightValue.equals(BigInteger.ZERO))
+				new LogError("Can't divide by zero", fileName, line);
 			return ((BigInteger) leftValue).divide(((BigInteger) rightValue));
 		case FLOAT:
+			if (rightValue.equals(BigDecimal.ZERO))
+				new LogError("Can't divide by zero", fileName, line);
 			return ((BigDecimal) leftValue).divide(((BigDecimal) rightValue));
 		case STRING:
 		case BOOLEAN:

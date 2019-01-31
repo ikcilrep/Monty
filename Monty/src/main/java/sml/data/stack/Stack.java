@@ -30,19 +30,23 @@ public class Stack extends StructDeclarationNode implements Iterable<Object> {
 
 	public Stack() {
 		super(new Block(null), "Stack");
+		addFunctions();
 		array = new Object[128];
 		top = -1;
 	}
 
 	public Stack(Object[] array) {
 		super(new Block(null), "Stack");
+		addFunctions();
 		this.array = array;
 		top = array.length - 1;
 	}
 
 	public void addFunctions() {
+		addFunction(new Push(this));
 		addFunction(new Pop(this));
 		addFunction(new Peek(this));
+		addFunction(new NewIterator(this));
 	}
 
 	@Override

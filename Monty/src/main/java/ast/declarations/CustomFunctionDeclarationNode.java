@@ -61,7 +61,7 @@ public class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
 		var resultDataType = DataTypes.getDataType(result);
 		if (resultDataType == null)
 			resultDataType = getType();
-		if (!resultDataType.equals(getType()))
+		if (!(getType().equals(DataTypes.ANY) || resultDataType.equals(getType())))
 			new LogError("Function " + getName() + " should return " + getType().toString().toLowerCase()
 					+ ",\nbut returned " + resultDataType.toString().toLowerCase(), fileNames, lines);
 		return result;
