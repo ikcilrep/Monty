@@ -83,19 +83,24 @@ public abstract class AdderToBlock {
 	}
 
 	public static Block addFunctionDeclaration(Block block, OptimizedTokensArray tokens) {
-		var function = new CustomFunctionDeclarationNode(tokens.get(2).getText(),
+		var functionName= tokens.get(2).getText();
+		var function = new CustomFunctionDeclarationNode(functionName,
 				Tokens.getDataType(tokens.get(1).getType()));
+		if (Character.isUpperCase(functionName.charAt(0)))
+			new LogError("Function name " + functionName +" should start with lower case", tokens.get(2));
 		DataTypes type = null;
 		String name = null;
 		for (int i = 3; i < tokens.length(); i++) {
 			var tokenType = tokens.get(i).getType();
 			var isTokenTypeEqualsComma = tokens.get(i).getType().equals(TokenTypes.COMMA);
-			if (tokenType.equals(TokenTypes.IDENTIFIER))
+			if (tokenType.equals(TokenTypes.IDENTIFIER)) {
 				name = tokens.get(i).getText();
-			else if (!isTokenTypeEqualsComma)
+				if (Character.isUpperCase(name.charAt(0)))
+					new LogError("Argument name " + name +" should start with lower case", tokens.get(i));
+			} else if (!isTokenTypeEqualsComma)
 				type = Tokens.getDataType(tokenType);
-			if (Character.isUpperCase(name.charAt(0)))
-				new LogError("Function name " + name +" should start with lower case", tokens.get(1));
+			/*if (name.equals("kwargs") && i != tokens.length()-1)
+				new LogError("Kwargs have to be last argument", tokens.get(i));*/
 			if (isTokenTypeEqualsComma || i + 1 >= tokens.length())
 				function.addParameter(new VariableDeclarationNode(name, type));
 		}
