@@ -75,7 +75,10 @@ public abstract class AdderToBlock {
 	}
 
 	public static Block addForStatement(Block block, OptimizedTokensArray tokens) {
-		var forStatement = new ForStatementNode(tokens.get(1).getText(),
+		var variableName= tokens.get(1).getText();
+		if (Character.isUpperCase(variableName.charAt(0)))
+			new LogError("Variable name " + variableName +" should start with lower case", tokens.get(1));
+		var forStatement = new ForStatementNode(variableName,
 				ExpressionParser.parse(block, tokens.subarray(3, tokens.length())), tokens.get(0).getFileName(),
 				tokens.get(0).getLine(), block);
 		block.addChild(forStatement);
