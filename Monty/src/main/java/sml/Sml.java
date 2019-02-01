@@ -25,7 +25,7 @@ import sml.casts.ToChar;
 import sml.casts.ToFloat;
 import sml.casts.ToInt;
 import sml.casts.ToString;
-import sml.data.array.ArrayOf;
+import sml.data.array.NewArray;
 import sml.data.checking.IsArray;
 import sml.data.checking.IsFloat;
 import sml.data.checking.IsInt;
@@ -77,7 +77,7 @@ public class Sml extends Library {
 		casts.put("ord", new Ord());
 
 		var data = (HashMap<String, Object>) children.get("data");
-		data.put("Array", new ArrayOf());
+		data.put("Array", new NewArray());
 		data.put("Stack", new NewStack());
 		data.put("checking", new HashMap<>());
 		data.put("string", new HashMap<>());

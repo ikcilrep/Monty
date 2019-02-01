@@ -17,25 +17,14 @@ limitations under the License.
 package sml.data.array;
 
 import java.util.ArrayList;
-
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
+import sml.data.Method;
 
-public class ReplaceLastInArray extends FunctionDeclarationNode {
-
-	/**
-	 * 
-	 */
-
-	Array array;
-
-	public ReplaceLastInArray(Array array) {
-		super("replaceLast", DataTypes.ANY);
-		this.array = array;
-		setBody(new Block(array));
+class ReplaceFirst extends Method<Array> {
+	public ReplaceFirst(Array array) {
+		super(array, "replaceFirst", DataTypes.ANY);
 		addParameter(new VariableDeclarationNode("toBeReplaced", DataTypes.ANY));
 		addParameter(new VariableDeclarationNode("replacement", DataTypes.ANY));
 
@@ -48,7 +37,7 @@ public class ReplaceLastInArray extends FunctionDeclarationNode {
 		var toBeReplaced = body.getVariableByName("toBeReplaced").getValue();
 		var replacement = body.getVariableByName("replacement").getValue();
 
-		return array.replaceLast(toBeReplaced, replacement);
+		return parent.replaceFirst(toBeReplaced, replacement);
 	}
 
 }

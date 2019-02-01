@@ -9,44 +9,29 @@ You may obtain a copy of the License at
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+WITHOUObject WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-
 package sml.data.array;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
-
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
-import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
-import parser.LogError;
+import sml.data.Method;
 
-public class ExtendArray extends FunctionDeclarationNode {
+class Length extends Method<Array> {
 
-	/**
-	 * 
-	 */
 
-	Array array;
-
-	public ExtendArray(Array array) {
-		super("extend", DataTypes.VOID);
-		this.array = array;
-		setBody(new Block(array));
-		addParameter(new VariableDeclarationNode("arrayToExtend", DataTypes.ANY));
+	public Length(Array array) {
+		super(array, "length", DataTypes.INTEGER);
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var arrayToExtend = (Array) getBody().getVariableByName("arrayToExtend").getValue();
-		if (!(arrayToExtend instanceof Array))
-			new LogError("Can't extend array with something that isn't array", callFileName, callLine);
-		return array.extend(arrayToExtend);
+		return BigInteger.valueOf(parent.length());
 	}
 
 }

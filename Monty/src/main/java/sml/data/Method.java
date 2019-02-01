@@ -9,27 +9,23 @@ You may obtain a copy of the License at
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+WITHOUObject WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sml.data.stack;
+package sml.data;
 
-import java.util.ArrayList;
-import ast.expressions.OperationNode;
+import ast.Block;
+import ast.declarations.FunctionDeclarationNode;
+import ast.declarations.StructDeclarationNode;
 import parser.DataTypes;
-import sml.data.Method;
 
-class Peek extends Method<Stack> {
-	public Peek(Stack stack) {
-		super(stack, "peek", DataTypes.ANY);
+public abstract class Method<T extends StructDeclarationNode> extends FunctionDeclarationNode{
+	protected T parent;
+	public Method(T parent, String name, DataTypes type) {
+		super(name, type);
+		setBody(new Block(parent));
+		this.parent = parent;
 	}
-
-	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		return parent.peek();
-	}
-
 }

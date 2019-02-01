@@ -17,22 +17,17 @@ limitations under the License.
 package sml.data.array;
 
 import java.util.ArrayList;
-
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
+import sml.data.Method;
 
-public class FindAll extends FunctionDeclarationNode {
+class Replace extends Method<Array> {
 
-	Array array;
-
-	public FindAll(Array array) {
-		super("find", DataTypes.ANY);
-		this.array = array;
-		setBody(new Block(array));
-		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
+	public Replace(Array array) {
+		super(array, "replace", DataTypes.ANY);
+		addParameter(new VariableDeclarationNode("toBeReplaced", DataTypes.ANY));
+		addParameter(new VariableDeclarationNode("replacement", DataTypes.ANY));
 
 	}
 
@@ -40,8 +35,9 @@ public class FindAll extends FunctionDeclarationNode {
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var element = body.getVariableByName("element").getValue();
-		return array.findAll(element);
+		var toBeReplaced = body.getVariableByName("toBeReplaced").getValue();
+		var replacement = body.getVariableByName("replacement").getValue();
+		return parent.replaceAll(toBeReplaced, replacement);
 	}
 
 }

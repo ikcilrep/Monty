@@ -18,20 +18,15 @@ package sml.data.array;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
+import sml.data.Method;
 
-public class Subarray extends FunctionDeclarationNode {
-	Array array;
+class Subarray extends Method<Array> {
 
 	public Subarray(Array array) {
-		super("subarray", DataTypes.ANY);
-		this.array = array;
-		setBody(new Block(array));
+		super(array, "subarray", DataTypes.ANY);
 		addParameter(new VariableDeclarationNode("begin", DataTypes.INTEGER));
 		addParameter(new VariableDeclarationNode("end", DataTypes.INTEGER));
 
@@ -43,7 +38,7 @@ public class Subarray extends FunctionDeclarationNode {
 		var body = getBody();
 		var begin = ((BigInteger) body.getVariableByName("begin").getValue()).intValue();
 		var end = ((BigInteger) body.getVariableByName("end").getValue()).intValue();
-		return array.subarray(begin, end);
+		return parent.subarray(begin, end);
 	}
 
 }

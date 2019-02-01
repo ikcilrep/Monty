@@ -19,7 +19,7 @@ package ast.declarations;
 import ast.Node;
 import parser.DataTypes;
 
-public abstract class DeclarationNode extends Node {
+abstract class DeclarationNode extends Node {
 
 	protected String name;
 	protected DataTypes type;

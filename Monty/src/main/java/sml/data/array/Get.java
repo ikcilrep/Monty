@@ -16,28 +16,29 @@ limitations under the License.
 
 package sml.data.array;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
-
-import ast.declarations.FunctionDeclarationNode;
+import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
+import parser.LogError;
+import sml.data.Method;
 
-public class ArrayOf extends FunctionDeclarationNode {
+class Get extends Method<Array> {
 
-	/**
-	 * 
-	 */
 
-	public ArrayOf() {
-		super("Array", DataTypes.ANY);
+	public Get(Array array) {
+		super(array,"get", DataTypes.ANY);
+		addParameter(new VariableDeclarationNode("index", DataTypes.INTEGER));
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		var arr = new Array(arguments.size());
-		for (int i = 0; i < arguments.size(); i++)
-			arr.set(i, arguments.get(i).run());
-		return arr;
+		setArguments(arguments, callFileName, callLine);
+		var index = (BigInteger) getBody().getVariableByName("index").getValue();
+		if (index.compareTo(BigInteger.valueOf(parent.length())) >= 0)
+			new LogError("Index " + index + " is too large for length " + parent.length(), callFileName, callLine);
+		return parent.get(index.intValue());
 	}
 
 }

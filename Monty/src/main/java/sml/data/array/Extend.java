@@ -16,39 +16,28 @@ limitations under the License.
 
 package sml.data.array;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
-
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
+import parser.LogError;
+import sml.data.Method;
 
-public class SetInArray extends FunctionDeclarationNode {
+class Extend extends Method<Array> {
 
-	/**
-	 * 
-	 */
 
-	Array array;
-
-	public SetInArray(Array array) {
-		super("set", DataTypes.ANY);
-		this.array = array;
-		setBody(new Block(array));
-		addParameter(new VariableDeclarationNode("index", DataTypes.INTEGER));
-		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
+	public Extend(Array array) {
+		super(array, "extend", DataTypes.VOID);
+		addParameter(new VariableDeclarationNode("arrayToExtend", DataTypes.ANY));
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var body = getBody();
-		var arr = (Array) body.getVariableByName("arr").getValue();
-		var index = ((BigInteger) body.getVariableByName("index").getValue()).intValue();
-		var element = body.getVariableByName("element").getValue();
-		return arr.set(index, element);
+		var arrayToExtend = (Array) getBody().getVariableByName("arrayToExtend").getValue();
+		if (!(arrayToExtend instanceof Array))
+			new LogError("Can't extend array with something that isn't array", callFileName, callLine);
+		return parent.extend(arrayToExtend);
 	}
 
 }

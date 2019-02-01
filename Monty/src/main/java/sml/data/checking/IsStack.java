@@ -36,8 +36,7 @@ public class IsStack extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var toCheck = getBody().getVariableByName("toCheck").getValue();
-		return toCheck instanceof Stack;
+		return getBody().getVariableByName("toCheck").getValue() instanceof Stack;
 	}
 
 }

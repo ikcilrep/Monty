@@ -18,32 +18,22 @@ package sml.data.array;
 
 import java.util.ArrayList;
 
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
+import sml.data.Method;
 
-public class ReplaceAllInArray extends FunctionDeclarationNode {
+class Append extends Method<Array> {
 
-	Array array;
-
-	public ReplaceAllInArray(Array array) {
-		super("replace", DataTypes.ANY);
-		this.array = array;
-		setBody(new Block(array));
-		addParameter(new VariableDeclarationNode("toBeReplaced", DataTypes.ANY));
-		addParameter(new VariableDeclarationNode("replacement", DataTypes.ANY));
-
+	public Append(Array array) {
+		super(array,"append", DataTypes.VOID);
+		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var body = getBody();
-		var toBeReplaced = body.getVariableByName("toBeReplaced").getValue();
-		var replacement = body.getVariableByName("replacement").getValue();
-		return array.replaceAll(toBeReplaced, replacement);
+		return parent.append(getBody().getVariableByName("element").getValue());
 	}
 
 }

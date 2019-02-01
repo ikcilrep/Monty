@@ -1,24 +1,20 @@
 package sml.data.stack;
 
 import java.util.ArrayList;
-
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
+import sml.data.Method;
 
-public class NewIterator extends FunctionDeclarationNode {
-	Stack stack;
+class NewIterator extends Method<Stack> {
 
 	public NewIterator(Stack stack) {
-		super("Iterator", DataTypes.ANY);
-		setBody(new Block(stack));
-		this.stack = stack;
+		super(stack, "Iterator", DataTypes.ANY);
+
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		return new Iterator(stack);
+		return new Iterator(parent);
 	}
 
 }

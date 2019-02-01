@@ -16,35 +16,28 @@ limitations under the License.
 
 package sml.data.array;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
-
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
+import sml.data.Method;
 
-public class DoesArrayContains extends FunctionDeclarationNode {
+class Set extends Method<Array> {
 
-	/**
-	 * 
-	 */
-
-	Array array;
-
-	public DoesArrayContains(Array array) {
-		super("contains", DataTypes.BOOLEAN);
-		this.array = array;
-		setBody(new Block(array));
+	public Set(Array array) {
+		super(array, "set", DataTypes.ANY);
+		addParameter(new VariableDeclarationNode("index", DataTypes.INTEGER));
 		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
-
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var element = getBody().getVariableByName("element").getValue();
-		return array.contains(element);
+		var body = getBody();
+		var index = ((BigInteger) body.getVariableByName("index").getValue()).intValue();
+		var element = body.getVariableByName("element").getValue();
+		return parent.set(index, element);
 	}
 
 }

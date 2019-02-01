@@ -17,21 +17,16 @@ limitations under the License.
 package sml.data.array;
 
 import java.util.ArrayList;
-
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
+import sml.data.Method;
 
-public class FindFirst extends FunctionDeclarationNode {
+class FindFirst extends Method<Array> {
 
-	Array array;
 
 	public FindFirst(Array array) {
-		super("findFirst", DataTypes.ANY);
-		this.array = array;
-		setBody(new Block(array));
+		super(array, "findFirst", DataTypes.ANY);
 		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
 
 	}
@@ -39,9 +34,7 @@ public class FindFirst extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var body = getBody();
-		var element = body.getVariableByName("element").getValue();
-		return array.findFirst(element);
+		return parent.findFirst(getBody().getVariableByName("element").getValue());
 	}
 
 }

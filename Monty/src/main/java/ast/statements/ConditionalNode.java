@@ -14,8 +14,23 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package ast;
+package ast.statements;
 
-public interface RunnableNode {
-	public Object run();
+import ast.Block;
+import ast.NodeTypes;
+import ast.expressions.OperationNode;
+import sml.casts.ToBoolean;
+
+class ConditionalNode extends Block {
+	OperationNode condition;
+
+	public ConditionalNode(OperationNode condition, Block parent, NodeTypes nodeType) {
+		super(parent, nodeType);
+		this.condition = condition;
+	}
+
+	public boolean runnedCondition() {
+		return ToBoolean.toBoolean(condition.run(), getFileName(), getLine());
+
+	}
 }

@@ -17,38 +17,23 @@ limitations under the License.
 package sml.data.array;
 
 import java.util.ArrayList;
-
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
+import sml.data.Method;
 
-public class ReplaceFirstInArray extends FunctionDeclarationNode {
+class Find extends Method<Array> {
 
-	/**
-	 * 
-	 */
-
-	Array array;
-
-	public ReplaceFirstInArray(Array array) {
-		super("replaceFirst", DataTypes.ANY);
-		this.array = array;
-		setBody(new Block(array));
-		addParameter(new VariableDeclarationNode("toBeReplaced", DataTypes.ANY));
-		addParameter(new VariableDeclarationNode("replacement", DataTypes.ANY));
+	public Find(Array array) {
+		super(array, "find", DataTypes.ANY);
+		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
 
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var body = getBody();
-		var toBeReplaced = body.getVariableByName("toBeReplaced").getValue();
-		var replacement = body.getVariableByName("replacement").getValue();
-
-		return array.replaceFirst(toBeReplaced, replacement);
+		return parent.findAll(getBody().getVariableByName("element").getValue());
 	}
 
 }

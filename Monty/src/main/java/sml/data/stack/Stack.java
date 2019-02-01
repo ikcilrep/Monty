@@ -16,14 +16,12 @@ limitations under the License.
 
 package sml.data.stack;
 
-import java.util.Iterator;
-
 import ast.Block;
 import ast.declarations.StructDeclarationNode;
 import parser.LogError;
 import sml.data.array.Array;
 
-public class Stack extends StructDeclarationNode implements Iterable<Object> {
+public class Stack extends StructDeclarationNode {
 
 	Object[] array;
 	int top;
@@ -58,9 +56,8 @@ public class Stack extends StructDeclarationNode implements Iterable<Object> {
 			return false;
 		if (otherStack.top != top)
 			return false;
-		int i = top;
-		for (Object e : otherStack)
-			if (!array[i--].equals(e))
+		for (int i = top; i >= 0; i--)
+			if (!array[i].equals(otherStack.array[i]))
 				return false;
 		return true;
 	}
@@ -71,24 +68,6 @@ public class Stack extends StructDeclarationNode implements Iterable<Object> {
 
 	public boolean isEmpty() {
 		return top < 0;
-	}
-
-	@Override
-	public Iterator<Object> iterator() {
-		return new Iterator<Object>() {
-			int counter = top;
-
-			@Override
-			public boolean hasNext() {
-				return counter > -1;
-
-			}
-
-			@Override
-			public Object next() {
-				return array[counter--];
-			}
-		};
 	}
 
 	public Object peek() {

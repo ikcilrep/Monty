@@ -2,7 +2,7 @@ package sml.data.stack;
 
 import ast.declarations.StructDeclarationNode;
 
-public class Iterator extends StructDeclarationNode {
+class Iterator extends StructDeclarationNode {
 	Stack stack;
 	int counter;
 	public Iterator(Stack stack) {

@@ -40,20 +40,20 @@ public class Array extends StructDeclarationNode implements Cloneable {
 	}
 
 	public void addFunctions() {
-		addFunction(new AppendToArray(this));
-		addFunction(new ExtendArray(this));
-		addFunction(new GetFromArray(this));
-		addFunction(new DoesArrayContains(this));
-		addFunction(new LengthOfArray(this));
-		addFunction(new ReplaceAllInArray(this));
-		addFunction(new ReplaceFirstInArray(this));
-		addFunction(new ReplaceLastInArray(this));
-		addFunction(new SetInArray(this));
+		addFunction(new Append(this));
+		addFunction(new Extend(this));
+		addFunction(new Get(this));
+		addFunction(new Length(this));
+		addFunction(new Replace(this));
+		addFunction(new ReplaceFirst(this));
+		addFunction(new ReplaceLast(this));
+		addFunction(new Set(this));
 		addFunction(new Subarray(this));
-		addFunction(new FindAll(this));
+		addFunction(new Find(this));
 		addFunction(new FindFirst(this));
 		addFunction(new FindLast(this));
 		addFunction(new NewIterator(this));
+		addFunction(new Reversed(this));
 	}
 
 	public Array append(Object element) {
@@ -186,6 +186,7 @@ public class Array extends StructDeclarationNode implements Cloneable {
 			newArray.set(j, array[i]);
 		return newArray;
 	}
+	
 
 	public Object[] toArray() {
 		return array;

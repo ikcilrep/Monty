@@ -20,7 +20,7 @@ import ast.Block;
 import ast.NodeTypes;
 import ast.expressions.OperationNode;
 
-public class WhileStatementNode extends ConditionalBlock {
+public class WhileStatementNode extends ConditionalNode {
 	public WhileStatementNode(OperationNode condition, String fileName, int line, NodeTypes whileOrDoWhile,
 			Block parent) {
 		super(condition, parent, whileOrDoWhile);

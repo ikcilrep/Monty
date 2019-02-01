@@ -17,26 +17,20 @@ limitations under the License.
 package sml.data.stack;
 
 import java.util.ArrayList;
-
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
+import sml.data.Method;
 
-public class Pop extends FunctionDeclarationNode {
-
-	Stack stack;
+class Pop extends Method<Stack> {
 
 	public Pop(Stack stack) {
-		super("pop", DataTypes.ANY);
-		this.stack = stack;
-		setBody(new Block(stack));
+		super(stack, "pop", DataTypes.ANY);
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return stack.pop();
+		return parent.pop();
 	}
 
 }

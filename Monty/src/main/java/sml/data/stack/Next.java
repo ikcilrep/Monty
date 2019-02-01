@@ -1,21 +1,19 @@
 package sml.data.stack;
 
 import java.util.ArrayList;
-
-import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
+import sml.data.Method;
 
-public class Next extends FunctionDeclarationNode {
-	Iterator iterator;
+class Next extends Method<Iterator> {
 	public Next(Iterator iterator) {
-		super("next", DataTypes.ANY);
-		this.iterator = iterator;
+		super(iterator, "next", DataTypes.ANY);
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		return iterator.stack.array[iterator.counter--];
+		setArguments(arguments, callFileName, callLine);
+		return parent.stack.array[parent.counter--];
 	}
 
 }

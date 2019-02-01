@@ -14,22 +14,28 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sml.data.stack;
+package sml.data.checking;
 
 import java.util.ArrayList;
+
+import ast.Block;
+import ast.declarations.FunctionDeclarationNode;
+import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
-import sml.data.Method;
 
-class Peek extends Method<Stack> {
-	public Peek(Stack stack) {
-		super(stack, "peek", DataTypes.ANY);
+public class IsBoolean extends FunctionDeclarationNode {
+
+	public IsBoolean() {
+		super("isBoolean", DataTypes.BOOLEAN);
+		setBody(new Block(null));
+		addParameter(new VariableDeclarationNode("toCheck", DataTypes.ANY));
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return parent.peek();
+		return getBody().getVariableByName("toCheck").getValue() instanceof Boolean;
 	}
 
 }

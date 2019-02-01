@@ -18,30 +18,21 @@ package sml.data.array;
 
 import java.util.ArrayList;
 
-import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
-import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class AppendToArray extends FunctionDeclarationNode {
-
-	Array array;
-
-	public AppendToArray(Array array) {
-		super("append", DataTypes.VOID);
-		this.array = array;
-		setBody(new Block(array));
-		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
-
+public class NewArray extends FunctionDeclarationNode {
+	public NewArray() {
+		super("Array", DataTypes.ANY);
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		var element = getBody().getVariableByName("element").getValue();
-
-		return array.append(element);
+		var arr = new Array(arguments.size());
+		for (int i = 0; i < arguments.size(); i++)
+			arr.set(i, arguments.get(i).run());
+		return arr;
 	}
 
 }

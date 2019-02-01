@@ -17,29 +17,22 @@ limitations under the License.
 package sml.data.stack;
 
 import java.util.ArrayList;
-
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
+import sml.data.Method;
 
-public class Push extends FunctionDeclarationNode {
-
-	Stack stack;
+class Push extends Method<Stack> {
 
 	public Push(Stack stack) {
-		super("push", DataTypes.ANY);
-		this.stack = stack;
-		setBody(new Block(stack));
+		super(stack, "push", DataTypes.ANY);
 		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var element = getBody().getVariableByName("element").getValue();
-		return stack.push(element);
+		return parent.push(getBody().getVariableByName("element").getValue());
 	}
 
 }
