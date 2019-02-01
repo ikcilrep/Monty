@@ -266,14 +266,13 @@ public abstract class Identificator {
 				new LogError("Expected data type declaration after \"dynamic\" keyword:\t"
 						+ Tokens.getText(tokensBeforeSemicolon), tokensBeforeSemicolon.get(1));
 			n++;
-			
+
 		}
 		if (!tokensBeforeSemicolon.get(n).getType().equals(TokenTypes.IDENTIFIER))
-				new LogError(
-						"Expected identifier after data type declaration:\t" + Tokens.getText(tokensBeforeSemicolon),
-						tokensBeforeSemicolon.get(n));
-		
-		if (tokensSize > n+1) {
+			new LogError("Expected identifier after data type declaration:\t" + Tokens.getText(tokensBeforeSemicolon),
+					tokensBeforeSemicolon.get(n));
+
+		if (tokensSize > n + 1) {
 			var expression = tokensBeforeSemicolon.subarray(n, tokensBeforeSemicolon.length());
 			if (!isExpression(expression))
 				new LogError("Wrong expression after data type declaration:\t" + Tokens.getText(expression),

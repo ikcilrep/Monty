@@ -24,7 +24,6 @@ import sml.data.Method;
 
 class FindFirst extends Method<Array> {
 
-
 	public FindFirst(Array array) {
 		super(array, "findFirst", DataTypes.ANY);
 		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));

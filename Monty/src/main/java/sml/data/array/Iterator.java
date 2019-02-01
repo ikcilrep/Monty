@@ -21,6 +21,7 @@ import ast.declarations.StructDeclarationNode;
 class Iterator extends StructDeclarationNode {
 	int counter = 0;
 	Array array;
+
 	public Iterator(Array array) {
 		super(array, "Iterator");
 		this.array = array;

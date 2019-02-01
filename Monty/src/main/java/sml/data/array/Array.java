@@ -186,7 +186,6 @@ public class Array extends StructDeclarationNode implements Cloneable {
 			newArray.set(j, array[i]);
 		return newArray;
 	}
-	
 
 	public Object[] toArray() {
 		return array;

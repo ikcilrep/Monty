@@ -26,9 +26,8 @@ import sml.data.Method;
 
 class Get extends Method<Array> {
 
-
 	public Get(Array array) {
-		super(array,"get", DataTypes.ANY);
+		super(array, "get", DataTypes.ANY);
 		addParameter(new VariableDeclarationNode("index", DataTypes.INTEGER));
 	}
 

@@ -23,7 +23,6 @@ import sml.data.Method;
 
 class Length extends Method<Array> {
 
-
 	public Length(Array array) {
 		super(array, "length", DataTypes.INTEGER);
 	}

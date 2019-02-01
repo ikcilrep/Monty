@@ -24,7 +24,6 @@ import sml.data.Method;
 
 class FindLast extends Method<Array> {
 
-
 	public FindLast(Array array) {
 		super(array, "findLast", DataTypes.ANY);
 		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));

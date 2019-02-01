@@ -21,8 +21,9 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.StructDeclarationNode;
 import parser.DataTypes;
 
-public abstract class Method<T extends StructDeclarationNode> extends FunctionDeclarationNode{
+public abstract class Method<T extends StructDeclarationNode> extends FunctionDeclarationNode {
 	protected T parent;
+
 	public Method(T parent, String name, DataTypes type) {
 		super(name, type);
 		setBody(new Block(parent));

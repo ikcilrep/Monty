@@ -25,7 +25,6 @@ import sml.data.Method;
 
 class Extend extends Method<Array> {
 
-
 	public Extend(Array array) {
 		super(array, "extend", DataTypes.VOID);
 		addParameter(new VariableDeclarationNode("arrayToExtend", DataTypes.ANY));

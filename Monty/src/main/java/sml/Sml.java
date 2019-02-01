@@ -105,7 +105,6 @@ public class Sml extends Library {
 		io.put("print", new Print());
 		io.put("println", new Println());
 
-
 		var system = (HashMap<String, Object>) children.get("system");
 		system.put("argv", new Argv());
 		system.put("exit", new Exit());

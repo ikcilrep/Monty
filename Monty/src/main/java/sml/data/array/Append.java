@@ -26,7 +26,7 @@ import sml.data.Method;
 class Append extends Method<Array> {
 
 	public Append(Array array) {
-		super(array,"append", DataTypes.VOID);
+		super(array, "append", DataTypes.VOID);
 		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
 	}
 

@@ -270,8 +270,8 @@ public class Block extends Node implements Cloneable, RunnableNode {
 							if (hasNext.getType().equals(DataTypes.BOOLEAN) && !next.getType().equals(DataTypes.VOID))
 								while ((boolean) hasNext.call(new ArrayList<>(), childCastedToForStatement.fileName,
 										childCastedToForStatement.line)) {
-										Object e = next.call(new ArrayList<>(), childCastedToForStatement.fileName,
-												childCastedToForStatement.line);
+									Object e = next.call(new ArrayList<>(), childCastedToForStatement.fileName,
+											childCastedToForStatement.line);
 									if (isNotNameUnderscore) {
 										VariableDeclarationNode variable = null;
 										if (childCastedToForStatement.doesContainVariable(name))

@@ -75,9 +75,9 @@ public abstract class AdderToBlock {
 	}
 
 	public static Block addForStatement(Block block, OptimizedTokensArray tokens) {
-		var variableName= tokens.get(1).getText();
+		var variableName = tokens.get(1).getText();
 		if (Character.isUpperCase(variableName.charAt(0)))
-			new LogError("Variable name " + variableName +" should start with lower case", tokens.get(1));
+			new LogError("Variable name " + variableName + " should start with lower case", tokens.get(1));
 		var forStatement = new ForStatementNode(variableName,
 				ExpressionParser.parse(block, tokens.subarray(3, tokens.length())), tokens.get(0).getFileName(),
 				tokens.get(0).getLine(), block);
@@ -86,11 +86,10 @@ public abstract class AdderToBlock {
 	}
 
 	public static Block addFunctionDeclaration(Block block, OptimizedTokensArray tokens) {
-		var functionName= tokens.get(2).getText();
-		var function = new CustomFunctionDeclarationNode(functionName,
-				Tokens.getDataType(tokens.get(1).getType()));
+		var functionName = tokens.get(2).getText();
+		var function = new CustomFunctionDeclarationNode(functionName, Tokens.getDataType(tokens.get(1).getType()));
 		if (Character.isUpperCase(functionName.charAt(0)))
-			new LogError("Function name " + functionName +" should start with lower case", tokens.get(2));
+			new LogError("Function name " + functionName + " should start with lower case", tokens.get(2));
 		DataTypes type = null;
 		String name = null;
 		for (int i = 3; i < tokens.length(); i++) {
@@ -99,11 +98,13 @@ public abstract class AdderToBlock {
 			if (tokenType.equals(TokenTypes.IDENTIFIER)) {
 				name = tokens.get(i).getText();
 				if (Character.isUpperCase(name.charAt(0)))
-					new LogError("Argument name " + name +" should start with lower case", tokens.get(i));
+					new LogError("Argument name " + name + " should start with lower case", tokens.get(i));
 			} else if (!isTokenTypeEqualsComma)
 				type = Tokens.getDataType(tokenType);
-			/*if (name.equals("kwargs") && i != tokens.length()-1)
-				new LogError("Kwargs have to be last argument", tokens.get(i));*/
+			/*
+			 * if (name.equals("kwargs") && i != tokens.length()-1) new
+			 * LogError("Kwargs have to be last argument", tokens.get(i));
+			 */
 			if (isTokenTypeEqualsComma || i + 1 >= tokens.length())
 				function.addParameter(new VariableDeclarationNode(name, type));
 		}
@@ -142,15 +143,15 @@ public abstract class AdderToBlock {
 	public static void addVariableDeclaration(Block block, OptimizedTokensArray tokens) {
 		var isDynamic = tokens.get(0).getType().equals(TokenTypes.DYNAMIC_KEYWORD);
 		int n = isDynamic ? 3 : 2;
-		var dataType = Tokens.getDataType(tokens.get(n-2).getType());
-		var name = tokens.get(n-1).getText();
+		var dataType = Tokens.getDataType(tokens.get(n - 2).getType());
+		var name = tokens.get(n - 1).getText();
 		if (Character.isUpperCase(name.charAt(0)))
-			new LogError("Variable name " + name +" should start with lower case", tokens.get(1));
+			new LogError("Variable name " + name + " should start with lower case", tokens.get(1));
 		var variable = new VariableDeclarationNode(name, dataType);
 		variable.setDynamic(isDynamic);
-		block.addVariable(variable, tokens.get(n-2));
+		block.addVariable(variable, tokens.get(n - 2));
 		if (tokens.length() > n)
-			addExpression(block, tokens.subarray(n-1, tokens.length()));
+			addExpression(block, tokens.subarray(n - 1, tokens.length()));
 		else
 			variable.setValue(DataTypes.getNeutralValue(dataType));
 

@@ -25,7 +25,7 @@ import sml.data.Method;
 
 class Contains extends Method<Array> {
 	public Contains(Array array) {
-		super(array,"contains", DataTypes.BOOLEAN);
+		super(array, "contains", DataTypes.BOOLEAN);
 		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
 	}
 
