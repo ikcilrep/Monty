@@ -10,8 +10,8 @@ class Iterator extends StructDeclarationNode {
 		super(stack, "Iterator");
 		this.stack = stack;
 		counter = stack.top;
-		addFunction(new Next(this));
-		addFunction(new HasNext(this));
+		new Next(this);
+		new HasNext(this);
 
 	}
 

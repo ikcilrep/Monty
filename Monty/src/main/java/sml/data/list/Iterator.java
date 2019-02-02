@@ -24,8 +24,8 @@ class Iterator extends StructDeclarationNode {
 	public Iterator(List list) {
 		super(list, "Iterator");
 		this.list = list;
-		addFunction(new Next(this));
-		addFunction(new HasNext(this));
+		new Next(this);
+		new HasNext(this);
 	}
 
 }

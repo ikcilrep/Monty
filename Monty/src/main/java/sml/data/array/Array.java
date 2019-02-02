@@ -40,20 +40,20 @@ public class Array extends StructDeclarationNode {
 	}
 
 	public void addFunctions() {
-		addFunction(new Append(this));
-		addFunction(new Extend(this));
-		addFunction(new Get(this));
-		addFunction(new Length(this));
-		addFunction(new Replace(this));
-		addFunction(new ReplaceFirst(this));
-		addFunction(new ReplaceLast(this));
-		addFunction(new Set(this));
-		addFunction(new Subarray(this));
-		addFunction(new Find(this));
-		addFunction(new FindFirst(this));
-		addFunction(new FindLast(this));
-		addFunction(new NewIterator(this));
-		addFunction(new Reversed(this));
+		new Append(this);
+		new Extend(this);
+		new Get(this);
+		new Length(this);
+		new Replace(this);
+		new ReplaceFirst(this);
+		new ReplaceLast(this);
+		new Set(this);
+		new Subarray(this);
+		new Find(this);
+		new FindFirst(this);
+		new FindLast(this);
+		new NewIterator(this);
+		new Reversed(this);
 	}
 
 	public Array append(Object element) {

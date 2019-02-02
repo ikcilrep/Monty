@@ -41,10 +41,10 @@ public class Stack extends StructDeclarationNode {
 	}
 
 	public void addFunctions() {
-		addFunction(new Push(this));
-		addFunction(new Pop(this));
-		addFunction(new Peek(this));
-		addFunction(new NewIterator(this));
+		new Push(this);
+		new Pop(this);
+		new Peek(this);
+		new NewIterator(this);
 	}
 
 	@Override

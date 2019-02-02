@@ -28,7 +28,6 @@ import parser.DataTypes;
 import parser.LogError;
 
 public class StructDeclarationNode extends Block implements Cloneable {
-
 	private static int actualStructNumber = -1;
 	private static int number = -1;
 	private int structNumber;

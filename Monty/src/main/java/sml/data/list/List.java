@@ -10,21 +10,23 @@ public class List extends StructDeclarationNode {
 
 	public List() {
 		super(new Block(null), "List");
-		addFunction(new Append(this));
-		addFunction(new Contains(this));
-		addFunction(new Extend(this));
-		addFunction(new Find(this));
-		addFunction(new FindFirst(this));
-		addFunction(new FindLast(this));
-		addFunction(new Get(this));
-		addFunction(new Length(this));
-		addFunction(new Replace(this));
-		addFunction(new ReplaceFirst(this));
-		addFunction(new ReplaceLast(this));
-		addFunction(new Reversed(this));
-		addFunction(new Set(this));
-		addFunction(new Sublist(this));
-		addFunction(new NewIterator(this));
+		new Append(this);
+		new Contains(this);
+		new Extend(this);
+		new Find(this);
+		new FindFirst(this);
+		new FindLast(this);
+		new Get(this);
+		new Length(this);
+		new Replace(this);
+		new ReplaceFirst(this);
+		new ReplaceLast(this);
+		new Reversed(this);
+		new Set(this);
+		new Sublist(this);
+		new NewIterator(this);
+		new Head(this);
+		new Tail(this);
 	}
 
 	public boolean contains(Object element) {

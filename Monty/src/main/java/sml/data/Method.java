@@ -28,5 +28,6 @@ public abstract class Method<T extends StructDeclarationNode> extends FunctionDe
 		super(name, type);
 		setBody(new Block(parent));
 		this.parent = parent;
+		parent.addFunction(this);
 	}
 }
