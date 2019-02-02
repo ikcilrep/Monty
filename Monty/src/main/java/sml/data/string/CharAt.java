@@ -38,8 +38,8 @@ public class CharAt extends FunctionDeclarationNode {
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var str = (String) body.getVariableByName("str").getValue();
-		var index = ((BigInteger) body.getVariableByName("index").getValue()).intValue();
+		var str = (String) body.getVariable("str").getValue();
+		var index = ((BigInteger) body.getVariable("index").getValue()).intValue();
 		var length = str.length();
 		if (index >= length)
 			new LogError("Index " + index + " is too large for length " + length);

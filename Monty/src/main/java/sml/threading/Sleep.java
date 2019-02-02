@@ -38,7 +38,7 @@ public class Sleep extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var millis = ((BigInteger) getBody().getVariableByName("millis").getValue()).intValue();
+		var millis = ((BigInteger) getBody().getVariable("millis").getValue()).intValue();
 		try {
 			Thread.sleep(millis);
 		} catch (InterruptedException e) {

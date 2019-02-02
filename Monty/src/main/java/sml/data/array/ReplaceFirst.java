@@ -34,8 +34,8 @@ class ReplaceFirst extends Method<Array> {
 	public Array call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		return parent.replaceFirst(body.getVariableByName("toBeReplaced").getValue(),
-				body.getVariableByName("replacement").getValue());
+		return parent.replaceFirst(body.getVariable("toBeReplaced").getValue(),
+				body.getVariable("replacement").getValue());
 	}
 
 }

@@ -18,7 +18,7 @@ class Extend extends Method<List> {
 	@Override
 	public List call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var listToExtend = getBody().getVariableByName("listToExtend").getValue();
+		var listToExtend = getBody().getVariable("listToExtend").getValue();
 		if (!(listToExtend instanceof List))
 			new LogError("Can't extend list with something that isn't list:\t" + listToExtend, callFileName, callLine);
 		return parent.extend((List) listToExtend);

@@ -36,7 +36,7 @@ public class Println extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		System.out.println(getBody().getVariableByName("toPrint").getValue());
+		System.out.println(getBody().getVariable("toPrint").getValue());
 		return Nothing.nothing;
 	}
 

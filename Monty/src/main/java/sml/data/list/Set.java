@@ -37,10 +37,10 @@ class Set extends Method<List> {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
 		var length = parent.length();
-		var index = ((BigInteger) body.getVariableByName("index").getValue()).intValue();
+		var index = ((BigInteger) body.getVariable("index").getValue()).intValue();
 		if (index >= length)
 			new LogError("Index " + index + " is too big for " + length + " length", callFileName, callLine);
-		return parent.set(index, body.getVariableByName("value").getValue());
+		return parent.set(index, body.getVariable("value").getValue());
 	}
 
 }

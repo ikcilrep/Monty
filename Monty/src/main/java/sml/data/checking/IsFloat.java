@@ -36,7 +36,7 @@ public class IsFloat extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return getBody().getVariableByName("toCheck").getValue() instanceof BigDecimal;
+		return getBody().getVariable("toCheck").getValue() instanceof BigDecimal;
 	}
 
 }

@@ -51,8 +51,8 @@ public class StructDeclarationNode extends Block implements Cloneable {
 				var thisVariable = new VariableDeclarationNode("this", DataTypes.ANY);
 				thisVariable.setValue(newStruct);
 				newStruct.addVariable(thisVariable);
-				if (newStruct.doesContainFunction("init")) {
-					var function = newStruct.getFunctionByName("init");
+				if (newStruct.hasFunction("init")) {
+					var function = newStruct.getFunction("init");
 					if (!function.getType().equals(DataTypes.VOID)) {
 						String[] fileNames = { function.getFileName(), callFileName };
 						int[] lines = { function.getLine(), callLine };
@@ -71,7 +71,7 @@ public class StructDeclarationNode extends Block implements Cloneable {
 			@Override
 			public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 				setArguments(arguments, callFileName, callLine);
-				var other = getBody().getVariableByName("other").getValue();
+				var other = getBody().getVariable("other").getValue();
 				if (other instanceof StructDeclarationNode)
 					return struct.instanceOfMe(((StructDeclarationNode) other));
 				return false;
@@ -138,6 +138,14 @@ public class StructDeclarationNode extends Block implements Cloneable {
 
 	@Override
 	public String toString() {
+		if (hasFunction("toString")) {
+			var function = getFunction("toString");
+			if (!function.getType().equals(DataTypes.STRING))
+				new LogError("Function toString have to return string", function.getFileName(), function.getLine());
+			if (function.getParameters().size() != 0)
+				new LogError("Function toString mustn't have any parameter", function.getFileName(), function.getLine());
+			return function.call(new ArrayList<>(), function.getFileName(), function.getLine()).toString();
+		}
 		return name + "#" + getInstanceNumber();
 	}
 }

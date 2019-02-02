@@ -33,7 +33,7 @@ class Append extends Method<Array> {
 	@Override
 	public Array call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return parent.append(getBody().getVariableByName("element").getValue());
+		return parent.append(getBody().getVariable("element").getValue());
 	}
 
 }

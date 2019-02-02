@@ -37,8 +37,8 @@ public class EqualsIgnoreCase extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var str = (String) getBody().getVariableByName("str").getValue();
-		var toCompare = (String) getBody().getVariableByName("toCompare").getValue();
+		var str = (String) getBody().getVariable("str").getValue();
+		var toCompare = (String) getBody().getVariable("toCompare").getValue();
 		return str.equalsIgnoreCase(toCompare);
 	}
 

@@ -33,7 +33,7 @@ class Extend extends Method<Array> {
 	@Override
 	public Array call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var arrayToExtend = getBody().getVariableByName("arrayToExtend").getValue();
+		var arrayToExtend = getBody().getVariable("arrayToExtend").getValue();
 		if (!(arrayToExtend instanceof Array))
 			new LogError("Can't extend array with something that isn't array:\t" + arrayToExtend, callFileName,
 					callLine);

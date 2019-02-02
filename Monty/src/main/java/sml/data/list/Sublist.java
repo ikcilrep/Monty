@@ -37,8 +37,8 @@ class Sublist extends Method<List> {
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var begin = ((BigInteger) body.getVariableByName("begin").getValue()).intValue();
-		var end = ((BigInteger) body.getVariableByName("end").getValue()).intValue();
+		var begin = ((BigInteger) body.getVariable("begin").getValue()).intValue();
+		var end = ((BigInteger) body.getVariable("end").getValue()).intValue();
 		var length = parent.length();
 		if (begin >= end)
 			new LogError("Begin can't be greater or equals than end", callFileName, callLine);

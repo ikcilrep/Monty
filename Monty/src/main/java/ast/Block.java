@@ -147,11 +147,11 @@ public class Block extends Node implements Cloneable, RunnableNode {
 		return null;
 	}
 
-	public boolean doesContainFunction(String name) {
+	public boolean hasFunction(String name) {
 		return functions.containsKey(name);
 	}
 
-	public boolean doesContainVariable(String name) {
+	public boolean hasVariable(String name) {
 		return variables.containsKey(name);
 	}
 
@@ -159,7 +159,7 @@ public class Block extends Node implements Cloneable, RunnableNode {
 		return children;
 	}
 
-	public FunctionDeclarationNode getFunctionByName(String name) {
+	public FunctionDeclarationNode getFunction(String name) {
 		Block block = this;
 		while (!block.functions.containsKey(name)) {
 			var parent = block.getParent();
@@ -171,7 +171,7 @@ public class Block extends Node implements Cloneable, RunnableNode {
 
 	}
 
-	public FunctionDeclarationNode getFunctionByName(String name, String fileName, int line) {
+	public FunctionDeclarationNode getFunction(String name, String fileName, int line) {
 		Block block = this;
 		while (!block.functions.containsKey(name)) {
 			var parent = block.getParent();
@@ -191,7 +191,7 @@ public class Block extends Node implements Cloneable, RunnableNode {
 		return parent;
 	}
 
-	public VariableDeclarationNode getVariableByName(String name) {
+	public VariableDeclarationNode getVariable(String name) {
 		Block block = this;
 		while (!block.variables.containsKey(name)) {
 			var parent = block.getParent();
@@ -202,7 +202,7 @@ public class Block extends Node implements Cloneable, RunnableNode {
 		return block.variables.get(name);
 	}
 
-	public VariableDeclarationNode getVariableByName(String name, String fileName, int line) {
+	public VariableDeclarationNode getVariable(String name, String fileName, int line) {
 		Block block = this;
 		while (!block.variables.containsKey(name)) {
 			var parent = block.getParent();
@@ -261,12 +261,12 @@ public class Block extends Node implements Cloneable, RunnableNode {
 				var toIter = childCastedToForStatement.getArray().run();
 				if (toIter instanceof StructDeclarationNode) {
 					var struct = (StructDeclarationNode) toIter;
-					if (struct.doesContainFunction("Iterator")) {
-						var iterator = (StructDeclarationNode) struct.getFunctionByName("Iterator").call(
+					if (struct.hasFunction("Iterator")) {
+						var iterator = (StructDeclarationNode) struct.getFunction("Iterator").call(
 								new ArrayList<>(), childCastedToForStatement.fileName, childCastedToForStatement.line);
-						if (iterator.doesContainFunction("hasNext") && iterator.doesContainFunction("next")) {
-							var hasNext = iterator.getFunctionByName("hasNext");
-							var next = iterator.getFunctionByName("next");
+						if (iterator.hasFunction("hasNext") && iterator.hasFunction("next")) {
+							var hasNext = iterator.getFunction("hasNext");
+							var next = iterator.getFunction("next");
 							if (hasNext.getType().equals(DataTypes.BOOLEAN) && !next.getType().equals(DataTypes.VOID))
 								while ((boolean) hasNext.call(new ArrayList<>(), childCastedToForStatement.fileName,
 										childCastedToForStatement.line)) {
@@ -274,8 +274,8 @@ public class Block extends Node implements Cloneable, RunnableNode {
 											childCastedToForStatement.line);
 									if (isNotNameUnderscore) {
 										VariableDeclarationNode variable = null;
-										if (childCastedToForStatement.doesContainVariable(name))
-											variable = childCastedToForStatement.getVariableByName(name,
+										if (childCastedToForStatement.hasVariable(name))
+											variable = childCastedToForStatement.getVariable(name,
 													childCastedToForStatement.getFileName(),
 													childCastedToForStatement.getLine());
 										else {
@@ -302,7 +302,7 @@ public class Block extends Node implements Cloneable, RunnableNode {
 			case CHANGE_TO_STATEMENT:
 				var childCastedToChangeToStatement = ((ChangeToStatementNode) child);
 				var newVariableType = childCastedToChangeToStatement.getDataType();
-				var variable = getVariableByName(childCastedToChangeToStatement.getToChangeType().getName(),
+				var variable = getVariable(childCastedToChangeToStatement.getToChangeType().getName(),
 						child.getFileName(), child.getLine());
 				if (!variable.isDynamic()) {
 					int[] lines = { child.getLine(), variable.getLine() };

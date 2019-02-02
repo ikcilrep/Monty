@@ -41,9 +41,9 @@ public class Substring extends FunctionDeclarationNode {
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var str = (String) body.getVariableByName("str").getValue();
-		var begin = ((BigInteger) body.getVariableByName("begin").getValue()).intValue();
-		var end = ((BigInteger) body.getVariableByName("end").getValue()).intValue();
+		var str = (String) body.getVariable("str").getValue();
+		var begin = ((BigInteger) body.getVariable("begin").getValue()).intValue();
+		var end = ((BigInteger) body.getVariable("end").getValue()).intValue();
 		var length = str.length();
 		if (end > length)
 			new LogError("End " + length + " is too large for length " + length);

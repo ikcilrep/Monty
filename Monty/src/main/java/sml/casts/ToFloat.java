@@ -62,7 +62,7 @@ public class ToFloat extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var a = getBody().getVariableByName("a").getValue();
+		var a = getBody().getVariable("a").getValue();
 		return toFloat(a, callFileName, callLine);
 	}
 

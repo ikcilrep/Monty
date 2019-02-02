@@ -37,7 +37,7 @@ public class Exit extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		System.exit(((BigInteger) getBody().getVariableByName("status").getValue()).intValue());
+		System.exit(((BigInteger) getBody().getVariable("status").getValue()).intValue());
 		return Nothing.nothing;
 	}
 

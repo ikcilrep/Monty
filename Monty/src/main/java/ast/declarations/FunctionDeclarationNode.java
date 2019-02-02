@@ -81,11 +81,11 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 		for (int i = 0; i < runnedArguments.size(); i++) {
 			var name = parameters.get(i).getName();
 			VariableDeclarationNode variable = null;
-			if (!body.doesContainVariable(name)) {
+			if (!body.hasVariable(name)) {
 				variable = new VariableDeclarationNode(name, parameters.get(i).getType());
 				body.addVariable(variable, fileName, line);
 			} else
-				variable = body.getVariableByName(name, getFileName(), getLine());
+				variable = body.getVariable(name, getFileName(), getLine());
 			variable.setValue(runnedArguments.get(i));
 		}
 	}

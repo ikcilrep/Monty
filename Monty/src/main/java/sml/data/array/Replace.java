@@ -35,8 +35,8 @@ class Replace extends Method<Array> {
 	public Array call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		return parent.replace(body.getVariableByName("toBeReplaced").getValue(),
-				body.getVariableByName("replacement").getValue());
+		return parent.replace(body.getVariable("toBeReplaced").getValue(),
+				body.getVariable("replacement").getValue());
 	}
 
 }

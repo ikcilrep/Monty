@@ -38,8 +38,8 @@ public class EndsWith extends FunctionDeclarationNode {
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var str = (String) body.getVariableByName("str").getValue();
-		var suffix = (String) body.getVariableByName("suffix").getValue();
+		var str = (String) body.getVariable("str").getValue();
+		var suffix = (String) body.getVariable("suffix").getValue();
 		return str.endsWith(suffix);
 	}
 

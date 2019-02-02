@@ -112,16 +112,16 @@ public class Importing {
 	}
 
 	private static void importSpecifiedElementFromBlock(Block block, Block importedBlock, String path, String name) {
-		var doesContainVariable = importedBlock.doesContainVariable(name);
-		var doesContainFunction = importedBlock.doesContainFunction(name);
+		var doesContainVariable = importedBlock.hasVariable(name);
+		var doesContainFunction = importedBlock.hasFunction(name);
 		if (doesContainVariable || doesContainFunction) {
 			importedBlock.run();
 			if (doesContainVariable) {
-				var variable = importedBlock.getVariableByName(name);
+				var variable = importedBlock.getVariable(name);
 				block.addVariable(variable, variable.getFileName(), variable.getLine());
 			}
 			if (doesContainFunction) {
-				var function = importedBlock.getFunctionByName(name);
+				var function = importedBlock.getFunction(name);
 				block.addFunction(function, function.getFileName(), function.getLine());
 			}
 		} else {

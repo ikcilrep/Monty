@@ -34,7 +34,7 @@ class Get extends Method<Array> {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var index = ((BigInteger) getBody().getVariableByName("index").getValue()).intValue();
+		var index = ((BigInteger) getBody().getVariable("index").getValue()).intValue();
 		var length = parent.length();
 		if (index >= length)
 			new LogError("Index " + index + " is too big for " + length + " length", callFileName, callLine);

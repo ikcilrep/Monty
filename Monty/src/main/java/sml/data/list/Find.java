@@ -17,7 +17,7 @@ class Find extends Method<List> {
 	@Override
 	public List call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return parent.find(getBody().getVariableByName("element").getValue());
+		return parent.find(getBody().getVariable("element").getValue());
 	}
 
 }

@@ -33,7 +33,7 @@ class Find extends Method<Array> {
 	@Override
 	public Array call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return parent.find(getBody().getVariableByName("element").getValue());
+		return parent.find(getBody().getVariable("element").getValue());
 	}
 
 }

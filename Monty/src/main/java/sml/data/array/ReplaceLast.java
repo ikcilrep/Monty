@@ -36,8 +36,8 @@ class ReplaceLast extends Method<Array> {
 	public Array call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		return parent.replaceLast(body.getVariableByName("toBeReplaced").getValue(),
-				body.getVariableByName("replacement").getValue());
+		return parent.replaceLast(body.getVariable("toBeReplaced").getValue(),
+				body.getVariable("replacement").getValue());
 	}
 
 }

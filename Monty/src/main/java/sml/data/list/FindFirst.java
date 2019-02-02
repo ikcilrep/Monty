@@ -18,7 +18,7 @@ class FindFirst extends Method<List> {
 	@Override
 	public BigInteger call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return BigInteger.valueOf(parent.findFirst(getBody().getVariableByName("element").getValue()));
+		return BigInteger.valueOf(parent.findFirst(getBody().getVariable("element").getValue()));
 	}
 
 }

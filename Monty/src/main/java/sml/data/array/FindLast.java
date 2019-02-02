@@ -34,7 +34,7 @@ class FindLast extends Method<Array> {
 	@Override
 	public BigInteger call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return BigInteger.valueOf(parent.findLast(getBody().getVariableByName("element").getValue()));
+		return BigInteger.valueOf(parent.findLast(getBody().getVariable("element").getValue()));
 	}
 
 }

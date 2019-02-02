@@ -17,7 +17,7 @@ class Contains extends Method<List> {
 	@Override
 	public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return parent.contains(getBody().getVariableByName("element").getValue());
+		return parent.contains(getBody().getVariable("element").getValue());
 	}
 
 }

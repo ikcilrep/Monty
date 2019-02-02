@@ -39,9 +39,9 @@ public class ReplaceAllInString extends FunctionDeclarationNode {
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var str = (String) body.getVariableByName("str").getValue();
-		var toBeReplaced = (String) body.getVariableByName("toBeReplaced").getValue();
-		var replacement = (String) body.getVariableByName("replacement").getValue();
+		var str = (String) body.getVariable("str").getValue();
+		var toBeReplaced = (String) body.getVariable("toBeReplaced").getValue();
+		var replacement = (String) body.getVariable("replacement").getValue();
 		return str.replaceAll(toBeReplaced, replacement);
 	}
 

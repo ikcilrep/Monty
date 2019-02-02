@@ -34,7 +34,7 @@ public class ToUpperCase extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var str = (String) getBody().getVariableByName("str").getValue();
+		var str = (String) getBody().getVariable("str").getValue();
 		return str.toUpperCase();
 	}
 

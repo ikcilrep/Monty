@@ -38,8 +38,8 @@ public class StartsWith extends FunctionDeclarationNode {
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var str = (String) body.getVariableByName("str").getValue();
-		var prefix = (String) body.getVariableByName("prefix").getValue();
+		var str = (String) body.getVariable("str").getValue();
+		var prefix = (String) body.getVariable("prefix").getValue();
 		return str.startsWith(prefix);
 	}
 

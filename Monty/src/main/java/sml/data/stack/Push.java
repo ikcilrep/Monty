@@ -32,7 +32,7 @@ class Push extends Method<Stack> {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return parent.push(getBody().getVariableByName("element").getValue());
+		return parent.push(getBody().getVariable("element").getValue());
 	}
 
 }

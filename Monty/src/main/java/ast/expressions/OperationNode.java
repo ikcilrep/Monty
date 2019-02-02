@@ -24,6 +24,7 @@ import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import parser.DataTypes;
 import parser.LogError;
+import sml.casts.ToFloat;
 
 public class OperationNode extends ExpressionNode implements RunnableNode {
 
@@ -143,7 +144,7 @@ public class OperationNode extends ExpressionNode implements RunnableNode {
 			case VARIABLE:
 				var variableCall = (VariableNode) expression;
 				var nextV = variableCall.getNext();
-				var variable = parent.getVariableByName(variableCall.getName(), variableCall.getFileName(),
+				var variable = parent.getVariable(variableCall.getName(), variableCall.getFileName(),
 						variableCall.getLine());
 				if (nextV != null) {
 					var variableValue = variable.getValue();
@@ -156,7 +157,7 @@ public class OperationNode extends ExpressionNode implements RunnableNode {
 				return variable;
 			case FUNCTION_CALL:
 				var functionToCall = ((FunctionCallNode) expression);
-				var function = parent.getFunctionByName(functionToCall.getName(), functionToCall.getFileName(),
+				var function = parent.getFunction(functionToCall.getName(), functionToCall.getFileName(),
 						functionToCall.getLine());
 				var functionCallValue = function.call(functionToCall.getArguments(), functionToCall.getFileName(),
 						functionToCall.getLine());
@@ -231,14 +232,30 @@ public class OperationNode extends ExpressionNode implements RunnableNode {
 		Object rightValue = getLiteral(b);
 		DataTypes leftType = getDataType(leftValue);
 		DataTypes rightType = getDataType(rightValue);
-		if (!leftType.equals(rightType))
-			new LogError("Type mismatch:\t" + leftType + " and " + rightType, getFileName(), getLine());
-
-		if (!operator.toString().contains("=") || isComparison)
+		var isNotAssignment = !operator.toString().contains("=") || isComparison;
+		if (isNotAssignment)
 			if (leftValue instanceof VariableDeclarationNode)
 				leftValue = ((VariableDeclarationNode) leftValue).getValue();
 		if (rightValue instanceof VariableDeclarationNode)
 			rightValue = ((VariableDeclarationNode) rightValue).getValue();
+
+		if (isNotAssignment && (leftType.equals(DataTypes.INTEGER) && rightType.equals(DataTypes.FLOAT))) {
+			leftType = DataTypes.FLOAT;
+			leftValue = ToFloat.toFloat(leftValue, getFileName(), getLine());
+		} else if (isNotAssignment && (rightType.equals(DataTypes.STRING) && !rightType.equals(leftType))) {
+			leftType = DataTypes.STRING;
+			leftValue = leftValue.toString();
+		} else if (leftType.equals(DataTypes.FLOAT) && rightType.equals(DataTypes.INTEGER)) {
+			rightType = DataTypes.FLOAT;
+			rightValue = ToFloat.toFloat(rightValue, getFileName(), getLine());
+		} else if (leftType.equals(DataTypes.STRING) && !leftType.equals(rightType)) {
+			rightType = DataTypes.STRING;
+			rightValue = rightValue.toString();
+		}
+
+		if (!leftType.equals(rightType))
+			new LogError("Type mismatch:\t" + leftType + " and " + rightType, getFileName(), getLine());
+
 		return calculate(leftValue, rightValue, getOperand(), leftType);
 
 	}
