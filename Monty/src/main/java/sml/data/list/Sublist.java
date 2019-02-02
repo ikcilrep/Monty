@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sml.data.array;
+package sml.data.list;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -24,21 +24,29 @@ import parser.DataTypes;
 import parser.LogError;
 import sml.data.Method;
 
-class Get extends Method<Array> {
+class Sublist extends Method<List> {
 
-	public Get(Array array) {
-		super(array, "get", DataTypes.ANY);
-		addParameter(new VariableDeclarationNode("index", DataTypes.INTEGER));
+	public Sublist(List list) {
+		super(list, "sublist", DataTypes.ANY);
+		addParameter(new VariableDeclarationNode("begin", DataTypes.INTEGER));
+		addParameter(new VariableDeclarationNode("end", DataTypes.INTEGER));
+
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var index = ((BigInteger) getBody().getVariableByName("index").getValue()).intValue();
+		var body = getBody();
+		var begin = ((BigInteger) body.getVariableByName("begin").getValue()).intValue();
+		var end = ((BigInteger) body.getVariableByName("end").getValue()).intValue();
 		var length = parent.length();
-		if (index >= length)
-			new LogError("Index " + index + " is too big for " + length + " length", callFileName, callLine);
-		return parent.get(index);
+		if (begin >= end)
+			new LogError("Begin can't be greater or equals than end", callFileName, callLine);
+		if (begin < 0 || begin >= length)
+			new LogError("This list doesn't have " + begin + " index", callFileName, callLine);
+		if (end < 0 || end > length)
+			new LogError("This list doesn't have " + end + " index", callFileName, callLine);
+		return parent.sublist(begin, end);
 	}
 
 }

@@ -14,20 +14,20 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sml.data.array;
+package sml.data.list;
 
 import java.util.ArrayList;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-class Reversed extends Method<Array> {
-	public Reversed(Array array) {
-		super(array, "reversed", DataTypes.ANY);
+class Reversed extends Method<List> {
+	public Reversed(List list) {
+		super(list, "reversed", DataTypes.ANY);
 	}
 
 	@Override
-	public Array call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public List call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		return parent.reversed();
 	}

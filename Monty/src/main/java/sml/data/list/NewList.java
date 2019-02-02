@@ -14,26 +14,28 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sml.data.array;
+package sml.data.list;
 
 import java.util.ArrayList;
-import ast.declarations.VariableDeclarationNode;
+
+import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
-import sml.data.Method;
 
-class Find extends Method<Array> {
-
-	public Find(Array array) {
-		super(array, "find", DataTypes.ANY);
-		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
-
+public class NewList extends FunctionDeclarationNode {
+	public NewList() {
+		super("List", DataTypes.ANY);
 	}
 
 	@Override
-	public Array call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		return parent.find(getBody().getVariableByName("element").getValue());
+	public List call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+		var list = new List();
+		var _list = list;
+		for (int i = 0; i < arguments.size(); i++) {
+			_list.head = arguments.get(i).run();
+			_list = _list.tail = new List();
+		}
+		return list;
 	}
 
 }

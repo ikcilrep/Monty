@@ -25,13 +25,13 @@ import sml.casts.ToChar;
 import sml.casts.ToFloat;
 import sml.casts.ToInt;
 import sml.casts.ToString;
-import sml.data.Length;
 import sml.data.array.NewArray;
 import sml.data.checking.IsArray;
 import sml.data.checking.IsFloat;
 import sml.data.checking.IsInt;
 import sml.data.checking.IsStack;
 import sml.data.checking.IsString;
+import sml.data.list.NewList;
 import sml.data.stack.NewStack;
 import sml.data.string.CharAt;
 import sml.data.string.EndsWith;
@@ -80,10 +80,10 @@ public class Sml extends Library {
 		var data = (HashMap<String, Object>) children.get("data");
 		data.put("Array", new NewArray());
 		data.put("Stack", new NewStack());
+		data.put("List", new NewList());
 		data.put("checking", new HashMap<>());
 		data.put("string", new HashMap<>());
-		data.put("length", new Length());
-		
+
 		var checking = (HashMap<String, Object>) data.get("checking");
 		checking.put("isInt", new IsInt());
 		checking.put("isFloat", new IsFloat());

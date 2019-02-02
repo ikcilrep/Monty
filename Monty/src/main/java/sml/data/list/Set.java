@@ -14,26 +14,33 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sml.data.array;
+package sml.data.list;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
+import parser.LogError;
 import sml.data.Method;
 
-class Find extends Method<Array> {
+class Set extends Method<List> {
 
-	public Find(Array array) {
-		super(array, "find", DataTypes.ANY);
-		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
-
+	public Set(List list) {
+		super(list, "set", DataTypes.ANY);
+		addParameter(new VariableDeclarationNode("index", DataTypes.INTEGER));
+		addParameter(new VariableDeclarationNode("value", DataTypes.ANY));
 	}
 
 	@Override
-	public Array call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return parent.find(getBody().getVariableByName("element").getValue());
+		var body = getBody();
+		var length = parent.length();
+		var index = ((BigInteger) body.getVariableByName("index").getValue()).intValue();
+		if (index >= length)
+			new LogError("Index " + index + " is too big for " + length + " length", callFileName, callLine);
+		return parent.set(index, body.getVariableByName("value").getValue());
 	}
 
 }

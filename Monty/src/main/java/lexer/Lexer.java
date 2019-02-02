@@ -8,6 +8,15 @@ import parser.LogError;
 
 public class Lexer {
 	private static Set<Character> operatorsParts = Set.of('+', '-', '*', '/', '!', '<', '>', '=', '|', '&', '%', '^');
+	private static Set<String> operators = Set.of("!", "+", "-", "*", "/", "<", ">", "&", "|", "^", "=", "<<", ">>",
+			"!=", "+=", "-=", "*=", "/=", "<=", ">=", "&=", "|=", "^=", "==", "<<=", ">>=");
+
+	private static TokenTypes operatorToTokenType(String tokenText, String fileName, int line) {
+		if (operators.contains(tokenText))
+			return TokenTypes.OPERATOR;
+		new LogError("Unknown operator:\t" + tokenText, fileName, line);
+		return null;
+	}
 
 	private static OptimizedTokensArray floatLiteral(String code, String integer, String fileName, int line,
 			OptimizedTokensArray tokens, int i) {
@@ -126,6 +135,10 @@ public class Lexer {
 		return tokens;
 	}
 
+	public static OptimizedTokensArray lex(String code, String path) {
+		return lex(code, path, 1, new OptimizedTokensArray(), 0);
+	}
+
 	private static OptimizedTokensArray number(String code, String fileName, int line, OptimizedTokensArray tokens,
 			int i) {
 		var tokenText = "" + code.charAt(i);
@@ -145,41 +158,6 @@ public class Lexer {
 		Token token = new Token(operatorToTokenType(tokenText, fileName, line), tokenText, fileName, line);
 		tokens.append(token);
 		return lex(code, fileName, line, tokens, i);
-	}
-
-	private static TokenTypes operatorToTokenType(String tokenText, String fileName, int line) {
-		switch (tokenText) {
-		case "!":
-		case "+":
-		case "-":
-		case "*":
-		case "/":
-		case "<":
-		case ">":
-		case "&":
-		case "|":
-		case "^":
-		case "=":
-		case "<<":
-		case ">>":
-		case "!=":
-		case "+=":
-		case "-=":
-		case "*=":
-		case "/=":
-		case "<=":
-		case ">=":
-		case "&=":
-		case "|=":
-		case "^=":
-		case "==":
-		case "<<=":
-		case ">>=":
-			return TokenTypes.OPERATOR;
-		default:
-			new LogError("Unknown operator:\t" + tokenText, fileName, line);
-		}
-		return null;
 	}
 
 	private static OptimizedTokensArray stringLiteral(String code, String fileName, int line,

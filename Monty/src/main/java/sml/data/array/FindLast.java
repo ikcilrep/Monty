@@ -16,6 +16,7 @@ limitations under the License.
 
 package sml.data.array;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
@@ -31,9 +32,9 @@ class FindLast extends Method<Array> {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public BigInteger call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return parent.findLast(getBody().getVariableByName("element").getValue());
+		return BigInteger.valueOf(parent.findLast(getBody().getVariableByName("element").getValue()));
 	}
 
 }

@@ -65,7 +65,7 @@ public class Parser {
 				} else if (Identificator.isImport(tokensBeforeSemicolon)) {
 					Importing.importFile(block, tokensBeforeSemicolon);
 				} else if (Identificator.isJar(tokensBeforeSemicolon)) {
-					Importing.addLibrary(tokensBeforeSemicolon);
+					Importing.addJarLibrary(tokensBeforeSemicolon);
 				} else if (Identificator.isChangeToStatement(tokensBeforeSemicolon)) {
 					AdderToBlock.addChangeToStatement(block, tokensBeforeSemicolon);
 				} else if (Identificator.isBreakStatement(tokensBeforeSemicolon)) {

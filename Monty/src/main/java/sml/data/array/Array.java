@@ -21,7 +21,7 @@ import ast.declarations.StructDeclarationNode;
 import sml.data.returning.Nothing;
 import sml.data.stack.Stack;
 
-public class Array extends StructDeclarationNode implements Cloneable {
+public class Array extends StructDeclarationNode {
 
 	protected Object[] array;
 
@@ -62,50 +62,7 @@ public class Array extends StructDeclarationNode implements Cloneable {
 		return this;
 	}
 
-	public boolean contains(Object toSearch) {
-		for (int i = 0; i < length(); i++)
-			if (array[i].equals(toSearch))
-				return true;
-		return false;
-
-	}
-
-	@Override
-	public Array copy() {
-		try {
-			return (Array) clone();
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Override
-	public boolean equals(Object other) {
-		Array otherArray = null;
-		if (other instanceof Array)
-			otherArray = (Array) other;
-		else
-			return false;
-		if (length() != otherArray.length())
-			return false;
-		for (int i = 0; i < otherArray.length(); i++)
-			if (!array[i].equals(otherArray.get(i)))
-				return false;
-		return true;
-
-	}
-
-	public Array extend(Array elements) {
-		var length = length();
-		setLength(array.length + elements.length());
-		var newLength = length();
-		for (int i = length, j = 0; i < newLength; i++, j++)
-			array[i] = elements.get(j);
-		return this;
-	}
-
-	public Array findAll(Object element) {
+	public Array find(Object element) {
 		Array result = new Array(0);
 		for (int i = 0; i < length(); i++)
 			if (array[i].equals(element))
@@ -135,7 +92,7 @@ public class Array extends StructDeclarationNode implements Cloneable {
 		return array.length;
 	}
 
-	public Array replaceAll(Object toBeReplaced, Object replacement) {
+	public Array replace(Object toBeReplaced, Object replacement) {
 		for (int i = 0; i < length(); i++)
 			if (array[i].equals(toBeReplaced))
 				array[i] = replacement;
@@ -172,12 +129,62 @@ public class Array extends StructDeclarationNode implements Cloneable {
 		return this;
 	}
 
-	public void setLength(int length) {
-		int i = 0;
+	public Array setLength(int length) {
 		var newArray = new Object[length];
-		for (Object e : array)
-			newArray[i++] = e;
+		var i = 0;
+		for (; i < length && i < length(); i++)
+			newArray[i] = array[i];
+		for (; i < length; i++)
+			newArray[i] = Nothing.nothing;
 		array = newArray;
+		return this;
+	}
+
+	public Array extend(Array elements) {
+		var length = length();
+		setLength(length + elements.length());
+		var newLength = length();
+		for (int i = length, j = 0; i < newLength; i++, j++)
+			set(i, elements.get(j));
+		return this;
+	}
+
+	public boolean contains(Object toSearch) {
+		for (int i = 0; i < length(); i++)
+			if (get(i).equals(toSearch))
+				return true;
+		return false;
+	}
+
+	@Override
+	public String toString() {
+		var length = length();
+		var stringBuilder = new StringBuilder(length * 2 + 1);
+		stringBuilder.append('[');
+		int i = 0;
+		while (true) {
+			stringBuilder.append(get(i).toString());
+			if (++i < length)
+				stringBuilder.append(',');
+			else
+				break;
+		}
+		stringBuilder.append(']');
+		return stringBuilder.toString();
+
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (!(other instanceof Array))
+			return false;
+		var otherArray = (Array) other;
+		if (otherArray.length() != length())
+			for (int i = 0; i < length(); i++)
+				if (!get(i).equals(otherArray.get(i)))
+					return false;
+		return true;
+
 	}
 
 	public Array subarray(int begin, int end) {
@@ -195,21 +202,4 @@ public class Array extends StructDeclarationNode implements Cloneable {
 		return new Stack(array);
 	}
 
-	@Override
-	public String toString() {
-		var length = length();
-		var stringBuilder = new StringBuilder(array.length * 2 + 1);
-		stringBuilder.append('[');
-		int i = 0;
-		while (true) {
-			stringBuilder.append(array[i].toString());
-			if (++i < length)
-				stringBuilder.append(',');
-			else
-				break;
-		}
-		stringBuilder.append(']');
-		return stringBuilder.toString();
-
-	}
 }

@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
+import parser.LogError;
 import sml.data.Method;
 
 class Set extends Method<Array> {
@@ -28,16 +29,18 @@ class Set extends Method<Array> {
 	public Set(Array array) {
 		super(array, "set", DataTypes.ANY);
 		addParameter(new VariableDeclarationNode("index", DataTypes.INTEGER));
-		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
+		addParameter(new VariableDeclarationNode("value", DataTypes.ANY));
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public Array call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
+		var length = parent.length();
 		var index = ((BigInteger) body.getVariableByName("index").getValue()).intValue();
-		var element = body.getVariableByName("element").getValue();
-		return parent.set(index, element);
+		if (index >= length)
+			new LogError("Index " + index + " is too big for " + length + " length", callFileName, callLine);
+		return parent.set(index, body.getVariableByName("value").getValue());
 	}
 
 }

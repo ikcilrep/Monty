@@ -30,7 +30,7 @@ class Contains extends Method<Array> {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		return parent.contains(getBody().getVariableByName("element").getValue());
 	}

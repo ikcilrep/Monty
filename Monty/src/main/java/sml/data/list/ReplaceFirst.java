@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sml.data.array;
+package sml.data.list;
 
 import java.util.ArrayList;
 import ast.declarations.VariableDeclarationNode;
@@ -22,18 +22,20 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-class Find extends Method<Array> {
-
-	public Find(Array array) {
-		super(array, "find", DataTypes.ANY);
-		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
+class ReplaceFirst extends Method<List> {
+	public ReplaceFirst(List list) {
+		super(list, "replaceFirst", DataTypes.ANY);
+		addParameter(new VariableDeclarationNode("toBeReplaced", DataTypes.ANY));
+		addParameter(new VariableDeclarationNode("replacement", DataTypes.ANY));
 
 	}
 
 	@Override
-	public Array call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public List call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return parent.find(getBody().getVariableByName("element").getValue());
+		var body = getBody();
+		return parent.replaceFirst(body.getVariableByName("toBeReplaced").getValue(),
+				body.getVariableByName("replacement").getValue());
 	}
 
 }

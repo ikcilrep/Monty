@@ -9,31 +9,28 @@ You may obtain a copy of the License at
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+WITHOUObject WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+package sml.data.list;
 
-package sml.data.array;
-
+import java.math.BigInteger;
 import java.util.ArrayList;
-import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-class Find extends Method<Array> {
+class Length extends Method<List> {
 
-	public Find(Array array) {
-		super(array, "find", DataTypes.ANY);
-		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
-
+	public Length(List list) {
+		super(list, "length", DataTypes.INTEGER);
 	}
 
 	@Override
-	public Array call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public BigInteger call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return parent.find(getBody().getVariableByName("element").getValue());
+		return BigInteger.valueOf(parent.length());
 	}
 
 }

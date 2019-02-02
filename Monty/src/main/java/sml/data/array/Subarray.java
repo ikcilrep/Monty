@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
+import parser.LogError;
 import sml.data.Method;
 
 class Subarray extends Method<Array> {
@@ -33,11 +34,18 @@ class Subarray extends Method<Array> {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public Array call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
 		var begin = ((BigInteger) body.getVariableByName("begin").getValue()).intValue();
 		var end = ((BigInteger) body.getVariableByName("end").getValue()).intValue();
+		var length = parent.length();
+		if (begin >= end)
+			new LogError("Begin can't be greater or equals than end", callFileName, callLine);
+		if (begin < 0 || begin >= length)
+			new LogError("This list doesn't have " + begin + " index", callFileName, callLine);
+		if (end < 0 || end > length)
+			new LogError("This list doesn't have " + end + " index", callFileName, callLine);
 		return parent.subarray(begin, end);
 	}
 

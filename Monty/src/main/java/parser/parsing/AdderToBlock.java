@@ -101,10 +101,6 @@ public abstract class AdderToBlock {
 					new LogError("Argument name " + name + " should start with lower case", tokens.get(i));
 			} else if (!isTokenTypeEqualsComma)
 				type = Tokens.getDataType(tokenType);
-			/*
-			 * if (name.equals("kwargs") && i != tokens.length()-1) new
-			 * LogError("Kwargs have to be last argument", tokens.get(i));
-			 */
 			if (isTokenTypeEqualsComma || i + 1 >= tokens.length())
 				function.addParameter(new VariableDeclarationNode(name, type));
 		}

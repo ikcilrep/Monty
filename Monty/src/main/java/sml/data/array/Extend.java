@@ -31,12 +31,13 @@ class Extend extends Method<Array> {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public Array call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var arrayToExtend = (Array) getBody().getVariableByName("arrayToExtend").getValue();
+		var arrayToExtend = getBody().getVariableByName("arrayToExtend").getValue();
 		if (!(arrayToExtend instanceof Array))
-			new LogError("Can't extend array with something that isn't array", callFileName, callLine);
-		return parent.extend(arrayToExtend);
+			new LogError("Can't extend array with something that isn't array:\t" + arrayToExtend, callFileName,
+					callLine);
+		return parent.extend((Array) arrayToExtend);
 	}
 
 }

@@ -14,22 +14,22 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sml.data.array;
+package sml.data.list;
 
 import java.util.ArrayList;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-class Reversed extends Method<Array> {
-	public Reversed(Array array) {
-		super(array, "reversed", DataTypes.ANY);
+class HasNext extends Method<Iterator> {
+	public HasNext(Iterator iterator) {
+		super(iterator, "hasNext", DataTypes.BOOLEAN);
 	}
 
 	@Override
-	public Array call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return parent.reversed();
+		return parent.list!= null && !parent.list.head.equals(Empty.empty);
 	}
 
 }

@@ -45,33 +45,33 @@ public class Importing {
 			+ (fileAbsolutePath == null ? "" : fileAbsolutePath) + File.separator;
 
 	@SuppressWarnings("unchecked")
-	private static void addAllFunctions(Block block, HashMap<String, Object> addFrom, Token token) {
+	private static void importAllElementsFromJarSublibrary(Block block, HashMap<String, Object> addFrom, Token token) {
 		for (Object value : addFrom.values())
 			if (value instanceof FunctionDeclarationNode)
 				block.addFunction((FunctionDeclarationNode) value, token);
 			else
-				addAllFunctions(block, (HashMap<String, Object>) value, token);
+				importAllElementsFromJarSublibrary(block, (HashMap<String, Object>) value, token);
 	}
 
-	private static void addFunctionFromFile(Block block, String path) {
+	private static void importWholeFile(Block block, String path) {
 		var file = new File(path);
 		block.concat(Parser
 				.parse(Lexer.lex(FileIO.readFile(file.getAbsolutePath()), path, 1, new OptimizedTokensArray(), 0)));
 	}
 
-	private static void addFunctionsFromDirectory(Block block, File directory) {
+	private static void importFilesFromDirectory(Block block, File directory) {
 		for (File fileEntry : directory.listFiles()) {
 			if (fileEntry.isDirectory())
-				addFunctionsFromDirectory(block, fileEntry);
+				importFilesFromDirectory(block, fileEntry);
 			else if (fileEntry.getName().endsWith(".mt"))
-				addFunctionFromFile(block, fileEntry.getAbsolutePath());
+				importWholeFile(block, fileEntry.getAbsolutePath());
 			else
 				new LogError(
 						"File with wrong extension: " + directory.getPath() + File.separator + fileEntry.getName());
 		}
 	}
 
-	public static void addLibrary(OptimizedTokensArray tokens) {
+	public static void addJarLibrary(OptimizedTokensArray tokens) {
 		var partOfPath = Tokens.getText(tokens.subarray(1, tokens.length()));
 		var path = mainFileLocation + partOfPath.replace('.', File.separatorChar) + ".jar";
 		try {
@@ -111,8 +111,7 @@ public class Importing {
 		}
 	}
 
-	private static void addSpecifiedFunctionOrVariableFromFile(Block block, Block importedBlock, String path,
-			String name) {
+	private static void importSpecifiedElementFromBlock(Block block, Block importedBlock, String path, String name) {
 		var doesContainVariable = importedBlock.doesContainVariable(name);
 		var doesContainFunction = importedBlock.doesContainFunction(name);
 		if (doesContainVariable || doesContainFunction) {
@@ -132,7 +131,8 @@ public class Importing {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static void findAndAddFunctions(Block block, String[] splited, String path, Library toSearch, Token token) {
+	private static void importElementFromJarLibrary(Block block, String[] splited, String path, Library toSearch,
+			Token token) {
 		var sublibraries = toSearch.getSublibraries();
 		Object functionVariableOrSubLibrary = null;
 		int i = 0;
@@ -147,7 +147,8 @@ public class Importing {
 				block.addVariable((VariableDeclarationNode) functionVariableOrSubLibrary, token);
 				break;
 			} else if (i + 1 >= splited.length)
-				addAllFunctions(block, (HashMap<String, Object>) functionVariableOrSubLibrary, token);
+				importAllElementsFromJarSublibrary(block, (HashMap<String, Object>) functionVariableOrSubLibrary,
+						token);
 			else
 				sublibraries = (HashMap<String, Object>) functionVariableOrSubLibrary;
 			i++;
@@ -161,19 +162,19 @@ public class Importing {
 		var parent_file = new File(file.getParent() + ".mt");
 		var directory = new File(path);
 		if (directory.exists() && directory.isDirectory())
-			addFunctionsFromDirectory(block, directory);
+			importFilesFromDirectory(block, directory);
 		else if (file.exists() && file.isFile())
-			addFunctionFromFile(block, file.getPath());
+			importWholeFile(block, file.getPath());
 		else if (parent_file.exists() && parent_file.isFile()) {
-			var name = file.getName().substring(0, file.getName().length() - 3);
-			var importedBlock = Parser.parse(Lexer.lex(FileIO.readFile(parent_file.getAbsolutePath()),
-					parent_file.getName(), 1, new OptimizedTokensArray(), 0));
-			addSpecifiedFunctionOrVariableFromFile(block, importedBlock, parent_file.getPath(), name);
+			importSpecifiedElementFromBlock(block,
+					Parser.parse(Lexer.lex(FileIO.readFile(parent_file.getAbsolutePath()), parent_file.getName(), 1,
+							new OptimizedTokensArray(), 0)),
+					parent_file.getPath(), file.getName().substring(0, file.getName().length() - 3));
 		} else {
 			var splited = partOfPath.split("\\.");
 			if (!Parser.libraries.containsKey(splited[0]))
 				new LogError("There isn't file to import:\t" + path, tokensBeforeSemicolon.get(1));
-			findAndAddFunctions(block, subArray(splited, 1), path, Parser.libraries.get(splited[0]),
+			importElementFromJarLibrary(block, subArray(splited, 1), path, Parser.libraries.get(splited[0]),
 					tokensBeforeSemicolon.get(1));
 		}
 	}
