@@ -9,7 +9,7 @@ import parser.LogError;
 public class Lexer {
 	private static Set<Character> operatorsParts = Set.of('+', '-', '*', '/', '!', '<', '>', '=', '|', '&', '%', '^');
 	private static Set<String> operators = Set.of("!", "+", "-", "*", "/", "<", ">", "&", "|", "^", "=", "<<", ">>",
-			"!=", "+=", "-=", "*=", "/=", "<=", ">=", "&=", "|=", "^=", "==", "<<=", ">>=");
+			"!=", "+=", "-=", "*=", "/=", "<=", ">=", "&=", "|=", "^=", "==", "<<=", ">>=", "%", "%=");
 
 	private static TokenTypes operatorToTokenType(String tokenText, String fileName, int line) {
 		if (operators.contains(tokenText))

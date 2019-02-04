@@ -241,17 +241,9 @@ public class Block extends NodeWithParent implements Cloneable, RunnableNode {
 				result = ((RunnableNode) child).run();
 				break;
 			case IF_STATEMENT:
-				var childCastedToIfStatement = ((IfStatementNode) child);
-				var elseBody = childCastedToIfStatement.getElseBody();
-				if (childCastedToIfStatement.runnedCondition()) {
-					result = childCastedToIfStatement.run();
-					if (result != null)
-						return result;
-				} else if (elseBody != null) {
-					result = elseBody.run();
-					if (result != null)
-						return result;
-				}
+				result = ((IfStatementNode) child).run();
+				if (result != null)
+					return result;
 				break;
 			case DO_WHILE_STATEMENT:
 			case WHILE_STATEMENT:

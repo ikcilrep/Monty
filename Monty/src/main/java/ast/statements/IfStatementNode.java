@@ -48,4 +48,14 @@ public class IfStatementNode extends ConditionalNode {
 	public void setInElse(boolean isInElse) {
 		this.isInElse = isInElse;
 	}
+	
+	@Override
+	public Object run() {
+		if (runnedCondition()) {
+			return super.run();
+		} else if (elseBody != null) {
+			return elseBody.run();
+		}
+		return null;
+	}
 }
