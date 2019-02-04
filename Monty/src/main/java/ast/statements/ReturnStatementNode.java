@@ -19,9 +19,10 @@ package ast.statements;
 import ast.Block;
 import ast.NodeTypes;
 import ast.NodeWithParent;
+import ast.RunnableNode;
 import ast.expressions.OperationNode;
 
-public class ReturnStatementNode extends NodeWithParent implements Cloneable {
+public class ReturnStatementNode extends NodeWithParent implements Cloneable, RunnableNode {
 
 	private OperationNode expression;
 
@@ -56,5 +57,10 @@ public class ReturnStatementNode extends NodeWithParent implements Cloneable {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public Object run() {
+		return getExpression().run();
 	}
 }

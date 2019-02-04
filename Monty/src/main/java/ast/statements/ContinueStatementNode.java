@@ -17,12 +17,19 @@ limitations under the License.
 package ast.statements;
 
 import ast.NodeTypes;
+import ast.RunnableNode;
+import sml.data.returning.Nothing;
 
-public class ContinueStatementNode extends StatementNode {
+public class ContinueStatementNode extends StatementNode implements RunnableNode {
 
 	public ContinueStatementNode(String fileName, int line) {
 		this.nodeType = NodeTypes.CONTINUE_STATEMENT;
 		this.fileName = fileName;
 		this.line = line;
+	}
+
+	@Override
+	public Object run() {
+		return Nothing.continueType;
 	}
 }

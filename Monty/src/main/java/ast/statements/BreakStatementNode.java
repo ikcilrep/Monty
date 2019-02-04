@@ -17,12 +17,19 @@ limitations under the License.
 package ast.statements;
 
 import ast.NodeTypes;
+import ast.RunnableNode;
+import sml.data.returning.Nothing;
 
-public class BreakStatementNode extends StatementNode {
+public class BreakStatementNode extends StatementNode implements RunnableNode {
 
 	public BreakStatementNode(String fileName, int line) {
 		this.nodeType = NodeTypes.BREAK_STATEMENT;
 		this.fileName = fileName;
 		this.line = line;
+	}
+
+	@Override
+	public Object run() {
+		return Nothing.breakType;
 	}
 }
