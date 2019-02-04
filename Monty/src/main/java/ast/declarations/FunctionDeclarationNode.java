@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import ast.Block;
-import ast.NodeTypes;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
@@ -33,7 +32,6 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 
 	public FunctionDeclarationNode(String name, DataTypes type) {
 		super(name, type);
-		super.nodeType = NodeTypes.FUNCTION_DECLARATION;
 	}
 
 	public void addParameter(String name, DataTypes type) {

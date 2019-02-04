@@ -16,15 +16,12 @@ limitations under the License.
 
 package ast.statements;
 
-import ast.Node;
-import ast.NodeTypes;
 import ast.RunnableNode;
 import sml.data.returning.Nothing;
 
-public class BreakStatementNode extends Node implements RunnableNode {
+public class BreakStatementNode extends RunnableNode {
 
 	public BreakStatementNode(String fileName, int line) {
-		this.nodeType = NodeTypes.BREAK_STATEMENT;
 		this.fileName = fileName;
 		this.line = line;
 	}

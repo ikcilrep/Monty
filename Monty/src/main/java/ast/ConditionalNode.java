@@ -22,8 +22,8 @@ import sml.casts.ToBoolean;
 public class ConditionalNode extends Block {
 	protected OperationNode condition;
 
-	public ConditionalNode(OperationNode condition, Block parent, NodeTypes nodeType) {
-		super(parent, nodeType);
+	public ConditionalNode(OperationNode condition, Block parent) {
+		super(parent);
 		this.condition = condition;
 	}
 

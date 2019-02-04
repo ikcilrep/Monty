@@ -17,9 +17,7 @@ limitations under the License.
 package ast.statements;
 
 import ast.Block;
-import ast.NodeTypes;
 import ast.NodeWithParent;
-import ast.RunnableNode;
 import ast.expressions.VariableNode;
 import parser.DataTypes;
 import parser.LogError;
@@ -28,13 +26,12 @@ import sml.casts.ToFloat;
 import sml.casts.ToInt;
 import sml.casts.ToString;
 
-public class ChangeToStatementNode extends NodeWithParent implements RunnableNode {
+public class ChangeToStatementNode extends NodeWithParent {
 	private Block parent;
 	private VariableNode variable;
 	private DataTypes dataType;
 
 	public ChangeToStatementNode(VariableNode toChangeType, DataTypes dataType, String fileName, int line, Block parent) {
-		super.nodeType = NodeTypes.CHANGE_TO_STATEMENT;
 		this.variable = toChangeType;
 		this.dataType = dataType;
 		this.fileName = fileName;

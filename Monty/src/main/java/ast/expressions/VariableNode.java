@@ -17,7 +17,6 @@ limitations under the License.
 package ast.expressions;
 
 import ast.Node;
-import ast.NodeTypes;
 
 public class VariableNode extends Node implements StructContainer {
 
@@ -26,7 +25,6 @@ public class VariableNode extends Node implements StructContainer {
 
 	public VariableNode(String name) {
 		this.name = name;
-		super.nodeType = NodeTypes.VARIABLE;
 	}
 
 	public String getName() {

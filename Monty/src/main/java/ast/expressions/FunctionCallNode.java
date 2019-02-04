@@ -19,7 +19,6 @@ package ast.expressions;
 import java.util.ArrayList;
 
 import ast.Node;
-import ast.NodeTypes;
 
 public class FunctionCallNode extends Node implements StructContainer {
 
@@ -29,7 +28,6 @@ public class FunctionCallNode extends Node implements StructContainer {
 
 	public FunctionCallNode(String name) {
 		this.name = name;
-		super.nodeType = NodeTypes.FUNCTION_CALL;
 	}
 
 	public void addArgument(OperationNode argument) {

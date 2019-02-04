@@ -19,7 +19,6 @@ package parser.parsing;
 import java.util.HashMap;
 
 import ast.Block;
-import ast.NodeTypes;
 import ast.statements.IfStatementNode;
 import lexer.OptimizedTokensArray;
 import lexer.Token;
@@ -80,8 +79,7 @@ public class Parser {
 					var parent = block.getParent();
 					if (parent == null)
 						new LogError("Nothing to end!", tokensBeforeSemicolon.get(0));
-					if (block.getNodeType() == NodeTypes.IF_STATEMENT && ((IfStatementNode) block).isInElse()
-							&& parent.getNodeType() == NodeTypes.ELSE_BLOCK)
+					if (block instanceof IfStatementNode && ((IfStatementNode) block).isInElse())
 						block = parent;
 					block = block.getParent();
 				}

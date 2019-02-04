@@ -17,7 +17,6 @@ limitations under the License.
 package ast;
 
 public class Node {
-	protected NodeTypes nodeType;
 	protected int line;
 	protected String fileName;
 
@@ -27,10 +26,6 @@ public class Node {
 
 	public int getLine() {
 		return line;
-	}
-
-	public NodeTypes getNodeType() {
-		return nodeType;
 	}
 
 	public void setFileName(String fileName) {

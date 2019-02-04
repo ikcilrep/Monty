@@ -17,7 +17,6 @@ limitations under the License.
 package parser.parsing;
 
 import ast.Block;
-import ast.NodeTypes;
 import ast.declarations.CustomFunctionDeclarationNode;
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
@@ -54,16 +53,16 @@ public abstract class AdderToBlock {
 
 	public static Block addDoWhileStatement(Block block, OptimizedTokensArray tokens) {
 		var whileStatement = new WhileStatementNode(ExpressionParser.parse(block, tokens.subarray(2, tokens.length())),
-				tokens.get(0).getFileName(), tokens.get(0).getLine(), NodeTypes.DO_WHILE_STATEMENT, block);
+				tokens.get(0).getFileName(), tokens.get(0).getLine(), true, block);
 		block.addChild(whileStatement);
 		return whileStatement;
 
 	}
 
 	public static Block addElseStatement(Block block, OptimizedTokensArray tokens) {
-		if (!block.getNodeType().equals(NodeTypes.IF_STATEMENT))
+		if (!(block instanceof IfStatementNode))
 			new LogError("Unexpected \"else\" keyword", tokens.get(0));
-		var elseBlock = new Block(block.getParent(), NodeTypes.ELSE_BLOCK);
+		var elseBlock = new Block(block.getParent());
 		elseBlock.setFileName(tokens.get(0).getFileName());
 		elseBlock.setLine(tokens.get(0).getLine());
 		((IfStatementNode) block).setElseBody(elseBlock);
@@ -156,7 +155,7 @@ public abstract class AdderToBlock {
 
 	public static Block addWhileStatement(Block block, OptimizedTokensArray tokens) {
 		var whileStatement = new WhileStatementNode(ExpressionParser.parse(block, tokens.subarray(1, tokens.length())),
-				tokens.get(0).getFileName(), tokens.get(0).getLine(), NodeTypes.WHILE_STATEMENT, block);
+				tokens.get(0).getFileName(), tokens.get(0).getLine(), false, block);
 		block.addChild(whileStatement);
 		return whileStatement;
 

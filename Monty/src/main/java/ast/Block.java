@@ -22,12 +22,15 @@ import java.util.Map;
 
 import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
+import ast.statements.BreakStatementNode;
+import ast.statements.ContinueStatementNode;
+import ast.statements.ReturnStatementNode;
 import lexer.Token;
 import parser.LogError;
 
-public class Block extends NodeWithParent implements Cloneable, RunnableNode {
+public class Block extends NodeWithParent implements Cloneable {
 
-	private ArrayList<Node> children = new ArrayList<>();
+	private ArrayList<RunnableNode> children = new ArrayList<>();
 	protected HashMap<String, FunctionDeclarationNode> functions = new HashMap<>();
 	private HashMap<String, VariableDeclarationNode> variables = new HashMap<>();
 	private Block parent;
@@ -36,12 +39,7 @@ public class Block extends NodeWithParent implements Cloneable, RunnableNode {
 		this.parent = parent;
 	}
 
-	public Block(Block parent, NodeTypes nodeType) {
-		this.parent = parent;
-		super.nodeType = nodeType;
-	}
-
-	public void addChild(Node child) {
+	public void addChild(RunnableNode child) {
 		children.add(child);
 	}
 
@@ -151,7 +149,7 @@ public class Block extends NodeWithParent implements Cloneable, RunnableNode {
 		return variables.containsKey(name);
 	}
 
-	public ArrayList<Node> getChildren() {
+	public ArrayList<RunnableNode> getChildren() {
 		return children;
 	}
 
@@ -183,7 +181,7 @@ public class Block extends NodeWithParent implements Cloneable, RunnableNode {
 		return functions;
 	}
 
-	public void setChildren(ArrayList<Node> children) {
+	public void setChildren(ArrayList<RunnableNode> children) {
 		this.children = children;
 	}
 
@@ -220,23 +218,13 @@ public class Block extends NodeWithParent implements Cloneable, RunnableNode {
 	@Override
 	public Object run() {
 		Object result = null;
-		for (Node child : children) {
-			result = ((RunnableNode) child).run();
-			switch (child.getNodeType()) {
-			case RETURN_STATEMENT:
-			case BREAK_STATEMENT:
-			case CONTINUE_STATEMENT:
+		for (RunnableNode child : children) {
+			result = child.run();
+			if (child instanceof ReturnStatementNode || child instanceof BreakStatementNode
+					|| child instanceof ContinueStatementNode)
 				return result;
-			case DO_WHILE_STATEMENT:
-			case WHILE_STATEMENT:
-			case IF_STATEMENT:
-			case FOR_STATEMENT:
-				if (result != null)
-					return result;
-				break;
-			default:
-				break;
-			}
+			else if (child instanceof ConditionalNode && result != null)
+				return result;
 		}
 		return null;
 	}

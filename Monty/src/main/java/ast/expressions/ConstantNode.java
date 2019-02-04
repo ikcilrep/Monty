@@ -17,7 +17,6 @@ limitations under the License.
 package ast.expressions;
 
 import ast.Node;
-import ast.NodeTypes;
 import parser.DataTypes;
 
 public class ConstantNode extends Node {
@@ -27,7 +26,6 @@ public class ConstantNode extends Node {
 	public ConstantNode(Object value, DataTypes type) {
 		this.value = value;
 		this.type = type;
-		super.nodeType = NodeTypes.CONSTANT;
 	}
 
 	public DataTypes getType() {

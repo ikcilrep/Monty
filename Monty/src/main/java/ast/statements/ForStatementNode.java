@@ -19,7 +19,6 @@ package ast.statements;
 import java.util.ArrayList;
 
 import ast.Block;
-import ast.NodeTypes;
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
@@ -34,7 +33,7 @@ public class ForStatementNode extends Block {
 	private String variableName;
 
 	public ForStatementNode(String variableName, OperationNode array, String fileName, int line, Block parent) {
-		super(parent, NodeTypes.FOR_STATEMENT);
+		super(parent);
 		this.variableName = variableName;
 		this.array = array;
 		this.fileName = fileName;

@@ -16,6 +16,6 @@ limitations under the License.
 
 package ast;
 
-public interface RunnableNode {
-	public Object run();
+public abstract class RunnableNode extends Node {
+	public abstract Object run();
 }

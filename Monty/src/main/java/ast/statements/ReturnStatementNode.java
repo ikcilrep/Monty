@@ -17,12 +17,10 @@ limitations under the License.
 package ast.statements;
 
 import ast.Block;
-import ast.NodeTypes;
 import ast.NodeWithParent;
-import ast.RunnableNode;
 import ast.expressions.OperationNode;
 
-public class ReturnStatementNode extends NodeWithParent implements Cloneable, RunnableNode {
+public class ReturnStatementNode extends NodeWithParent implements Cloneable {
 
 	private OperationNode expression;
 
@@ -32,7 +30,6 @@ public class ReturnStatementNode extends NodeWithParent implements Cloneable, Ru
 
 	public ReturnStatementNode(OperationNode expression, String fileName, int line) {
 		this.expression = expression;
-		super.nodeType = NodeTypes.RETURN_STATEMENT;
 		this.fileName = fileName;
 		this.line = line;
 	}

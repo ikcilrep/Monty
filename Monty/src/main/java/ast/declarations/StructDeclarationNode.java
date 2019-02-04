@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ast.Block;
-import ast.NodeTypes;
 import ast.expressions.ConstantNode;
 import ast.expressions.OperationNode;
 import lexer.Token;
@@ -37,7 +36,6 @@ public class StructDeclarationNode extends Block implements Cloneable {
 
 	public StructDeclarationNode(Block parent, String name) {
 		super(parent);
-		super.nodeType = NodeTypes.STRUCT_DECLARATION;
 		this.name = name;
 		structNumber = ++actualStructNumber;
 	}

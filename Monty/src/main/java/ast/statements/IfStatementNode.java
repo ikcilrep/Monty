@@ -18,7 +18,6 @@ package ast.statements;
 
 import ast.Block;
 import ast.ConditionalNode;
-import ast.NodeTypes;
 import ast.expressions.OperationNode;
 
 public class IfStatementNode extends ConditionalNode {
@@ -28,7 +27,7 @@ public class IfStatementNode extends ConditionalNode {
 	private boolean isInElse = false;
 
 	public IfStatementNode(Block parent, OperationNode condition, String fileName, int line) {
-		super(condition, parent, NodeTypes.IF_STATEMENT);
+		super(condition, parent);
 		this.condition = condition;
 		this.fileName = fileName;
 		this.line = line;
