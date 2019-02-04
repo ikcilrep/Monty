@@ -58,19 +58,28 @@ public class Sml extends Library {
 		super("sml");
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void setLibrary() {
-		var children = getSublibraries();
-		children.put("casts", new HashMap<>());
-		children.put("math", new HashMap<>());
-		children.put("io", new HashMap<>());
-		children.put("system", new HashMap<>());
-		children.put("data", new HashMap<>());
-		children.put("threading", new HashMap<>());
-		children.put("time", new HashMap<>());
-		children.put("math", new HashMap<>());
-		var casts = (HashMap<String, Object>) children.get("casts");
+		var sml = getSublibraries();
+		var casts = new HashMap<String, Object>();
+		var math = new HashMap<String, Object>();
+		var io = new HashMap<String, Object>();
+		var system = new HashMap<String, Object>();
+		var data = new HashMap<String, Object>();
+		var threading = new HashMap<String, Object>();
+		var time = new HashMap<String, Object>();
+		var checking = new HashMap<String, Object>();
+		var string = new HashMap<String, Object>();
+
+		
+		sml.put("casts", casts);
+		sml.put("math",math);
+		sml.put("io", io);
+		sml.put("system", system);
+		sml.put("data", data);
+		sml.put("threading", threading);
+		sml.put("time", time);
+		sml.put("math", math);
 
 		casts.put("toBoolean", new ToBoolean());
 		casts.put("toFloat", new ToFloat());
@@ -79,21 +88,18 @@ public class Sml extends Library {
 		casts.put("toChar", new ToChar());
 		casts.put("ord", new Ord());
 
-		var data = (HashMap<String, Object>) children.get("data");
 		data.put("Array", new NewArray());
 		data.put("Stack", new NewStack());
 		data.put("List", new NewList());
-		data.put("checking", new HashMap<>());
-		data.put("string", new HashMap<>());
+		data.put("checking", checking);
+		data.put("string", string);
 
-		var checking = (HashMap<String, Object>) data.get("checking");
 		checking.put("isInt", new IsInt());
 		checking.put("isFloat", new IsFloat());
 		checking.put("isString", new IsString());
 		checking.put("isArray", new IsArray());
 		checking.put("isStack", new IsStack());
 
-		var string = (HashMap<String, Object>) data.get("string");
 		string.put("charAt", new CharAt());
 		string.put("endsWith", new EndsWith());
 		string.put("equalsIgnoreCase", new EqualsIgnoreCase());
@@ -104,23 +110,18 @@ public class Sml extends Library {
 		string.put("toLowerCase", new ToLowerCase());
 		string.put("toUpperCase", new ToUpperCase());
 
-		var io = (HashMap<String, Object>) children.get("io");
 		io.put("input", new Input());
 		io.put("print", new Print());
 		io.put("println", new Println());
 
-		var system = (HashMap<String, Object>) children.get("system");
 		system.put("argv", new Argv());
 		system.put("exit", new Exit());
 
-		var threading = (HashMap<String, Object>) children.get("threading");
 		threading.put("sleep", new Sleep());
 
-		var time = (HashMap<String, Object>) children.get("time");
 		time.put("unixTime", new UnixTime());
 		time.put("unixTimeMillis", new UnixTimeMillis());
 
-		var math = (HashMap<String, Object>) children.get("math");
 		math.put("pow", new Pow());
 
 	}
