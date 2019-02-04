@@ -25,9 +25,7 @@ import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.statements.ChangeToStatementNode;
 import ast.statements.ForStatementNode;
-import ast.statements.IfStatementNode;
 import ast.statements.ReturnStatementNode;
-import ast.statements.WhileStatementNode;
 import lexer.Token;
 import parser.DataTypes;
 import parser.LogError;
@@ -240,25 +238,12 @@ public class Block extends NodeWithParent implements Cloneable, RunnableNode {
 			case STRUCT_DECLARATION:
 				result = ((RunnableNode) child).run();
 				break;
-			case IF_STATEMENT:
-				result = ((IfStatementNode) child).run();
-				if (result != null)
-					return result;
-				break;
 			case DO_WHILE_STATEMENT:
 			case WHILE_STATEMENT:
-				var childCastedToWhileStatement = ((WhileStatementNode) child);
-				if (child.getNodeType().equals(NodeTypes.DO_WHILE_STATEMENT))
-					childCastedToWhileStatement.run();
-				while (childCastedToWhileStatement.runnedCondition()) {
-					result = childCastedToWhileStatement.run();
-					if (result instanceof BreakType)
-						break;
-					if (result instanceof ContinueType)
-						continue;
-					if (result != null)
-						return result;
-				}
+			case IF_STATEMENT:
+				result = ((RunnableNode) child).run();
+				if (result != null)
+					return result;
 				break;
 			case FOR_STATEMENT:
 				var childCastedToForStatement = ((ForStatementNode) child);

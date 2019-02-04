@@ -19,6 +19,8 @@ package ast.statements;
 import ast.Block;
 import ast.NodeTypes;
 import ast.expressions.OperationNode;
+import sml.data.returning.BreakType;
+import sml.data.returning.ContinueType;
 
 public class WhileStatementNode extends ConditionalNode {
 	public WhileStatementNode(OperationNode condition, String fileName, int line, NodeTypes whileOrDoWhile,
@@ -27,5 +29,22 @@ public class WhileStatementNode extends ConditionalNode {
 		this.condition = condition;
 		this.fileName = fileName;
 		this.line = line;
+	}
+
+	@Override
+	public Object run() {
+		Object result = null;
+		if (getNodeType().equals(NodeTypes.DO_WHILE_STATEMENT) || runnedCondition()) {
+			do {
+				result = super.run();
+				if (result instanceof BreakType)
+					break;
+				if (result instanceof ContinueType)
+					continue;
+				if (result != null)
+					return result;
+			} while (runnedCondition());
+		}
+		return null;
 	}
 }
