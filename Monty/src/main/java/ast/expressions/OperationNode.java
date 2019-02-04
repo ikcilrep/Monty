@@ -19,6 +19,7 @@ package ast.expressions;
 import ast.Block;
 import ast.Node;
 import ast.NodeTypes;
+import ast.NodeWithParent;
 import ast.RunnableNode;
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
@@ -26,7 +27,7 @@ import parser.DataTypes;
 import parser.LogError;
 import sml.casts.ToFloat;
 
-public class OperationNode extends ExpressionNode implements RunnableNode {
+public class OperationNode extends NodeWithParent implements RunnableNode, Cloneable {
 
 	private OperationNode left = null;
 	private Object operand;
@@ -146,6 +147,7 @@ public class OperationNode extends ExpressionNode implements RunnableNode {
 				var nextV = variableCall.getNext();
 				var variable = parent.getVariable(variableCall.getName(), variableCall.getFileName(),
 						variableCall.getLine());
+
 				if (nextV != null) {
 					var variableValue = variable.getValue();
 					if (variableValue instanceof StructDeclarationNode)
@@ -211,8 +213,18 @@ public class OperationNode extends ExpressionNode implements RunnableNode {
 		this.left = left;
 	}
 
+	@Override
 	public void setParent(Block parent) {
 		this.parent = parent;
+		if (left != null)
+			left.setParent(parent);
+		if (right != null)
+			right.setParent(parent);
+		if (operand instanceof FunctionCallNode) {
+			var arguments = ((FunctionCallNode) operand).getArguments();
+			for (OperationNode argument : arguments)
+				argument.setParent(parent);
+		}
 	}
 
 	public void setRightOperand(OperationNode right) {
@@ -258,5 +270,14 @@ public class OperationNode extends ExpressionNode implements RunnableNode {
 
 		return calculate(leftValue, rightValue, getOperand(), leftType);
 
+	}
+
+	public OperationNode copy() {
+		try {
+			return (OperationNode) clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

@@ -31,6 +31,11 @@ class ConditionalNode extends Block {
 
 	public boolean runnedCondition() {
 		return ToBoolean.toBoolean(condition.run(), getFileName(), getLine());
+	}
 
+	@Override
+	public void setParent(Block parent) {
+		super.setParent(parent);
+		condition.setParent(parent);
 	}
 }

@@ -21,7 +21,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ast.Block;
+import ast.Node;
 import ast.NodeTypes;
+import ast.NodeWithParent;
+import ast.expressions.ConstantNode;
 import ast.expressions.OperationNode;
 import lexer.Token;
 import parser.DataTypes;
@@ -100,8 +103,19 @@ public class StructDeclarationNode extends Block implements Cloneable {
 			for (Map.Entry<String, FunctionDeclarationNode> entry : functionsSet) {
 				var key = entry.getKey();
 				var value = entry.getValue().copy();
-				var body = value.getBody();
+				var body = value.getBody().copy();
 				body.setParent(copied);
+				value.setBody(body);
+				@SuppressWarnings("unchecked")
+				var children = (ArrayList<Node>) body.getChildren().clone();
+				for (int i = 0; i < children.size(); i++) {
+					if (children.get(i) instanceof NodeWithParent) {
+						var castedChildCopy = ((NodeWithParent) children.get(i)).copy();
+						children.set(i, castedChildCopy);
+						castedChildCopy.setParent(body);
+					}
+				}
+				body.setChildren(children);
 				functions.put(key, value);
 			}
 			copied.setFunctions(functions);
@@ -143,9 +157,30 @@ public class StructDeclarationNode extends Block implements Cloneable {
 			if (!function.getType().equals(DataTypes.STRING))
 				new LogError("Function toString have to return string", function.getFileName(), function.getLine());
 			if (function.getParameters().size() != 0)
-				new LogError("Function toString mustn't have any parameter", function.getFileName(), function.getLine());
+				new LogError("Function toString mustn't have any parameter", function.getFileName(),
+						function.getLine());
 			return function.call(new ArrayList<>(), function.getFileName(), function.getLine()).toString();
 		}
 		return name + "#" + getInstanceNumber();
 	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (hasFunction("equals")) {
+			var function = getFunction("equals");
+			if (!function.getType().equals(DataTypes.BOOLEAN))
+				new LogError("Function equals have to return boolean", function.getFileName(), function.getLine());
+			if (function.getParameters().size() != 1)
+				new LogError("Function equals mustn't have more or less than one parameter", function.getFileName(),
+						function.getLine());
+			if (!function.getParameters().get(0).getType().equals(DataTypes.ANY))
+				new LogError("Function equals must have parameter with \"any\" data type", function.getFileName(),
+						function.getLine());
+			var arguments = new ArrayList<OperationNode>();
+			arguments.add(new OperationNode(new ConstantNode(other, DataTypes.ANY), new Block(null)));
+			return (boolean) function.call(arguments, function.getFileName(), function.getLine());
+		}
+		return false;
+	}
+
 }

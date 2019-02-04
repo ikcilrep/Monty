@@ -16,12 +16,18 @@ limitations under the License.
 
 package ast.statements;
 
+import ast.Block;
 import ast.NodeTypes;
+import ast.NodeWithParent;
 import ast.expressions.OperationNode;
 
-public class ReturnStatementNode extends StatementNode {
+public class ReturnStatementNode extends NodeWithParent implements Cloneable {
 
 	private OperationNode expression;
+
+	public void setExpression(OperationNode expression) {
+		this.expression = expression;
+	}
 
 	public ReturnStatementNode(OperationNode expression, String fileName, int line) {
 		this.expression = expression;
@@ -30,7 +36,25 @@ public class ReturnStatementNode extends StatementNode {
 		this.line = line;
 	}
 
+	@Override
+	public void setParent(Block parent) {
+		expression.setParent(parent);
+	}
+
 	public OperationNode getExpression() {
 		return expression;
+	}
+
+	@Override
+	public NodeWithParent copy() {
+		ReturnStatementNode copy = null;
+		try {
+			copy = (ReturnStatementNode) clone();
+			copy.expression = copy.expression.copy();
+			return copy;
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

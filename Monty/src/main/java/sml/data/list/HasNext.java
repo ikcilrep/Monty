@@ -29,7 +29,7 @@ class HasNext extends Method<Iterator> {
 	@Override
 	public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return parent.list!= null && !parent.list.head.equals(Empty.empty);
+		return parent.list != null && !parent.list.head.equals(Empty.empty);
 	}
 
 }

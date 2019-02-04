@@ -39,12 +39,12 @@ import sml.data.returning.BreakType;
 import sml.data.returning.ContinueType;
 import sml.data.returning.Nothing;
 
-public class Block extends Node implements Cloneable, RunnableNode {
+public class Block extends NodeWithParent implements Cloneable, RunnableNode {
 
 	private ArrayList<Node> children = new ArrayList<>();
 	protected HashMap<String, FunctionDeclarationNode> functions = new HashMap<>();
-	private Block parent;
 	private HashMap<String, VariableDeclarationNode> variables = new HashMap<>();
+	private Block parent;
 
 	public Block(Block parent) {
 		this.parent = parent;
@@ -187,6 +187,10 @@ public class Block extends Node implements Cloneable, RunnableNode {
 		return functions;
 	}
 
+	public void setChildren(ArrayList<Node> children) {
+		this.children = children;
+	}
+
 	public Block getParent() {
 		return parent;
 	}
@@ -262,8 +266,8 @@ public class Block extends Node implements Cloneable, RunnableNode {
 				if (toIter instanceof StructDeclarationNode) {
 					var struct = (StructDeclarationNode) toIter;
 					if (struct.hasFunction("Iterator")) {
-						var iterator = (StructDeclarationNode) struct.getFunction("Iterator").call(
-								new ArrayList<>(), childCastedToForStatement.fileName, childCastedToForStatement.line);
+						var iterator = (StructDeclarationNode) struct.getFunction("Iterator").call(new ArrayList<>(),
+								childCastedToForStatement.fileName, childCastedToForStatement.line);
 						if (iterator.hasFunction("hasNext") && iterator.hasFunction("next")) {
 							var hasNext = iterator.getFunction("hasNext");
 							var next = iterator.getFunction("next");
@@ -343,6 +347,7 @@ public class Block extends Node implements Cloneable, RunnableNode {
 		return null;
 	}
 
+	@Override
 	public void setParent(Block parent) {
 		this.parent = parent;
 	}

@@ -170,9 +170,12 @@ public class List extends StructDeclarationNode {
 			return false;
 		var otherList = (List) other;
 		var list = this;
-		while (list != null && otherList != null)
+		while (list != null && otherList != null) {
 			if (!list.head.equals(otherList.head))
 				return false;
+			otherList = otherList.tail;
+			list = list.tail;
+		}
 		return true;
 	}
 

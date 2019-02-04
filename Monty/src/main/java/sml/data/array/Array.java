@@ -178,11 +178,13 @@ public class Array extends StructDeclarationNode {
 	public boolean equals(Object other) {
 		if (!(other instanceof Array))
 			return false;
+		var length = length();
 		var otherArray = (Array) other;
-		if (otherArray.length() != length())
-			for (int i = 0; i < length(); i++)
-				if (!get(i).equals(otherArray.get(i)))
-					return false;
+		if (otherArray.length() != length)
+			return false;
+		for (int i = 0; i < length; i++)
+			if (!get(i).equals(otherArray.get(i)))
+				return false;
 		return true;
 
 	}

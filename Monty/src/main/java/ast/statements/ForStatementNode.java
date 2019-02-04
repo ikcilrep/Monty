@@ -40,4 +40,10 @@ public class ForStatementNode extends Block {
 	public String getVariableName() {
 		return variableName;
 	}
+
+	@Override
+	public void setParent(Block parent) {
+		super.setParent(parent);
+		array.setParent(parent);
+	}
 }

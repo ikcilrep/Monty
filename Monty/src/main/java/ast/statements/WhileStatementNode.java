@@ -28,5 +28,4 @@ public class WhileStatementNode extends ConditionalNode {
 		this.fileName = fileName;
 		this.line = line;
 	}
-
 }
