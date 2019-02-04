@@ -17,6 +17,7 @@ package sml.data.list;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;

@@ -17,7 +17,7 @@ limitations under the License.
 package sml.data.array;
 
 import java.util.ArrayList;
-import ast.declarations.VariableDeclarationNode;
+
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
@@ -27,7 +27,7 @@ class Extend extends Method<Array> {
 
 	public Extend(Array array) {
 		super(array, "extend", DataTypes.VOID);
-		addParameter(new VariableDeclarationNode("arrayToExtend", DataTypes.ANY));
+		addParameter("arrayToExtend", DataTypes.ANY);
 	}
 
 	@Override

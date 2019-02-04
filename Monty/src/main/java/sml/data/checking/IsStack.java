@@ -20,7 +20,6 @@ import java.util.ArrayList;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
-import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.stack.Stack;
@@ -30,7 +29,7 @@ public class IsStack extends FunctionDeclarationNode {
 	public IsStack() {
 		super("isStack", DataTypes.BOOLEAN);
 		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("toCheck", DataTypes.ANY));
+		addParameter("toCheck", DataTypes.ANY);
 	}
 
 	@Override

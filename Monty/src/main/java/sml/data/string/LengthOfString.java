@@ -21,7 +21,6 @@ import java.util.ArrayList;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
-import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
@@ -30,7 +29,7 @@ public class LengthOfString extends FunctionDeclarationNode {
 	public LengthOfString() {
 		super("lengthOfString", DataTypes.INTEGER);
 		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("str", DataTypes.STRING));
+		addParameter("str", DataTypes.STRING);
 	}
 
 	@Override

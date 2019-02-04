@@ -21,7 +21,6 @@ import java.util.ArrayList;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
-import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
@@ -31,9 +30,9 @@ public class Substring extends FunctionDeclarationNode {
 	public Substring() {
 		super("substring", DataTypes.STRING);
 		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("str", DataTypes.STRING));
-		addParameter(new VariableDeclarationNode("begin", DataTypes.INTEGER));
-		addParameter(new VariableDeclarationNode("end", DataTypes.INTEGER));
+		addParameter("str", DataTypes.STRING);
+		addParameter("begin", DataTypes.INTEGER);
+		addParameter("end", DataTypes.INTEGER);
 
 	}
 

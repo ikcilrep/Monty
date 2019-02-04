@@ -18,7 +18,6 @@ package sml.data.array;
 
 import java.util.ArrayList;
 
-import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
@@ -26,7 +25,7 @@ import sml.data.Method;
 class Contains extends Method<Array> {
 	public Contains(Array array) {
 		super(array, "contains", DataTypes.BOOLEAN);
-		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
+		addParameter("element", DataTypes.ANY);
 	}
 
 	@Override

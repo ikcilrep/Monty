@@ -30,7 +30,7 @@ public class IsArray extends FunctionDeclarationNode {
 	public IsArray() {
 		super("isArray", DataTypes.BOOLEAN);
 		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("toCheck", DataTypes.ANY));
+		new VariableDeclarationNode("toCheck", DataTypes.ANY);
 	}
 
 	@Override

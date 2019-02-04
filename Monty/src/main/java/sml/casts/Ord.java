@@ -21,7 +21,6 @@ import java.util.ArrayList;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
-import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
@@ -35,7 +34,7 @@ public class Ord extends FunctionDeclarationNode {
 	public Ord() {
 		super("ord", DataTypes.INTEGER);
 		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("chr", DataTypes.STRING));
+		addParameter("chr", DataTypes.STRING);
 	}
 
 	@Override

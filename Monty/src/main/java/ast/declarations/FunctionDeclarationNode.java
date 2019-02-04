@@ -35,8 +35,8 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 		super.nodeType = NodeTypes.FUNCTION_DECLARATION;
 	}
 
-	public void addParameter(VariableDeclarationNode parameter) {
-		parameters.add(parameter);
+	public void addParameter(String name, DataTypes type) {
+		parameters.add(new VariableDeclarationNode(name, type));
 	}
 
 	public abstract Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine);

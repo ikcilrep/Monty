@@ -18,7 +18,6 @@ package sml.data.array;
 
 import java.util.ArrayList;
 
-import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
@@ -27,8 +26,8 @@ class ReplaceLast extends Method<Array> {
 
 	public ReplaceLast(Array array) {
 		super(array, "replaceLast", DataTypes.ANY);
-		addParameter(new VariableDeclarationNode("toBeReplaced", DataTypes.ANY));
-		addParameter(new VariableDeclarationNode("replacement", DataTypes.ANY));
+		addParameter("toBeReplaced", DataTypes.ANY);
+		addParameter("replacement", DataTypes.ANY);
 
 	}
 

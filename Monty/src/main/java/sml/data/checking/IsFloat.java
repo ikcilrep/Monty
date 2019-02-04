@@ -21,7 +21,6 @@ import java.util.ArrayList;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
-import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
@@ -30,7 +29,7 @@ public class IsFloat extends FunctionDeclarationNode {
 	public IsFloat() {
 		super("isFloat", DataTypes.BOOLEAN);
 		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("toCheck", DataTypes.ANY));
+		addParameter("toCheck", DataTypes.ANY);
 	}
 
 	@Override

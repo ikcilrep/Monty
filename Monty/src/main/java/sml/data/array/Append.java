@@ -18,7 +18,6 @@ package sml.data.array;
 
 import java.util.ArrayList;
 
-import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
@@ -27,7 +26,7 @@ class Append extends Method<Array> {
 
 	public Append(Array array) {
 		super(array, "append", DataTypes.VOID);
-		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
+		addParameter("element", DataTypes.ANY);
 	}
 
 	@Override

@@ -18,7 +18,7 @@ package sml.data.array;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import ast.declarations.VariableDeclarationNode;
+
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
@@ -28,7 +28,7 @@ class Get extends Method<Array> {
 
 	public Get(Array array) {
 		super(array, "get", DataTypes.ANY);
-		addParameter(new VariableDeclarationNode("index", DataTypes.INTEGER));
+		addParameter("index", DataTypes.INTEGER);
 	}
 
 	@Override

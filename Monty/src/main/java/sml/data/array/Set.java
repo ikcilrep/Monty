@@ -18,7 +18,7 @@ package sml.data.array;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import ast.declarations.VariableDeclarationNode;
+
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
@@ -28,8 +28,8 @@ class Set extends Method<Array> {
 
 	public Set(Array array) {
 		super(array, "set", DataTypes.ANY);
-		addParameter(new VariableDeclarationNode("index", DataTypes.INTEGER));
-		addParameter(new VariableDeclarationNode("value", DataTypes.ANY));
+		addParameter("index", DataTypes.INTEGER);
+		addParameter("value", DataTypes.ANY);
 	}
 
 	@Override

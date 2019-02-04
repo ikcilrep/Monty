@@ -17,7 +17,7 @@ limitations under the License.
 package sml.data.stack;
 
 import java.util.ArrayList;
-import ast.declarations.VariableDeclarationNode;
+
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
@@ -26,7 +26,7 @@ class Push extends Method<Stack> {
 
 	public Push(Stack stack) {
 		super(stack, "push", DataTypes.ANY);
-		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
+		addParameter("element", DataTypes.ANY);
 	}
 
 	@Override

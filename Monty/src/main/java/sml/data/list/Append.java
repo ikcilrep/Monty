@@ -11,7 +11,7 @@ class Append extends Method<List> {
 
 	public Append(List list) {
 		super(list, "append", DataTypes.ANY);
-		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
+		new VariableDeclarationNode("element", DataTypes.ANY);
 	}
 
 	@Override

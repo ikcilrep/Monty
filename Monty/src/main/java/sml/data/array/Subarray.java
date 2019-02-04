@@ -18,7 +18,7 @@ package sml.data.array;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import ast.declarations.VariableDeclarationNode;
+
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
@@ -28,8 +28,8 @@ class Subarray extends Method<Array> {
 
 	public Subarray(Array array) {
 		super(array, "subarray", DataTypes.ANY);
-		addParameter(new VariableDeclarationNode("begin", DataTypes.INTEGER));
-		addParameter(new VariableDeclarationNode("end", DataTypes.INTEGER));
+		addParameter("begin", DataTypes.INTEGER);
+		addParameter("end", DataTypes.INTEGER);
 
 	}
 

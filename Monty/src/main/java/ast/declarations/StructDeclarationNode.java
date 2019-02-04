@@ -82,7 +82,7 @@ public class StructDeclarationNode extends Block implements Cloneable {
 
 		};
 		checkingFunction.setBody(new Block(null));
-		checkingFunction.addParameter(new VariableDeclarationNode("other", DataTypes.ANY));
+		checkingFunction.addParameter("other", DataTypes.ANY);
 		block.addFunction(checkingFunction, token);
 	}
 

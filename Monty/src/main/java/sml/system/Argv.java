@@ -21,7 +21,6 @@ import java.util.ArrayList;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
-import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import monty.Main;
 import parser.DataTypes;
@@ -32,7 +31,7 @@ public class Argv extends FunctionDeclarationNode {
 	public Argv() {
 		super("argv", DataTypes.STRING);
 		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("index", DataTypes.INTEGER));
+		addParameter("index", DataTypes.INTEGER);
 	}
 
 	@Override

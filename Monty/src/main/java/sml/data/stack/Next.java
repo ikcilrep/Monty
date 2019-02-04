@@ -1,6 +1,7 @@
 package sml.data.stack;
 
 import java.util.ArrayList;
+
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;

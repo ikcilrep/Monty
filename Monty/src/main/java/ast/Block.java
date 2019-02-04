@@ -228,7 +228,7 @@ public class Block extends NodeWithParent implements Cloneable, RunnableNode {
 			switch (child.getNodeType()) {
 			case OPERATION:
 			case STRUCT_DECLARATION:
-				((RunnableNode) child).run();
+				result = ((RunnableNode) child).run();
 				break;
 			case IF_STATEMENT:
 				var childCastedToIfStatement = ((IfStatementNode) child);

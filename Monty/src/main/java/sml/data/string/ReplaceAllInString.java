@@ -20,7 +20,6 @@ import java.util.ArrayList;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
-import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
@@ -29,9 +28,9 @@ public class ReplaceAllInString extends FunctionDeclarationNode {
 	public ReplaceAllInString() {
 		super("replaceAllInString", DataTypes.STRING);
 		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("str", DataTypes.STRING));
-		addParameter(new VariableDeclarationNode("toBeReplaced", DataTypes.STRING));
-		addParameter(new VariableDeclarationNode("replacement", DataTypes.STRING));
+		addParameter("str", DataTypes.STRING);
+		addParameter("toBeReplaced", DataTypes.STRING);
+		addParameter("replacement", DataTypes.STRING);
 
 	}
 

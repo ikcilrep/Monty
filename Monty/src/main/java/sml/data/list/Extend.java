@@ -2,7 +2,6 @@ package sml.data.list;
 
 import java.util.ArrayList;
 
-import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
@@ -12,7 +11,7 @@ class Extend extends Method<List> {
 
 	public Extend(List list) {
 		super(list, "extend", DataTypes.ANY);
-		addParameter(new VariableDeclarationNode("listToExtend", DataTypes.ANY));
+		addParameter("listToExtend", DataTypes.ANY);
 	}
 
 	@Override

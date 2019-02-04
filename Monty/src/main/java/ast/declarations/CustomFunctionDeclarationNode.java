@@ -51,6 +51,7 @@ public class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
 		} catch (StackOverflowError e) {
 			new LogError("Stack overflow at " + name + " function call", fileNames, lines);
 		}
+
 		if (result == null)
 			result = DataTypes.getNeutralValue(getType());
 		if (result instanceof BreakType)

@@ -22,7 +22,6 @@ import java.util.ArrayList;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
-import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
@@ -49,14 +48,11 @@ public class ToFloat extends FunctionDeclarationNode {
 		return null;
 	}
 
-	/**
-	 * 
-	 */
 
 	public ToFloat() {
 		super("toFloat", DataTypes.FLOAT);
 		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("a", DataTypes.ANY));
+		addParameter("a", DataTypes.ANY);
 	}
 
 	@Override

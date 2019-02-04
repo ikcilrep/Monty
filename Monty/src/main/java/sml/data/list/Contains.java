@@ -2,7 +2,6 @@ package sml.data.list;
 
 import java.util.ArrayList;
 
-import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
@@ -11,7 +10,7 @@ class Contains extends Method<List> {
 
 	public Contains(List list) {
 		super(list, "contains", DataTypes.BOOLEAN);
-		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
+		addParameter("element", DataTypes.ANY);
 	}
 
 	@Override

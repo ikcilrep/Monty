@@ -20,7 +20,6 @@ import java.util.ArrayList;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
-import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
@@ -30,8 +29,8 @@ public class CharAt extends FunctionDeclarationNode {
 	public CharAt() {
 		super("charAt", DataTypes.STRING);
 		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("str", DataTypes.STRING));
-		addParameter(new VariableDeclarationNode("index", DataTypes.INTEGER));
+		addParameter("str", DataTypes.STRING);
+		addParameter("index", DataTypes.INTEGER);
 	}
 
 	@Override

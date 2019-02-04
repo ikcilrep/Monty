@@ -18,7 +18,7 @@ package sml.data.array;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import ast.declarations.VariableDeclarationNode;
+
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
@@ -27,7 +27,7 @@ class FindLast extends Method<Array> {
 
 	public FindLast(Array array) {
 		super(array, "findLast", DataTypes.ANY);
-		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
+		addParameter("element", DataTypes.ANY);
 
 	}
 

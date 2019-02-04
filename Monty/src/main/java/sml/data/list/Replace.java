@@ -17,7 +17,7 @@ limitations under the License.
 package sml.data.list;
 
 import java.util.ArrayList;
-import ast.declarations.VariableDeclarationNode;
+
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
@@ -26,8 +26,8 @@ class Replace extends Method<List> {
 
 	public Replace(List list) {
 		super(list, "replace", DataTypes.ANY);
-		addParameter(new VariableDeclarationNode("toBeReplaced", DataTypes.ANY));
-		addParameter(new VariableDeclarationNode("replacement", DataTypes.ANY));
+		addParameter("toBeReplaced", DataTypes.ANY);
+		addParameter("replacement", DataTypes.ANY);
 
 	}
 

@@ -3,7 +3,6 @@ package sml.data.list;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
-import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
@@ -13,7 +12,7 @@ class Get extends Method<List> {
 
 	public Get(List list) {
 		super(list, "get", DataTypes.ANY);
-		addParameter(new VariableDeclarationNode("index", DataTypes.INTEGER));
+		addParameter("index", DataTypes.INTEGER);
 	}
 
 	@Override

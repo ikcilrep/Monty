@@ -102,7 +102,7 @@ public abstract class AdderToBlock {
 			} else if (!isTokenTypeEqualsComma)
 				type = Tokens.getDataType(tokenType);
 			if (isTokenTypeEqualsComma || i + 1 >= tokens.length())
-				function.addParameter(new VariableDeclarationNode(name, type));
+				function.addParameter(name, type);
 		}
 		function.setBody(new Block(block));
 		block.addFunction(function, tokens.get(1));

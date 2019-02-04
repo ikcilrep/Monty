@@ -20,7 +20,6 @@ import java.util.ArrayList;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
-import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
@@ -33,14 +32,10 @@ public class ToString extends FunctionDeclarationNode {
 		return a.toString();
 	}
 
-	/**
-	 * 
-	 */
-
 	public ToString() {
 		super("toString", DataTypes.STRING);
 		setBody(new Block(null));
-		addParameter(new VariableDeclarationNode("a", DataTypes.ANY));
+		addParameter("a", DataTypes.ANY);
 	}
 
 	@Override

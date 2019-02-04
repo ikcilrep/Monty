@@ -17,7 +17,7 @@ limitations under the License.
 package sml.data.array;
 
 import java.util.ArrayList;
-import ast.declarations.VariableDeclarationNode;
+
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
@@ -25,8 +25,8 @@ import sml.data.Method;
 class ReplaceFirst extends Method<Array> {
 	public ReplaceFirst(Array array) {
 		super(array, "replaceFirst", DataTypes.ANY);
-		addParameter(new VariableDeclarationNode("toBeReplaced", DataTypes.ANY));
-		addParameter(new VariableDeclarationNode("replacement", DataTypes.ANY));
+		addParameter("toBeReplaced", DataTypes.ANY);
+		addParameter("replacement", DataTypes.ANY);
 
 	}
 

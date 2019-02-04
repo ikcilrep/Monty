@@ -17,6 +17,7 @@ limitations under the License.
 package sml.data.array;
 
 import java.util.ArrayList;
+
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;

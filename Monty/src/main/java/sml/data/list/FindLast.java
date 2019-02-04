@@ -3,7 +3,6 @@ package sml.data.list;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
-import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
@@ -12,7 +11,7 @@ class FindLast extends Method<List> {
 
 	public FindLast(List list) {
 		super(list, "findLast", DataTypes.INTEGER);
-		addParameter(new VariableDeclarationNode("element", DataTypes.ANY));
+		addParameter("element", DataTypes.ANY);
 	}
 
 	@Override
