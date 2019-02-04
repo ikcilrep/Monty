@@ -17,6 +17,7 @@ limitations under the License.
 package ast.statements;
 
 import ast.Block;
+import ast.ConditionalNode;
 import ast.NodeTypes;
 import ast.expressions.OperationNode;
 

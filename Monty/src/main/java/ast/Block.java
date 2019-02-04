@@ -22,13 +22,8 @@ import java.util.Map;
 
 import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
-import ast.statements.ChangeToStatementNode;
 import lexer.Token;
 import parser.LogError;
-import sml.casts.ToBoolean;
-import sml.casts.ToFloat;
-import sml.casts.ToInt;
-import sml.casts.ToString;
 
 public class Block extends NodeWithParent implements Cloneable, RunnableNode {
 
@@ -224,55 +219,20 @@ public class Block extends NodeWithParent implements Cloneable, RunnableNode {
 
 	@Override
 	public Object run() {
+		Object result = null;
 		for (Node child : children) {
-			Object result = null;
+			result = ((RunnableNode) child).run();
 			switch (child.getNodeType()) {
-			case OPERATION:
-			case STRUCT_DECLARATION:
-				result = ((RunnableNode) child).run();
-				break;
 			case RETURN_STATEMENT:
 			case BREAK_STATEMENT:
 			case CONTINUE_STATEMENT:
-				return ((RunnableNode) child).run();
+				return result;
 			case DO_WHILE_STATEMENT:
 			case WHILE_STATEMENT:
 			case IF_STATEMENT:
 			case FOR_STATEMENT:
-				result = ((RunnableNode) child).run();
 				if (result != null)
 					return result;
-				break;
-			case CHANGE_TO_STATEMENT:
-				var childCastedToChangeToStatement = ((ChangeToStatementNode) child);
-				var newVariableType = childCastedToChangeToStatement.getDataType();
-				var variable = getVariable(childCastedToChangeToStatement.getToChangeType().getName(),
-						child.getFileName(), child.getLine());
-				if (!variable.isDynamic()) {
-					int[] lines = { child.getLine(), variable.getLine() };
-					String[] fileNames = { child.getFileName(), variable.getFileName() };
-					new LogError("Can't change type of static variable:\tchange " + variable.getName() + " to "
-							+ newVariableType.toString().toLowerCase(), fileNames, lines);
-				}
-
-				variable.setType(newVariableType);
-				switch (newVariableType) {
-				case INTEGER:
-					variable.setValue(ToInt.toInt(variable.getValue(), child.getFileName(), child.getLine()));
-					break;
-				case BOOLEAN:
-					variable.setValue(ToBoolean.toBoolean(variable.getValue(), child.getFileName(), child.getLine()));
-					break;
-				case FLOAT:
-					variable.setValue(ToFloat.toFloat(variable.getValue(), child.getFileName(), child.getLine()));
-					break;
-				case STRING:
-					variable.setValue(ToString.toString(variable.getValue(), child.getFileName(), child.getLine()));
-					break;
-				default:
-					break;
-
-				}
 				break;
 			default:
 				break;

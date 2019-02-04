@@ -44,7 +44,8 @@ public abstract class AdderToBlock {
 
 	public static void addChangeToStatement(Block block, OptimizedTokensArray tokens) {
 		block.addChild(new ChangeToStatementNode(new VariableNode(tokens.get(1).getText()),
-				Tokens.getDataType(tokens.get(3).getType()), tokens.get(0).getFileName(), tokens.get(0).getLine()));
+				Tokens.getDataType(tokens.get(3).getType()), tokens.get(0).getFileName(), tokens.get(0).getLine(),
+				block));
 	}
 
 	public static void addContinueStatement(Block block, String fileName, int line) {

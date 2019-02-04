@@ -14,15 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package ast.statements;
+package ast;
 
-import ast.Block;
-import ast.NodeTypes;
 import ast.expressions.OperationNode;
 import sml.casts.ToBoolean;
 
-class ConditionalNode extends Block {
-	OperationNode condition;
+public class ConditionalNode extends Block {
+	protected OperationNode condition;
 
 	public ConditionalNode(OperationNode condition, Block parent, NodeTypes nodeType) {
 		super(parent, nodeType);

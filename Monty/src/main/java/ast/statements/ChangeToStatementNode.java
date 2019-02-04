@@ -16,31 +16,80 @@ limitations under the License.
 */
 package ast.statements;
 
-import ast.Node;
+import ast.Block;
 import ast.NodeTypes;
+import ast.NodeWithParent;
+import ast.RunnableNode;
 import ast.expressions.VariableNode;
 import parser.DataTypes;
+import parser.LogError;
+import sml.casts.ToBoolean;
+import sml.casts.ToFloat;
+import sml.casts.ToInt;
+import sml.casts.ToString;
 
-public class ChangeToStatementNode extends Node {
-
-	private VariableNode toChangeType;
+public class ChangeToStatementNode extends NodeWithParent implements RunnableNode {
+	private Block parent;
+	private VariableNode variable;
 	private DataTypes dataType;
 
-	public ChangeToStatementNode(VariableNode toChangeType, DataTypes dataType, String fileName, int line) {
-		this.toChangeType = toChangeType;
-		this.dataType = dataType;
+	public ChangeToStatementNode(VariableNode toChangeType, DataTypes dataType, String fileName, int line, Block parent) {
 		super.nodeType = NodeTypes.CHANGE_TO_STATEMENT;
+		this.variable = toChangeType;
+		this.dataType = dataType;
 		this.fileName = fileName;
 		this.line = line;
-
+		this.parent = parent;
 	}
 
 	public DataTypes getDataType() {
 		return dataType;
 	}
 
-	public VariableNode getToChangeType() {
-		return toChangeType;
+	public VariableNode getVariable() {
+		return variable;
+	}
+
+	@Override
+	public Object run() {
+		var newVariableType = getDataType();
+		var variable = parent.getVariable(getVariable().getName(), getFileName(), getLine());
+		if (!variable.isDynamic()) {
+			int[] lines = { getLine(), variable.getLine() };
+			String[] fileNames = { getFileName(), variable.getFileName() };
+			new LogError("Can't change type of static variable:\tchange " + variable.getName() + " to "
+					+ newVariableType.toString().toLowerCase(), fileNames, lines);
+		}
+
+		variable.setType(newVariableType);
+		switch (newVariableType) {
+		case INTEGER:
+			variable.setValue(ToInt.toInt(variable.getValue(), getFileName(), getLine()));
+			break;
+		case BOOLEAN:
+			variable.setValue(ToBoolean.toBoolean(variable.getValue(), getFileName(), getLine()));
+			break;
+		case FLOAT:
+			variable.setValue(ToFloat.toFloat(variable.getValue(), getFileName(), getLine()));
+			break;
+		case STRING:
+			variable.setValue(ToString.toString(variable.getValue(), getFileName(), getLine()));
+			break;
+		default:
+			break;
+		}
+		return null;
+	}
+
+	@Override
+	public void setParent(Block parent) {
+		this.parent = parent;
+	}
+
+	@Override
+	public NodeWithParent copy() {
+
+		return null;
 	}
 
 }
