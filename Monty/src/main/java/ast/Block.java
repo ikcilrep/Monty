@@ -307,9 +307,31 @@ public class Block extends NodeWithParent implements Cloneable, RunnableNode {
 										return result;
 								}
 							break;
-
 						}
 					}
+				} else if (toIter instanceof String) {
+					var charArray = ((String) toIter).toCharArray();
+					for (char x : charArray) {
+						if (isNotNameUnderscore) {
+							VariableDeclarationNode variable = null;
+							if (childCastedToForStatement.hasVariable(name))
+								variable = childCastedToForStatement.getVariable(name,
+										childCastedToForStatement.getFileName(), childCastedToForStatement.getLine());
+							else {
+								variable = new VariableDeclarationNode(name, DataTypes.ANY);
+								childCastedToForStatement.addVariable(variable);
+							}
+							variable.setValue(x + "");
+						}
+						result = childCastedToForStatement.run();
+						if (result instanceof BreakType)
+							break;
+						if (result instanceof ContinueType)
+							continue;
+						if (result != null)
+							return result;
+					}
+					break;
 				}
 				new LogError("Iterable object have to has nested struct Iterator with next and hasNext methods",
 						childCastedToForStatement.fileName, childCastedToForStatement.line);
