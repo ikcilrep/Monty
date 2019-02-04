@@ -174,7 +174,7 @@ public class StructDeclarationNode extends Block implements Cloneable {
 				new LogError("Function equals mustn't have more or less than one parameter", function.getFileName(),
 						function.getLine());
 			if (!function.getParameters().get(0).getType().equals(DataTypes.ANY))
-				new LogError("Function equals must have parameter with \"any\" data type", function.getFileName(),
+				new LogError("Function equals have to has parameter with \"any\" data type", function.getFileName(),
 						function.getLine());
 			var arguments = new ArrayList<OperationNode>();
 			arguments.add(new OperationNode(new ConstantNode(other, DataTypes.ANY), new Block(null)));

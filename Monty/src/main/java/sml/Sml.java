@@ -45,6 +45,7 @@ import sml.data.string.ToUpperCase;
 import sml.io.Input;
 import sml.io.Print;
 import sml.io.Println;
+import sml.math.Pow;
 import sml.system.Argv;
 import sml.system.Exit;
 import sml.threading.Sleep;
@@ -68,6 +69,7 @@ public class Sml extends Library {
 		children.put("data", new HashMap<>());
 		children.put("threading", new HashMap<>());
 		children.put("time", new HashMap<>());
+		children.put("math", new HashMap<>());
 		var casts = (HashMap<String, Object>) children.get("casts");
 
 		casts.put("toBoolean", new ToBoolean());
@@ -117,6 +119,9 @@ public class Sml extends Library {
 		var time = (HashMap<String, Object>) children.get("time");
 		time.put("unixTime", new UnixTime());
 		time.put("unixTimeMillis", new UnixTimeMillis());
+		
+		var math = (HashMap<String, Object>) children.get("math");
+		math.put("pow", new Pow());
 
 	}
 

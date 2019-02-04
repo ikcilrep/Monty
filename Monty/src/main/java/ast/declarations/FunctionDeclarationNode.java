@@ -24,6 +24,7 @@ import ast.NodeTypes;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
+import sml.casts.ToFloat;
 
 public abstract class FunctionDeclarationNode extends DeclarationNode implements Cloneable {
 	Block body;
@@ -70,6 +71,10 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 			var argument = arguments.get(i);
 			var value = argument.run();
 			var argumentDataType = DataTypes.getDataType(value);
+			if (dataType.equals(DataTypes.FLOAT) && argumentDataType.equals(DataTypes.INTEGER)) {
+				value = ToFloat.toFloat(value, callFileName, callLine);
+				argumentDataType = DataTypes.FLOAT;
+			}
 			if (!dataType.equals(DataTypes.ANY))
 				if (!argumentDataType.equals(dataType))
 					new LogError("Wrong data type for" + i + "parameter with name\n\"" + name + "\" in " + getName()
