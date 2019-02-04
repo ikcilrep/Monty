@@ -46,6 +46,7 @@ import sml.io.Input;
 import sml.io.Print;
 import sml.io.Println;
 import sml.math.Pow;
+import sml.math.Root;
 import sml.system.Argv;
 import sml.system.Exit;
 import sml.threading.Sleep;
@@ -123,6 +124,7 @@ public class Sml extends Library {
 		time.put("unixTimeMillis", new UnixTimeMillis());
 
 		math.put("pow", new Pow());
+		math.put("root", new Root());
 
 	}
 
