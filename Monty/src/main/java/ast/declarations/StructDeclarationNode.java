@@ -21,9 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ast.Block;
-import ast.Node;
 import ast.NodeTypes;
-import ast.NodeWithParent;
 import ast.expressions.ConstantNode;
 import ast.expressions.OperationNode;
 import lexer.Token;
@@ -103,19 +101,7 @@ public class StructDeclarationNode extends Block implements Cloneable {
 			for (Map.Entry<String, FunctionDeclarationNode> entry : functionsSet) {
 				var key = entry.getKey();
 				var value = entry.getValue().copy();
-				var body = value.getBody().copy();
-				body.setParent(copied);
-				value.setBody(body);
-				@SuppressWarnings("unchecked")
-				var children = (ArrayList<Node>) body.getChildren().clone();
-				for (int i = 0; i < children.size(); i++) {
-					if (children.get(i) instanceof NodeWithParent) {
-						var castedChildCopy = ((NodeWithParent) children.get(i)).copy();
-						children.set(i, castedChildCopy);
-						castedChildCopy.setParent(body);
-					}
-				}
-				body.setChildren(children);
+				value.getBody().setParent(copied);
 				functions.put(key, value);
 			}
 			copied.setFunctions(functions);

@@ -140,7 +140,17 @@ public class Block extends NodeWithParent implements Cloneable, RunnableNode {
 
 	public Block copy() {
 		try {
-			return (Block) clone();
+			var body = (Block) clone();
+			var children = getChildren();
+			for (int i = 0; i < children.size(); i++) {
+				if (children.get(i) instanceof NodeWithParent) {
+					var castedChildCopy = ((NodeWithParent) children.get(i)).copy();
+					children.set(i, castedChildCopy);
+					castedChildCopy.setParent(body);
+				}
+			}
+			body.setChildren(children);
+			return body;
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}

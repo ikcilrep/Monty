@@ -44,7 +44,9 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 
 	public FunctionDeclarationNode copy() {
 		try {
-			return (FunctionDeclarationNode) clone();
+			var copied = (FunctionDeclarationNode) clone();
+			copied.setBody(body.copy());
+			return copied;
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
