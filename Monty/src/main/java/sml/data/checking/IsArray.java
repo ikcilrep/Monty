@@ -20,7 +20,6 @@ import java.util.ArrayList;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
-import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.array.Array;
@@ -30,7 +29,7 @@ public class IsArray extends FunctionDeclarationNode {
 	public IsArray() {
 		super("isArray", DataTypes.BOOLEAN);
 		setBody(new Block(null));
-		new VariableDeclarationNode("toCheck", DataTypes.ANY);
+		addParameter("toCheck", DataTypes.ANY);
 	}
 
 	@Override
