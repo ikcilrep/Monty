@@ -48,7 +48,6 @@ public class ToFloat extends FunctionDeclarationNode {
 		return null;
 	}
 
-
 	public ToFloat() {
 		super("toFloat", DataTypes.FLOAT);
 		setBody(new Block(null));

@@ -24,8 +24,8 @@ import sml.data.returning.ContinueType;
 
 public class WhileStatementNode extends ConditionalNode {
 	boolean isDoWhile;
-	public WhileStatementNode(OperationNode condition, String fileName, int line, boolean isDoWhile,
-			Block parent) {
+
+	public WhileStatementNode(OperationNode condition, String fileName, int line, boolean isDoWhile, Block parent) {
 		super(condition, parent);
 		this.condition = condition;
 		this.fileName = fileName;
@@ -36,7 +36,7 @@ public class WhileStatementNode extends ConditionalNode {
 	@Override
 	public Object run() {
 		Object result = null;
-		if (isDoWhile|| runnedCondition()) {
+		if (isDoWhile || runnedCondition()) {
 			do {
 				result = super.run();
 				if (result instanceof BreakType)

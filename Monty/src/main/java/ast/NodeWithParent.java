@@ -18,6 +18,6 @@ package ast;
 
 public abstract class NodeWithParent extends RunnableNode {
 	public abstract void setParent(Block parent);
-	
+
 	public abstract NodeWithParent copy();
 }

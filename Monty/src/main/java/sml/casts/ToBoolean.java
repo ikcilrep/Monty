@@ -48,7 +48,6 @@ public class ToBoolean extends FunctionDeclarationNode {
 		return null;
 	}
 
-
 	public ToBoolean() {
 		super("toBoolean", DataTypes.BOOLEAN);
 		setBody(new Block(null));

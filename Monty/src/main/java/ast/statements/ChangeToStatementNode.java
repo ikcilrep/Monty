@@ -31,7 +31,8 @@ public class ChangeToStatementNode extends NodeWithParent {
 	private VariableNode variable;
 	private DataTypes dataType;
 
-	public ChangeToStatementNode(VariableNode toChangeType, DataTypes dataType, String fileName, int line, Block parent) {
+	public ChangeToStatementNode(VariableNode toChangeType, DataTypes dataType, String fileName, int line,
+			Block parent) {
 		this.variable = toChangeType;
 		this.dataType = dataType;
 		this.fileName = fileName;

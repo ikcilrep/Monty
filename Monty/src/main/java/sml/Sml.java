@@ -119,7 +119,7 @@ public class Sml extends Library {
 		var time = (HashMap<String, Object>) children.get("time");
 		time.put("unixTime", new UnixTime());
 		time.put("unixTimeMillis", new UnixTimeMillis());
-		
+
 		var math = (HashMap<String, Object>) children.get("math");
 		math.put("pow", new Pow());
 

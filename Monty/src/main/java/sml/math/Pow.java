@@ -44,7 +44,7 @@ public class Pow extends FunctionDeclarationNode {
 		if (index > 999999999)
 			new LogError("Index have to be lower than 999999999", callFileName, callLine);
 		if (index < 0)
-			return BigDecimal.ONE.divide(basis.pow(0-index));
+			return BigDecimal.ONE.divide(basis.pow(0 - index));
 		return basis.pow(index);
 	}
 

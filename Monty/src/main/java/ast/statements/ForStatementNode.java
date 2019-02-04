@@ -53,7 +53,7 @@ public class ForStatementNode extends Block {
 		super.setParent(parent);
 		array.setParent(parent);
 	}
-	
+
 	@Override
 	public Object run() {
 		Object result = null;
@@ -63,22 +63,18 @@ public class ForStatementNode extends Block {
 		if (toIter instanceof StructDeclarationNode) {
 			var struct = (StructDeclarationNode) toIter;
 			if (struct.hasFunction("Iterator")) {
-				var iterator = (StructDeclarationNode) struct.getFunction("Iterator").call(new ArrayList<>(),
-						fileName, line);
+				var iterator = (StructDeclarationNode) struct.getFunction("Iterator").call(new ArrayList<>(), fileName,
+						line);
 				if (iterator.hasFunction("hasNext") && iterator.hasFunction("next")) {
 					var hasNext = iterator.getFunction("hasNext");
 					var next = iterator.getFunction("next");
 					if (hasNext.getType().equals(DataTypes.BOOLEAN) && !next.getType().equals(DataTypes.VOID))
-						while ((boolean) hasNext.call(new ArrayList<>(), fileName,
-								line)) {
-							Object e = next.call(new ArrayList<>(), fileName,
-									line);
+						while ((boolean) hasNext.call(new ArrayList<>(), fileName, line)) {
+							Object e = next.call(new ArrayList<>(), fileName, line);
 							if (isNotNameUnderscore) {
 								VariableDeclarationNode variable = null;
 								if (hasVariable(name))
-									variable = getVariable(name,
-											getFileName(),
-											getLine());
+									variable = getVariable(name, getFileName(), getLine());
 								else {
 									variable = new VariableDeclarationNode(name, DataTypes.ANY);
 									addVariable(variable);
@@ -102,8 +98,7 @@ public class ForStatementNode extends Block {
 				if (isNotNameUnderscore) {
 					VariableDeclarationNode variable = null;
 					if (hasVariable(name))
-						variable = getVariable(name,
-								getFileName(), getLine());
+						variable = getVariable(name, getFileName(), getLine());
 					else {
 						variable = new VariableDeclarationNode(name, DataTypes.ANY);
 						addVariable(variable);
@@ -120,8 +115,8 @@ public class ForStatementNode extends Block {
 			}
 			return null;
 		}
-		new LogError("Iterable object have to has nested struct Iterator with next and hasNext methods",
-				fileName, line);
+		new LogError("Iterable object have to has nested struct Iterator with next and hasNext methods", fileName,
+				line);
 		return null;
 	}
 }

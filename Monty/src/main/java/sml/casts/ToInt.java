@@ -48,7 +48,6 @@ public class ToInt extends FunctionDeclarationNode {
 		return null;
 	}
 
-
 	public ToInt() {
 		super("toInt", DataTypes.INTEGER);
 		setBody(new Block(null));
