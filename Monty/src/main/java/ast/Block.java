@@ -21,21 +21,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ast.declarations.FunctionDeclarationNode;
-import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.statements.ChangeToStatementNode;
-import ast.statements.ForStatementNode;
-import ast.statements.ReturnStatementNode;
 import lexer.Token;
-import parser.DataTypes;
 import parser.LogError;
 import sml.casts.ToBoolean;
 import sml.casts.ToFloat;
 import sml.casts.ToInt;
 import sml.casts.ToString;
-import sml.data.returning.BreakType;
-import sml.data.returning.ContinueType;
-import sml.data.returning.Nothing;
 
 public class Block extends NodeWithParent implements Cloneable, RunnableNode {
 
@@ -238,80 +231,18 @@ public class Block extends NodeWithParent implements Cloneable, RunnableNode {
 			case STRUCT_DECLARATION:
 				result = ((RunnableNode) child).run();
 				break;
+			case RETURN_STATEMENT:
+			case BREAK_STATEMENT:
+			case CONTINUE_STATEMENT:
+				return ((RunnableNode) child).run();
 			case DO_WHILE_STATEMENT:
 			case WHILE_STATEMENT:
 			case IF_STATEMENT:
+			case FOR_STATEMENT:
 				result = ((RunnableNode) child).run();
 				if (result != null)
 					return result;
 				break;
-			case FOR_STATEMENT:
-				var childCastedToForStatement = ((ForStatementNode) child);
-				var name = childCastedToForStatement.getVariableName();
-				var isNotNameUnderscore = !name.equals("_");
-				var toIter = childCastedToForStatement.getArray().run();
-				if (toIter instanceof StructDeclarationNode) {
-					var struct = (StructDeclarationNode) toIter;
-					if (struct.hasFunction("Iterator")) {
-						var iterator = (StructDeclarationNode) struct.getFunction("Iterator").call(new ArrayList<>(),
-								childCastedToForStatement.fileName, childCastedToForStatement.line);
-						if (iterator.hasFunction("hasNext") && iterator.hasFunction("next")) {
-							var hasNext = iterator.getFunction("hasNext");
-							var next = iterator.getFunction("next");
-							if (hasNext.getType().equals(DataTypes.BOOLEAN) && !next.getType().equals(DataTypes.VOID))
-								while ((boolean) hasNext.call(new ArrayList<>(), childCastedToForStatement.fileName,
-										childCastedToForStatement.line)) {
-									Object e = next.call(new ArrayList<>(), childCastedToForStatement.fileName,
-											childCastedToForStatement.line);
-									if (isNotNameUnderscore) {
-										VariableDeclarationNode variable = null;
-										if (childCastedToForStatement.hasVariable(name))
-											variable = childCastedToForStatement.getVariable(name,
-													childCastedToForStatement.getFileName(),
-													childCastedToForStatement.getLine());
-										else {
-											variable = new VariableDeclarationNode(name, DataTypes.ANY);
-											childCastedToForStatement.addVariable(variable);
-										}
-										variable.setValue(e);
-									}
-									result = childCastedToForStatement.run();
-									if (result instanceof BreakType)
-										break;
-									if (result instanceof ContinueType)
-										continue;
-									if (result != null)
-										return result;
-								}
-							break;
-						}
-					}
-				} else if (toIter instanceof String) {
-					var charArray = ((String) toIter).toCharArray();
-					for (char x : charArray) {
-						if (isNotNameUnderscore) {
-							VariableDeclarationNode variable = null;
-							if (childCastedToForStatement.hasVariable(name))
-								variable = childCastedToForStatement.getVariable(name,
-										childCastedToForStatement.getFileName(), childCastedToForStatement.getLine());
-							else {
-								variable = new VariableDeclarationNode(name, DataTypes.ANY);
-								childCastedToForStatement.addVariable(variable);
-							}
-							variable.setValue(x + "");
-						}
-						result = childCastedToForStatement.run();
-						if (result instanceof BreakType)
-							break;
-						if (result instanceof ContinueType)
-							continue;
-						if (result != null)
-							return result;
-					}
-					break;
-				}
-				new LogError("Iterable object have to has nested struct Iterator with next and hasNext methods",
-						childCastedToForStatement.fileName, childCastedToForStatement.line);
 			case CHANGE_TO_STATEMENT:
 				var childCastedToChangeToStatement = ((ChangeToStatementNode) child);
 				var newVariableType = childCastedToChangeToStatement.getDataType();
@@ -343,12 +274,6 @@ public class Block extends NodeWithParent implements Cloneable, RunnableNode {
 
 				}
 				break;
-			case BREAK_STATEMENT:
-				return Nothing.breakType;
-			case CONTINUE_STATEMENT:
-				return Nothing.continueType;
-			case RETURN_STATEMENT:
-				return ((ReturnStatementNode) child).getExpression().run();
 			default:
 				break;
 			}
