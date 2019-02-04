@@ -16,11 +16,12 @@ limitations under the License.
 */
 package ast.statements;
 
+import ast.Node;
 import ast.NodeTypes;
 import ast.expressions.VariableNode;
 import parser.DataTypes;
 
-public class ChangeToStatementNode extends StatementNode {
+public class ChangeToStatementNode extends Node {
 
 	private VariableNode toChangeType;
 	private DataTypes dataType;

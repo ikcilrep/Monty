@@ -16,11 +16,12 @@ limitations under the License.
 
 package ast.statements;
 
+import ast.Node;
 import ast.NodeTypes;
 import ast.RunnableNode;
 import sml.data.returning.Nothing;
 
-public class ContinueStatementNode extends StatementNode implements RunnableNode {
+public class ContinueStatementNode extends Node implements RunnableNode {
 
 	public ContinueStatementNode(String fileName, int line) {
 		this.nodeType = NodeTypes.CONTINUE_STATEMENT;
