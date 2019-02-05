@@ -26,7 +26,7 @@ import sml.casts.ToFloat;
 import sml.casts.ToInt;
 import sml.casts.ToString;
 
-public class ChangeToStatementNode extends NodeWithParent {
+public final class ChangeToStatementNode extends NodeWithParent {
 	private Block parent;
 	private VariableNode variable;
 	private DataTypes dataType;

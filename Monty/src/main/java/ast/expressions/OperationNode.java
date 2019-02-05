@@ -24,7 +24,7 @@ import parser.DataTypes;
 import parser.LogError;
 import sml.casts.ToFloat;
 
-public class OperationNode extends NodeWithParent implements Cloneable {
+public final class OperationNode extends NodeWithParent implements Cloneable {
 
 	private OperationNode left = null;
 	private Object operand;
@@ -37,7 +37,7 @@ public class OperationNode extends NodeWithParent implements Cloneable {
 		this.parent = parent;
 	}
 
-	private Object calculate(Object leftValue, Object rightValue, Object operator, DataTypes type) {
+	private final Object calculate(Object leftValue, Object rightValue, Object operator, DataTypes type) {
 		// Calculates the result of math operation.
 
 		switch (operator.toString()) {
@@ -119,22 +119,22 @@ public class OperationNode extends NodeWithParent implements Cloneable {
 		return null;
 	}
 
-	private DataTypes getDataType(Object expression) {
+	private final DataTypes getDataType(Object expression) {
 		// Returns data type of expression.
 		if (expression instanceof VariableDeclarationNode)
 			return ((VariableDeclarationNode) expression).getType();
 		return DataTypes.getDataType(expression);
 	}
 
-	public OperationNode getLeftOperand() {
+	public final OperationNode getLeftOperand() {
 		return left;
 	}
 
-	private Object getLiteral(Object expression) {
+	private final Object getLiteral(Object expression) {
 		return getLiteral(expression, parent);
 	}
 
-	private Object getLiteral(Object expression, Block parent) {
+	private final Object getLiteral(Object expression, Block parent) {
 		// Returns value of expression.
 		if (expression instanceof VariableNode) {
 			var variableCall = (VariableNode) expression;
@@ -173,20 +173,20 @@ public class OperationNode extends NodeWithParent implements Cloneable {
 			return expression;
 	}
 
-	public Object getOperand() {
+	public final Object getOperand() {
 		return operand;
 	}
 
-	public Block getParent() {
+	public final Block getParent() {
 		return parent;
 	}
 
-	public OperationNode getRightOperand() {
+	public final OperationNode getRightOperand() {
 		return right;
 	}
 
 	@Override
-	public Object run() {
+	public final Object run() {
 		// Returns calculated value.
 		var operand = getOperand();
 		if (!(operand instanceof String)) {
@@ -200,12 +200,12 @@ public class OperationNode extends NodeWithParent implements Cloneable {
 		return solve();
 	}
 
-	public void setLeftOperand(OperationNode left) {
+	public final void setLeftOperand(OperationNode left) {
 		this.left = left;
 	}
 
 	@Override
-	public void setParent(Block parent) {
+	public final void setParent(Block parent) {
 		this.parent = parent;
 		if (left != null)
 			left.setParent(parent);
@@ -226,11 +226,11 @@ public class OperationNode extends NodeWithParent implements Cloneable {
 		}
 	}
 
-	public void setRightOperand(OperationNode right) {
+	public final void setRightOperand(OperationNode right) {
 		this.right = right;
 	}
 
-	private Object solve() {
+	private final Object solve() {
 		if (!(getOperand() instanceof String))
 			return getOperand();
 		Object a = getLeftOperand().solve();
@@ -270,8 +270,9 @@ public class OperationNode extends NodeWithParent implements Cloneable {
 		return calculate(leftValue, rightValue, getOperand(), leftType);
 
 	}
-
-	public OperationNode copy() {
+	
+	@Override
+	public final OperationNode copy() {
 		try {
 			return (OperationNode) clone();
 		} catch (CloneNotSupportedException e) {

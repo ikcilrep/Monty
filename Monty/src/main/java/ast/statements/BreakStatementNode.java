@@ -19,7 +19,7 @@ package ast.statements;
 import ast.RunnableNode;
 import sml.data.returning.Nothing;
 
-public class BreakStatementNode extends RunnableNode {
+public final class BreakStatementNode extends RunnableNode {
 
 	public BreakStatementNode(String fileName, int line) {
 		this.fileName = fileName;

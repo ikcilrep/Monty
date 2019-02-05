@@ -19,7 +19,7 @@ package ast.statements;
 import ast.RunnableNode;
 import sml.data.returning.Nothing;
 
-public class ContinueStatementNode extends RunnableNode {
+public final class ContinueStatementNode extends RunnableNode {
 
 	public ContinueStatementNode(String fileName, int line) {
 		this.fileName = fileName;

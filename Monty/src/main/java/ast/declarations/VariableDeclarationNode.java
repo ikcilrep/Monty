@@ -18,7 +18,7 @@ package ast.declarations;
 
 import parser.DataTypes;
 
-public class VariableDeclarationNode extends DeclarationNode implements Cloneable {
+public final class VariableDeclarationNode extends DeclarationNode implements Cloneable {
 
 	private boolean isDynamic = false;
 
@@ -28,7 +28,7 @@ public class VariableDeclarationNode extends DeclarationNode implements Cloneabl
 		super(name, type);
 	}
 
-	public VariableDeclarationNode copy() {
+	public final VariableDeclarationNode copy() {
 		try {
 			return (VariableDeclarationNode) clone();
 		} catch (CloneNotSupportedException e) {
@@ -37,19 +37,19 @@ public class VariableDeclarationNode extends DeclarationNode implements Cloneabl
 		return null;
 	}
 
-	public Object getValue() {
+	public final Object getValue() {
 		return value;
 	}
 
-	public boolean isDynamic() {
+	public final boolean isDynamic() {
 		return isDynamic;
 	}
 
-	public void setDynamic(boolean isDynamic) {
+	public final void setDynamic(boolean isDynamic) {
 		this.isDynamic = isDynamic;
 	}
 
-	public void setValue(Object value) {
+	public final void setValue(Object value) {
 		this.value = value;
 	}
 

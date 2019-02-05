@@ -25,7 +25,7 @@ import sml.data.returning.VoidType;
 
 public enum DataTypes {
 	BOOLEAN, INTEGER, FLOAT, STRING, VOID, ANY;
-	public static DataTypes getDataType(Object value) {
+	public final static DataTypes getDataType(Object value) {
 		if (value instanceof VoidType)
 			return DataTypes.VOID;
 		if (value instanceof BigInteger)
@@ -42,7 +42,7 @@ public enum DataTypes {
 
 	}
 
-	public static Object getNeutralValue(DataTypes dataType) {
+	public final static Object getNeutralValue(DataTypes dataType) {
 		switch (dataType) {
 		case INTEGER:
 			return BigInteger.ZERO;

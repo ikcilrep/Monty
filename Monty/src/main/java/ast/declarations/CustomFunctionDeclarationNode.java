@@ -26,7 +26,7 @@ import parser.DataTypes;
 import parser.LogError;
 import sml.data.returning.BreakType;
 
-public class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
+public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
 
 	public CustomFunctionDeclarationNode(String name, DataTypes type) {
 		super(name, type);
@@ -34,7 +34,7 @@ public class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public final Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		var variables = new HashMap<String, VariableDeclarationNode>();
 		var variablesSet = body.getVariables().entrySet();
 		for (Map.Entry<String, VariableDeclarationNode> entry : variablesSet) {

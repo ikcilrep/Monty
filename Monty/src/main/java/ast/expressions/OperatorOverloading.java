@@ -23,9 +23,9 @@ import ast.declarations.VariableDeclarationNode;
 import parser.DataTypes;
 import parser.LogError;
 
-public class OperatorOverloading {
+public final class OperatorOverloading {
 
-	public static Object additionOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
+	public final static Object additionOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
 		switch (type) {
 		case INTEGER:
@@ -48,7 +48,7 @@ public class OperatorOverloading {
 		}
 	}
 
-	public static Object andOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
+	public final static Object andOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
 		switch (type) {
 		case INTEGER:
@@ -70,7 +70,7 @@ public class OperatorOverloading {
 		}
 	}
 
-	public static Object assignmentAdditionOperator(Object leftValue, Object rightValue, Object operator,
+	public final static Object assignmentAdditionOperator(Object leftValue, Object rightValue, Object operator,
 			DataTypes type, String fileName, int line) {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
@@ -93,7 +93,7 @@ public class OperatorOverloading {
 		}
 	}
 
-	public static Object assignmentAndOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
+	public final static Object assignmentAndOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
@@ -113,7 +113,7 @@ public class OperatorOverloading {
 		}
 	}
 
-	public static Object assignmentDivisionOperator(Object leftValue, Object rightValue, Object operator,
+	public final static Object assignmentDivisionOperator(Object leftValue, Object rightValue, Object operator,
 			DataTypes type, String fileName, int line) {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
@@ -133,7 +133,7 @@ public class OperatorOverloading {
 		}
 	}
 
-	public static Object assignmentMultiplicationOperator(Object leftValue, Object rightValue, Object operator,
+	public final static Object assignmentMultiplicationOperator(Object leftValue, Object rightValue, Object operator,
 			DataTypes type, String fileName, int line) {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
@@ -153,7 +153,7 @@ public class OperatorOverloading {
 		}
 	}
 
-	public static Object assignmentOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
+	public final static Object assignmentOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
@@ -172,7 +172,7 @@ public class OperatorOverloading {
 		}
 	}
 
-	public static Object assignmentOrOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
+	public final static Object assignmentOrOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
@@ -192,7 +192,7 @@ public class OperatorOverloading {
 		}
 	}
 
-	public static Object assignmentShiftLeftOperator(Object leftValue, Object rightValue, Object operator,
+	public final static Object assignmentShiftLeftOperator(Object leftValue, Object rightValue, Object operator,
 			DataTypes type, String fileName, int line) {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
@@ -212,7 +212,7 @@ public class OperatorOverloading {
 		}
 	}
 
-	public static Object assignmentShiftRightOperator(Object leftValue, Object rightValue, Object operator,
+	public final static Object assignmentShiftRightOperator(Object leftValue, Object rightValue, Object operator,
 			DataTypes type, String fileName, int line) {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
@@ -232,7 +232,7 @@ public class OperatorOverloading {
 		}
 	}
 
-	public static Object assignmentSubtractionOperator(Object leftValue, Object rightValue, Object operator,
+	public final static Object assignmentSubtractionOperator(Object leftValue, Object rightValue, Object operator,
 			DataTypes type, String fileName, int line) {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
@@ -252,7 +252,7 @@ public class OperatorOverloading {
 		}
 	}
 
-	public static Object assignmentXorOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
+	public final static Object assignmentXorOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
@@ -272,7 +272,7 @@ public class OperatorOverloading {
 		}
 	}
 
-	public static Object divisionOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
+	public final static Object divisionOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
 
 		switch (type) {
@@ -299,7 +299,7 @@ public class OperatorOverloading {
 		}
 	}
 
-	public static Object equalsOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
+	public final static Object equalsOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
 		switch (type) {
 		case INTEGER:
@@ -316,7 +316,7 @@ public class OperatorOverloading {
 		}
 	}
 
-	public static Object greaterEqualsOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
+	public final static Object greaterEqualsOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
 		switch (type) {
 		case INTEGER:
@@ -340,7 +340,7 @@ public class OperatorOverloading {
 		}
 	}
 
-	public static Object greaterOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
+	public final static Object greaterOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
 		switch (type) {
 		case INTEGER:
@@ -362,7 +362,7 @@ public class OperatorOverloading {
 		}
 	}
 
-	public static Object lowerEqualsOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
+	public final static Object lowerEqualsOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
 		switch (type) {
 		case INTEGER:
@@ -386,7 +386,7 @@ public class OperatorOverloading {
 		}
 	}
 
-	public static Object lowerOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
+	public final static Object lowerOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
 		switch (type) {
 		case INTEGER:
@@ -408,7 +408,7 @@ public class OperatorOverloading {
 		}
 	}
 
-	public static Object moduloOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
+	public final static Object moduloOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
 		switch (type) {
 		case INTEGER:
@@ -430,7 +430,7 @@ public class OperatorOverloading {
 		}
 	}
 
-	public static Object multiplicationOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
+	public final static Object multiplicationOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
 		switch (type) {
 		case INTEGER:
@@ -452,7 +452,7 @@ public class OperatorOverloading {
 		}
 	}
 
-	public static Object negationOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
+	public final static Object negationOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
 		switch (type) {
 		case INTEGER:
@@ -474,7 +474,7 @@ public class OperatorOverloading {
 		}
 	}
 
-	public static Object notEqualsOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
+	public final static Object notEqualsOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
 		switch (type) {
 		case INTEGER:
@@ -491,7 +491,7 @@ public class OperatorOverloading {
 		}
 	}
 
-	public static Object orOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
+	public final static Object orOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
 		switch (type) {
 		case INTEGER:
@@ -521,7 +521,7 @@ public class OperatorOverloading {
 		return result.toString();
 	}
 
-	public static Object shiftLeftOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
+	public final static Object shiftLeftOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
 		switch (type) {
 		case INTEGER:
@@ -544,7 +544,7 @@ public class OperatorOverloading {
 		}
 	}
 
-	public static Object shiftRightOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
+	public final static Object shiftRightOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
 		switch (type) {
 		case INTEGER:
@@ -565,7 +565,7 @@ public class OperatorOverloading {
 		}
 	}
 
-	public static Object subtractionOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
+	public final static Object subtractionOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
 		switch (type) {
 		case INTEGER:
@@ -587,7 +587,7 @@ public class OperatorOverloading {
 		}
 	}
 
-	public static Object xorOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
+	public final static Object xorOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
 		switch (type) {
 		case INTEGER:

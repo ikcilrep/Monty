@@ -15,6 +15,6 @@ limitations under the License.
 */
 package parser.parsing;
 
-public class IntegerHolder {
+public final class IntegerHolder {
 	int i;
 }

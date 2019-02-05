@@ -40,15 +40,15 @@ public class ExpressionParser {
 	 * Parses list of tokens to abstract syntax tree.
 	 */
 
-	private static boolean isFunction(OptimizedTokensArray array, int i) {
+	private final static boolean isFunction(OptimizedTokensArray array, int i) {
 		return i + 1 < array.length() && array.get(i + 1).getType().equals(TokenTypes.BRACKET);
 	}
 
-	public static OperationNode parse(Block parent, OptimizedTokensArray array) {
+	public final static OperationNode parse(Block parent, OptimizedTokensArray array) {
 		return parse(parent, array, new Stack<>(), new IntegerHolder());
 	}
 
-	public static OperationNode parse(Block parent, OptimizedTokensArray array, Stack<OperationNode> stack,
+	public final static OperationNode parse(Block parent, OptimizedTokensArray array, Stack<OperationNode> stack,
 			IntegerHolder i) {
 		if (i.i < array.length()) {
 			var token = array.get(i.i);
@@ -84,7 +84,7 @@ public class ExpressionParser {
 		return stack.pop();
 	}
 
-	private static OperationNode parseAfterDot(Block parent, StructContainer structContainer,
+	private final static OperationNode parseAfterDot(Block parent, StructContainer structContainer,
 			OptimizedTokensArray array, IntegerHolder i) {
 		if (i.i + 1 < array.length() && array.get(i.i + 1).getType().equals(TokenTypes.DOT))
 			if ((i.i += 2) < array.length() && array.get(i.i).getType().equals(TokenTypes.IDENTIFIER)) {
@@ -96,7 +96,7 @@ public class ExpressionParser {
 		return null;
 	}
 
-	private static OperationNode parseFunction(Block parent, OptimizedTokensArray array, IntegerHolder i) {
+	private final static OperationNode parseFunction(Block parent, OptimizedTokensArray array, IntegerHolder i) {
 		var token = array.get(i.i);
 		int j = 0;
 		int openBracketCounter = 1;
@@ -145,13 +145,13 @@ public class ExpressionParser {
 		return node;
 	}
 
-	private static OperationNode parseIdentifier(Block parent, OptimizedTokensArray array, IntegerHolder i) {
+	private final static OperationNode parseIdentifier(Block parent, OptimizedTokensArray array, IntegerHolder i) {
 		if (isFunction(array, i.i))
 			return parseFunction(parent, array, i);
 		return parseVariable(parent, array, i);
 	}
 
-	private static OperationNode parseVariable(Block parent, OptimizedTokensArray array, IntegerHolder i) {
+	private final static OperationNode parseVariable(Block parent, OptimizedTokensArray array, IntegerHolder i) {
 		var token = array.get(i.i);
 		var variable = new VariableNode(token.getText());
 		parseAfterDot(parent, variable, array, i);
@@ -161,14 +161,14 @@ public class ExpressionParser {
 		return node;
 	}
 
-	private static OperationNode recParseIdentifier(Block parent, OptimizedTokensArray array,
+	private final static OperationNode recParseIdentifier(Block parent, OptimizedTokensArray array,
 			Stack<OperationNode> stack, IntegerHolder i) {
 		stack.push(parseIdentifier(parent, array, i));
 		i.i++;
 		return parse(parent, array, stack, i);
 	}
 
-	private static ArrayList<OptimizedTokensArray> splitArguments(OptimizedTokensArray array) {
+	private final static ArrayList<OptimizedTokensArray> splitArguments(OptimizedTokensArray array) {
 		// Splits function arguments into two dimensional array.
 		ArrayList<OptimizedTokensArray> newArray = new ArrayList<>();
 		newArray.add(new OptimizedTokensArray());
@@ -191,7 +191,7 @@ public class ExpressionParser {
 		return newArray;
 	}
 
-	private static Object toDataType(String literal, DataTypes dataType) {
+	private final static Object toDataType(String literal, DataTypes dataType) {
 		// Returns values with proper data type.
 		switch (dataType) {
 		case INTEGER:

@@ -28,10 +28,10 @@ import monty.Library;
 import parser.Identificator;
 import parser.LogError;
 
-public class Parser {
-	public static HashMap<String, Library> libraries = new HashMap<>();
+public final class Parser {
+	public final static HashMap<String, Library> libraries = new HashMap<>();
 
-	public static Block parse(OptimizedTokensArray tokens) {
+	public final static Block parse(OptimizedTokensArray tokens) {
 		var tokensBeforeSemicolon = new OptimizedTokensArray();
 		var block = new Block(null);
 		for (Token token : tokens) {

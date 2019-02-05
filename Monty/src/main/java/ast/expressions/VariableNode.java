@@ -18,7 +18,7 @@ package ast.expressions;
 
 import ast.Node;
 
-public class VariableNode extends Node implements StructContainer {
+public final class VariableNode extends Node implements StructContainer {
 
 	private String name;
 	private OperationNode next = null;

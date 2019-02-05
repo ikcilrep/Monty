@@ -18,7 +18,7 @@ package lexer;
 
 import java.util.Iterator;
 
-public class OptimizedTokensArray implements Iterable<Token> {
+public final class OptimizedTokensArray implements Iterable<Token> {
 	protected Token[] array;
 	public int top;
 
@@ -35,38 +35,38 @@ public class OptimizedTokensArray implements Iterable<Token> {
 		return this;
 	}
 
-	public void clear() {
+	public final void clear() {
 		top = -1;
 		array = new Token[64];
 	}
 
-	public Token get(int index) {
+	public final Token get(int index) {
 		return array[index];
 	}
 
 	@Override
-	public Iterator<Token> iterator() {
+	public final Iterator<Token> iterator() {
 		return new Iterator<Token>() {
 			int counter = 0;
 
 			@Override
-			public boolean hasNext() {
+			public final boolean hasNext() {
 				return counter <= top;
 
 			}
 
 			@Override
-			public Token next() {
+			public final Token next() {
 				return array[counter++];
 			}
 		};
 	}
 
-	public int length() {
+	public final int length() {
 		return top + 1;
 	}
 
-	public void setLength(int length) {
+	public final void setLength(int length) {
 		var newArray = new Token[length];
 		for (int i = 0; i < array.length && i < length; i++) {
 			newArray[i] = array[i];
@@ -74,14 +74,14 @@ public class OptimizedTokensArray implements Iterable<Token> {
 		array = newArray;
 	}
 
-	public OptimizedTokensArray subarray(int begin, int end) {
+	public final OptimizedTokensArray subarray(int begin, int end) {
 		OptimizedTokensArray newArray = new OptimizedTokensArray();
 		for (int i = begin; i < end; i++)
 			newArray.append(get(i));
 		return newArray;
 	}
 
-	public void trimToSize() {
+	public final void trimToSize() {
 		setLength(top + 1);
 	}
 }

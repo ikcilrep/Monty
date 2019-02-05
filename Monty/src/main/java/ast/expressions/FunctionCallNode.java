@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 import ast.Node;
 
-public class FunctionCallNode extends Node implements StructContainer {
+public final class FunctionCallNode extends Node implements StructContainer {
 
 	private String name;
 	private ArrayList<OperationNode> arguments = new ArrayList<>();
@@ -30,25 +30,25 @@ public class FunctionCallNode extends Node implements StructContainer {
 		this.name = name;
 	}
 
-	public void addArgument(OperationNode argument) {
+	public final void addArgument(OperationNode argument) {
 		arguments.add(argument);
 	}
 
-	public ArrayList<OperationNode> getArguments() {
+	public final ArrayList<OperationNode> getArguments() {
 		return arguments;
 	}
 
-	public String getName() {
+	public final String getName() {
 		return name;
 	}
 
 	@Override
-	public OperationNode getNext() {
+	public final OperationNode getNext() {
 		return next;
 	}
 
 	@Override
-	public void setNext(OperationNode variableOrFunction) {
+	public final void setNext(OperationNode variableOrFunction) {
 		next = variableOrFunction;
 	}
 

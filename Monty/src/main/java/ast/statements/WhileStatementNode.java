@@ -22,7 +22,7 @@ import ast.expressions.OperationNode;
 import sml.data.returning.BreakType;
 import sml.data.returning.ContinueType;
 
-public class WhileStatementNode extends ConditionalNode {
+public final class WhileStatementNode extends ConditionalNode {
 	boolean isDoWhile;
 
 	public WhileStatementNode(OperationNode condition, String fileName, int line, boolean isDoWhile, Block parent) {

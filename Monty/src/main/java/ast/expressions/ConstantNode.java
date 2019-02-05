@@ -19,7 +19,7 @@ package ast.expressions;
 import ast.Node;
 import parser.DataTypes;
 
-public class ConstantNode extends Node {
+public final class ConstantNode extends Node {
 	private Object value;
 	private DataTypes type;
 
@@ -28,11 +28,11 @@ public class ConstantNode extends Node {
 		this.type = type;
 	}
 
-	public DataTypes getType() {
+	public final DataTypes getType() {
 		return type;
 	}
 
-	public Object getValue() {
+	public final Object getValue() {
 		return value;
 	}
 
