@@ -50,10 +50,11 @@ public final class Stack extends StructDeclarationNode {
 	@Override
 	public boolean equals(Object other) {
 		Stack otherStack = null;
-		if (otherStack instanceof Stack)
+		if (other instanceof Stack)
 			otherStack = (Stack) other;
-		else
+		else {
 			return false;
+		}
 		if (otherStack.top != top)
 			return false;
 		for (int i = top; i >= 0; i--)

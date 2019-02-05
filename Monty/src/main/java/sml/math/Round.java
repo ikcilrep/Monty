@@ -29,7 +29,7 @@ import parser.DataTypes;
 public class Round extends FunctionDeclarationNode {
 
 	public Round() {
-		super("round", DataTypes.FLOAT);
+		super("round", DataTypes.FLOAT	);
 		setBody(new Block(null));
 		addParameter("f", DataTypes.FLOAT);
 	}
