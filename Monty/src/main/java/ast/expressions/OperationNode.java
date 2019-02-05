@@ -260,8 +260,8 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 		} else if (leftType.equals(DataTypes.STRING) && !leftType.equals(rightType)) {
 			rightType = DataTypes.STRING;
 			rightValue = rightValue.toString();
-		}
-
+		} else if (!isNotAssignment && leftType.equals(DataTypes.ANY) && !leftType.equals(rightType))
+			rightType = DataTypes.ANY;
 		if (!leftType.equals(rightType))
 			new LogError("Type mismatch:\t" + leftType + " and " + rightType, getFileName(), getLine());
 
