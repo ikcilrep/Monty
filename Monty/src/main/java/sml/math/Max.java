@@ -35,6 +35,7 @@ public final class Max extends FunctionDeclarationNode {
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
 		return ((BigDecimal) body.getVariable("a").getValue()).max((BigDecimal) body.getVariable("b").getValue());
 	}
