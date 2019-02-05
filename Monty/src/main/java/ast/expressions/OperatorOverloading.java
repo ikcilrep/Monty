@@ -93,8 +93,8 @@ public final class OperatorOverloading {
 		}
 	}
 
-	public final static Object assignmentAndOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
-			String fileName, int line) {
+	public final static Object assignmentAndOperator(Object leftValue, Object rightValue, Object operator,
+			DataTypes type, String fileName, int line) {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
 		case INTEGER:
@@ -172,8 +172,8 @@ public final class OperatorOverloading {
 		}
 	}
 
-	public final static Object assignmentOrOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
-			String fileName, int line) {
+	public final static Object assignmentOrOperator(Object leftValue, Object rightValue, Object operator,
+			DataTypes type, String fileName, int line) {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
 		case INTEGER:
@@ -252,8 +252,8 @@ public final class OperatorOverloading {
 		}
 	}
 
-	public final static Object assignmentXorOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
-			String fileName, int line) {
+	public final static Object assignmentXorOperator(Object leftValue, Object rightValue, Object operator,
+			DataTypes type, String fileName, int line) {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
 		case INTEGER:
@@ -316,8 +316,8 @@ public final class OperatorOverloading {
 		}
 	}
 
-	public final static Object greaterEqualsOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
-			String fileName, int line) {
+	public final static Object greaterEqualsOperator(Object leftValue, Object rightValue, Object operator,
+			DataTypes type, String fileName, int line) {
 		switch (type) {
 		case INTEGER:
 			return ((BigInteger) leftValue).compareTo((BigInteger) rightValue) >= 0;
@@ -436,8 +436,8 @@ public final class OperatorOverloading {
 		}
 	}
 
-	public final static Object multiplicationOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
-			String fileName, int line) {
+	public final static Object multiplicationOperator(Object leftValue, Object rightValue, Object operator,
+			DataTypes type, String fileName, int line) {
 		switch (type) {
 		case INTEGER:
 			return ((BigInteger) leftValue).multiply(((BigInteger) rightValue));

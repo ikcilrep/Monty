@@ -20,7 +20,7 @@ import ast.Block;
 import ast.ConditionalNode;
 import ast.expressions.OperationNode;
 
-public final  class IfStatementNode extends ConditionalNode {
+public final class IfStatementNode extends ConditionalNode {
 
 	private Block elseBody;
 

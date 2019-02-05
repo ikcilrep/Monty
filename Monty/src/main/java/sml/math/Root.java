@@ -33,30 +33,32 @@ public final class Root extends FunctionDeclarationNode {
 		setBody(new Block(null));
 		addParameter("degree", DataTypes.INTEGER);
 		addParameter("n", DataTypes.FLOAT);
-		addParameter("precision", DataTypes.INTEGER);
+		addParameter("scale", DataTypes.INTEGER);
 	}
 
 	@Override
 	public BigDecimal call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var precision = ((BigInteger) body.getVariable("precision").getValue()).intValue();
-		var mathContext = new MathContext(precision, RoundingMode.DOWN);
+		var scale = ((BigInteger) body.getVariable("scale").getValue()).intValue();
+		if (scale <= 0)
+			new LogError("Scale have to be greater or equals one", callFileName, callLine);
+		var mathContext = new MathContext(scale, RoundingMode.DOWN);
 		var degree = ((BigInteger) body.getVariable("degree").getValue()).intValue();
-		var bigDecimalDegree =new BigDecimal(degree, mathContext);
+		var bigDecimalDegree = new BigDecimal(degree, mathContext);
 		var n = ((BigDecimal) body.getVariable("n").getValue());
-		var p = BigDecimal.valueOf(.1)
-				.movePointLeft(precision);
-	    if (n.compareTo(BigDecimal.ZERO) < 0)
-	        new LogError("This root can only be calculated for numbers greater than zero", callFileName, callLine);
-	    if (n.equals(BigDecimal.ZERO))
-	    	return BigDecimal.ZERO;
-	    BigDecimal previous = n;
-	    BigDecimal x = n.divide(bigDecimalDegree);
-	    while (x.subtract(previous).abs().compareTo(p) > 0) {
-	    	previous = x;
-	    	x = BigDecimal.valueOf(degree - 1.0).multiply(x).add(n.divide(x.pow(degree - 1), mathContext)).divide(bigDecimalDegree, mathContext);
-	    }
+		var p = BigDecimal.valueOf(scale).movePointLeft(scale);
+		if (n.compareTo(BigDecimal.ZERO) < 0)
+			new LogError("This root can only be calculated for numbers greater than zero", callFileName, callLine);
+		if (n.equals(BigDecimal.ZERO))
+			return BigDecimal.ZERO;
+		BigDecimal previous = n;
+		BigDecimal x = n.divide(bigDecimalDegree, mathContext);
+		while (x.subtract(previous).abs().compareTo(p) > 0) {
+			previous = x;
+			x = BigDecimal.valueOf(degree - 1.0).multiply(x).add(n.divide(x.pow(degree - 1), mathContext))
+					.divide(bigDecimalDegree, mathContext);
+		}
 		return x;
 	}
 

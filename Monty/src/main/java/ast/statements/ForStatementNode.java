@@ -27,7 +27,7 @@ import parser.LogError;
 import sml.data.returning.BreakType;
 import sml.data.returning.ContinueType;
 
-public final  class ForStatementNode extends Block {
+public final class ForStatementNode extends Block {
 
 	private OperationNode array;
 	private String variableName;

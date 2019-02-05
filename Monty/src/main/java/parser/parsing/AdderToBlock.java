@@ -152,7 +152,8 @@ public abstract class AdderToBlock {
 		else {
 			var operation = new OperationNode("=", block);
 			operation.setLeftOperand(new OperationNode(new VariableNode(name), block));
-			operation.setRightOperand(new OperationNode(new ConstantNode(DataTypes.getNeutralValue(dataType), dataType), block));
+			operation.setRightOperand(
+					new OperationNode(new ConstantNode(DataTypes.getNeutralValue(dataType), dataType), block));
 			block.addChild(operation);
 		}
 

@@ -75,9 +75,8 @@ public final class Sml extends Library {
 		var checking = new HashMap<String, Object>();
 		var string = new HashMap<String, Object>();
 
-		
 		sml.put("casts", casts);
-		sml.put("math",math);
+		sml.put("math", math);
 		sml.put("io", io);
 		sml.put("system", system);
 		sml.put("data", data);
@@ -131,7 +130,6 @@ public final class Sml extends Library {
 		math.put("root", new Root());
 		math.put("min", new Min());
 		math.put("max", new Max());
-
 
 	}
 

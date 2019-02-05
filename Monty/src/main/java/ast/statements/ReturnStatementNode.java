@@ -20,7 +20,7 @@ import ast.Block;
 import ast.NodeWithParent;
 import ast.expressions.OperationNode;
 
-public final  class ReturnStatementNode extends NodeWithParent implements Cloneable {
+public final class ReturnStatementNode extends NodeWithParent implements Cloneable {
 
 	private OperationNode expression;
 

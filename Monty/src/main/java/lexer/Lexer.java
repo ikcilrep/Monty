@@ -23,18 +23,19 @@ import org.apache.commons.text.StringEscapeUtils;
 import parser.LogError;
 
 public final class Lexer {
-	private final static Set<Character> operatorsParts = Set.of('+', '-', '*', '/', '!', '<', '>', '=', '|', '&', '%', '^');
-	private final static Set<String> operators = Set.of("!", "+", "-", "*", "/", "<", ">", "&", "|", "^", "=", "<<", ">>",
-			"!=", "+=", "-=", "*=", "/=", "<=", ">=", "&=", "|=", "^=", "==", "<<=", ">>=", "%", "%=");
+	private final static Set<Character> operatorsParts = Set.of('+', '-', '*', '/', '!', '<', '>', '=', '|', '&', '%',
+			'^');
+	private final static Set<String> operators = Set.of("!", "+", "-", "*", "/", "<", ">", "&", "|", "^", "=", "<<",
+			">>", "!=", "+=", "-=", "*=", "/=", "<=", ">=", "&=", "|=", "^=", "==", "<<=", ">>=", "%", "%=");
 
-	private final  static TokenTypes operatorToTokenType(String tokenText, String fileName, int line) {
+	private final static TokenTypes operatorToTokenType(String tokenText, String fileName, int line) {
 		if (operators.contains(tokenText))
 			return TokenTypes.OPERATOR;
 		new LogError("Unknown operator:\t" + tokenText, fileName, line);
 		return null;
 	}
 
-	private final  static OptimizedTokensArray floatLiteral(String code, String integer, String fileName, int line,
+	private final static OptimizedTokensArray floatLiteral(String code, String integer, String fileName, int line,
 			OptimizedTokensArray tokens, int i) {
 		var tokenText = integer;
 		while (++i < code.length() && Character.isDigit(code.charAt(i)))
@@ -43,7 +44,7 @@ public final class Lexer {
 		return lex(code, fileName, line, tokens, i);
 	}
 
-	private final  static OptimizedTokensArray identifierOrKeyword(String code, String fileName, int line,
+	private final static OptimizedTokensArray identifierOrKeyword(String code, String fileName, int line,
 			OptimizedTokensArray tokens, int i) {
 		var tokenText = "" + code.charAt(i);
 		while (++i < code.length() && Character.isJavaIdentifierPart(code.charAt(i)))
@@ -52,7 +53,7 @@ public final class Lexer {
 		return lex(code, fileName, line, tokens, i);
 	}
 
-	private final  static TokenTypes interpunctionToTokenType(char tokenText) {
+	private final static TokenTypes interpunctionToTokenType(char tokenText) {
 		switch (tokenText) {
 		case '.':
 			return TokenTypes.DOT;
@@ -67,7 +68,7 @@ public final class Lexer {
 
 	}
 
-	private final  static TokenTypes keywordOrIdentifierToTokenType(String tokenText) {
+	private final static TokenTypes keywordOrIdentifierToTokenType(String tokenText) {
 		switch (tokenText) {
 		case "if":
 			return TokenTypes.IF_KEYWORD;
@@ -123,7 +124,8 @@ public final class Lexer {
 		}
 	}
 
-	public final  static OptimizedTokensArray lex(String code, String fileName, int line, OptimizedTokensArray tokens, int i) {
+	public final static OptimizedTokensArray lex(String code, String fileName, int line, OptimizedTokensArray tokens,
+			int i) {
 		var isInComment = false;
 		for (; i < code.length(); i++) {
 			char c = code.charAt(i);
@@ -151,12 +153,12 @@ public final class Lexer {
 		return tokens;
 	}
 
-	public final  static OptimizedTokensArray lex(String code, String path) {
+	public final static OptimizedTokensArray lex(String code, String path) {
 		return lex(code, path, 1, new OptimizedTokensArray(), 0);
 	}
 
-	private final  static OptimizedTokensArray number(String code, String fileName, int line, OptimizedTokensArray tokens,
-			int i) {
+	private final static OptimizedTokensArray number(String code, String fileName, int line,
+			OptimizedTokensArray tokens, int i) {
 		var tokenText = "" + code.charAt(i);
 		while (++i < code.length() && Character.isDigit(code.charAt(i)))
 			tokenText += code.charAt(i);
@@ -166,8 +168,8 @@ public final class Lexer {
 		return lex(code, fileName, line, tokens, i);
 	}
 
-	private final  static OptimizedTokensArray operator(String code, String fileName, int line, OptimizedTokensArray tokens,
-			int i) {
+	private final static OptimizedTokensArray operator(String code, String fileName, int line,
+			OptimizedTokensArray tokens, int i) {
 		var tokenText = "" + code.charAt(i);
 		while (++i < code.length() && operatorsParts.contains(code.charAt(i)))
 			tokenText += code.charAt(i);
@@ -176,7 +178,7 @@ public final class Lexer {
 		return lex(code, fileName, line, tokens, i);
 	}
 
-	private final  static OptimizedTokensArray stringLiteral(String code, String fileName, int line,
+	private final static OptimizedTokensArray stringLiteral(String code, String fileName, int line,
 			OptimizedTokensArray tokens, int i) {
 		var tokenText = "";
 		try {

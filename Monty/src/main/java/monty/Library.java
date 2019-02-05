@@ -37,5 +37,4 @@ public abstract class Library {
 
 	public abstract void setLibrary();
 
-	
 }

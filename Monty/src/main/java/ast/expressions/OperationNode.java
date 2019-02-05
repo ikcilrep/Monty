@@ -270,7 +270,7 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 		return calculate(leftValue, rightValue, getOperand(), leftType);
 
 	}
-	
+
 	@Override
 	public final OperationNode copy() {
 		try {
