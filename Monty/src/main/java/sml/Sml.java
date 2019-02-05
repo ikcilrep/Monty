@@ -50,6 +50,7 @@ import sml.math.Max;
 import sml.math.Min;
 import sml.math.Pow;
 import sml.math.Root;
+import sml.math.Round;
 import sml.system.Argv;
 import sml.system.Exit;
 import sml.threading.Sleep;
@@ -130,6 +131,7 @@ public final class Sml extends Library {
 		math.put("root", new Root());
 		math.put("min", new Min());
 		math.put("max", new Max());
+		math.put("round", new Round());
 
 	}
 

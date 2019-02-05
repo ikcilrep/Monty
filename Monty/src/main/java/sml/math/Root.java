@@ -32,7 +32,7 @@ public final class Root extends FunctionDeclarationNode {
 		super("root", DataTypes.FLOAT);
 		setBody(new Block(null));
 		addParameter("degree", DataTypes.INTEGER);
-		addParameter("n", DataTypes.FLOAT);
+		addParameter("f", DataTypes.FLOAT);
 		addParameter("scale", DataTypes.INTEGER);
 	}
 
@@ -46,17 +46,17 @@ public final class Root extends FunctionDeclarationNode {
 		var mathContext = new MathContext(scale, RoundingMode.DOWN);
 		var degree = ((BigInteger) body.getVariable("degree").getValue()).intValue();
 		var bigDecimalDegree = new BigDecimal(degree, mathContext);
-		var n = ((BigDecimal) body.getVariable("n").getValue());
+		var f = ((BigDecimal) body.getVariable("f").getValue());
 		var p = BigDecimal.valueOf(scale).movePointLeft(scale);
-		if (n.compareTo(BigDecimal.ZERO) < 0)
+		if (f.compareTo(BigDecimal.ZERO) < 0)
 			new LogError("This root can only be calculated for numbers greater than zero", callFileName, callLine);
-		if (n.equals(BigDecimal.ZERO))
+		if (f.equals(BigDecimal.ZERO))
 			return BigDecimal.ZERO;
-		BigDecimal previous = n;
-		BigDecimal x = n.divide(bigDecimalDegree, mathContext);
+		BigDecimal previous = f;
+		BigDecimal x = f.divide(bigDecimalDegree, mathContext);
 		while (x.subtract(previous).abs().compareTo(p) > 0) {
 			previous = x;
-			x = BigDecimal.valueOf(degree - 1).multiply(x).add(n.divide(x.pow(degree - 1), mathContext))
+			x = BigDecimal.valueOf(degree - 1).multiply(x).add(f.divide(x.pow(degree - 1), mathContext))
 					.divide(bigDecimalDegree, mathContext);
 		}
 		return x;
