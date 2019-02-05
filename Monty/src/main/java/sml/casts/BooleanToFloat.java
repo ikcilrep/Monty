@@ -18,7 +18,7 @@ package sml.casts;
 
 import java.math.BigDecimal;
 
-public class BooleanToFloat {
+public final class BooleanToFloat {
 
 	public static BigDecimal booleanToFloat(Boolean bool) {
 		if (bool == true)

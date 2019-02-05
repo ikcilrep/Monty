@@ -15,7 +15,7 @@ limitations under the License.
 */
 package sml.data.returning;
 
-public class VoidType {
+public final class VoidType {
 	@Override
 	public String toString() {
 		return "void";

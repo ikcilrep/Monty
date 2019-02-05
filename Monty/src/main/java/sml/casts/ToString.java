@@ -24,7 +24,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
 
-public class ToString extends FunctionDeclarationNode {
+public final class ToString extends FunctionDeclarationNode {
 
 	public static String toString(Object a, String callFileName, int callLine) {
 		if (a == null)

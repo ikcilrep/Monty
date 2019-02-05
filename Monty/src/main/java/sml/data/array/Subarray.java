@@ -24,7 +24,7 @@ import parser.DataTypes;
 import parser.LogError;
 import sml.data.Method;
 
-class Subarray extends Method<Array> {
+final class Subarray extends Method<Array> {
 
 	public Subarray(Array array) {
 		super(array, "subarray", DataTypes.ANY);

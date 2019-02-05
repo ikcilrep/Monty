@@ -24,7 +24,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
 
-public class CharAt extends FunctionDeclarationNode {
+public final class CharAt extends FunctionDeclarationNode {
 
 	public CharAt() {
 		super("charAt", DataTypes.STRING);

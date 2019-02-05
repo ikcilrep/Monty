@@ -24,7 +24,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class UnixTime extends FunctionDeclarationNode {
+public final class UnixTime extends FunctionDeclarationNode {
 
 	public UnixTime() {
 		super("unixTime", DataTypes.INTEGER);

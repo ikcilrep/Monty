@@ -25,7 +25,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
 
-public class Substring extends FunctionDeclarationNode {
+public final class Substring extends FunctionDeclarationNode {
 
 	public Substring() {
 		super("substring", DataTypes.STRING);

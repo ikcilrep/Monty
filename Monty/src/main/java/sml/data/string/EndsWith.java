@@ -23,7 +23,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class EndsWith extends FunctionDeclarationNode {
+public final class EndsWith extends FunctionDeclarationNode {
 
 	public EndsWith() {
 		super("endsWith", DataTypes.BOOLEAN);

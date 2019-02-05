@@ -21,7 +21,7 @@ import ast.declarations.StructDeclarationNode;
 import sml.data.returning.Nothing;
 import sml.data.stack.Stack;
 
-public class Array extends StructDeclarationNode {
+public final class Array extends StructDeclarationNode {
 
 	protected Object[] array;
 

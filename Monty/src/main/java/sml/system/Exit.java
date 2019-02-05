@@ -25,7 +25,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.returning.Nothing;
 
-public class Exit extends FunctionDeclarationNode {
+public final class Exit extends FunctionDeclarationNode {
 
 	public Exit() {
 		super("exit", DataTypes.VOID);

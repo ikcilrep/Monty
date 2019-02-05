@@ -23,7 +23,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class IsBoolean extends FunctionDeclarationNode {
+public final class IsBoolean extends FunctionDeclarationNode {
 
 	public IsBoolean() {
 		super("isBoolean", DataTypes.BOOLEAN);

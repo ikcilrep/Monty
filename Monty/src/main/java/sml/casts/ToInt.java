@@ -28,7 +28,7 @@ import parser.LogError;
 import sml.data.array.Array;
 import sml.data.stack.Stack;
 
-public class ToInt extends FunctionDeclarationNode {
+public final class ToInt extends FunctionDeclarationNode {
 
 	public static BigInteger toInt(Object a, String callFileName, int callLine) {
 		if (a == null)

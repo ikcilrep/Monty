@@ -20,7 +20,7 @@ import java.math.BigInteger;
 
 import parser.LogError;
 
-public class StringToInt {
+public final class StringToInt {
 
 	public static BigInteger stringToInt(String str, String fileName, int line) {
 		if (str.matches("[+-]?[0-9]+\\.[0-9]+"))

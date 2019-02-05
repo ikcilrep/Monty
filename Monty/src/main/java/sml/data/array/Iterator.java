@@ -18,7 +18,7 @@ package sml.data.array;
 
 import ast.declarations.StructDeclarationNode;
 
-class Iterator extends StructDeclarationNode {
+final class Iterator extends StructDeclarationNode {
 	int counter = 0;
 	Array array;
 

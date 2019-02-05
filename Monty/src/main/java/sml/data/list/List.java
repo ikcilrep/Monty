@@ -20,7 +20,7 @@ import ast.Block;
 import ast.declarations.StructDeclarationNode;
 import sml.data.returning.Nothing;
 
-public class List extends StructDeclarationNode {
+public final class List extends StructDeclarationNode {
 	Object head = Empty.empty;
 	List tail = null;
 

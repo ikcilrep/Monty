@@ -23,7 +23,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class NewStack extends FunctionDeclarationNode {
+public final class NewStack extends FunctionDeclarationNode {
 
 	public NewStack() {
 		super("Stack", DataTypes.ANY);

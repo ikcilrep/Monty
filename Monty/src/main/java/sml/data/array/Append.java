@@ -22,7 +22,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-class Append extends Method<Array> {
+final class Append extends Method<Array> {
 
 	public Append(Array array) {
 		super(array, "append", DataTypes.VOID);

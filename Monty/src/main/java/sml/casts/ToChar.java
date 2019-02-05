@@ -24,7 +24,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class ToChar extends FunctionDeclarationNode {
+public final class ToChar extends FunctionDeclarationNode {
 	public ToChar() {
 		super("toChar", DataTypes.STRING);
 		setBody(new Block(null));

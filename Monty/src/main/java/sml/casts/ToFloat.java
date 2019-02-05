@@ -28,7 +28,7 @@ import parser.LogError;
 import sml.data.array.Array;
 import sml.data.stack.Stack;
 
-public class ToFloat extends FunctionDeclarationNode {
+public final class ToFloat extends FunctionDeclarationNode {
 
 	public static BigDecimal toFloat(Object a, String callFileName, int callLine) {
 		if (a == null)

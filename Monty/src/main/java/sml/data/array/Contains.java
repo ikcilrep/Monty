@@ -22,7 +22,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-class Contains extends Method<Array> {
+final class Contains extends Method<Array> {
 	public Contains(Array array) {
 		super(array, "contains", DataTypes.BOOLEAN);
 		addParameter("element", DataTypes.ANY);

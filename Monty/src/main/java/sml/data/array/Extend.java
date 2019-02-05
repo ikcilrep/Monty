@@ -23,7 +23,7 @@ import parser.DataTypes;
 import parser.LogError;
 import sml.data.Method;
 
-class Extend extends Method<Array> {
+final class Extend extends Method<Array> {
 
 	public Extend(Array array) {
 		super(array, "extend", DataTypes.VOID);

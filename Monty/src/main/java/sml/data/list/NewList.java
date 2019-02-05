@@ -22,7 +22,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class NewList extends FunctionDeclarationNode {
+public final class NewList extends FunctionDeclarationNode {
 	public NewList() {
 		super("List", DataTypes.ANY);
 	}

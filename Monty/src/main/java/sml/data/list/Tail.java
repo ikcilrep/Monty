@@ -22,7 +22,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-public class Tail extends Method<List> {
+public final class Tail extends Method<List> {
 
 	public Tail(List parent) {
 		super(parent, "tail", DataTypes.ANY);

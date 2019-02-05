@@ -24,7 +24,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class IsFloat extends FunctionDeclarationNode {
+public final class IsFloat extends FunctionDeclarationNode {
 
 	public IsFloat() {
 		super("isFloat", DataTypes.BOOLEAN);

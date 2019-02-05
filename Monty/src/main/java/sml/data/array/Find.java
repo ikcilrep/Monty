@@ -22,7 +22,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-class Find extends Method<Array> {
+final class Find extends Method<Array> {
 
 	public Find(Array array) {
 		super(array, "find", DataTypes.ANY);

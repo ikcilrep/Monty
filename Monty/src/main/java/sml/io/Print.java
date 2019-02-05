@@ -24,7 +24,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.returning.Nothing;
 
-public class Print extends FunctionDeclarationNode {
+public final class Print extends FunctionDeclarationNode {
 
 	public Print() {
 		super("print", DataTypes.VOID);

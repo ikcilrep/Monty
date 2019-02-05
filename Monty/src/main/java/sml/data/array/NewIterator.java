@@ -22,7 +22,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-class NewIterator extends Method<Array> {
+final class NewIterator extends Method<Array> {
 	public NewIterator(Array array) {
 		super(array, "Iterator", DataTypes.ANY);
 	}

@@ -22,7 +22,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-class ReplaceLast extends Method<Array> {
+final class ReplaceLast extends Method<Array> {
 
 	public ReplaceLast(Array array) {
 		super(array, "replaceLast", DataTypes.ANY);

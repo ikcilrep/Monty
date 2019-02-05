@@ -23,7 +23,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class ToLowerCase extends FunctionDeclarationNode {
+public final class ToLowerCase extends FunctionDeclarationNode {
 
 	public ToLowerCase() {
 		super("toLowerCase", DataTypes.STRING);

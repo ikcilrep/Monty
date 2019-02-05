@@ -24,7 +24,7 @@ import parser.DataTypes;
 import parser.LogError;
 import sml.data.Method;
 
-class Get extends Method<List> {
+final class Get extends Method<List> {
 
 	public Get(List list) {
 		super(list, "get", DataTypes.ANY);

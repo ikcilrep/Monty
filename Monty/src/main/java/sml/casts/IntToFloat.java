@@ -19,7 +19,7 @@ package sml.casts;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-public class IntToFloat {
+public final class IntToFloat {
 
 	public static BigDecimal intToFloat(BigInteger integer) {
 		return new BigDecimal(integer);

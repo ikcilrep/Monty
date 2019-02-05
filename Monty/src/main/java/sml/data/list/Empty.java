@@ -16,6 +16,6 @@ limitations under the License.
 
 package sml.data.list;
 
-class Empty {
+final class Empty {
 	public static Empty empty = new Empty();
 }

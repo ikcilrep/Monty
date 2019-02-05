@@ -18,7 +18,7 @@ package sml.casts;
 
 import parser.LogError;
 
-public class StringToBoolean {
+public final class StringToBoolean {
 
 	public static Boolean stringToBoolean(String str, String fileName, int line) {
 		Boolean doesstrEqualsTrue = str.equalsIgnoreCase("true");

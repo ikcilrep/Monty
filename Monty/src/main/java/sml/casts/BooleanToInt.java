@@ -18,7 +18,7 @@ package sml.casts;
 
 import java.math.BigInteger;
 
-public class BooleanToInt {
+public final class BooleanToInt {
 
 	public static BigInteger booleanToInt(Boolean bool) {
 		if (bool == true)

@@ -22,7 +22,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-class Peek extends Method<Stack> {
+final class Peek extends Method<Stack> {
 	public Peek(Stack stack) {
 		super(stack, "peek", DataTypes.ANY);
 	}

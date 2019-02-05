@@ -21,7 +21,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-class NewIterator extends Method<Stack> {
+final class NewIterator extends Method<Stack> {
 
 	public NewIterator(Stack stack) {
 		super(stack, "Iterator", DataTypes.ANY);

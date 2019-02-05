@@ -29,6 +29,7 @@ import sml.data.array.NewArray;
 import sml.data.checking.IsArray;
 import sml.data.checking.IsFloat;
 import sml.data.checking.IsInt;
+import sml.data.checking.IsList;
 import sml.data.checking.IsStack;
 import sml.data.checking.IsString;
 import sml.data.list.NewList;
@@ -55,7 +56,7 @@ import sml.threading.Sleep;
 import sml.time.UnixTime;
 import sml.time.UnixTimeMillis;
 
-public class Sml extends Library {
+public final class Sml extends Library {
 
 	public Sml() {
 		super("sml");
@@ -101,6 +102,7 @@ public class Sml extends Library {
 		checking.put("isFloat", new IsFloat());
 		checking.put("isString", new IsString());
 		checking.put("isArray", new IsArray());
+		checking.put("isList", new IsList());
 		checking.put("isStack", new IsStack());
 
 		string.put("charAt", new CharAt());

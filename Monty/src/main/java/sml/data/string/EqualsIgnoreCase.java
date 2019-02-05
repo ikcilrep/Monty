@@ -23,7 +23,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class EqualsIgnoreCase extends FunctionDeclarationNode {
+public final class EqualsIgnoreCase extends FunctionDeclarationNode {
 
 	public EqualsIgnoreCase() {
 		super("equalsIgnoreCase", DataTypes.STRING);

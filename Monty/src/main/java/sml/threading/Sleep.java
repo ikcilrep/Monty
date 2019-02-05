@@ -26,7 +26,7 @@ import parser.DataTypes;
 import parser.LogError;
 import sml.data.returning.Nothing;
 
-public class Sleep extends FunctionDeclarationNode {
+public final class Sleep extends FunctionDeclarationNode {
 
 	public Sleep() {
 		super("sleep", DataTypes.VOID);

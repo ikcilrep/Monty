@@ -16,6 +16,6 @@ limitations under the License.
 
 package sml.data.returning;
 
-public class BreakType {
+public final class BreakType {
 
 }

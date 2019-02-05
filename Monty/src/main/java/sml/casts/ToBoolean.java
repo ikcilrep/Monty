@@ -28,7 +28,7 @@ import parser.LogError;
 import sml.data.array.Array;
 import sml.data.stack.Stack;
 
-public class ToBoolean extends FunctionDeclarationNode {
+public final class ToBoolean extends FunctionDeclarationNode {
 
 	public static Boolean toBoolean(Object a, String callFileName, int callLine) {
 		if (a == null)

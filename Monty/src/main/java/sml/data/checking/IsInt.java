@@ -24,7 +24,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class IsInt extends FunctionDeclarationNode {
+public final class IsInt extends FunctionDeclarationNode {
 
 	public IsInt() {
 		super("isInt", DataTypes.BOOLEAN);

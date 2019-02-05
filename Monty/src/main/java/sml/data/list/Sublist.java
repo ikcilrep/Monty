@@ -24,7 +24,7 @@ import parser.DataTypes;
 import parser.LogError;
 import sml.data.Method;
 
-class Sublist extends Method<List> {
+final class Sublist extends Method<List> {
 
 	public Sublist(List list) {
 		super(list, "sublist", DataTypes.ANY);

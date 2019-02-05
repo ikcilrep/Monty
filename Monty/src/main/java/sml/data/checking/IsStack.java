@@ -24,7 +24,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.stack.Stack;
 
-public class IsStack extends FunctionDeclarationNode {
+public final class IsStack extends FunctionDeclarationNode {
 
 	public IsStack() {
 		super("isStack", DataTypes.BOOLEAN);

@@ -25,11 +25,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
 
-public class Ord extends FunctionDeclarationNode {
-
-	/**
-	 * 
-	 */
+public final class Ord extends FunctionDeclarationNode {
 
 	public Ord() {
 		super("ord", DataTypes.INTEGER);

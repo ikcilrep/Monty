@@ -22,7 +22,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-class Push extends Method<Stack> {
+final class Push extends Method<Stack> {
 
 	public Push(Stack stack) {
 		super(stack, "push", DataTypes.ANY);

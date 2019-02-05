@@ -23,7 +23,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class StartsWith extends FunctionDeclarationNode {
+public final class StartsWith extends FunctionDeclarationNode {
 
 	public StartsWith() {
 		super("startsWith", DataTypes.BOOLEAN);

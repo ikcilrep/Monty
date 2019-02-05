@@ -14,24 +14,28 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sml.data.list;
+package sml.data.checking;
 
 import java.util.ArrayList;
 
+import ast.Block;
+import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
-import sml.data.Method;
+import sml.data.list.List;
 
-public final class Head extends Method<List> {
+public final class IsList extends FunctionDeclarationNode {
 
-	public Head(List parent) {
-		super(parent, "head", DataTypes.ANY);
+	public IsList() {
+		super("isList", DataTypes.BOOLEAN);
+		setBody(new Block(null));
+		addParameter("toCheck", DataTypes.ANY);
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return parent.head;
+		return getBody().getVariable("toCheck").getValue() instanceof List;
 	}
 
 }

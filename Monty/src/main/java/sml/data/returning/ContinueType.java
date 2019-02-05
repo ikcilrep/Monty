@@ -16,6 +16,6 @@ limitations under the License.
 
 package sml.data.returning;
 
-public class ContinueType {
+public final class ContinueType {
 
 }

@@ -22,7 +22,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class ToUpperCase extends FunctionDeclarationNode {
+public final class ToUpperCase extends FunctionDeclarationNode {
 
 	public ToUpperCase() {
 		super("toUpperCase", DataTypes.STRING);

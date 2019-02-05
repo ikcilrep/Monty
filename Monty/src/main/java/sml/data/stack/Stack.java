@@ -21,7 +21,7 @@ import ast.declarations.StructDeclarationNode;
 import parser.LogError;
 import sml.data.array.Array;
 
-public class Stack extends StructDeclarationNode {
+public final class Stack extends StructDeclarationNode {
 
 	Object[] array;
 	int top;

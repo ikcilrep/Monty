@@ -24,7 +24,7 @@ import parser.DataTypes;
 import parser.LogError;
 import sml.data.Method;
 
-class Set extends Method<Array> {
+final class Set extends Method<Array> {
 
 	public Set(Array array) {
 		super(array, "set", DataTypes.ANY);

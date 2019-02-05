@@ -17,7 +17,7 @@ package sml.data.stack;
 
 import ast.declarations.StructDeclarationNode;
 
-class Iterator extends StructDeclarationNode {
+final class Iterator extends StructDeclarationNode {
 	Stack stack;
 	int counter;
 

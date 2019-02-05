@@ -24,7 +24,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class LengthOfString extends FunctionDeclarationNode {
+public final class LengthOfString extends FunctionDeclarationNode {
 
 	public LengthOfString() {
 		super("lengthOfString", DataTypes.INTEGER);

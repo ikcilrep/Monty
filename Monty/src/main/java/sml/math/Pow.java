@@ -26,7 +26,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
 
-public class Pow extends FunctionDeclarationNode {
+public final class Pow extends FunctionDeclarationNode {
 
 	public Pow() {
 		super("pow", DataTypes.FLOAT);

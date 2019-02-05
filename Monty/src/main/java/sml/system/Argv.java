@@ -26,7 +26,7 @@ import monty.Main;
 import parser.DataTypes;
 import parser.LogError;
 
-public class Argv extends FunctionDeclarationNode {
+public final class Argv extends FunctionDeclarationNode {
 
 	public Argv() {
 		super("argv", DataTypes.STRING);

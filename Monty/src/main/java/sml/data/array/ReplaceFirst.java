@@ -22,7 +22,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-class ReplaceFirst extends Method<Array> {
+final class ReplaceFirst extends Method<Array> {
 	public ReplaceFirst(Array array) {
 		super(array, "replaceFirst", DataTypes.ANY);
 		addParameter("toBeReplaced", DataTypes.ANY);

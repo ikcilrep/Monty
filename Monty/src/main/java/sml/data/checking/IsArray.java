@@ -24,7 +24,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.array.Array;
 
-public class IsArray extends FunctionDeclarationNode {
+public final class IsArray extends FunctionDeclarationNode {
 
 	public IsArray() {
 		super("isArray", DataTypes.BOOLEAN);

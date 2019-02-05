@@ -22,7 +22,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-class Reversed extends Method<List> {
+final class Reversed extends Method<List> {
 	public Reversed(List list) {
 		super(list, "reversed", DataTypes.ANY);
 	}

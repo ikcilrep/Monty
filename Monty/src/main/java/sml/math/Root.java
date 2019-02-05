@@ -27,7 +27,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
 
-public class Root extends FunctionDeclarationNode {
+public final class Root extends FunctionDeclarationNode {
 	public Root() {
 		super("root", DataTypes.FLOAT);
 		setBody(new Block(null));

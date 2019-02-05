@@ -23,7 +23,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-class FindLast extends Method<Array> {
+final class FindLast extends Method<Array> {
 
 	public FindLast(Array array) {
 		super(array, "findLast", DataTypes.ANY);

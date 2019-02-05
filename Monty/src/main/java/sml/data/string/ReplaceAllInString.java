@@ -23,7 +23,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class ReplaceAllInString extends FunctionDeclarationNode {
+public final class ReplaceAllInString extends FunctionDeclarationNode {
 
 	public ReplaceAllInString() {
 		super("replaceAllInString", DataTypes.STRING);

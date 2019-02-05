@@ -18,7 +18,7 @@ package sml.data.list;
 
 import ast.declarations.StructDeclarationNode;
 
-class Iterator extends StructDeclarationNode {
+final class Iterator extends StructDeclarationNode {
 	List list;
 
 	public Iterator(List list) {
