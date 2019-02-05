@@ -56,7 +56,7 @@ public final class Root extends FunctionDeclarationNode {
 		BigDecimal x = n.divide(bigDecimalDegree, mathContext);
 		while (x.subtract(previous).abs().compareTo(p) > 0) {
 			previous = x;
-			x = BigDecimal.valueOf(degree - 1.0).multiply(x).add(n.divide(x.pow(degree - 1), mathContext))
+			x = BigDecimal.valueOf(degree - 1).multiply(x).add(n.divide(x.pow(degree - 1), mathContext))
 					.divide(bigDecimalDegree, mathContext);
 		}
 		return x;

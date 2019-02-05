@@ -216,11 +216,9 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 			var arguments = function.getArguments();
 			for (OperationNode argument : arguments)
 				argument.setParent(parent);
-			var next = function.getNext();
-			if (next != null)
-				next.setParent(parent);
-		} else if (operand instanceof VariableNode) {
-			var next = ((VariableNode) operand).getNext();
+		}
+		if (operand instanceof StructContainer) {
+			var next = ((StructContainer) operand).getNext();
 			if (next != null)
 				next.setParent(parent);
 		}

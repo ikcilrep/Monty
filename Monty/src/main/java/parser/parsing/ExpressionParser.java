@@ -154,6 +154,8 @@ public class ExpressionParser {
 	private final static OperationNode parseVariable(Block parent, OptimizedTokensArray array, IntegerHolder i) {
 		var token = array.get(i.i);
 		var variable = new VariableNode(token.getText());
+		variable.setFileName(token.getFileName());
+		variable.setLine(token.getLine());
 		parseAfterDot(parent, variable, array, i);
 		var node = new OperationNode(variable, parent);
 		node.setFileName(token.getFileName());
