@@ -24,7 +24,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public final class Max extends FunctionDeclarationNode{
+public final class Max extends FunctionDeclarationNode {
 
 	public Max() {
 		super("max", DataTypes.FLOAT);
@@ -36,9 +36,7 @@ public final class Max extends FunctionDeclarationNode{
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		var body = getBody();
-		var a = (BigDecimal)body.getVariable("a").getValue();
-		var b = (BigDecimal)body.getVariable("b").getValue();
-		return a.compareTo(b) < 0 ? b : a;
+		return ((BigDecimal) body.getVariable("a").getValue()).max((BigDecimal) body.getVariable("b").getValue());
 	}
 
 }

@@ -412,9 +412,15 @@ public final class OperatorOverloading {
 			String fileName, int line) {
 		switch (type) {
 		case INTEGER:
-			return ((BigInteger) leftValue).remainder((BigInteger) rightValue);
+			var rightI = (BigInteger) rightValue;
+			if (rightI.equals(BigInteger.ZERO))
+				return BigInteger.ZERO;
+			return ((BigInteger) leftValue).mod(rightI);
 		case FLOAT:
-			return ((BigDecimal) leftValue).remainder((BigDecimal) rightValue);
+			var rightF = (BigDecimal) rightValue;
+			if (rightF.equals(BigDecimal.ZERO))
+				return BigDecimal.ZERO;
+			return ((BigDecimal) leftValue).remainder(rightF);
 		case STRING:
 		case BOOLEAN:
 			new LogError("Can't do modulo operation on " + type.toString().toLowerCase() + "s:\t" + leftValue.toString()

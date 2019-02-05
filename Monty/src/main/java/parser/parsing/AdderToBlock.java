@@ -20,6 +20,7 @@ import ast.Block;
 import ast.declarations.CustomFunctionDeclarationNode;
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
+import ast.expressions.ConstantNode;
 import ast.expressions.FunctionCallNode;
 import ast.expressions.OperationNode;
 import ast.expressions.VariableNode;
@@ -148,8 +149,12 @@ public abstract class AdderToBlock {
 		block.addVariable(variable, tokens.get(n - 2));
 		if (tokens.length() > n)
 			addExpression(block, tokens.subarray(n - 1, tokens.length()));
-		else
-			variable.setValue(DataTypes.getNeutralValue(dataType));
+		else {
+			var operation = new OperationNode("=", block);
+			operation.setLeftOperand(new OperationNode(new VariableNode(name), block));
+			operation.setRightOperand(new OperationNode(new ConstantNode(DataTypes.getNeutralValue(dataType), dataType), block));
+			block.addChild(operation);
+		}
 
 	}
 

@@ -24,7 +24,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public final class Min extends FunctionDeclarationNode{
+public final class Min extends FunctionDeclarationNode {
 
 	public Min() {
 		super("min", DataTypes.FLOAT);
@@ -36,9 +36,7 @@ public final class Min extends FunctionDeclarationNode{
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		var body = getBody();
-		var a = (BigDecimal)body.getVariable("a").getValue();
-		var b = (BigDecimal)body.getVariable("b").getValue();
-		return a.compareTo(b) < 0 ? a : b;
+		return ((BigDecimal) body.getVariable("a").getValue()).min((BigDecimal) body.getVariable("b").getValue());
 	}
 
 }
