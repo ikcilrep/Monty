@@ -62,7 +62,7 @@ public final class Stack extends StructDeclarationNode {
 				return false;
 		return true;
 	}
-
+	
 	public Object[] getArray() {
 		return array;
 	}
