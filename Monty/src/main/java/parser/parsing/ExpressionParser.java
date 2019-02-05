@@ -60,6 +60,8 @@ public class ExpressionParser {
 					if (stack.isEmpty())
 						new LogError("There isn't right operand", token);
 					node.setRightOperand(stack.pop());
+				} else {
+					node.setRightOperand(stack.peek());
 				}
 				if (stack.isEmpty())
 					new LogError("There isn't left operand", token);

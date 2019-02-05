@@ -124,4 +124,5 @@ public final class Stack extends StructDeclarationNode {
 		return stringBuilder.toString();
 
 	}
+	
 }

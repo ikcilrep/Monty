@@ -46,6 +46,7 @@ import sml.data.string.ToUpperCase;
 import sml.io.Input;
 import sml.io.Print;
 import sml.io.Println;
+import sml.math.Factorial;
 import sml.math.Max;
 import sml.math.Min;
 import sml.math.Pow;
@@ -132,7 +133,7 @@ public final class Sml extends Library {
 		math.put("min", new Min());
 		math.put("max", new Max());
 		math.put("round", new Round());
-
+		math.put("factorial", new Factorial());
 	}
 
 }

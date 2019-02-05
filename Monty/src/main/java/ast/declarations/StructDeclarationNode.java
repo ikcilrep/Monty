@@ -166,5 +166,4 @@ public class StructDeclarationNode extends Block implements Cloneable {
 		}
 		return false;
 	}
-
 }
