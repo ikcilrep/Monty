@@ -45,6 +45,8 @@ import sml.data.string.ToUpperCase;
 import sml.io.Input;
 import sml.io.Print;
 import sml.io.Println;
+import sml.math.Max;
+import sml.math.Min;
 import sml.math.Pow;
 import sml.math.Root;
 import sml.system.Argv;
@@ -125,6 +127,9 @@ public class Sml extends Library {
 
 		math.put("pow", new Pow());
 		math.put("root", new Root());
+		math.put("min", new Min());
+		math.put("max", new Max());
+
 
 	}
 
