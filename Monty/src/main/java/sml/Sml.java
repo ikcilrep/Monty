@@ -47,6 +47,7 @@ import sml.io.Input;
 import sml.io.Print;
 import sml.io.Println;
 import sml.math.Factorial;
+import sml.math.Scale;
 import sml.math.Max;
 import sml.math.Min;
 import sml.math.Pow;
@@ -134,6 +135,7 @@ public final class Sml extends Library {
 		math.put("max", new Max());
 		math.put("round", new Round());
 		math.put("factorial", new Factorial());
+		math.put("scale", new Scale());
 	}
 
 }
