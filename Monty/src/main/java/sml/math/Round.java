@@ -26,7 +26,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class Round extends FunctionDeclarationNode {
+public final class Round extends FunctionDeclarationNode {
 
 	public Round() {
 		super("round", DataTypes.FLOAT	);
@@ -35,7 +35,7 @@ public class Round extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public BigDecimal call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var f = (BigDecimal)getBody().getVariable("f").getValue();
 		return f.round(new MathContext(f.scale(), RoundingMode.HALF_UP));

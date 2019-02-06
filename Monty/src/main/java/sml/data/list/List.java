@@ -43,6 +43,23 @@ public final class List extends StructDeclarationNode {
 		new NewIterator(this);
 		new Head(this);
 		new Tail(this);
+		new Equals(this);
+	}
+
+	public Object getHead() {
+		return head;
+	}
+
+	public void setHead(Object head) {
+		this.head = head;
+	}
+
+	public List getTail() {
+		return tail;
+	}
+
+	public void setTail(List tail) {
+		this.tail = tail;
 	}
 
 	public boolean contains(Object element) {

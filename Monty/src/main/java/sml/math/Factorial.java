@@ -24,7 +24,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class Factorial extends FunctionDeclarationNode {
+public final class Factorial extends FunctionDeclarationNode {
 
 	public Factorial() {
 		super("factorial", DataTypes.INTEGER);
@@ -33,7 +33,7 @@ public class Factorial extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public BigInteger call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var result = BigInteger.ONE;
 		var n = (BigInteger)getBody().getVariable("n").getValue();

@@ -25,7 +25,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class Scale extends FunctionDeclarationNode{
+public final class Scale extends FunctionDeclarationNode{
 
 	public Scale() {
 		super("scale", DataTypes.INTEGER);
@@ -34,7 +34,7 @@ public class Scale extends FunctionDeclarationNode{
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public BigInteger call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		return BigInteger.valueOf(((BigDecimal)getBody().getVariable("f").getValue()).scale());
 	}

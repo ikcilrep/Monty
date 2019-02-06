@@ -18,6 +18,7 @@ package sml.data.array;
 
 import ast.Block;
 import ast.declarations.StructDeclarationNode;
+import sml.data.list.List;
 import sml.data.returning.Nothing;
 import sml.data.stack.Stack;
 
@@ -54,6 +55,9 @@ public final class Array extends StructDeclarationNode {
 		new FindLast(this);
 		new NewIterator(this);
 		new Reversed(this);
+		new Equals(this);
+		new ToList(this);
+		new ToStack(this);
 	}
 
 	public Array append(Object element) {
@@ -120,7 +124,7 @@ public final class Array extends StructDeclarationNode {
 	public Array reversed() {
 		var arr = new Array(length());
 		for (int i = 0, j = length() - 1; i < length(); i++, j--)
-			arr.set(j, array[i]);
+			arr.array[j] = array[i];
 		return arr;
 	}
 
@@ -163,7 +167,7 @@ public final class Array extends StructDeclarationNode {
 		stringBuilder.append('[');
 		int i = 0;
 		while (true) {
-			stringBuilder.append(get(i).toString());
+			stringBuilder.append(array[i].toString());
 			if (++i < length)
 				stringBuilder.append(',');
 			else
@@ -183,7 +187,7 @@ public final class Array extends StructDeclarationNode {
 		if (otherArray.length() != length)
 			return false;
 		for (int i = 0; i < length; i++)
-			if (!get(i).equals(otherArray.get(i)))
+			if (!array[i].equals(otherArray.array[i]))
 				return false;
 		return true;
 
@@ -192,7 +196,7 @@ public final class Array extends StructDeclarationNode {
 	public Array subarray(int begin, int end) {
 		Array newArray = new Array(end - begin);
 		for (int i = begin, j = 0; i < end; i++, j++)
-			newArray.set(j, array[i]);
+			newArray.array[j] = array[i];
 		return newArray;
 	}
 
@@ -202,6 +206,17 @@ public final class Array extends StructDeclarationNode {
 
 	public Stack toStack() {
 		return new Stack(array);
+	}
+	
+	public List toList() {
+		var list = new List();
+		var _list = list;
+		for (int i = 0; i < length(); i++) {
+			_list.setHead(array[i]);
+			_list.setTail(new List());
+			_list = _list.getTail();
+		}
+		return list;
 	}
 
 }

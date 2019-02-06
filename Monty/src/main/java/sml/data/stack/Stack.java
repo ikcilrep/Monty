@@ -45,6 +45,7 @@ public final class Stack extends StructDeclarationNode {
 		new Pop(this);
 		new Peek(this);
 		new NewIterator(this);
+		new Equals(this);
 	}
 
 	@Override
