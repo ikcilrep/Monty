@@ -18,7 +18,9 @@ package sml.data.list;
 
 import ast.Block;
 import ast.declarations.StructDeclarationNode;
+import sml.data.array.Array;
 import sml.data.returning.Nothing;
+import sml.data.stack.Stack;
 
 public final class List extends StructDeclarationNode {
 	Object head = Empty.empty;
@@ -44,6 +46,8 @@ public final class List extends StructDeclarationNode {
 		new Head(this);
 		new Tail(this);
 		new Equals(this);
+		new ToArray(this);
+		new ToStack(this);
 	}
 
 	public Object getHead() {
@@ -244,5 +248,27 @@ public final class List extends StructDeclarationNode {
 			end--;
 		}
 		return list.reversed();
+	}
+	
+	public Array toArray() {
+		Array array = new Array(length());
+		var list = this;
+		for (int i = 0; list != null && !list.head.equals(Empty.empty); i++) {
+			array.set(i, list.head);
+			list = list.tail;
+		}
+
+		return array;
+	}
+	
+	public Stack toStack() {
+		Stack stack = new Stack();
+		var list = this;
+		while ( list != null && !list.head.equals(Empty.empty)) {
+			stack.push(list.head);
+			list = list.tail;
+		}
+
+		return stack;
 	}
 }

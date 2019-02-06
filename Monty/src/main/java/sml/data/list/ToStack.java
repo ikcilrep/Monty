@@ -14,25 +14,25 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sml.data.stack;
+package sml.data.list;
 
 import java.util.ArrayList;
 
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
+import sml.data.stack.Stack;
 
-final class Equals extends Method<Stack> {
+final class ToStack extends Method<List>{
 
-	public Equals(Stack stack) {
-		super(stack, "equals", DataTypes.BOOLEAN);
-		addParameter("other", DataTypes.ANY);
+	public ToStack(List list) {
+		super(list, "toStack", DataTypes.ANY);
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public Stack call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return parent.equals(getBody().getVariable("other").getValue());
+		return parent.toStack();
 	}
 
 }

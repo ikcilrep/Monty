@@ -211,7 +211,7 @@ public final class Array extends StructDeclarationNode {
 	public List toList() {
 		var list = new List();
 		var _list = list;
-		for (int i = 0; i < length(); i++) {
+		for (int i = 0; i < array.length; i++) {
 			_list.setHead(array[i]);
 			_list.setTail(new List());
 			_list = _list.getTail();

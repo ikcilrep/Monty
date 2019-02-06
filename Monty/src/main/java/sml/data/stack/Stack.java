@@ -20,6 +20,7 @@ import ast.Block;
 import ast.declarations.StructDeclarationNode;
 import parser.LogError;
 import sml.data.array.Array;
+import sml.data.list.List;
 
 public final class Stack extends StructDeclarationNode {
 
@@ -46,6 +47,8 @@ public final class Stack extends StructDeclarationNode {
 		new Peek(this);
 		new NewIterator(this);
 		new Equals(this);
+		new ToArray(this);
+		new ToList(this);
 	}
 
 	@Override
@@ -126,4 +129,14 @@ public final class Stack extends StructDeclarationNode {
 
 	}
 	
+	public List toList() {
+		var list = new List();
+		var _list = list;
+		for (int i = 0; i <= top; i++) {
+			_list.setHead(array[i]);
+			_list.setTail(new List());
+			_list = _list.getTail();
+		}
+		return list;
+	}
 }
