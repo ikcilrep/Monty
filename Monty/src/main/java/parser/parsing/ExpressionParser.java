@@ -112,16 +112,17 @@ public class ExpressionParser {
 							token);
 				break;
 			}
-			switch (array.get(j).getText()) {
-			case "(":
-				openBracketCounter++;
-				break;
-			case ")":
-				closeBracketCounter++;
-				break;
-			default:
-				break;
-			}
+			if (array.get(j).getType().equals(TokenTypes.BRACKET))
+				switch (array.get(j).getText()) {
+				case "(":
+					openBracketCounter++;
+					break;
+				case ")":
+					closeBracketCounter++;
+					break;
+				default:
+					break;
+				}
 
 		}
 		var function = new FunctionCallNode(token.getText());
@@ -189,8 +190,9 @@ public class ExpressionParser {
 			if (t.getType().equals(TokenTypes.COMMA) && openBracketCounter - 1 == closeBracketCounter) {
 				newArray.add(new OptimizedTokensArray());
 				i++;
-			} else
+			} else {
 				newArray.get(i).append(t);
+			}
 		}
 		return newArray;
 	}
