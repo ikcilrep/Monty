@@ -1,4 +1,3 @@
-package sml.data.string;
 /*
 Copyright 2018-2019 Szymon Perlicki
 
@@ -15,6 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+package sml.data.string;
+
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 import ast.Block;
@@ -22,10 +24,10 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public final class ToUpperCase extends FunctionDeclarationNode {
+public final class Length extends FunctionDeclarationNode {
 
-	public ToUpperCase() {
-		super("toUpperCase", DataTypes.STRING);
+	public Length() {
+		super("length", DataTypes.INTEGER);
 		setBody(new Block(null));
 		addParameter("str", DataTypes.STRING);
 	}
@@ -33,8 +35,7 @@ public final class ToUpperCase extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var str = (String) getBody().getVariable("str").getValue();
-		return str.toUpperCase();
+		return BigInteger.valueOf(((String) getBody().getVariable("str").getValue()).length());
 	}
 
 }

@@ -23,10 +23,10 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public final class ToLowerCase extends FunctionDeclarationNode {
+public final class LowerCase extends FunctionDeclarationNode {
 
-	public ToLowerCase() {
-		super("toLowerCase", DataTypes.STRING);
+	public LowerCase() {
+		super("lowerCase", DataTypes.STRING);
 		setBody(new Block(null));
 		addParameter("str", DataTypes.STRING);
 	}

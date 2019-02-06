@@ -23,10 +23,10 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public final class ReplaceAllInString extends FunctionDeclarationNode {
+public final class ReplaceFirst extends FunctionDeclarationNode {
 
-	public ReplaceAllInString() {
-		super("replaceAllInString", DataTypes.STRING);
+	public ReplaceFirst() {
+		super("replaceFirst", DataTypes.STRING);
 		setBody(new Block(null));
 		addParameter("str", DataTypes.STRING);
 		addParameter("toBeReplaced", DataTypes.STRING);
@@ -41,7 +41,7 @@ public final class ReplaceAllInString extends FunctionDeclarationNode {
 		var str = (String) body.getVariable("str").getValue();
 		var toBeReplaced = (String) body.getVariable("toBeReplaced").getValue();
 		var replacement = (String) body.getVariable("replacement").getValue();
-		return str.replaceAll(toBeReplaced, replacement);
+		return str.replaceFirst(toBeReplaced, replacement);
 	}
 
 }
