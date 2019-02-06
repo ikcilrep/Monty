@@ -25,12 +25,15 @@ import sml.casts.ToChar;
 import sml.casts.ToFloat;
 import sml.casts.ToInt;
 import sml.casts.ToString;
+import sml.data.Get;
+import sml.data.Length;
 import sml.data.array.NewArray;
 import sml.data.checking.IsArray;
 import sml.data.checking.IsBoolean;
 import sml.data.checking.IsFloat;
 import sml.data.checking.IsInt;
 import sml.data.checking.IsList;
+import sml.data.checking.IsObject;
 import sml.data.checking.IsStack;
 import sml.data.checking.IsString;
 import sml.data.list.NewList;
@@ -38,13 +41,13 @@ import sml.data.stack.NewStack;
 import sml.data.string.CharAt;
 import sml.data.string.EndsWith;
 import sml.data.string.EqualsIgnoreCase;
-import sml.data.string.Length;
 import sml.data.string.Replace;
 import sml.data.string.ReplaceFirst;
 import sml.data.string.StartsWith;
 import sml.data.string.Substring;
 import sml.data.string.LowerCase;
 import sml.data.string.UpperCase;
+import sml.errors.LogError;
 import sml.io.Input;
 import sml.io.Print;
 import sml.io.Println;
@@ -79,7 +82,8 @@ public final class Sml extends Library {
 		var time = new HashMap<String, Object>();
 		var checking = new HashMap<String, Object>();
 		var string = new HashMap<String, Object>();
-
+		var errors = new HashMap<String, Object>();
+		
 		sml.put("casts", casts);
 		sml.put("math", math);
 		sml.put("io", io);
@@ -88,6 +92,7 @@ public final class Sml extends Library {
 		sml.put("threading", threading);
 		sml.put("time", time);
 		sml.put("math", math);
+		sml.put("errors", errors);
 
 		casts.put("toBoolean", new ToBoolean());
 		casts.put("toFloat", new ToFloat());
@@ -101,7 +106,9 @@ public final class Sml extends Library {
 		data.put("List", new NewList());
 		data.put("checking", checking);
 		data.put("string", string);
-
+		data.put("length", new Length());
+		data.put("get", new Get());
+		
 		checking.put("isInt", new IsInt());
 		checking.put("isFloat", new IsFloat());
 		checking.put("isBoolean", new IsBoolean());
@@ -109,11 +116,13 @@ public final class Sml extends Library {
 		checking.put("isArray", new IsArray());
 		checking.put("isList", new IsList());
 		checking.put("isStack", new IsStack());
+		checking.put("isObject", new IsObject());
 
+		
 		string.put("charAt", new CharAt());
 		string.put("endsWith", new EndsWith());
 		string.put("equalsIgnoreCase", new EqualsIgnoreCase());
-		string.put("length", new Length());
+		//string.put("length", new Length());
 		string.put("replace", new Replace());
 		string.put("replaceFirst", new ReplaceFirst());
 		string.put("startsWith", new StartsWith());
@@ -140,6 +149,8 @@ public final class Sml extends Library {
 		math.put("round", new Round());
 		math.put("factorial", new Factorial());
 		math.put("scale", new Scale());
+		
+		errors.put("logError", new LogError());
 	}
 
 }

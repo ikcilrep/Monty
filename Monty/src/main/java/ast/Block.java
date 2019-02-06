@@ -24,6 +24,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.statements.BreakStatementNode;
 import ast.statements.ContinueStatementNode;
+import ast.statements.ForStatementNode;
 import ast.statements.ReturnStatementNode;
 import lexer.Token;
 import parser.LogError;
@@ -223,7 +224,7 @@ public class Block extends NodeWithParent implements Cloneable {
 			if (child instanceof ReturnStatementNode || child instanceof BreakStatementNode
 					|| child instanceof ContinueStatementNode)
 				return result;
-			else if (child instanceof ConditionalNode && result != null)
+			else if ((child instanceof ConditionalNode || child instanceof ForStatementNode) && result != null)
 				return result;
 		}
 		return null;

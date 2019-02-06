@@ -20,12 +20,12 @@ import lexer.Token;
 
 public class LogError {
 	public LogError(String message) {
-		System.out.println(message + ".");
+		System.out.println(message);
 		System.exit(0);
 	}
 
 	public LogError(String message, String fileName, int line) {
-		System.out.println(message + ".\nLook at " + line + " line in " + fileName + " file.");
+		System.out.println(message + "\nLook at " + line + " line in " + fileName + " file.");
 		System.exit(0);
 	}
 
@@ -38,12 +38,12 @@ public class LogError {
 			if (i + 1 < lines.length)
 				linesToString += ", ";
 		}
-		System.out.println(message + ".\nLook at " + linesToString + ".");
+		System.out.println(message + "\nLook at " + linesToString + ".");
 		System.exit(0);
 	}
 
 	public LogError(String message, Token token) {
-		System.out.println(message + ".\nLook at " + token.getLine() + " line in " + token.getFileName() + " file.");
+		System.out.println(message + "\nLook at " + token.getLine() + " line in " + token.getFileName() + " file.");
 		System.exit(0);
 	}
 }
