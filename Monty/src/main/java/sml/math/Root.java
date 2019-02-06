@@ -17,7 +17,6 @@ package sml.math;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 
@@ -40,24 +39,27 @@ public final class Root extends FunctionDeclarationNode {
 	public BigDecimal call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var scale = ((BigInteger) body.getVariable("scale").getValue()).intValue();
-		if (scale <= 0)
-			new LogError("Scale have to be greater or equals one", callFileName, callLine);
-		var mathContext = new MathContext(scale, RoundingMode.DOWN);
-		var degree = ((BigInteger) body.getVariable("degree").getValue()).intValue();
-		var bigDecimalDegree = new BigDecimal(degree, mathContext);
 		var f = ((BigDecimal) body.getVariable("f").getValue());
-		var p = BigDecimal.valueOf(scale).movePointLeft(scale);
-		if (f.compareTo(BigDecimal.ZERO) < 0)
-			new LogError("This root can only be calculated for numbers greater than zero", callFileName, callLine);
 		if (f.equals(BigDecimal.ZERO))
 			return BigDecimal.ZERO;
+		if (f.compareTo(BigDecimal.ZERO) < 0)
+			new LogError("This root can only be calculated for numbers greater than zero", callFileName, callLine);
+		var scale = ((BigInteger) body.getVariable("scale").getValue()).intValue();
+		if (scale < 1)
+			new LogError("Scale have to be greater or equals one", callFileName, callLine);
+		var degree = ((BigInteger) body.getVariable("degree").getValue()).intValue();
+		if (degree < 1)
+			new LogError("Degree have to be greater or equals one", callFileName, callLine);
+		var p = BigDecimal.valueOf(scale).movePointLeft(scale);
+		var bigDecimalDegree = new BigDecimal(degree);
+
 		BigDecimal previous = f;
-		BigDecimal x = f.divide(bigDecimalDegree, mathContext);
+		BigDecimal x = f.divide(bigDecimalDegree, scale, RoundingMode.DOWN);
 		while (x.subtract(previous).abs().compareTo(p) > 0) {
 			previous = x;
-			x = BigDecimal.valueOf(degree - 1).multiply(x).add(f.divide(x.pow(degree - 1), mathContext))
-					.divide(bigDecimalDegree, mathContext);
+			x = bigDecimalDegree.subtract(BigDecimal.ONE).multiply(x)
+					.add(f.divide(x.pow(degree - 1), scale, RoundingMode.DOWN))
+					.divide(bigDecimalDegree, scale, RoundingMode.DOWN);
 		}
 		return x;
 	}
