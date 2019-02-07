@@ -48,6 +48,7 @@ public final class List extends StructDeclarationNode {
 		new Equals(this);
 		new ToArray(this);
 		new ToStack(this);
+		new ToString(this);
 	}
 
 	public Object getHead() {

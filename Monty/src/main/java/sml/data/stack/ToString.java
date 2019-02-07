@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sml.data.array;
+package sml.data.stack;
 
 import java.util.ArrayList;
 
@@ -22,17 +22,16 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-final class Equals extends Method<Array> {
+final class ToString extends Method<Stack>{
 
-	public Equals(Array parent) {
-		super(parent, "equals", DataTypes.BOOLEAN);
-		addParameter("other", DataTypes.ANY);
+	public ToString(Stack stack) {
+		super(stack, "toString", DataTypes.STRING);
 	}
 
 	@Override
-	public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return parent.equals(getBody().getVariable("other").getValue());
+		return parent.toString();
 	}
 
 }

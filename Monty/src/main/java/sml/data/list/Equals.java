@@ -30,7 +30,7 @@ final class Equals extends Method<List> {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		return parent.equals(getBody().getVariable("other").getValue());
 	}

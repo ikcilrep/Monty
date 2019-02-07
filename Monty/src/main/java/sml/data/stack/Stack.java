@@ -49,6 +49,7 @@ public final class Stack extends StructDeclarationNode {
 		new Equals(this);
 		new ToArray(this);
 		new ToList(this);
+		new ToString(this);
 	}
 
 	@Override

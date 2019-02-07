@@ -22,17 +22,16 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-final class Equals extends Method<Array> {
+final class ToString extends Method<Array> {
 
-	public Equals(Array parent) {
-		super(parent, "equals", DataTypes.BOOLEAN);
-		addParameter("other", DataTypes.ANY);
+	public ToString(Array parent) {
+		super(parent, "toString", DataTypes.STRING);
 	}
 
 	@Override
-	public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return parent.equals(getBody().getVariable("other").getValue());
+		return parent.toString();
 	}
 
 }

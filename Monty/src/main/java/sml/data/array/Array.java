@@ -58,6 +58,7 @@ public final class Array extends StructDeclarationNode {
 		new Equals(this);
 		new ToList(this);
 		new ToStack(this);
+		new ToString(this);
 	}
 
 	public Array append(Object element) {
