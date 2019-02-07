@@ -49,6 +49,8 @@ import sml.data.string.Substring;
 import sml.data.string.LowerCase;
 import sml.data.string.UpperCase;
 import sml.errors.LogError;
+import sml.files.Read;
+import sml.files.Write;
 import sml.io.Input;
 import sml.io.Print;
 import sml.io.Println;
@@ -88,6 +90,7 @@ public final class Sml extends Library {
 		var checking = new HashMap<String, Object>();
 		var string = new HashMap<String, Object>();
 		var errors = new HashMap<String, Object>();
+		var files = new HashMap<String, Object>();
 		
 		sml.put("casts", casts);
 		sml.put("math", math);
@@ -98,6 +101,7 @@ public final class Sml extends Library {
 		sml.put("time", time);
 		sml.put("math", math);
 		sml.put("errors", errors);
+		sml.put("files", files);
 
 		casts.put("toBoolean", new ToBoolean());
 		casts.put("toFloat", new ToFloat());
@@ -161,6 +165,10 @@ public final class Sml extends Library {
 
 		
 		errors.put("logError", new LogError());
+		
+		files.put("write", new Write());
+		files.put("read", new Read());
+
 	}
 
 }
