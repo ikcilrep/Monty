@@ -44,6 +44,7 @@ import sml.data.string.EqualsIgnoreCase;
 import sml.data.string.Replace;
 import sml.data.string.ReplaceFirst;
 import sml.data.string.StartsWith;
+import sml.data.string.Strlen;
 import sml.data.string.Substring;
 import sml.data.string.LowerCase;
 import sml.data.string.UpperCase;
@@ -125,7 +126,7 @@ public final class Sml extends Library {
 		string.put("charAt", new CharAt());
 		string.put("endsWith", new EndsWith());
 		string.put("equalsIgnoreCase", new EqualsIgnoreCase());
-		//string.put("length", new Length());
+		string.put("strlen", new Strlen());
 		string.put("replace", new Replace());
 		string.put("replaceFirst", new ReplaceFirst());
 		string.put("startsWith", new StartsWith());

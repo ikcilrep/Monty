@@ -29,8 +29,8 @@ public final class CharAt extends FunctionDeclarationNode {
 	public CharAt() {
 		super("charAt", DataTypes.STRING);
 		setBody(new Block(null));
-		addParameter("str", DataTypes.STRING);
 		addParameter("index", DataTypes.INTEGER);
+		addParameter("str", DataTypes.STRING);
 	}
 
 	@Override

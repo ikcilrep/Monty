@@ -24,10 +24,10 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public final class Length extends FunctionDeclarationNode {
+public final class Strlen extends FunctionDeclarationNode {
 
-	public Length() {
-		super("length", DataTypes.INTEGER);
+	public Strlen() {
+		super("strlen", DataTypes.INTEGER);
 		setBody(new Block(null));
 		addParameter("str", DataTypes.STRING);
 	}

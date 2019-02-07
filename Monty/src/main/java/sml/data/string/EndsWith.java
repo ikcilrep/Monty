@@ -30,7 +30,6 @@ public final class EndsWith extends FunctionDeclarationNode {
 		setBody(new Block(null));
 		addParameter("str", DataTypes.STRING);
 		addParameter("suffix", DataTypes.STRING);
-
 	}
 
 	@Override
