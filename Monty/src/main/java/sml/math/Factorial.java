@@ -23,7 +23,7 @@ import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
-
+import parser.LogError;;
 public final class Factorial extends FunctionDeclarationNode {
 
 	public Factorial() {
@@ -35,8 +35,12 @@ public final class Factorial extends FunctionDeclarationNode {
 	@Override
 	public BigInteger call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var result = BigInteger.ONE;
 		var n = (BigInteger)getBody().getVariable("n").getValue();
+		if (n.equals(BigInteger.ZERO))
+			return n;
+		if (n.compareTo(BigInteger.ZERO) < 0)
+			new LogError("Factorial can only be calculated with positive n");
+		var result = BigInteger.ONE;
 		for (BigInteger i =BigInteger.TWO; i.compareTo(n) <= 0; i = i.add(BigInteger.ONE)) {
 			result = result.multiply(i);
 		}

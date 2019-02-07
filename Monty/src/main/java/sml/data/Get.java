@@ -14,7 +14,7 @@ public final class Get extends FunctionDeclarationNode {
 	public Get() {
 		super("get", DataTypes.ANY);
 		setBody(Parser.parse(Lexer.lex(
-				"int counter;"
+				  "int counter;"
 				+ "for x in iterable;"
 				+ 	"if counter i ==;"
 				+ 		"return x;"

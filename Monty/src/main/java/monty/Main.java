@@ -30,6 +30,7 @@ public class Main {
 			System.out.println("To run:\tjava -jar Monty.jar [file_name.mt]");
 			System.exit(1);
 		}
+		
 		Parser.libraries.put("sml", new sml.Sml());
 		path = args[0];
 		argv = args;

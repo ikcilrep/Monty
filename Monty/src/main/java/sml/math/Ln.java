@@ -9,7 +9,7 @@ You may obtain a copy of the License at
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+WITHOUObject WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
@@ -18,35 +18,38 @@ package sml.math;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
-import parser.LogError;
 
-public final class Pow extends FunctionDeclarationNode {
+public class Ln extends FunctionDeclarationNode {
 
-	public Pow() {
-		super("pow", DataTypes.FLOAT);
+	public static final BigDecimal ln(BigDecimal x, int scale) {
+		var y = BigDecimal.valueOf(4.6);
+		var p = BigDecimal.ONE.movePointLeft(scale);
+		y.setScale(scale);
+		while (Exp.exp(y, scale).subtract(x).abs().compareTo(p) > 0)
+			y = y.add(x.multiply(Exp.exp(y.negate(), scale))).subtract(BigDecimal.ONE);
+		return y;
+	}
+
+	public Ln() {
+		super("ln", DataTypes.FLOAT);
 		setBody(new Block(null));
-		addParameter("basis", DataTypes.FLOAT);
-		addParameter("index", DataTypes.INTEGER);
+		addParameter("f", DataTypes.FLOAT);
+		addParameter("scale", DataTypes.INTEGER);
+
 	}
 
 	@Override
 	public BigDecimal call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var basis = (BigDecimal) body.getVariable("basis").getValue();
-		var index = ((BigInteger) body.getVariable("index").getValue()).intValue();
-		if (index > 999999999)
-			new LogError("Index have to be lower than 999999999", callFileName, callLine);
-		if (index < 0)
-			return BigDecimal.ONE.divide(basis.pow(0 - index), 1000, RoundingMode.HALF_UP);
-		return basis.pow(index);
+		return ln((BigDecimal) body.getVariable("f").getValue(),
+				((BigInteger) body.getVariable("scale").getValue()).intValue());
 	}
 
 }

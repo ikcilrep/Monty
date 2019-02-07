@@ -51,7 +51,10 @@ import sml.errors.LogError;
 import sml.io.Input;
 import sml.io.Print;
 import sml.io.Println;
+import sml.math.Exp;
 import sml.math.Factorial;
+import sml.math.Ln;
+import sml.math.Log;
 import sml.math.Scale;
 import sml.math.Max;
 import sml.math.Min;
@@ -149,6 +152,10 @@ public final class Sml extends Library {
 		math.put("round", new Round());
 		math.put("factorial", new Factorial());
 		math.put("scale", new Scale());
+		math.put("exp", new Exp());
+		math.put("ln", new Ln());
+		math.put("log", new Log());
+
 		
 		errors.put("logError", new LogError());
 	}
