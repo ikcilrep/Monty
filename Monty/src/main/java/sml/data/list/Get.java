@@ -36,8 +36,8 @@ final class Get extends Method<List> {
 		setArguments(arguments, callFileName, callLine);
 		var index = ((BigInteger) getBody().getVariable("index").getValue()).intValue();
 		var length = parent.length();
-		if (index >= length)
-			new LogError("Index " + index + " is too big for " + length + " length", callFileName, callLine);
+		if (index >= length || index < 0)
+			new LogError("This list doesn't have " + index + " element", callFileName, callLine);
 		return parent.get(index);
 	}
 

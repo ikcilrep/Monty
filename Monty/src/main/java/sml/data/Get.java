@@ -22,7 +22,7 @@ public final class Get extends FunctionDeclarationNode {
 				+ 	"end;"
 				+ 	"counter 1 +=;"
 				+ "end;"
-				+ "logError(\"Index \" i \" is too big for \" length(iterable) \" length\"+ + + +);",
+				+ "logError(\"Object doesn't have \" i \" element\" + + +);",
 				"Get.java")));
 		getBody().addFunction(new LogError());
 		getBody().addFunction(new Length());

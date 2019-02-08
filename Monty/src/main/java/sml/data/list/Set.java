@@ -38,8 +38,8 @@ final class Set extends Method<List> {
 		var body = getBody();
 		var length = parent.length();
 		var index = ((BigInteger) body.getVariable("index").getValue()).intValue();
-		if (index >= length)
-			new LogError("Index " + index + " is too big for " + length + " length", callFileName, callLine);
+		if (index >= length || index < 0)
+			new LogError("This list doesn't have " + index + " element", callFileName, callLine);
 		return parent.set(index, body.getVariable("value").getValue());
 	}
 

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 import ast.expressions.OperationNode;
 import parser.DataTypes;
+import parser.LogError;
 import sml.data.Method;
 
 final class Pop extends Method<Stack> {
@@ -31,6 +32,8 @@ final class Pop extends Method<Stack> {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
+		if (parent.top < 0)
+			new LogError("Cannot pop from empty stack", callFileName, callLine);
 		return parent.pop();
 	}
 
