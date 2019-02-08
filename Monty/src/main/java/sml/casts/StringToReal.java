@@ -20,9 +20,9 @@ import java.math.BigDecimal;
 
 import parser.LogError;
 
-public final class StringToFloat {
+public final class StringToReal {
 
-	public static BigDecimal stringToFloat(String str, String fileName, int line) {
+	public static BigDecimal stringToReal(String str, String fileName, int line) {
 		if (str.matches("[+-]?[0-9]+(\\.[0-9]+)?"))
 			return new BigDecimal(str);
 		else

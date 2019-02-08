@@ -22,7 +22,7 @@ import ast.expressions.VariableNode;
 import parser.DataTypes;
 import parser.LogError;
 import sml.casts.ToBoolean;
-import sml.casts.ToFloat;
+import sml.casts.ToReal;
 import sml.casts.ToInt;
 import sml.casts.ToString;
 
@@ -68,7 +68,7 @@ public final class ChangeToStatementNode extends NodeWithParent {
 			variable.setValue(ToBoolean.toBoolean(variable.getValue(), getFileName(), getLine()));
 			break;
 		case REAL:
-			variable.setValue(ToFloat.toFloat(variable.getValue(), getFileName(), getLine()));
+			variable.setValue(ToReal.toReal(variable.getValue(), getFileName(), getLine()));
 			break;
 		case STRING:
 			variable.setValue(ToString.toString(variable.getValue(), getFileName(), getLine()));

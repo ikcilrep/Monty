@@ -19,10 +19,11 @@ package sml.casts;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-public final class FloatToInt {
+public final class IntToReal {
 
-	public static BigInteger floatToInt(BigDecimal floating) {
-		return new BigInteger(floating.toString());
+	public static BigDecimal intToReal(BigInteger integer) {
+		return new BigDecimal(integer);
+
 	}
 
 }

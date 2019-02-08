@@ -22,7 +22,7 @@ import monty.Library;
 import sml.casts.Ord;
 import sml.casts.ToBoolean;
 import sml.casts.ToChar;
-import sml.casts.ToFloat;
+import sml.casts.ToReal;
 import sml.casts.ToInt;
 import sml.casts.ToString;
 import sml.data.Get;
@@ -104,7 +104,7 @@ public final class Sml extends Library {
 		sml.put("files", files);
 
 		casts.put("toBoolean", new ToBoolean());
-		casts.put("toFloat", new ToFloat());
+		casts.put("toFloat", new ToReal());
 		casts.put("toInt", new ToInt());
 		casts.put("toString", new ToString());
 		casts.put("toChar", new ToChar());

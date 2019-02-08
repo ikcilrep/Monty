@@ -28,19 +28,19 @@ import parser.LogError;
 import sml.data.array.Array;
 import sml.data.stack.Stack;
 
-public final class ToFloat extends FunctionDeclarationNode {
+public final class ToReal extends FunctionDeclarationNode {
 
-	public static BigDecimal toFloat(Object a, String callFileName, int callLine) {
+	public static BigDecimal toReal(Object a, String callFileName, int callLine) {
 		if (a == null)
 			new LogError("Can't cast void to float", callFileName, callLine);
 		if (a instanceof BigInteger)
-			return IntToFloat.intToFloat((BigInteger) a);
+			return IntToReal.intToReal((BigInteger) a);
 		if (a instanceof Boolean)
-			return BooleanToFloat.booleanToFloat((Boolean) a);
+			return BooleanToReal.booleanToReal((Boolean) a);
 		if (a instanceof BigDecimal)
 			return (BigDecimal) a;
 		if (a instanceof String)
-			return StringToFloat.stringToFloat((String) a, callFileName, callLine);
+			return StringToReal.stringToReal((String) a, callFileName, callLine);
 		if (a instanceof Array)
 			new LogError("Can't cast array to float:\t" + a.toString(), callFileName, callLine);
 		if (a instanceof Stack)
@@ -48,8 +48,8 @@ public final class ToFloat extends FunctionDeclarationNode {
 		return null;
 	}
 
-	public ToFloat() {
-		super("toFloat", DataTypes.REAL);
+	public ToReal() {
+		super("toReal", DataTypes.REAL);
 		setBody(new Block(null));
 		addParameter("a", DataTypes.ANY);
 	}
@@ -58,7 +58,7 @@ public final class ToFloat extends FunctionDeclarationNode {
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var a = getBody().getVariable("a").getValue();
-		return toFloat(a, callFileName, callLine);
+		return toReal(a, callFileName, callLine);
 	}
 
 }

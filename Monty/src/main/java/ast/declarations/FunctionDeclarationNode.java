@@ -23,7 +23,7 @@ import ast.Block;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
-import sml.casts.ToFloat;
+import sml.casts.ToReal;
 
 public abstract class FunctionDeclarationNode extends DeclarationNode implements Cloneable {
 	Block body;
@@ -72,7 +72,7 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 			var value = argument.run();
 			var argumentDataType = DataTypes.getDataType(value);
 			if (dataType.equals(DataTypes.REAL) && argumentDataType.equals(DataTypes.INTEGER)) {
-				value = ToFloat.toFloat(value, callFileName, callLine);
+				value = ToReal.toReal(value, callFileName, callLine);
 				argumentDataType = DataTypes.REAL;
 			}
 			if (!dataType.equals(DataTypes.ANY))

@@ -22,7 +22,7 @@ import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import parser.DataTypes;
 import parser.LogError;
-import sml.casts.ToFloat;
+import sml.casts.ToReal;
 
 public final class OperationNode extends NodeWithParent implements Cloneable {
 
@@ -250,13 +250,13 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 
 		if (isNotAssignment && (leftType.equals(DataTypes.INTEGER) && rightType.equals(DataTypes.REAL))) {
 			leftType = DataTypes.REAL;
-			leftValue = ToFloat.toFloat(leftValue, getFileName(), getLine());
+			leftValue = ToReal.toReal(leftValue, getFileName(), getLine());
 		} else if (isNotAssignment && (rightType.equals(DataTypes.STRING) && !rightType.equals(leftType))) {
 			leftType = DataTypes.STRING;
 			leftValue = leftValue.toString();
 		} else if (leftType.equals(DataTypes.REAL) && rightType.equals(DataTypes.INTEGER)) {
 			rightType = DataTypes.REAL;
-			rightValue = ToFloat.toFloat(rightValue, getFileName(), getLine());
+			rightValue = ToReal.toReal(rightValue, getFileName(), getLine());
 		} else if (leftType.equals(DataTypes.STRING) && !leftType.equals(rightType)) {
 			rightType = DataTypes.STRING;
 			rightValue = rightValue.toString();

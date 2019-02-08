@@ -18,9 +18,9 @@ package sml.casts;
 
 import java.math.BigDecimal;
 
-public final class BooleanToFloat {
+public final class BooleanToReal {
 
-	public static BigDecimal booleanToFloat(Boolean bool) {
+	public static BigDecimal booleanToReal(Boolean bool) {
 		if (bool == true)
 			return BigDecimal.ONE;
 		return BigDecimal.ZERO;

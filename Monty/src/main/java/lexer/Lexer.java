@@ -35,7 +35,7 @@ public final class Lexer {
 		return null;
 	}
 
-	private final static OptimizedTokensArray floatLiteral(String code, String integer, String fileName, int line,
+	private final static OptimizedTokensArray realLiteral(String code, String integer, String fileName, int line,
 			OptimizedTokensArray tokens, int i) {
 		var tokenText = integer;
 		while (++i < code.length() && Character.isDigit(code.charAt(i)))
@@ -163,7 +163,7 @@ public final class Lexer {
 		while (++i < code.length() && Character.isDigit(code.charAt(i)))
 			tokenText += code.charAt(i);
 		if (code.charAt(i) == '.')
-			return floatLiteral(code, tokenText + '.', fileName, line, tokens, i);
+			return realLiteral(code, tokenText + '.', fileName, line, tokens, i);
 		tokens.append(new Token(TokenTypes.INTEGER_LITERAL, tokenText, fileName, line));
 		return lex(code, fileName, line, tokens, i);
 	}
