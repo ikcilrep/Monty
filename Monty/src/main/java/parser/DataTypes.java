@@ -24,14 +24,14 @@ import sml.data.returning.Nothing;
 import sml.data.returning.VoidType;
 
 public enum DataTypes {
-	BOOLEAN, INTEGER, FLOAT, STRING, VOID, ANY;
+	BOOLEAN, INTEGER, REAL, STRING, VOID, ANY;
 	public final static DataTypes getDataType(Object value) {
 		if (value instanceof VoidType)
 			return DataTypes.VOID;
 		if (value instanceof BigInteger)
 			return DataTypes.INTEGER;
 		if (value instanceof BigDecimal)
-			return DataTypes.FLOAT;
+			return DataTypes.REAL;
 		if (value instanceof String)
 			return DataTypes.STRING;
 		if (value instanceof Boolean)
@@ -46,7 +46,7 @@ public enum DataTypes {
 		switch (dataType) {
 		case INTEGER:
 			return BigInteger.ZERO;
-		case FLOAT:
+		case REAL:
 			return BigDecimal.ZERO;
 		case STRING:
 			return "";

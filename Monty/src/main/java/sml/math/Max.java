@@ -27,10 +27,10 @@ import parser.DataTypes;
 public final class Max extends FunctionDeclarationNode {
 
 	public Max() {
-		super("max", DataTypes.FLOAT);
+		super("max", DataTypes.REAL);
 		setBody(new Block(null));
-		addParameter("a", DataTypes.FLOAT);
-		addParameter("b", DataTypes.FLOAT);
+		addParameter("a", DataTypes.REAL);
+		addParameter("b", DataTypes.REAL);
 	}
 
 	@Override

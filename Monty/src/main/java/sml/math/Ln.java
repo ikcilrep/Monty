@@ -37,9 +37,9 @@ public class Ln extends FunctionDeclarationNode {
 	}
 
 	public Ln() {
-		super("ln", DataTypes.FLOAT);
+		super("ln", DataTypes.REAL);
 		setBody(new Block(null));
-		addParameter("f", DataTypes.FLOAT);
+		addParameter("f", DataTypes.REAL);
 		addParameter("scale", DataTypes.INTEGER);
 
 	}

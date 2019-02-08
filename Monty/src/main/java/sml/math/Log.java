@@ -28,10 +28,10 @@ import parser.DataTypes;
 
 public class Log extends FunctionDeclarationNode {
 	public Log() {
-		super("log", DataTypes.FLOAT);
+		super("log", DataTypes.REAL);
 		setBody(new Block(null));
-		addParameter("a", DataTypes.FLOAT);
-		addParameter("b", DataTypes.FLOAT);
+		addParameter("a", DataTypes.REAL);
+		addParameter("b", DataTypes.REAL);
 		addParameter("scale", DataTypes.INTEGER);
 	}
 

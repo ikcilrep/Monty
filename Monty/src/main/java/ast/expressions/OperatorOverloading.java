@@ -30,7 +30,7 @@ public final class OperatorOverloading {
 		switch (type) {
 		case INTEGER:
 			return ((BigInteger) leftValue).add(((BigInteger) rightValue));
-		case FLOAT:
+		case REAL:
 			return ((BigDecimal) leftValue).add(((BigDecimal) rightValue));
 		case STRING:
 			return leftValue.toString() + rightValue.toString();
@@ -55,7 +55,7 @@ public final class OperatorOverloading {
 			return ((BigInteger) leftValue).and((BigInteger) rightValue);
 		case BOOLEAN:
 			return ((Boolean) leftValue) && ((Boolean) rightValue);
-		case FLOAT:
+		case REAL:
 		case STRING:
 			new LogError("Can't do and operation with " + type.toString().toLowerCase() + "s:\t " + leftValue.toString()
 					+ " " + rightValue.toString() + " " + operator.toString(), fileName, line);
@@ -75,7 +75,7 @@ public final class OperatorOverloading {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
 		case INTEGER:
-		case FLOAT:
+		case REAL:
 		case STRING:
 			variable.setValue(additionOperator(variable.getValue(), rightValue, operator, type, fileName, line));
 			return variable.getValue();
@@ -98,7 +98,7 @@ public final class OperatorOverloading {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
 		case INTEGER:
-		case FLOAT:
+		case REAL:
 		case STRING:
 			variable.setValue(andOperator(variable.getValue(), rightValue, operator, type, fileName, line));
 			return variable.getValue();
@@ -118,7 +118,7 @@ public final class OperatorOverloading {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
 		case INTEGER:
-		case FLOAT:
+		case REAL:
 		case STRING:
 			variable.setValue(divisionOperator(variable.getValue(), rightValue, operator, type, fileName, line));
 			return variable.getValue();
@@ -138,7 +138,7 @@ public final class OperatorOverloading {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
 		case INTEGER:
-		case FLOAT:
+		case REAL:
 		case STRING:
 			variable.setValue(multiplicationOperator(variable.getValue(), rightValue, operator, type, fileName, line));
 			return variable.getValue();
@@ -158,7 +158,7 @@ public final class OperatorOverloading {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
 		case INTEGER:
-		case FLOAT:
+		case REAL:
 		case STRING:
 		case BOOLEAN:
 		case ANY:
@@ -177,7 +177,7 @@ public final class OperatorOverloading {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
 		case INTEGER:
-		case FLOAT:
+		case REAL:
 		case STRING:
 			variable.setValue(orOperator(variable.getValue(), rightValue, operator, type, fileName, line));
 			return variable.getValue();
@@ -197,7 +197,7 @@ public final class OperatorOverloading {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
 		case INTEGER:
-		case FLOAT:
+		case REAL:
 		case STRING:
 			variable.setValue(shiftLeftOperator(variable.getValue(), rightValue, operator, type, fileName, line));
 			return variable.getValue();
@@ -217,7 +217,7 @@ public final class OperatorOverloading {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
 		case INTEGER:
-		case FLOAT:
+		case REAL:
 		case STRING:
 			variable.setValue(shiftRightOperator(variable.getValue(), rightValue, operator, type, fileName, line));
 			return variable.getValue();
@@ -237,7 +237,7 @@ public final class OperatorOverloading {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
 		case INTEGER:
-		case FLOAT:
+		case REAL:
 		case STRING:
 			variable.setValue(subtractionOperator(variable.getValue(), rightValue, operator, type, fileName, line));
 			return variable.getValue();
@@ -257,7 +257,7 @@ public final class OperatorOverloading {
 		var variable = ((VariableDeclarationNode) leftValue);
 		switch (type) {
 		case INTEGER:
-		case FLOAT:
+		case REAL:
 		case STRING:
 			variable.setValue(xorOperator(variable.getValue(), rightValue, operator, type, fileName, line));
 			return variable.getValue();
@@ -280,7 +280,7 @@ public final class OperatorOverloading {
 			if (rightValue.equals(BigInteger.ZERO))
 				new LogError("Can't divide by zero", fileName, line);
 			return ((BigInteger) leftValue).divide(((BigInteger) rightValue));
-		case FLOAT:
+		case REAL:
 			if (rightValue.equals(BigDecimal.ZERO))
 				new LogError("Can't divide by zero", fileName, line);
 			return ((BigDecimal) leftValue).divide(((BigDecimal) rightValue));
@@ -303,7 +303,7 @@ public final class OperatorOverloading {
 			String fileName, int line) {
 		switch (type) {
 		case INTEGER:
-		case FLOAT:
+		case REAL:
 		case BOOLEAN:
 		case STRING:
 		case ANY:
@@ -321,7 +321,7 @@ public final class OperatorOverloading {
 		switch (type) {
 		case INTEGER:
 			return ((BigInteger) leftValue).compareTo((BigInteger) rightValue) >= 0;
-		case FLOAT:
+		case REAL:
 			return ((BigDecimal) leftValue).compareTo((BigDecimal) rightValue) >= 0;
 		case STRING:
 		case BOOLEAN:
@@ -345,7 +345,7 @@ public final class OperatorOverloading {
 		switch (type) {
 		case INTEGER:
 			return ((BigInteger) leftValue).compareTo((BigInteger) rightValue) > 0;
-		case FLOAT:
+		case REAL:
 			return ((BigDecimal) leftValue).compareTo((BigDecimal) rightValue) > 0;
 		case STRING:
 		case BOOLEAN:
@@ -367,7 +367,7 @@ public final class OperatorOverloading {
 		switch (type) {
 		case INTEGER:
 			return ((BigInteger) leftValue).compareTo((BigInteger) rightValue) <= 0;
-		case FLOAT:
+		case REAL:
 			return ((BigDecimal) leftValue).compareTo((BigDecimal) rightValue) <= 0;
 		case STRING:
 		case BOOLEAN:
@@ -391,7 +391,7 @@ public final class OperatorOverloading {
 		switch (type) {
 		case INTEGER:
 			return ((BigInteger) leftValue).compareTo((BigInteger) rightValue) < 0;
-		case FLOAT:
+		case REAL:
 			return ((BigDecimal) leftValue).compareTo((BigDecimal) rightValue) < 0;
 		case STRING:
 		case BOOLEAN:
@@ -416,7 +416,7 @@ public final class OperatorOverloading {
 			if (rightI.equals(BigInteger.ZERO))
 				return BigInteger.ZERO;
 			return ((BigInteger) leftValue).mod(rightI);
-		case FLOAT:
+		case REAL:
 			var rightF = (BigDecimal) rightValue;
 			if (rightF.equals(BigDecimal.ZERO))
 				return BigDecimal.ZERO;
@@ -441,7 +441,7 @@ public final class OperatorOverloading {
 		switch (type) {
 		case INTEGER:
 			return ((BigInteger) leftValue).multiply(((BigInteger) rightValue));
-		case FLOAT:
+		case REAL:
 			return ((BigDecimal) leftValue).multiply(((BigDecimal) rightValue));
 		case STRING:
 		case BOOLEAN:
@@ -463,7 +463,7 @@ public final class OperatorOverloading {
 		switch (type) {
 		case INTEGER:
 			return BigInteger.ZERO.subtract((BigInteger) rightValue);
-		case FLOAT:
+		case REAL:
 			return BigDecimal.ZERO.subtract((BigDecimal) rightValue);
 		case STRING:
 			return reverse(rightValue.toString());
@@ -484,7 +484,7 @@ public final class OperatorOverloading {
 			String fileName, int line) {
 		switch (type) {
 		case INTEGER:
-		case FLOAT:
+		case REAL:
 		case BOOLEAN:
 		case STRING:
 		case ANY:
@@ -504,7 +504,7 @@ public final class OperatorOverloading {
 			return ((BigInteger) leftValue).or((BigInteger) rightValue);
 		case BOOLEAN:
 			return ((Boolean) leftValue) || ((Boolean) rightValue);
-		case FLOAT:
+		case REAL:
 		case STRING:
 			new LogError("Can't do or operation with " + type.toString().toLowerCase() + "s:\t " + leftValue.toString()
 					+ " " + rightValue.toString() + " " + operator.toString(), fileName, line);
@@ -535,7 +535,7 @@ public final class OperatorOverloading {
 		case STRING:
 			var str = leftValue.toString();
 			return str.substring(0, str.length() - ((BigInteger) rightValue).intValue());
-		case FLOAT:
+		case REAL:
 		case BOOLEAN:
 			new LogError("Can't shift left " + type.toString().toLowerCase() + "s:\t " + leftValue.toString() + " "
 					+ rightValue.toString() + " " + operator.toString(), fileName, line);
@@ -555,7 +555,7 @@ public final class OperatorOverloading {
 		switch (type) {
 		case INTEGER:
 			return ((BigInteger) leftValue).shiftRight(((BigInteger) rightValue).intValue());
-		case FLOAT:
+		case REAL:
 		case STRING:
 		case BOOLEAN:
 			new LogError("Can't shift right " + type.toString().toLowerCase() + "s:\t " + leftValue.toString() + " "
@@ -576,7 +576,7 @@ public final class OperatorOverloading {
 		switch (type) {
 		case INTEGER:
 			return ((BigInteger) leftValue).subtract(((BigInteger) rightValue));
-		case FLOAT:
+		case REAL:
 			return ((BigDecimal) leftValue).subtract(((BigDecimal) rightValue));
 		case STRING:
 		case BOOLEAN:
@@ -598,7 +598,7 @@ public final class OperatorOverloading {
 		switch (type) {
 		case INTEGER:
 			return ((BigInteger) leftValue).xor((BigInteger) rightValue);
-		case FLOAT:
+		case REAL:
 		case STRING:
 		case BOOLEAN:
 			new LogError("Can't do xor operation with " + type.toString().toLowerCase() + "s:\t " + leftValue.toString()

@@ -27,10 +27,10 @@ import parser.DataTypes;
 public final class Min extends FunctionDeclarationNode {
 
 	public Min() {
-		super("min", DataTypes.FLOAT);
+		super("min", DataTypes.REAL);
 		setBody(new Block(null));
-		addParameter("a", DataTypes.FLOAT);
-		addParameter("b", DataTypes.FLOAT);
+		addParameter("a", DataTypes.REAL);
+		addParameter("b", DataTypes.REAL);
 	}
 
 	@Override

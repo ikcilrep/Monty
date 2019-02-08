@@ -26,9 +26,9 @@ public class Tokens {
 		case INTEGER_LITERAL:
 		case INT_KEYWORD:
 			return DataTypes.INTEGER;
-		case FLOAT_LITERAL:
-		case FLOAT_KEYWORD:
-			return DataTypes.FLOAT;
+		case REAL_LITERAL:
+		case REAL_KEYWORD:
+			return DataTypes.REAL;
 		case BOOLEAN_LITERAL:
 		case BOOLEAN_KEYWORD:
 			return DataTypes.BOOLEAN;

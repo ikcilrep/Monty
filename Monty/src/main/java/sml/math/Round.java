@@ -29,9 +29,9 @@ import parser.DataTypes;
 public final class Round extends FunctionDeclarationNode {
 
 	public Round() {
-		super("round", DataTypes.FLOAT);
+		super("round", DataTypes.REAL);
 		setBody(new Block(null));
-		addParameter("f", DataTypes.FLOAT);
+		addParameter("f", DataTypes.REAL);
 		addParameter("scale", DataTypes.INTEGER);
 
 	}

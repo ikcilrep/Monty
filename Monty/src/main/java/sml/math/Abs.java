@@ -27,9 +27,9 @@ import parser.DataTypes;
 public class Abs extends FunctionDeclarationNode{
 
 	public Abs() {
-		super("abs", DataTypes.FLOAT);
+		super("abs", DataTypes.REAL);
 		setBody(new Block(null));
-		addParameter("f", DataTypes.FLOAT);
+		addParameter("f", DataTypes.REAL);
 	}
 
 	@Override

@@ -71,9 +71,9 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 			var argument = arguments.get(i);
 			var value = argument.run();
 			var argumentDataType = DataTypes.getDataType(value);
-			if (dataType.equals(DataTypes.FLOAT) && argumentDataType.equals(DataTypes.INTEGER)) {
+			if (dataType.equals(DataTypes.REAL) && argumentDataType.equals(DataTypes.INTEGER)) {
 				value = ToFloat.toFloat(value, callFileName, callLine);
-				argumentDataType = DataTypes.FLOAT;
+				argumentDataType = DataTypes.REAL;
 			}
 			if (!dataType.equals(DataTypes.ANY))
 				if (!argumentDataType.equals(dataType))

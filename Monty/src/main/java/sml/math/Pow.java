@@ -30,9 +30,9 @@ import parser.LogError;
 public final class Pow extends FunctionDeclarationNode {
 
 	public Pow() {
-		super("pow", DataTypes.FLOAT);
+		super("pow", DataTypes.REAL);
 		setBody(new Block(null));
-		addParameter("basis", DataTypes.FLOAT);
+		addParameter("basis", DataTypes.REAL);
 		addParameter("index", DataTypes.INTEGER);
 	}
 

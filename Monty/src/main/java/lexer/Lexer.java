@@ -40,7 +40,7 @@ public final class Lexer {
 		var tokenText = integer;
 		while (++i < code.length() && Character.isDigit(code.charAt(i)))
 			tokenText += code.charAt(i);
-		tokens.append(new Token(TokenTypes.FLOAT_LITERAL, tokenText, fileName, line));
+		tokens.append(new Token(TokenTypes.REAL_LITERAL, tokenText, fileName, line));
 		return lex(code, fileName, line, tokens, i);
 	}
 
@@ -86,8 +86,8 @@ public final class Lexer {
 			return TokenTypes.INT_KEYWORD;
 		case "void":
 			return TokenTypes.VOID_KEYWORD;
-		case "float":
-			return TokenTypes.FLOAT_KEYWORD;
+		case "real":
+			return TokenTypes.REAL_KEYWORD;
 		case "string":
 			return TokenTypes.STRING_KEYWORD;
 		case "boolean":

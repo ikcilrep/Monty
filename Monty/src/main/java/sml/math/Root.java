@@ -28,10 +28,10 @@ import parser.LogError;
 
 public final class Root extends FunctionDeclarationNode {
 	public Root() {
-		super("root", DataTypes.FLOAT);
+		super("root", DataTypes.REAL);
 		setBody(new Block(null));
 		addParameter("degree", DataTypes.INTEGER);
-		addParameter("f", DataTypes.FLOAT);
+		addParameter("f", DataTypes.REAL);
 		addParameter("scale", DataTypes.INTEGER);
 	}
 	

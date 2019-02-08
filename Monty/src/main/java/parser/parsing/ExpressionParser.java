@@ -202,7 +202,7 @@ public class ExpressionParser {
 		switch (dataType) {
 		case INTEGER:
 			return new BigInteger(literal);
-		case FLOAT:
+		case REAL:
 			return new BigDecimal(literal);
 		case STRING:
 			return literal;

@@ -248,14 +248,14 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 		if (rightValue instanceof VariableDeclarationNode)
 			rightValue = ((VariableDeclarationNode) rightValue).getValue();
 
-		if (isNotAssignment && (leftType.equals(DataTypes.INTEGER) && rightType.equals(DataTypes.FLOAT))) {
-			leftType = DataTypes.FLOAT;
+		if (isNotAssignment && (leftType.equals(DataTypes.INTEGER) && rightType.equals(DataTypes.REAL))) {
+			leftType = DataTypes.REAL;
 			leftValue = ToFloat.toFloat(leftValue, getFileName(), getLine());
 		} else if (isNotAssignment && (rightType.equals(DataTypes.STRING) && !rightType.equals(leftType))) {
 			leftType = DataTypes.STRING;
 			leftValue = leftValue.toString();
-		} else if (leftType.equals(DataTypes.FLOAT) && rightType.equals(DataTypes.INTEGER)) {
-			rightType = DataTypes.FLOAT;
+		} else if (leftType.equals(DataTypes.REAL) && rightType.equals(DataTypes.INTEGER)) {
+			rightType = DataTypes.REAL;
 			rightValue = ToFloat.toFloat(rightValue, getFileName(), getLine());
 		} else if (leftType.equals(DataTypes.STRING) && !leftType.equals(rightType)) {
 			rightType = DataTypes.STRING;

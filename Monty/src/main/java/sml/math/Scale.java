@@ -30,7 +30,7 @@ public final class Scale extends FunctionDeclarationNode{
 	public Scale() {
 		super("scale", DataTypes.INTEGER);
 		setBody(new Block(null));
-		addParameter("f", DataTypes.FLOAT);
+		addParameter("f", DataTypes.REAL);
 	}
 
 	@Override

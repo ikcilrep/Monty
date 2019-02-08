@@ -67,7 +67,7 @@ public final class ChangeToStatementNode extends NodeWithParent {
 		case BOOLEAN:
 			variable.setValue(ToBoolean.toBoolean(variable.getValue(), getFileName(), getLine()));
 			break;
-		case FLOAT:
+		case REAL:
 			variable.setValue(ToFloat.toFloat(variable.getValue(), getFileName(), getLine()));
 			break;
 		case STRING:

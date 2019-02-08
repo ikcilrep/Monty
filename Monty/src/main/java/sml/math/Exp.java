@@ -31,9 +31,9 @@ public class Exp extends FunctionDeclarationNode {
 	private final static BigDecimal PRECISION = BigDecimal.valueOf(100);
 
 	public Exp() {
-		super("exp", DataTypes.FLOAT);
+		super("exp", DataTypes.REAL);
 		setBody(new Block(null));
-		addParameter("x", DataTypes.FLOAT);
+		addParameter("x", DataTypes.REAL);
 		addParameter("scale", DataTypes.INTEGER);
 
 	}

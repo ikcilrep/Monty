@@ -25,7 +25,7 @@ import lexer.TokenTypes;
 
 public abstract class Identificator {
 	public static final Pattern importRegex = Pattern.compile("^[A-Z_]+ (DOT [A-Z_]+ )*$");
-	public static final Set<TokenTypes> dataTypesKeywords = Set.of(TokenTypes.INT_KEYWORD, TokenTypes.FLOAT_KEYWORD,
+	public static final Set<TokenTypes> dataTypesKeywords = Set.of(TokenTypes.INT_KEYWORD, TokenTypes.REAL_KEYWORD,
 			TokenTypes.BOOLEAN_KEYWORD, TokenTypes.STRING_KEYWORD, TokenTypes.VOID_KEYWORD, TokenTypes.ANY_KEYWORD);
 
 	public static boolean isBreakStatement(OptimizedTokensArray tokens) {
@@ -102,7 +102,7 @@ public abstract class Identificator {
 					return false;
 				break;
 			case INTEGER_LITERAL:
-			case FLOAT_LITERAL:
+			case REAL_LITERAL:
 			case BOOLEAN_LITERAL:
 			case STRING_LITERAL:
 			case IDENTIFIER:
