@@ -27,17 +27,17 @@ final class Extend extends Method<Array> {
 
 	public Extend(Array array) {
 		super(array, "extend", DataTypes.VOID);
-		addParameter("arrayToExtend", DataTypes.ANY);
+		addParameter("otherArray", DataTypes.ANY);
 	}
 
 	@Override
 	public Array call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var arrayToExtend = getBody().getVariable("arrayToExtend").getValue();
-		if (!(arrayToExtend instanceof Array))
-			new LogError("Can't extend array with something that isn't array:\t" + arrayToExtend, callFileName,
+		var otherArray = getBody().getVariable("otherArray").getValue();
+		if (!(otherArray instanceof Array))
+			new LogError("Can't extend array with something that isn't array:\t" + otherArray, callFileName,
 					callLine);
-		return parent.extend((Array) arrayToExtend);
+		return parent.extend((Array) otherArray);
 	}
 
 }

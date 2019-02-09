@@ -27,16 +27,16 @@ final class Extend extends Method<List> {
 
 	public Extend(List list) {
 		super(list, "extend", DataTypes.ANY);
-		addParameter("listToExtend", DataTypes.ANY);
+		addParameter("otherList", DataTypes.ANY);
 	}
 
 	@Override
 	public List call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var listToExtend = getBody().getVariable("listToExtend").getValue();
-		if (!(listToExtend instanceof List))
-			new LogError("Can't extend list with something that isn't list:\t" + listToExtend, callFileName, callLine);
-		return parent.extend((List) listToExtend);
+		var otherList = getBody().getVariable("otherList").getValue();
+		if (!(otherList instanceof List))
+			new LogError("Can't extend list with something that isn't list:\t" + otherList, callFileName, callLine);
+		return parent.extend((List) otherList);
 	}
 
 }
