@@ -14,15 +14,15 @@ public final class Get extends FunctionDeclarationNode {
 	public Get() {
 		super("get", DataTypes.ANY);
 		setBody(Parser.parse(Lexer.lex(
-				  "int counter;"
-				+ "for x in iterable;"
-				+ 	"if counter i ==;"
-				+ 		"return x;"
-				+ 		"println(\"ewqq\");"
-				+ 	"end;"
-				+ 	"counter 1 +=;"
-				+ "end;"
-				+ "logError(\"Object doesn't have \" i \" element\" + + +);",
+				  "int counter;\n"
+				+ "for x in iterable;\n"
+				+ 	"if counter i ==;\n"
+				+ 		"return x;\n"
+				+ 		"println(\"ewqq\");\n"
+				+ 	"end;\n"
+				+ 	"counter 1 +=;\n"
+				+ "end;\n"
+				+ "logError(\"Object doesn't have \" i \" element\" + +);\n",
 				"Get.java")));
 		getBody().addFunction(new LogError());
 		getBody().addFunction(new Length());

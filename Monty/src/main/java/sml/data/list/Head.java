@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 import ast.expressions.OperationNode;
 import parser.DataTypes;
+import parser.LogError;
 import sml.data.Method;
 
 public final class Head extends Method<List> {
@@ -31,6 +32,8 @@ public final class Head extends Method<List> {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
+		if (parent.head.equals(Empty.empty))
+			new LogError("Empty list doesn't have first element", callFileName, callLine);
 		return parent.head;
 	}
 
