@@ -17,6 +17,7 @@ limitations under the License.
 package sml.data.checking;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 import ast.Block;
@@ -35,7 +36,8 @@ public final class IsReal extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return getBody().getVariable("toCheck").getValue() instanceof BigDecimal;
+		var value = getBody().getVariable("toCheck").getValue();
+		return value instanceof BigDecimal || value instanceof BigInteger;
 	}
 
 }
