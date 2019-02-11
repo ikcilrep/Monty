@@ -26,7 +26,7 @@ public final class StringToReal {
 		if (str.matches("[+-]?[0-9]+(\\.[0-9]+)?"))
 			return new BigDecimal(str);
 		else
-			new LogError("Unknown number format for float type:\t" + str, fileName, line);
+			new LogError("Unknown number format for real type:\t" + str, fileName, line);
 		return null;
 	}
 

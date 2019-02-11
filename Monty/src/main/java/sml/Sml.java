@@ -30,7 +30,7 @@ import sml.data.Length;
 import sml.data.array.NewArray;
 import sml.data.checking.IsArray;
 import sml.data.checking.IsBoolean;
-import sml.data.checking.IsFloat;
+import sml.data.checking.IsReal;
 import sml.data.checking.IsInt;
 import sml.data.checking.IsList;
 import sml.data.checking.IsObject;
@@ -104,7 +104,7 @@ public final class Sml extends Library {
 		sml.put("files", files);
 
 		casts.put("toBoolean", new ToBoolean());
-		casts.put("toFloat", new ToReal());
+		casts.put("toReal", new ToReal());
 		casts.put("toInt", new ToInt());
 		casts.put("toString", new ToString());
 		casts.put("toChar", new ToChar());
@@ -119,7 +119,7 @@ public final class Sml extends Library {
 		data.put("get", new Get());
 		
 		checking.put("isInt", new IsInt());
-		checking.put("isFloat", new IsFloat());
+		checking.put("isReal", new IsReal());
 		checking.put("isBoolean", new IsBoolean());
 		checking.put("isString", new IsString());
 		checking.put("isArray", new IsArray());

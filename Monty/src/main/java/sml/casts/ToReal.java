@@ -32,7 +32,7 @@ public final class ToReal extends FunctionDeclarationNode {
 
 	public static BigDecimal toReal(Object a, String callFileName, int callLine) {
 		if (a == null)
-			new LogError("Can't cast void to float", callFileName, callLine);
+			new LogError("Can't cast void to real", callFileName, callLine);
 		if (a instanceof BigInteger)
 			return IntToReal.intToReal((BigInteger) a);
 		if (a instanceof Boolean)
@@ -42,9 +42,9 @@ public final class ToReal extends FunctionDeclarationNode {
 		if (a instanceof String)
 			return StringToReal.stringToReal((String) a, callFileName, callLine);
 		if (a instanceof Array)
-			new LogError("Can't cast array to float:\t" + a.toString(), callFileName, callLine);
+			new LogError("Can't cast array to real:\t" + a.toString(), callFileName, callLine);
 		if (a instanceof Stack)
-			new LogError("Can't cast stack to float:\t" + a.toString(), callFileName, callLine);
+			new LogError("Can't cast stack to real:\t" + a.toString(), callFileName, callLine);
 		return null;
 	}
 

@@ -24,10 +24,10 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public final class IsFloat extends FunctionDeclarationNode {
+public final class IsReal extends FunctionDeclarationNode {
 
-	public IsFloat() {
-		super("isFloat", DataTypes.BOOLEAN);
+	public IsReal() {
+		super("isReal", DataTypes.BOOLEAN);
 		setBody(new Block(null));
 		addParameter("toCheck", DataTypes.ANY);
 	}
