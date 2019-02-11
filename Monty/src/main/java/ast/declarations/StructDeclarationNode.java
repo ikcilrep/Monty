@@ -47,6 +47,7 @@ public class StructDeclarationNode extends Block implements Cloneable {
 			@Override
 			public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 				var newStruct = struct.copy();
+				newStruct.run();
 				var thisVariable = new VariableDeclarationNode("this", DataTypes.ANY);
 				thisVariable.setValue(newStruct);
 				newStruct.addVariable(thisVariable);

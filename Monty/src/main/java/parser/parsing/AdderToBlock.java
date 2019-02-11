@@ -133,7 +133,6 @@ public abstract class AdderToBlock {
 			new LogError("Struct name should start with upper case", tokens.get(0));
 		var struct = new StructDeclarationNode(block, name);
 		struct.addNewStruct(block, tokens.get(0));
-		block.addChild(struct);
 		return struct;
 	}
 
@@ -157,7 +156,7 @@ public abstract class AdderToBlock {
 			block.addChild(operation);
 		}
 
-	}
+	}	
 
 	public final static Block addWhileStatement(Block block, OptimizedTokensArray tokens) {
 		var whileStatement = new WhileStatementNode(ExpressionParser.parse(block, tokens.subarray(1, tokens.length())),
