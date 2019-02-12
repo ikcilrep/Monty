@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="Monty/src/main/java"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk10">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/java-11"/>
 	<classpathentry kind="lib" path="Monty/gradle/wrapper/gradle-wrapper.jar"/>
-	<classpathentry kind="lib" path="Monty/lib/commons-lang3-3.7.jar"/>
 	<classpathentry kind="lib" path="Monty/lib/commons-text-1.4.jar"/>
+	<classpathentry kind="lib" path="Monty/lib/commons-lang3-3.7.jar"/>
 	<classpathentry kind="output" path="Monty/bin"/>
 </classpath>
