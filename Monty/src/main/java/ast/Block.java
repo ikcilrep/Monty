@@ -116,7 +116,6 @@ public class Block extends NodeWithParent implements Cloneable {
 		for (Map.Entry<String, VariableDeclarationNode> entry : variablesSet) {
 			addVariable(entry.getValue());
 		}
-
 		var functionsSet = block.getFunctions().entrySet();
 		for (Map.Entry<String, FunctionDeclarationNode> entry : functionsSet) {
 			addFunction(entry.getValue());

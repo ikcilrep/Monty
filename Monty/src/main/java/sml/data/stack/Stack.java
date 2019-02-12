@@ -50,6 +50,7 @@ public final class Stack extends StructDeclarationNode {
 		new ToArray(this);
 		new ToList(this);
 		new ToString(this);
+		new Length(this);
 	}
 
 	@Override
@@ -112,6 +113,10 @@ public final class Stack extends StructDeclarationNode {
 		return newStack;
 	}
 
+	public int length() {
+		return top + 1;
+	}
+	
 	public Array toArray() {
 		return new Array(array).subarray(0, top + 1);
 	}
