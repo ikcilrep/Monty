@@ -17,7 +17,6 @@ limitations under the License.
 package sml.math;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 
@@ -34,11 +33,9 @@ public class Exp extends FunctionDeclarationNode {
 		super("exp", DataTypes.REAL);
 		setBody(new Block(null));
 		addParameter("x", DataTypes.REAL);
-		addParameter("scale", DataTypes.INTEGER);
-
 	}
 
-	public final static BigDecimal exp(BigDecimal x, int scale) {
+	public final static BigDecimal exp(BigDecimal x) {
 		var result = x.add(BigDecimal.ONE);
 		var a = x;
 		var b = BigDecimal.ONE;
@@ -54,8 +51,7 @@ public class Exp extends FunctionDeclarationNode {
 	public BigDecimal call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		return exp((BigDecimal) body.getVariable("x").getValue(),
-				((BigInteger) body.getVariable("scale").getValue()).intValue());
+		return exp((BigDecimal) body.getVariable("x").getValue());
 	}
 
 }

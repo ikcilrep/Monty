@@ -31,8 +31,8 @@ public class Ln extends FunctionDeclarationNode {
 		var y = BigDecimal.valueOf(4.6);
 		var p = BigDecimal.ONE.movePointLeft(scale);
 		y.setScale(scale);
-		while (Exp.exp(y, scale).subtract(x).abs().compareTo(p) > 0)
-			y = y.add(x.multiply(Exp.exp(y.negate(), scale))).subtract(BigDecimal.ONE);
+		while (Exp.exp(y).subtract(x).abs().compareTo(p) > 0)
+			y = y.add(x.multiply(Exp.exp(y.negate()))).subtract(BigDecimal.ONE);
 		return y;
 	}
 
