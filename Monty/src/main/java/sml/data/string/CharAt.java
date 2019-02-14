@@ -40,8 +40,8 @@ public final class CharAt extends FunctionDeclarationNode {
 		var str = (String) body.getVariable("str").getValue();
 		var index = ((BigInteger) body.getVariable("index").getValue()).intValue();
 		var length = str.length();
-		if (index >= length)
-			new LogError("Index " + index + " is too large for length " + length);
+		if (index >= length || index < 0)
+			new LogError("This string doesn't have " + index + " element", callFileName, callLine);
 		return String.valueOf(str.charAt(index));
 	}
 
