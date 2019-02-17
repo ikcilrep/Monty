@@ -58,14 +58,14 @@ public class Log extends FunctionDeclarationNode {
 		var divider = 1;
 		for (int i = 0; i < 15; i++) {
 			var yz = y.multiply(z);
-			b = b.pow(2);
+			b = b.multiply(b);
 			x <<= 1;
 			divider <<= 1;
 			if (b.compareTo(yz) > 0) {
 				x += 1;
 				y = yz;
 			} else
-				y = y.pow(2);
+				y = y.multiply(y);
 			z = y.multiply(a);
 		}
 		return BigDecimal.valueOf(x).divide(BigDecimal.valueOf(divider), scale, RoundingMode.HALF_UP);
