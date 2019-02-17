@@ -24,18 +24,17 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class Abs extends FunctionDeclarationNode{
-
-	public Abs() {
-		super("abs", DataTypes.REAL);
+public class Pi extends FunctionDeclarationNode{
+	private final static BigDecimal pi = new BigDecimal ("3.415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679");
+	public Pi() {
+		super("pi", DataTypes.REAL);
 		setBody(new Block(null));
-		addParameter("f", DataTypes.REAL);
 	}
 
 	@Override
 	public BigDecimal call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return ((BigDecimal) getBody().getVariable("f").getValue()).abs();
+		return pi;
 	}
 
 }

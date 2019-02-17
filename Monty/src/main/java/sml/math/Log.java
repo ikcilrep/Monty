@@ -48,6 +48,7 @@ public class Log extends FunctionDeclarationNode {
 
 	public static BigDecimal log(BigDecimal a, BigDecimal b, int scale) {
 		var x = nearestPower(a, b);
+		a = a.setScale(scale, RoundingMode.HALF_UP);
 		if (x == -1)
 			return BigDecimal.ZERO;
 		var y = a.pow(x);
