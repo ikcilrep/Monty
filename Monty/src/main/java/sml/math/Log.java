@@ -53,7 +53,7 @@ public class Log extends FunctionDeclarationNode {
 			return BigDecimal.ZERO;
 		var y = a.pow(x);
 		var z = y.multiply(a);
-		if (z.equals(b))
+		if (z.compareTo(b) == 0)
 			return BigDecimal.valueOf(x+1);
 		var divider = 1;
 		for (int i = 0; i < 15; i++) {
