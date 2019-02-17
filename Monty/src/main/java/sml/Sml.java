@@ -57,7 +57,6 @@ import sml.io.Println;
 import sml.math.Abs;
 import sml.math.Exp;
 import sml.math.Factorial;
-import sml.math.Ln;
 import sml.math.Log;
 import sml.math.Scale;
 import sml.math.Max;
@@ -159,7 +158,6 @@ public final class Sml extends Library {
 		math.put("factorial", new Factorial());
 		math.put("scale", new Scale());
 		math.put("exp", new Exp());
-		math.put("ln", new Ln());
 		math.put("log", new Log());
 		math.put("abs", new Abs());
 
