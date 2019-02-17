@@ -302,8 +302,9 @@ public final class OperatorOverloading {
 	public final static Object equalsOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
 		switch (type) {
-		case INTEGER:
 		case REAL:
+			return ((BigDecimal) leftValue).compareTo((BigDecimal) rightValue) == 0;
+		case INTEGER:
 		case BOOLEAN:
 		case STRING:
 		case ANY:
@@ -483,8 +484,9 @@ public final class OperatorOverloading {
 	public final static Object notEqualsOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
 		switch (type) {
-		case INTEGER:
 		case REAL:
+			return ((BigDecimal) leftValue).compareTo((BigDecimal) rightValue) != 0;
+		case INTEGER:
 		case BOOLEAN:
 		case STRING:
 		case ANY:
