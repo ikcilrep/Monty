@@ -37,7 +37,7 @@ public final class Factorial extends FunctionDeclarationNode {
 		setArguments(arguments, callFileName, callLine);
 		var n = (BigInteger)getBody().getVariable("n").getValue();
 		if (n.equals(BigInteger.ZERO))
-			return n;
+			return BigInteger.ONE;
 		if (n.compareTo(BigInteger.ZERO) < 0)
 			new LogError("Factorial can only be calculated with positive n");
 		var result = BigInteger.ONE;
