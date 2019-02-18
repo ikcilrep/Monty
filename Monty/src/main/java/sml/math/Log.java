@@ -79,9 +79,9 @@ public class Log extends FunctionDeclarationNode {
 		var a = (BigDecimal) body.getVariable("a").getValue();
 		var b = (BigDecimal) body.getVariable("b").getValue();
 		if(a.compareTo(BigDecimal.ONE) < 0)
-			new LogError("Base mustn't be lower than one.");
+			new LogError("a mustn't be lower than one.");
 		if(b.compareTo(BigDecimal.ZERO) < 0)
-			new LogError("Base mustn't be lower than zero.");
+			new LogError("b mustn't be lower than zero.");
 		return log(a, b, scale);
 	}
 
