@@ -37,9 +37,9 @@ public final class Argv extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var index = ((BigInteger) getBody().getVariable("index").getValue()).intValue() + 1;
-		if (index >= Main.argv.length)
-			new LogError("Index " + index + " is too large for length " + Main.argv.length, callFileName, callLine);
+		var index = ((BigInteger) getBody().getVariable("index").getValue()).intValue();
+		if (index < 0 || index >= Main.argv.length)
+			new LogError("Index " + index+ " is too large for length " + Main.argv.length, callFileName, callLine);
 		return Main.argv[index];
 	}
 
