@@ -16,7 +16,8 @@ limitations under the License.
 
 package sml.time;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 import ast.Block;
@@ -25,16 +26,16 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 
 public final class UnixTime extends FunctionDeclarationNode {
-
+	private final static BigDecimal thousand = BigDecimal.valueOf(1000);
 	public UnixTime() {
-		super("unixTime", DataTypes.INTEGER);
+		super("unixTime", DataTypes.REAL);
 		setBody(new Block(null));
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return BigInteger.valueOf(System.currentTimeMillis() / 1000L);
+		return BigDecimal.valueOf(System.currentTimeMillis()).divide(thousand, 3, RoundingMode.HALF_UP);
 	}
 
 }
