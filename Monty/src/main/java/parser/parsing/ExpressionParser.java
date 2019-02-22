@@ -72,7 +72,7 @@ public class ExpressionParser {
 			default:
 				// Otherwise token in expression can be only constant.
 				var dataType = Tokens.getDataType(token.getType());
-				node = new OperationNode(new ConstantNode(toDataType(token.getText(), dataType), dataType), parent);
+				node = new OperationNode(new ConstantNode(toDataType(token, dataType), dataType), parent);
 				break;
 			}
 			stack.push(node);
@@ -197,8 +197,11 @@ public class ExpressionParser {
 		return newArray;
 	}
 
-	private final static Object toDataType(String literal, DataTypes dataType) {
+	private final static Object toDataType(Token token, DataTypes dataType) {
 		// Returns values with proper data type.
+		var literal = token.getText();
+		if (dataType == null)
+			new LogError("Unexpected token \"" + literal +"\"", token);
 		switch (dataType) {
 		case INTEGER:
 			return new BigInteger(literal);
