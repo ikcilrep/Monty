@@ -123,7 +123,7 @@ public abstract class AdderToBlock {
 		if (tokens.length() > 1)
 			expression = ExpressionParser.parse(block, tokens.subarray(1, tokens.length()));
 		else
-			expression = new OperationNode(new FunctionCallNode("void"), block);
+			expression = new OperationNode(new FunctionCallNode("nothing"), block);
 		block.addChild(new ReturnStatementNode(expression, tokens.get(0).getFileName(), tokens.get(0).getLine()));
 	}
 
