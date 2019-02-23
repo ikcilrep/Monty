@@ -77,6 +77,7 @@ public final class ForStatementNode extends Block {
 									variable = getVariable(name, getFileName(), getLine());
 								else {
 									variable = new VariableDeclarationNode(name, DataTypes.ANY);
+									variable.setDynamic(true);
 									addVariable(variable);
 								}
 								variable.setValue(e);
