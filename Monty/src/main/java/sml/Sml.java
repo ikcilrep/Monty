@@ -108,6 +108,7 @@ public final class Sml extends Library {
 		io.put("println", new Println());
 
 		system.put("argv", new Argv());
+		system.put("argc", new Argc());
 		system.put("exit", new Exit());
 
 		threading.put("sleep", new Sleep());
