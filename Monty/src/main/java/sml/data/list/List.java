@@ -41,6 +41,7 @@ public final class List extends StructDeclarationNode {
 		new ReplaceLast(this);
 		new Reversed(this);
 		new Set(this);
+		new SetLength(this);
 		new Sublist(this);
 		new NewIterator(this);
 		new Head(this);

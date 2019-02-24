@@ -16,6 +16,8 @@ limitations under the License.
 
 package sml.data.array;
 
+import java.util.Arrays;
+
 import ast.Block;
 import ast.declarations.StructDeclarationNode;
 import sml.data.list.List;
@@ -37,7 +39,7 @@ public final class Array extends StructDeclarationNode {
 	public Array(Object[] array) {
 		super(new Block(null), "Array");
 		addFunctions();
-		this.array = array;
+		this.array = Arrays.copyOf(array, array.length, Object[].class);;
 	}
 
 	public void addFunctions() {
@@ -49,6 +51,7 @@ public final class Array extends StructDeclarationNode {
 		new ReplaceFirst(this);
 		new ReplaceLast(this);
 		new Set(this);
+		new SetLength(this);
 		new Subarray(this);
 		new Find(this);
 		new FindFirst(this);
