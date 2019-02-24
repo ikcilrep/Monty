@@ -123,6 +123,7 @@ public final class Sml extends Library {
 		math.put("root", new Root());
 		math.put("min", new Min());
 		math.put("max", new Max());
+		math.put("random", new Random());
 		math.put("round", new Round());
 		math.put("factorial", new Factorial());
 		math.put("scale", new Scale());
