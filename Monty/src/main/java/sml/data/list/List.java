@@ -224,7 +224,8 @@ public final class List extends StructDeclarationNode {
 		stringBuilder.append('[');
 		var list = this;
 		while (true) {
-			stringBuilder.append(list.head.toString());
+			if (!list.head.equals(Empty.empty))
+				stringBuilder.append(list.head.toString());
 			if (!(list.tail == null || list.tail.head.equals(Empty.empty)))
 				stringBuilder.append(',');
 			else {
