@@ -18,6 +18,7 @@ package ast.expressions;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 
 import ast.declarations.VariableDeclarationNode;
 import parser.DataTypes;
@@ -281,9 +282,9 @@ public final class OperatorOverloading {
 				new LogError("Can't divide by zero", fileName, line);
 			return ((BigInteger) leftValue).divide(((BigInteger) rightValue));
 		case REAL:
-			if (rightValue.equals(BigDecimal.ZERO))
+			if (((BigDecimal)rightValue).compareTo(BigDecimal.ZERO) == 0)
 				new LogError("Can't divide by zero", fileName, line);
-			return ((BigDecimal) leftValue).divide(((BigDecimal) rightValue));
+			return ((BigDecimal) leftValue).divide(((BigDecimal) rightValue), 100, RoundingMode.HALF_UP);
 		case STRING:
 		case BOOLEAN:
 			new LogError("Can't divide " + type.toString().toLowerCase() + "s:\t" + leftValue.toString() + " "
