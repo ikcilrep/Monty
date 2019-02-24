@@ -149,20 +149,19 @@ public abstract class AdderToBlock {
 		var variable = new VariableDeclarationNode(name, dataType);
 		variable.setDynamic(isDynamic);
 		block.addVariable(variable, tokens.get(n - 2));
-		if (tokens.length() > n) {
+		if (tokens.length() > n)
 			addExpression(block, tokens.subarray(n - 1, tokens.length()));
-		} else {
-			var children = block.getChildren();
-			var operation = new OperationNode("=", block);
-			operation.setLeftOperand(new OperationNode(new VariableNode(name), block));
-			operation.setRightOperand(
-					new OperationNode(new ConstantNode(DataTypes.getNeutralValue(dataType), dataType), block));
-			block.setChildren(new ArrayList<RunnableNode>());
-			block.addChild(operation);
-			block.getChildren().addAll(children);
-		}
 
-	}	
+		var children = block.getChildren();
+		var operation = new OperationNode("=", block);
+		operation.setLeftOperand(new OperationNode(new VariableNode(name), block));
+		operation.setRightOperand(
+				new OperationNode(new ConstantNode(DataTypes.getNeutralValue(dataType), dataType), block));
+		block.setChildren(new ArrayList<RunnableNode>());
+		block.addChild(operation);
+		block.getChildren().addAll(children);
+
+	}
 
 	public final static Block addWhileStatement(Block block, OptimizedTokensArray tokens) {
 		var whileStatement = new WhileStatementNode(ExpressionParser.parse(block, tokens.subarray(1, tokens.length())),

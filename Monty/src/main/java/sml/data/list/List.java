@@ -30,11 +30,14 @@ public final class List extends StructDeclarationNode {
 		super(new Block(null), "List");
 		new Append(this);
 		new Contains(this);
+		new Equals(this);
 		new Extend(this);
 		new Find(this);
 		new FindFirst(this);
 		new FindLast(this);
 		new Get(this);
+		new Head(this);
+		new NewIterator(this);
 		new Length(this);
 		new Replace(this);
 		new ReplaceFirst(this);
@@ -43,10 +46,7 @@ public final class List extends StructDeclarationNode {
 		new Set(this);
 		new SetLength(this);
 		new Sublist(this);
-		new NewIterator(this);
-		new Head(this);
 		new Tail(this);
-		new Equals(this);
 		new ToArray(this);
 		new ToStack(this);
 		new ToString(this);

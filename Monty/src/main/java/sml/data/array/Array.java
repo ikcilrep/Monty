@@ -44,24 +44,26 @@ public final class Array extends StructDeclarationNode {
 
 	public void addFunctions() {
 		new Append(this);
+		new Contains(this);
+		new Equals(this);
 		new Extend(this);
+		new Find(this);
+		new FindFirst(this);
+		new FindLast(this);
 		new Get(this);
+		new NewIterator(this);
 		new Length(this);
 		new Replace(this);
 		new ReplaceFirst(this);
 		new ReplaceLast(this);
+		new Reversed(this);
 		new Set(this);
 		new SetLength(this);
 		new Subarray(this);
-		new Find(this);
-		new FindFirst(this);
-		new FindLast(this);
-		new NewIterator(this);
-		new Reversed(this);
-		new Equals(this);
 		new ToList(this);
 		new ToStack(this);
 		new ToString(this);
+
 	}
 
 	public Array append(Object element) {
