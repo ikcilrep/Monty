@@ -29,7 +29,7 @@ public final class Replace extends FunctionDeclarationNode {
 		super("replace", DataTypes.STRING);
 		setBody(new Block(null));
 		addParameter("str", DataTypes.STRING);
-		addParameter("toBeReplaced", DataTypes.STRING);
+		addParameter("regex", DataTypes.STRING);
 		addParameter("replacement", DataTypes.STRING);
 
 	}
@@ -39,7 +39,7 @@ public final class Replace extends FunctionDeclarationNode {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
 		var str = (String) body.getVariable("str").getValue();
-		var toBeReplaced = (String) body.getVariable("toBeReplaced").getValue();
+		var toBeReplaced = (String) body.getVariable("regex").getValue();
 		var replacement = (String) body.getVariable("replacement").getValue();
 		return str.replaceAll(toBeReplaced, replacement);
 	}

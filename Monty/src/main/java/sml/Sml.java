@@ -102,6 +102,7 @@ public final class Sml extends Library {
 		string.put("substring", new Substring());
 		string.put("lowerCase", new LowerCase());
 		string.put("upperCase", new UpperCase());
+		string.put("split", new Split());
 
 		io.put("input", new Input());
 		io.put("print", new Print());
