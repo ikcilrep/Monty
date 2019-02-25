@@ -25,13 +25,12 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
-import sml.data.array.Array;
-import sml.data.stack.Stack;
+import sml.data.returning.VoidType;
 
 public final class ToInt extends FunctionDeclarationNode {
 
 	public static BigInteger toInt(Object a, String callFileName, int callLine) {
-		if (a == null)
+		if (a instanceof VoidType)
 			new LogError("Can't cast void to integer", callFileName, callLine);
 		if (a instanceof BigInteger)
 			return (BigInteger) a;
@@ -41,10 +40,8 @@ public final class ToInt extends FunctionDeclarationNode {
 			return BooleanToInt.booleanToInt((Boolean) a);
 		if (a instanceof String)
 			return StringToInt.stringToInt((String) a, callFileName, callLine);
-		if (a instanceof Array)
-			new LogError("Can't cast array to integer:\t" + a.toString(), callFileName, callLine);
-		if (a instanceof Stack)
-			new LogError("Can't cast stack to integer:\t" + a.toString(), callFileName, callLine);
+		else
+			new LogError("Can't cast structure to integer", callFileName, callLine);
 		return null;
 	}
 

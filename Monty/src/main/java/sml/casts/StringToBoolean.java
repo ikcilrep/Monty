@@ -16,17 +16,10 @@ limitations under the License.
 
 package sml.casts;
 
-import parser.LogError;
-
 public final class StringToBoolean {
 
-	public static Boolean stringToBoolean(String str, String fileName, int line) {
-		Boolean doesstrEqualsTrue = str.equalsIgnoreCase("true");
-		if (doesstrEqualsTrue || str.equalsIgnoreCase("false"))
-			return doesstrEqualsTrue;
-		else
-			new LogError("Unknown format for boolean type:\t" + str, fileName, line);
-		return null;
+	public static Boolean stringToBoolean(String str) {
+		return Boolean.parseBoolean(str);
 	}
 
 }

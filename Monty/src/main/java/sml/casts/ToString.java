@@ -22,13 +22,10 @@ import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
-import parser.LogError;
 
 public final class ToString extends FunctionDeclarationNode {
 
 	public static String toString(Object a, String callFileName, int callLine) {
-		if (a == null)
-			new LogError("Can't cast void to string.", callFileName, callLine);
 		return a.toString();
 	}
 

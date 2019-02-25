@@ -25,13 +25,12 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
-import sml.data.array.Array;
-import sml.data.stack.Stack;
+import sml.data.returning.VoidType;
 
 public final class ToBoolean extends FunctionDeclarationNode {
 
 	public static Boolean toBoolean(Object a, String callFileName, int callLine) {
-		if (a == null)
+		if (a instanceof VoidType)
 			new LogError("Can't cast void to boolean", callFileName, callLine);
 		if (a instanceof BigInteger)
 			return IntToBoolean.intToBoolean((BigInteger) a);
@@ -40,11 +39,9 @@ public final class ToBoolean extends FunctionDeclarationNode {
 		if (a instanceof Boolean)
 			return (boolean) a;
 		if (a instanceof String)
-			return StringToBoolean.stringToBoolean((String) a, callFileName, callLine);
-		if (a instanceof Array)
-			new LogError("Can't cast array to boolean:\t" + a.toString(), callFileName, callLine);
-		if (a instanceof Stack)
-			new LogError("Can't cast stack to boolean:\t" + a.toString(), callFileName, callLine);
+			return StringToBoolean.stringToBoolean((String) a);
+		else
+			new LogError("Can't cast structure to boolean", callFileName, callLine);
 		return null;
 	}
 

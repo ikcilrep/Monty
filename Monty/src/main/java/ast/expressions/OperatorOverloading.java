@@ -275,7 +275,6 @@ public final class OperatorOverloading {
 
 	public final static Object divisionOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
-
 		switch (type) {
 		case INTEGER:
 			if (rightValue.equals(BigInteger.ZERO))
