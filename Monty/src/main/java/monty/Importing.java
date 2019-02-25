@@ -41,7 +41,7 @@ import parser.parsing.Parser;
 public class Importing {
 	private static String mainPath = Paths.get("").toAbsolutePath().toString();
 	private static Path fileAbsolutePath = Paths.get(Main.path).getParent();
-	private static String mainFileLocation = mainPath + (mainPath.endsWith(File.separator) ? "" : File.separator)
+	public static String mainFileLocation = mainPath + (mainPath.endsWith(File.separator) ? "" : File.separator)
 			+ (fileAbsolutePath == null ? "" : fileAbsolutePath) + File.separator;
 
 	@SuppressWarnings("unchecked")

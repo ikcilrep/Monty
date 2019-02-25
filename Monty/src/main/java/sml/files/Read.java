@@ -15,12 +15,14 @@ limitations under the License.
 */
 package sml.files;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import monty.FileIO;
+import monty.Importing;
 import parser.DataTypes;
 
 public class Read extends FunctionDeclarationNode {
@@ -34,7 +36,11 @@ public class Read extends FunctionDeclarationNode {
 	@Override
 	public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return FileIO.readFile(getBody().getVariable("path").getValue().toString());
+		var path = getBody().getVariable("path").getValue().toString();
+		var file = new File(path);
+		if (file.isAbsolute())
+			return FileIO.readFile(path);
+		return FileIO.readFile(Importing.mainFileLocation+path);
 	}
 
 }
