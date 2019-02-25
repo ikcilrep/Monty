@@ -281,9 +281,13 @@ public final class OperatorOverloading {
 				new LogError("Can't divide by zero", fileName, line);
 			return ((BigInteger) leftValue).divide(((BigInteger) rightValue));
 		case REAL:
-			if (((BigDecimal)rightValue).compareTo(BigDecimal.ZERO) == 0)
+			if (((BigDecimal) rightValue).compareTo(BigDecimal.ZERO) == 0)
 				new LogError("Can't divide by zero", fileName, line);
-			return ((BigDecimal) leftValue).divide(((BigDecimal) rightValue), 100, RoundingMode.HALF_UP);
+			try {
+				return ((BigDecimal) leftValue).divide(((BigDecimal) rightValue));
+			} catch (ArithmeticException e) {
+				return ((BigDecimal) leftValue).divide(((BigDecimal) rightValue), ((BigDecimal) rightValue).intValue(), RoundingMode.HALF_UP);
+			}
 		case STRING:
 		case BOOLEAN:
 			new LogError("Can't divide " + type.toString().toLowerCase() + "s:\t" + leftValue.toString() + " "
