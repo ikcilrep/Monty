@@ -15,14 +15,12 @@ limitations under the License.
 */
 package sml.files;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import monty.FileIO;
-import monty.Importing;
 import parser.DataTypes;
 import sml.data.returning.Nothing;
 import sml.data.returning.VoidType;
@@ -41,15 +39,8 @@ public class Write extends FunctionDeclarationNode {
 	public VoidType call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var path = getBody().getVariable("path").getValue().toString();
-		var text = getBody().getVariable("text").getValue().toString();
-		var isAppend = (boolean) body.getVariable("isAppend").getValue();
-		var file = new File(path);
-		if (file.isAbsolute())
-			FileIO.writeFile(path, text, isAppend);
-		else
-			FileIO.writeFile(Importing.mainFileLocation + path, text, isAppend);
-
+		FileIO.writeFile(AbsPath.absPath((String) getBody().getVariable("path").getValue()),
+				(String) body.getVariable("text").getValue(), (boolean) body.getVariable("isAppend").getValue(), callFileName, callLine);
 		return Nothing.nothing;
 	}
 

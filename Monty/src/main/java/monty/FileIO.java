@@ -25,7 +25,7 @@ import java.io.IOException;
 import parser.LogError;
 
 public abstract class FileIO {
-	public static String readFile(String path) {
+	public static String readFile(String path, String callFileName, int callLine) {
 		BufferedReader br = null;
 		var text = new StringBuilder();
 		try {
@@ -33,7 +33,7 @@ public abstract class FileIO {
 			try {
 				fr = new FileReader(path);
 			} catch (FileNotFoundException e) {
-				new LogError("This file doesn't exist:\t" + path);
+				new LogError("This file doesn't exist:\t" + path, callFileName, callLine);
 			}
 			br = new BufferedReader(fr);
 			String line;
@@ -48,13 +48,13 @@ public abstract class FileIO {
 					br.close();
 				}
 			} catch (IOException ex) {
-				new LogError("Failed to read file:\t" + path);
+				new LogError("Failed to read file:\t" + path, callFileName, callLine);
 			}
 		}
 		return text.toString();
 	}
 
-	public static void writeFile(String path, String text, boolean isAppend) {
+	public static void writeFile(String path, String text, boolean isAppend, String callFileName, int callLine) {
 		try {
 			File file = new File(path);
 			FileWriter fileWriter = new FileWriter(file, isAppend);
@@ -62,7 +62,7 @@ public abstract class FileIO {
 			fileWriter.flush();
 			fileWriter.close();
 		} catch (IOException e) {
-			new LogError("Failed to write file:\t" + path);
+			new LogError("Failed to write file:\t" + path, callFileName, callLine);
 			e.printStackTrace();
 		}
 

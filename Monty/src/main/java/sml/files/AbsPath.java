@@ -15,26 +15,33 @@ limitations under the License.
 */
 package sml.files;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import monty.FileIO;
+import monty.Importing;
 import parser.DataTypes;
 
-public class Read extends FunctionDeclarationNode {
+public class AbsPath extends FunctionDeclarationNode {
 
-	public Read() {
-		super("read", DataTypes.STRING);
+	public AbsPath() {
+		super("absPath", DataTypes.STRING);
 		setBody(new Block(null));
 		addParameter("path", DataTypes.STRING);
 	}
 
+	public static String absPath(String path) {
+		if (new File(path).isAbsolute())
+			return path;
+		return Importing.mainFileLocation+path;
+	}
+	
 	@Override
 	public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return FileIO.readFile(AbsPath.absPath(getBody().getVariable("path").getValue().toString()), callFileName, callLine);
+		var path = getBody().getVariable("path").getValue().toString();
+		return absPath(path);
 	}
-
 }

@@ -53,18 +53,18 @@ public class Importing {
 				importAllElementsFromJarSublibrary(block, (HashMap<String, Object>) value, token);
 	}
 
-	private static void importWholeFile(Block block, String path) {
+	private static void importWholeFile(Block block, String path, String fileName, int line) {
 		var file = new File(path);
 		block.concat(Parser
-				.parse(Lexer.lex(FileIO.readFile(file.getAbsolutePath()), path, 1, new OptimizedTokensArray(), 0)));
+				.parse(Lexer.lex(FileIO.readFile(file.getAbsolutePath(), fileName, line), path, 1, new OptimizedTokensArray(), 0)));
 	}
 
-	private static void importFilesFromDirectory(Block block, File directory) {
+	private static void importFilesFromDirectory(Block block, File directory, String fileName, int line) {
 		for (File fileEntry : directory.listFiles()) {
 			if (fileEntry.isDirectory())
-				importFilesFromDirectory(block, fileEntry);
+				importFilesFromDirectory(block, fileEntry, fileName, line);
 			else if (fileEntry.getName().endsWith(".mt"))
-				importWholeFile(block, fileEntry.getAbsolutePath());
+				importWholeFile(block, fileEntry.getAbsolutePath(), fileName, line);
 			else
 				new LogError(
 						"File with wrong extension: " + directory.getPath() + File.separator + fileEntry.getName());
@@ -161,14 +161,17 @@ public class Importing {
 		var file = new File(path + ".mt");
 		var parent_file = new File(file.getParent() + ".mt");
 		var directory = new File(path);
+		var fileName = tokensBeforeSemicolon.get(1).getFileName();
+		var line = tokensBeforeSemicolon.get(1).getLine();
 		if (directory.exists() && directory.isDirectory())
-			importFilesFromDirectory(block, directory);
+			importFilesFromDirectory(block, directory, fileName, line);
 		else if (file.exists() && file.isFile())
-			importWholeFile(block, file.getPath());
+			importWholeFile(block, file.getPath(), fileName, line);
 		else if (parent_file.exists() && parent_file.isFile()) {
 			importSpecifiedElementFromBlock(block,
-					Parser.parse(Lexer.lex(FileIO.readFile(parent_file.getAbsolutePath()), parent_file.getName(), 1,
-							new OptimizedTokensArray(), 0)),
+					Parser.parse(Lexer.lex(
+							FileIO.readFile(parent_file.getAbsolutePath(), fileName, line),
+							parent_file.getName(), 1, new OptimizedTokensArray(), 0)),
 					parent_file.getPath(), file.getName().substring(0, file.getName().length() - 3));
 		} else {
 			var splited = partOfPath.split("\\.");

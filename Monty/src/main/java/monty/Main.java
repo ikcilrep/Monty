@@ -31,7 +31,7 @@ public class Main {
 		Parser.libraries.put("sml", new sml.Sml());
 		path = args[0];
 		argv = args;
-		IOBlocks.readBlockFromFile(path).run();
+		IOBlocks.readBlockFromFile(path, "command line", 1).run();
 	}
 
 }
