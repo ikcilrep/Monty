@@ -201,8 +201,14 @@ public class ExpressionParser {
 		var literal = token.getText();
 		if (dataType == null)
 			new LogError("Unexpected token \"" + literal + "\"", token);
-		if (dataType.equals(DataTypes.STRING) && stringLiterals.containsKey(literal))
-			return stringLiterals.get(literal);
+		if (dataType.equals(DataTypes.STRING))
+			if (stringLiterals.containsKey(literal))
+				return stringLiterals.get(literal);
+			else {
+				var newStringLiteral = new ConstantNode(literal, dataType);
+				stringLiterals.put(literal, newStringLiteral);
+				return newStringLiteral;
+			}
 		if (literals.containsKey(literal))
 			return literals.get(literal);
 		Object valueOfDataType = null;
@@ -216,10 +222,6 @@ public class ExpressionParser {
 		case BOOLEAN:
 			valueOfDataType = Boolean.parseBoolean(literal);
 			break;
-		case STRING:
-			var newStringLiteral = new ConstantNode(literal, dataType);
-			stringLiterals.put(literal, newStringLiteral);
-			return newStringLiteral;
 		default:
 			new LogError("There isn't constant of " + dataType.toString().toLowerCase());
 		}
