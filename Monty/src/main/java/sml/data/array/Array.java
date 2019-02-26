@@ -39,7 +39,8 @@ public final class Array extends StructDeclarationNode {
 	public Array(Object[] array) {
 		super(new Block(null), "Array");
 		addFunctions();
-		this.array = Arrays.copyOf(array, array.length, Object[].class);;
+		this.array = Arrays.copyOf(array, array.length, Object[].class);
+		;
 	}
 
 	public void addFunctions() {
@@ -172,13 +173,14 @@ public final class Array extends StructDeclarationNode {
 		var stringBuilder = new StringBuilder(length * 2 + 1);
 		stringBuilder.append('[');
 		int i = 0;
-		while (true) {
-			stringBuilder.append(array[i].toString());
-			if (++i < length)
-				stringBuilder.append(',');
-			else
-				break;
-		}
+		if (array.length > 0)
+			while (true) {
+				stringBuilder.append(array[i++].toString());
+				if (i < length)
+					stringBuilder.append(',');
+				else
+					break;
+			}
 		stringBuilder.append(']');
 		return stringBuilder.toString();
 
@@ -213,7 +215,7 @@ public final class Array extends StructDeclarationNode {
 	public Stack toStack() {
 		return new Stack(array);
 	}
-	
+
 	public List toList() {
 		var list = new List();
 		var _list = list;
