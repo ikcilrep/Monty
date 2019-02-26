@@ -134,6 +134,7 @@ public final class Sml extends Library {
 		
 		errors.put("logError", new LogError());
 
+		files.put("separator", new Separator());
 		files.put("listDir", new ListDir());
 		files.put("absPath", new AbsPath());
 		files.put("write", new Write());
