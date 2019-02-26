@@ -18,4 +18,5 @@ package ast;
 
 public abstract class RunnableNode extends Node {
 	public abstract Object run();
+	
 }

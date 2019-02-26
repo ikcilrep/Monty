@@ -221,10 +221,10 @@ public class Block extends NodeWithParent implements Cloneable {
 		for (RunnableNode child : children) {
 			result = child.run();
 			if (child instanceof ReturnStatementNode || child instanceof BreakStatementNode
-					|| child instanceof ContinueStatementNode)
+					|| child instanceof ContinueStatementNode
+					|| ((child instanceof ConditionalNode || child instanceof ForStatementNode) && result != null))
 				return result;
-			else if ((child instanceof ConditionalNode || child instanceof ForStatementNode) && result != null)
-				return result;
+
 		}
 		return null;
 	}

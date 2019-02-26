@@ -43,7 +43,6 @@ public class ExpressionParser {
 
 	private final static HashMap<String, ConstantNode> literals = new HashMap<>();
 	private final static HashMap<String, ConstantNode> stringLiterals = new HashMap<>();
-
 	private final static boolean isFunction(OptimizedTokensArray array, int i) {
 		return i + 1 < array.length() && array.get(i + 1).getType().equals(TokenTypes.OPENING_BRACKET);
 	}
