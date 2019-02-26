@@ -201,7 +201,7 @@ public class ExpressionParser {
 		// Returns values with proper data type.
 		var literal = token.getText();
 		if (dataType == null)
-			new LogError("Unexpected token \"" + literal +"\"", token);
+			new LogError("Unexpected token \"" + literal + "\"", token);
 		switch (dataType) {
 		case INTEGER:
 			return new BigInteger(literal);

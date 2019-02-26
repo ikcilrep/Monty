@@ -41,7 +41,8 @@ import parser.parsing.Parser;
 public class Importing {
 	private static Path fileAbsolutePath = Paths.get(Main.path).getParent();
 	public static String mainPath = new File(Main.path).isAbsolute() ? "" : Paths.get("").toAbsolutePath().toString();
-	public static String mainFileLocation = mainPath + (mainPath.endsWith(File.separator) || mainPath.isEmpty() ? "" : File.separator)
+	public static String mainFileLocation = mainPath
+			+ (mainPath.endsWith(File.separator) || mainPath.isEmpty() ? "" : File.separator)
 			+ (fileAbsolutePath == null ? "" : fileAbsolutePath) + File.separator;
 
 	@SuppressWarnings("unchecked")
@@ -55,8 +56,8 @@ public class Importing {
 
 	private static void importWholeFile(Block block, String path, String fileName, int line) {
 		var file = new File(path);
-		block.concat(Parser
-				.parse(Lexer.lex(FileIO.readFile(file.getAbsolutePath(), fileName, line), path, 1, new OptimizedTokensArray(), 0)));
+		block.concat(Parser.parse(Lexer.lex(FileIO.readFile(file.getAbsolutePath(), fileName, line), path, 1,
+				new OptimizedTokensArray(), 0)));
 	}
 
 	private static void importFilesFromDirectory(Block block, File directory, String fileName, int line) {
@@ -169,8 +170,7 @@ public class Importing {
 			importWholeFile(block, file.getPath(), fileName, line);
 		else if (parent_file.exists() && parent_file.isFile()) {
 			importSpecifiedElementFromBlock(block,
-					Parser.parse(Lexer.lex(
-							FileIO.readFile(parent_file.getAbsolutePath(), fileName, line),
+					Parser.parse(Lexer.lex(FileIO.readFile(parent_file.getAbsolutePath(), fileName, line),
 							parent_file.getName(), 1, new OptimizedTokensArray(), 0)),
 					parent_file.getPath(), file.getName().substring(0, file.getName().length() - 3));
 		} else {

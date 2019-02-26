@@ -55,7 +55,7 @@ public final class Sml extends Library {
 		var string = new HashMap<String, Object>();
 		var errors = new HashMap<String, Object>();
 		var files = new HashMap<String, Object>();
-		
+
 		sml.put("casts", casts);
 		sml.put("math", math);
 		sml.put("io", io);
@@ -81,7 +81,7 @@ public final class Sml extends Library {
 		data.put("string", string);
 		data.put("length", new Length());
 		data.put("get", new Get());
-		
+
 		checking.put("isInt", new IsInt());
 		checking.put("isReal", new IsReal());
 		checking.put("isBoolean", new IsBoolean());
@@ -91,7 +91,6 @@ public final class Sml extends Library {
 		checking.put("isStack", new IsStack());
 		checking.put("isObject", new IsObject());
 
-		
 		string.put("charAt", new CharAt());
 		string.put("endsWith", new EndsWith());
 		string.put("equalsIgnoreCase", new EqualsIgnoreCase());
@@ -131,7 +130,6 @@ public final class Sml extends Library {
 		math.put("log", new Log());
 		math.put("abs", new Abs());
 
-		
 		errors.put("logError", new LogError());
 
 		files.put("separator", new Separator());

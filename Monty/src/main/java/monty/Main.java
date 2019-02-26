@@ -22,12 +22,13 @@ import parser.parsing.Parser;
 public class Main {
 	public static String[] argv = null;
 	public static String path;
+
 	public static void main(String[] args) throws FileNotFoundException {
 		if (args.length < 1) {
 			System.out.println("To run:\tjava -jar Monty.jar [file_name.mt]");
 			System.exit(1);
-		}	
-		
+		}
+
 		Parser.libraries.put("sml", new sml.Sml());
 		path = args[0];
 		argv = args;

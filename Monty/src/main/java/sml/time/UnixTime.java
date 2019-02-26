@@ -27,6 +27,7 @@ import parser.DataTypes;
 
 public final class UnixTime extends FunctionDeclarationNode {
 	private final static BigDecimal thousand = BigDecimal.valueOf(1000);
+
 	public UnixTime() {
 		super("unixTime", DataTypes.REAL);
 		setBody(new Block(null));

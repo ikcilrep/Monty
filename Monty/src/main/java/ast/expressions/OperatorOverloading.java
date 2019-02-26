@@ -286,7 +286,8 @@ public final class OperatorOverloading {
 			try {
 				return ((BigDecimal) leftValue).divide(((BigDecimal) rightValue));
 			} catch (ArithmeticException e) {
-				return ((BigDecimal) leftValue).divide(((BigDecimal) rightValue), ((BigDecimal) rightValue).intValue(), RoundingMode.HALF_UP);
+				return ((BigDecimal) leftValue).divide(((BigDecimal) rightValue), ((BigDecimal) rightValue).intValue(),
+						RoundingMode.HALF_UP);
 			}
 		case STRING:
 		case BOOLEAN:

@@ -34,7 +34,8 @@ public class Read extends FunctionDeclarationNode {
 	@Override
 	public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return FileIO.readFile(AbsPath.absPath(getBody().getVariable("path").getValue().toString()), callFileName, callLine);
+		return FileIO.readFile(AbsPath.absPath(getBody().getVariable("path").getValue().toString()), callFileName,
+				callLine);
 	}
 
 }

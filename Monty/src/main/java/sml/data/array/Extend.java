@@ -35,8 +35,7 @@ final class Extend extends Method<Array> {
 		setArguments(arguments, callFileName, callLine);
 		var otherArray = getBody().getVariable("otherArray").getValue();
 		if (!(otherArray instanceof Array))
-			new LogError("Can't extend array with something that isn't array:\t" + otherArray, callFileName,
-					callLine);
+			new LogError("Can't extend array with something that isn't array:\t" + otherArray, callFileName, callLine);
 		return parent.extend((Array) otherArray);
 	}
 

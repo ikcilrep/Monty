@@ -24,8 +24,10 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class E extends FunctionDeclarationNode{
-	private final static BigDecimal e = new BigDecimal ("2.718281828459045235360287471352662497757247093699959574966967627724076630353");
+public class E extends FunctionDeclarationNode {
+	private final static BigDecimal e = new BigDecimal(
+			"2.718281828459045235360287471352662497757247093699959574966967627724076630353");
+
 	public E() {
 		super("e", DataTypes.REAL);
 		setBody(new Block(null));

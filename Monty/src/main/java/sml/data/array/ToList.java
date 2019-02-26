@@ -23,7 +23,7 @@ import parser.DataTypes;
 import sml.data.Method;
 import sml.data.list.List;
 
-final class ToList extends Method<Array>{
+final class ToList extends Method<Array> {
 
 	public ToList(Array array) {
 		super(array, "toList", DataTypes.ANY);
@@ -34,5 +34,5 @@ final class ToList extends Method<Array>{
 		setArguments(arguments, callFileName, callLine);
 		return parent.toList();
 	}
-	
+
 }

@@ -54,7 +54,7 @@ public class Log extends FunctionDeclarationNode {
 		var y = a.pow(x);
 		var z = y.multiply(a);
 		if (z.compareTo(b) == 0)
-			return BigDecimal.valueOf(x+1);
+			return BigDecimal.valueOf(x + 1);
 		var divider = 1;
 		for (int i = 0; i < 15; i++) {
 			var yz = y.multiply(z);
@@ -78,9 +78,9 @@ public class Log extends FunctionDeclarationNode {
 		var scale = ((BigInteger) body.getVariable("scale").getValue()).intValue();
 		var a = (BigDecimal) body.getVariable("a").getValue();
 		var b = (BigDecimal) body.getVariable("b").getValue();
-		if(a.compareTo(BigDecimal.ONE) < 0)
+		if (a.compareTo(BigDecimal.ONE) < 0)
 			new LogError("a mustn't be lower than one.");
-		if(b.compareTo(BigDecimal.ZERO) < 0)
+		if (b.compareTo(BigDecimal.ZERO) < 0)
 			new LogError("b mustn't be lower than zero.");
 		return log(a, b, scale);
 	}

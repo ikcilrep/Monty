@@ -68,7 +68,7 @@ public final class Stack extends StructDeclarationNode {
 				return false;
 		return true;
 	}
-	
+
 	public Object[] getArray() {
 		return array;
 	}
@@ -116,7 +116,7 @@ public final class Stack extends StructDeclarationNode {
 	public int length() {
 		return top + 1;
 	}
-	
+
 	public Array toArray() {
 		return new Array(array).subarray(0, top + 1);
 	}
@@ -134,7 +134,7 @@ public final class Stack extends StructDeclarationNode {
 		return stringBuilder.toString();
 
 	}
-	
+
 	public List toList() {
 		var list = new List();
 		var _list = list;

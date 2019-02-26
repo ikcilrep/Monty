@@ -23,7 +23,7 @@ import parser.DataTypes;
 import sml.data.Method;
 import sml.data.stack.Stack;
 
-final class ToStack extends Method<List>{
+final class ToStack extends Method<List> {
 
 	public ToStack(List list) {
 		super(list, "toStack", DataTypes.ANY);

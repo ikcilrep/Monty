@@ -34,7 +34,7 @@ public final class Root extends FunctionDeclarationNode {
 		addParameter("f", DataTypes.REAL);
 		addParameter("scale", DataTypes.INTEGER);
 	}
-	
+
 	@Override
 	public BigDecimal call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);

@@ -22,7 +22,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-final class ToString extends Method<List>{
+final class ToString extends Method<List> {
 
 	public ToString(List list) {
 		super(list, "toString", DataTypes.STRING);

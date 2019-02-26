@@ -252,7 +252,7 @@ public final class List extends StructDeclarationNode {
 		}
 		return list.reversed();
 	}
-	
+
 	public Array toArray() {
 		Array array = new Array(length());
 		var list = this;
@@ -263,11 +263,11 @@ public final class List extends StructDeclarationNode {
 
 		return array;
 	}
-	
+
 	public Stack toStack() {
 		Stack stack = new Stack();
 		var list = this;
-		while ( list != null && !list.head.equals(Empty.empty)) {
+		while (list != null && !list.head.equals(Empty.empty)) {
 			stack.push(list.head);
 			list = list.tail;
 		}

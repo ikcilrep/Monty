@@ -23,7 +23,7 @@ import parser.DataTypes;
 import sml.data.Method;
 import sml.data.array.Array;
 
-final class ToArray extends Method<Stack>{
+final class ToArray extends Method<Stack> {
 
 	public ToArray(Stack stack) {
 		super(stack, "toArray", DataTypes.ANY);
@@ -34,5 +34,5 @@ final class ToArray extends Method<Stack>{
 		setArguments(arguments, callFileName, callLine);
 		return parent.toArray();
 	}
-	
+
 }

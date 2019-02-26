@@ -24,8 +24,10 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class Pi extends FunctionDeclarationNode{
-	private final static BigDecimal pi = new BigDecimal ("3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679");
+public class Pi extends FunctionDeclarationNode {
+	private final static BigDecimal pi = new BigDecimal(
+			"3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679");
+
 	public Pi() {
 		super("pi", DataTypes.REAL);
 		setBody(new Block(null));

@@ -13,7 +13,8 @@ public final class Length extends FunctionDeclarationNode {
 	public Length() {
 		super("length", DataTypes.INTEGER);
 		addParameter("iterable", DataTypes.ANY);
-		setBody(Parser.parse(Lexer.lex("int counter;for _ in iterable;counter 1+=;end;return counter;", "Length.java")));
+		setBody(Parser
+				.parse(Lexer.lex("int counter;for _ in iterable;counter 1+=;end;return counter;", "Length.java")));
 	}
 
 	@Override
@@ -23,4 +24,3 @@ public final class Length extends FunctionDeclarationNode {
 	}
 
 }
-	

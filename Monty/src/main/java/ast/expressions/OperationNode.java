@@ -251,13 +251,15 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 		if (isNotAssignment && (leftType.equals(DataTypes.INTEGER) && rightType.equals(DataTypes.REAL))) {
 			leftType = DataTypes.REAL;
 			leftValue = ToReal.toReal(leftValue, getFileName(), getLine());
-		} else if (isNotAssignment && operator.equals("+") && (rightType.equals(DataTypes.STRING) && !rightType.equals(leftType))) {
+		} else if (isNotAssignment && operator.equals("+")
+				&& (rightType.equals(DataTypes.STRING) && !rightType.equals(leftType))) {
 			leftType = DataTypes.STRING;
 			leftValue = leftValue.toString();
 		} else if (leftType.equals(DataTypes.REAL) && rightType.equals(DataTypes.INTEGER)) {
 			rightType = DataTypes.REAL;
 			rightValue = ToReal.toReal(rightValue, getFileName(), getLine());
-		} else if (operator.toString().contains("+") && leftType.equals(DataTypes.STRING) && !leftType.equals(rightType)) {
+		} else if (operator.toString().contains("+") && leftType.equals(DataTypes.STRING)
+				&& !leftType.equals(rightType)) {
 			rightType = DataTypes.STRING;
 			rightValue = rightValue.toString();
 		} else if (!isNotAssignment && leftType.equals(DataTypes.ANY) && !leftType.equals(rightType))

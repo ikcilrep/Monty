@@ -40,7 +40,8 @@ public class Write extends FunctionDeclarationNode {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
 		FileIO.writeFile(AbsPath.absPath((String) getBody().getVariable("path").getValue()),
-				(String) body.getVariable("text").getValue(), (boolean) body.getVariable("isAppend").getValue(), callFileName, callLine);
+				(String) body.getVariable("text").getValue(), (boolean) body.getVariable("isAppend").getValue(),
+				callFileName, callLine);
 		return Nothing.nothing;
 	}
 

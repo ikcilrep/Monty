@@ -37,8 +37,8 @@ public class Split extends FunctionDeclarationNode {
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var str = (String)body.getVariable("str").getValue();
-		var regex = (String)body.getVariable("regex").getValue();
+		var str = (String) body.getVariable("str").getValue();
+		var regex = (String) body.getVariable("regex").getValue();
 		return new Array(str.split(regex));
 	}
 

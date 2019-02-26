@@ -35,9 +35,9 @@ public class AbsPath extends FunctionDeclarationNode {
 	public static String absPath(String path) {
 		if (new File(path).isAbsolute())
 			return path;
-		return Importing.mainFileLocation+path;
+		return Importing.mainFileLocation + path;
 	}
-	
+
 	@Override
 	public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);

@@ -22,7 +22,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-final class ToString extends Method<Stack>{
+final class ToString extends Method<Stack> {
 
 	public ToString(Stack stack) {
 		super(stack, "toString", DataTypes.STRING);

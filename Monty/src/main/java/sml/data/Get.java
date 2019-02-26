@@ -13,17 +13,9 @@ public final class Get extends FunctionDeclarationNode {
 
 	public Get() {
 		super("get", DataTypes.ANY);
-		setBody(Parser.parse(Lexer.lex(
-				  "int counter;\n"
-				+ "for x in iterable;\n"
-				+ 	"if counter i ==;\n"
-				+ 		"return x;\n"
-				+ 		"println(\"ewqq\");\n"
-				+ 	"end;\n"
-				+ 	"counter 1 +=;\n"
-				+ "end;\n"
-				+ "logError(\"Object doesn't have \" i \" element\" + +);\n",
-				"Get.java")));
+		setBody(Parser.parse(Lexer.lex("int counter;\n" + "for x in iterable;\n" + "if counter i ==;\n" + "return x;\n"
+				+ "println(\"ewqq\");\n" + "end;\n" + "counter 1 +=;\n" + "end;\n"
+				+ "logError(\"Object doesn't have \" i \" element\" + +);\n", "Get.java")));
 		getBody().addFunction(new LogError());
 		getBody().addFunction(new Length());
 		addParameter("i", DataTypes.INTEGER);

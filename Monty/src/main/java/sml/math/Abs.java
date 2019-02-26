@@ -24,7 +24,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class Abs extends FunctionDeclarationNode{
+public class Abs extends FunctionDeclarationNode {
 
 	public Abs() {
 		super("abs", DataTypes.REAL);

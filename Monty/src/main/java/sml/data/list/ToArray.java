@@ -23,7 +23,7 @@ import parser.DataTypes;
 import sml.data.Method;
 import sml.data.array.Array;
 
-final class ToArray extends Method<List>{
+final class ToArray extends Method<List> {
 
 	public ToArray(List list) {
 		super(list, "toArray", DataTypes.ANY);
