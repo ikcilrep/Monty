@@ -21,26 +21,21 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import monty.Importing;
 import parser.DataTypes;
+import sml.data.array.Array;
 
-public class AbsPath extends FunctionDeclarationNode {
+public class ListDir extends FunctionDeclarationNode {
 
-	public AbsPath() {
-		super("absPath", DataTypes.STRING);
+	public ListDir() {
+		super("listDir", DataTypes.ANY);
 		setBody(new Block(null));
 		addParameter("path", DataTypes.STRING);
 	}
 
-	public static String absPath(String path) {
-		if (new File(path).isAbsolute())
-			return path;
-		return Importing.mainFileLocation+path;
-	}
-	
 	@Override
-	public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public Array call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return absPath(getBody().getVariable("path").getValue().toString());
+		var list = new File(AbsPath.absPath((String)getBody().getVariable("path").getValue())).list();
+		return list == null ? new Array(0) : new Array(list);
 	}
 }

@@ -133,10 +133,15 @@ public final class Sml extends Library {
 
 		
 		errors.put("logError", new LogError());
-		
+
+		files.put("listDir", new ListDir());
 		files.put("absPath", new AbsPath());
 		files.put("write", new Write());
 		files.put("read", new Read());
+		files.put("exists", new Exists());
+		files.put("isAbsolute", new IsAbsolute());
+		files.put("isDir", new IsDir());
+		files.put("isFile", new IsFile());
 
 	}
 
