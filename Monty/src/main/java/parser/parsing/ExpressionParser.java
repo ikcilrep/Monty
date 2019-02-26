@@ -19,6 +19,7 @@ package parser.parsing;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Stack;
 
 import ast.Block;
@@ -39,7 +40,10 @@ public class ExpressionParser {
 	/*
 	 * Parses list of tokens to abstract syntax tree.
 	 */
-
+	
+	private final static HashMap<String, BigInteger> integerLiterals = new HashMap<>();
+	private final static HashMap<String, BigDecimal> realLiterals = new HashMap<>();
+	
 	private final static boolean isFunction(OptimizedTokensArray array, int i) {
 		return i + 1 < array.length() && array.get(i + 1).getType().equals(TokenTypes.BRACKET);
 	}
@@ -204,9 +208,17 @@ public class ExpressionParser {
 			new LogError("Unexpected token \"" + literal + "\"", token);
 		switch (dataType) {
 		case INTEGER:
-			return new BigInteger(literal);
+			if (integerLiterals.containsKey(literal))
+				return integerLiterals.get(literal);
+			var integer = new BigInteger(literal);
+			integerLiterals.put(literal, integer);
+			return integer;
 		case REAL:
-			return new BigDecimal(literal);
+			if (realLiterals.containsKey(literal))
+				return realLiterals.get(literal);
+			var real = new BigDecimal(literal);
+			realLiterals.put(literal, real);
+			return real;
 		case STRING:
 			return literal;
 		case BOOLEAN:
