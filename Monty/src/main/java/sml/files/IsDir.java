@@ -22,6 +22,7 @@ import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
+import parser.LogError;
 
 public class IsDir extends FunctionDeclarationNode {
 
@@ -34,6 +35,12 @@ public class IsDir extends FunctionDeclarationNode {
 	@Override
 	public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return new File(AbsPath.absPath(getBody().getVariable("path").getValue().toString())).isDirectory();
+		var path = getBody().getVariable("path").getValue().toString();
+		try {
+			return new File(AbsPath.absPath(path)).isDirectory();
+		} catch (SecurityException e) {
+			new LogError("Access denied to:\t" + path, callFileName, callLine);
+		}
+		return false;
 	}
 }

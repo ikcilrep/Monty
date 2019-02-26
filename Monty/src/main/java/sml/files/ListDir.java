@@ -22,6 +22,7 @@ import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
+import parser.LogError;
 import sml.data.array.Array;
 
 public class ListDir extends FunctionDeclarationNode {
@@ -35,7 +36,13 @@ public class ListDir extends FunctionDeclarationNode {
 	@Override
 	public Array call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var list = new File(AbsPath.absPath((String) getBody().getVariable("path").getValue())).list();
+		var path = (String) getBody().getVariable("path").getValue();
+		try {
+		var list = new File(AbsPath.absPath(path)).list();
 		return list == null ? new Array(0) : new Array(list);
+		} catch (SecurityException e) {
+			new LogError("Access denied to:\t" + path, callFileName, callLine);
+		}
+		return null;
 	}
 }
