@@ -54,16 +54,18 @@ public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode
 
 		if (result == null)
 			result = DataTypes.getNeutralValue(getType());
-		if (result instanceof BreakType)
-			new LogError("Trying to break function " + getName(), fileNames, lines);
-		if (result instanceof ContinueStatementNode)
-			new LogError("Trying to continue function " + getName(), fileNames, lines);
+		else {
+			if (result instanceof BreakType)
+				new LogError("Trying to break function " + getName(), fileNames, lines);
+			if (result instanceof ContinueStatementNode)
+				new LogError("Trying to continue function " + getName(), fileNames, lines);
+		}
 		body.setVariables(variables);
 		var resultDataType = DataTypes.getDataType(result);
 		if (resultDataType == null)
 			resultDataType = getType();
-		if (!(getType().equals(DataTypes.ANY) || resultDataType.equals(getType())))
-			new LogError("Function " + getName() + " should return " + getType().toString().toLowerCase()
+		else if (!(type.equals(DataTypes.ANY) || resultDataType.equals(type)))
+			new LogError("Function " + getName() + " should return " + type.toString().toLowerCase()
 					+ ",\nbut returned " + resultDataType.toString().toLowerCase(), fileNames, lines);
 		return result;
 	}

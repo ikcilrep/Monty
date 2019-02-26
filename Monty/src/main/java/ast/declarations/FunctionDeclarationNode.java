@@ -27,7 +27,7 @@ import sml.casts.ToReal;
 
 public abstract class FunctionDeclarationNode extends DeclarationNode implements Cloneable {
 	Block body;
-
+	private int parametersSize = 0;
 	public ArrayList<VariableDeclarationNode> parameters = new ArrayList<>();
 
 	public FunctionDeclarationNode(String name, DataTypes type) {
@@ -36,6 +36,7 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 
 	public void addParameter(String name, DataTypes type) {
 		parameters.add(new VariableDeclarationNode(name, type));
+		parametersSize++;
 	}
 
 	public abstract Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine);
@@ -60,10 +61,13 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 	}
 
 	public void setArguments(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		if (arguments.size() > parameters.size())
+		var argumentsSize = arguments.size();
+		if (argumentsSize > parametersSize)
 			new LogError("Too many arguments in " + name + " function call", callFileName, callLine);
-		else if (arguments.size() < parameters.size())
+		else if (argumentsSize < parametersSize)
 			new LogError("Too few arguments in " + name + " function call", callFileName, callLine);
+		if (argumentsSize == 0)
+			return;
 		var runnedArguments = new ArrayList<Object>(Arrays.asList(new Object[arguments.size()]));
 
 		for (int i = 0; i < arguments.size(); i++) {
