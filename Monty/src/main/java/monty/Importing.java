@@ -39,9 +39,9 @@ import parser.Tokens;
 import parser.parsing.Parser;
 
 public class Importing {
-	private static String mainPath = Paths.get("").toAbsolutePath().toString();
 	private static Path fileAbsolutePath = Paths.get(Main.path).getParent();
-	public static String mainFileLocation = mainPath + (mainPath.endsWith(File.separator) ? "" : File.separator)
+	public static String mainPath = new File(Main.path).isAbsolute() ? "" : Paths.get("").toAbsolutePath().toString();
+	public static String mainFileLocation = mainPath + (mainPath.endsWith(File.separator) || mainPath.isEmpty() ? "" : File.separator)
 			+ (fileAbsolutePath == null ? "" : fileAbsolutePath) + File.separator;
 
 	@SuppressWarnings("unchecked")
