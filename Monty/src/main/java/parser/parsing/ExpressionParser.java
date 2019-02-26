@@ -40,12 +40,12 @@ public class ExpressionParser {
 	/*
 	 * Parses list of tokens to abstract syntax tree.
 	 */
-	
-	private final static HashMap<String, BigInteger> integerLiterals = new HashMap<>();
-	private final static HashMap<String, BigDecimal> realLiterals = new HashMap<>();
-	
+
+	private final static HashMap<String, ConstantNode> literals = new HashMap<>();
+	private final static HashMap<String, ConstantNode> stringLiterals = new HashMap<>();
+
 	private final static boolean isFunction(OptimizedTokensArray array, int i) {
-		return i + 1 < array.length() && array.get(i + 1).getType().equals(TokenTypes.BRACKET);
+		return i + 1 < array.length() && array.get(i + 1).getType().equals(TokenTypes.OPENING_BRACKET);
 	}
 
 	public final static OperationNode parse(Block parent, OptimizedTokensArray array) {
@@ -76,7 +76,7 @@ public class ExpressionParser {
 			default:
 				// Otherwise token in expression can be only constant.
 				var dataType = Tokens.getDataType(token.getType());
-				node = new OperationNode(new ConstantNode(toDataType(token, dataType), dataType), parent);
+				node = new OperationNode(toDataType(token, dataType), parent);
 				break;
 			}
 			stack.push(node);
@@ -86,7 +86,7 @@ public class ExpressionParser {
 			return parse(parent, array, stack, i);
 		}
 		if (stack.size() != 1)
-			new LogError("Ambiguous result for this operation:\t" + Tokens.getText(array), array.get(0));
+			new LogError("Ambiguous result for operation.", array.get(0));
 		return stack.pop();
 	}
 
@@ -98,7 +98,7 @@ public class ExpressionParser {
 				structContainer.setNext(variableOrFunctionOperationNode);
 				return variableOrFunctionOperationNode;
 			} else
-				new LogError("Expression after dot have to be function or variable", array.get(i.i - 1));
+				new LogError("Expression after dot have to be function or variable.", array.get(i.i - 1));
 		return null;
 	}
 
@@ -111,22 +111,19 @@ public class ExpressionParser {
 		for (j = i.i + 2; openBracketCounter > closeBracketCounter; j++) {
 			if (j >= array.length()) {
 				if (openBracketCounter > closeBracketCounter)
-					new LogError(
-							"Expected closing bracket:\t" + Tokens.getText(array.subarray(i.i + 1, array.length())),
-							token);
+					new LogError("Expected closing bracket.", token);
 				break;
 			}
-			if (array.get(j).getType().equals(TokenTypes.BRACKET))
-				switch (array.get(j).getText()) {
-				case "(":
-					openBracketCounter++;
-					break;
-				case ")":
-					closeBracketCounter++;
-					break;
-				default:
-					break;
-				}
+			switch (array.get(j).getType()) {
+			case OPENING_BRACKET:
+				openBracketCounter++;
+				break;
+			case CLOSING_BRACKET:
+				closeBracketCounter++;
+				break;
+			default:
+				break;
+			}
 
 		}
 		var function = new FunctionCallNode(token.getText());
@@ -140,8 +137,7 @@ public class ExpressionParser {
 				break;
 
 			if (!Identificator.isExpression(ts))
-				new LogError("Expected expression as function " + token.getText() + " call's argument:\t"
-						+ Tokens.getText(ts), token);
+				new LogError("Expected expression as function " + token.getText() + " call's argument.", token);
 			function.addArgument(parse(parent, ts, new Stack<>(), new IntegerHolder()));
 		}
 		i.i = j - 1;
@@ -185,9 +181,9 @@ public class ExpressionParser {
 		int openBracketCounter = 1;
 		int closeBracketCounter = 0;
 		for (Token t : array) {
-			if (t.getText().equals("("))
+			if (t.getType().equals(TokenTypes.OPENING_BRACKET))
 				openBracketCounter++;
-			else if (t.getText().equals(")"))
+			else if (t.getType().equals(TokenTypes.CLOSING_BRACKET))
 				closeBracketCounter++;
 			// If every pair of bracket except last is closed and actual token type is comma
 			// appends new arguments.
@@ -201,32 +197,36 @@ public class ExpressionParser {
 		return newArray;
 	}
 
-	private final static Object toDataType(Token token, DataTypes dataType) {
+	private final static ConstantNode toDataType(Token token, DataTypes dataType) {
 		// Returns values with proper data type.
 		var literal = token.getText();
 		if (dataType == null)
 			new LogError("Unexpected token \"" + literal + "\"", token);
+		if (dataType.equals(DataTypes.STRING) && stringLiterals.containsKey(literal))
+			return stringLiterals.get(literal);
+		if (literals.containsKey(literal))
+			return literals.get(literal);
+		Object valueOfDataType = null;
 		switch (dataType) {
 		case INTEGER:
-			if (integerLiterals.containsKey(literal))
-				return integerLiterals.get(literal);
-			var integer = new BigInteger(literal);
-			integerLiterals.put(literal, integer);
-			return integer;
+			valueOfDataType = new BigInteger(literal);
+			break;
 		case REAL:
-			if (realLiterals.containsKey(literal))
-				return realLiterals.get(literal);
-			var real = new BigDecimal(literal);
-			realLiterals.put(literal, real);
-			return real;
-		case STRING:
-			return literal;
+			valueOfDataType = new BigDecimal(literal);
+			break;
 		case BOOLEAN:
-			return Boolean.parseBoolean(literal);
+			valueOfDataType = Boolean.parseBoolean(literal);
+			break;
+		case STRING:
+			var newStringLiteral = new ConstantNode(literal, dataType);
+			stringLiterals.put(literal, newStringLiteral);
+			return newStringLiteral;
 		default:
 			new LogError("There isn't constant of " + dataType.toString().toLowerCase());
 		}
-		return dataType;
+		var newLiteral = new ConstantNode(valueOfDataType, dataType);
+		literals.put(literal, newLiteral);
+		return newLiteral;
 	}
 
 }

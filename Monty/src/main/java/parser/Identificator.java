@@ -42,13 +42,13 @@ public abstract class Identificator {
 		if (!tokens.get(0).getType().equals(TokenTypes.CHANGE_KEYWORD))
 			return false;
 		if (tokensSize == 1 || !tokens.get(1).getType().equals(TokenTypes.IDENTIFIER))
-			new LogError("Expected identifier after \"change\" keyword:\t" + Tokens.getText(tokens),
+			new LogError("Expected identifier after \"change\" keyword.",
 					tokens.get(tokens.length() > 1 ? 1 : 0));
 		if (tokensSize == 2 || !tokens.get(2).getType().equals(TokenTypes.TO_KEYWORD))
-			new LogError("Expected \"to\" keyword after identifier:\t" + Tokens.getText(tokens),
+			new LogError("Expected \"to\" keyword after identifier.",
 					tokens.get(tokens.length() > 2 ? 2 : 1));
 		if (tokensSize == 3 | !dataTypesKeywords.contains(tokens.get(3).getType()))
-			new LogError("Expected data type declaration after \"to\" keyword\t" + Tokens.getText(tokens),
+			new LogError("Expected data type declaration after \"to\" keyword.",
 					tokens.get(tokens.length() > 3 ? 3 : 2));
 		return true;
 	}
@@ -66,10 +66,10 @@ public abstract class Identificator {
 		if (!tokens.get(0).getType().equals(TokenTypes.DO_KEYWORD))
 			return false;
 		if (tokens.length() == 1 || !tokens.get(1).getType().equals(TokenTypes.WHILE_KEYWORD))
-			new LogError("Expected \"while\" keyword after \"do\" keyword:\t" + Tokens.getText(tokens),
+			new LogError("Expected \"while\" keyword after \"do\" keyword.",
 					tokens.get(tokens.length() > 1 ? 1 : 0));
 		if (!isExpression(tokens.subarray(2, tokens.length())))
-			new LogError("Expected expression after \"do\" keyword:\t" + Tokens.getText(tokens), tokens.get(2));
+			new LogError("Expected expression after \"do\" keyword.", tokens.get(2));
 		return true;
 
 	}
@@ -78,7 +78,7 @@ public abstract class Identificator {
 		if (!tokens.get(0).getType().equals(TokenTypes.ELSE_KEYWORD))
 			return false;
 		if (tokens.length() > 1 && !isIfStatement(tokens.subarray(1, tokens.length())))
-			new LogError("Expected if statement or nothing after \"else\" keyword:\t" + Tokens.getText(tokens),
+			new LogError("Expected if statement or nothing after \"else\" keyword.",
 					tokens.get(tokens.length() > 1 ? 1 : 0));
 		return true;
 
@@ -88,13 +88,12 @@ public abstract class Identificator {
 		if (!tokens.get(0).getType().equals(TokenTypes.END_KEYWORD))
 			return false;
 		if (tokens.length() > 1)
-			new LogError("Nothing expected after \"end\" keyword:\t" + Tokens.getText(tokens), tokens.get(1));
+			new LogError("Nothing expected after \"end\" keyword.", tokens.get(1));
 		return true;
 	}
 
 	public static boolean isExpression(OptimizedTokensArray tokensBeforeSemicolon) {
 		Token last = null;
-		int i = 0;
 		for (Token token : tokensBeforeSemicolon) {
 			switch (token.getType()) {
 			case OPERATOR:
@@ -107,31 +106,28 @@ public abstract class Identificator {
 			case STRING_LITERAL:
 			case IDENTIFIER:
 				break;
-			case BRACKET:
+			case OPENING_BRACKET:
+			case CLOSING_BRACKET:
 				if (last == null)
-					new LogError("Unexpected bracket:\t" + Tokens.getText(tokensBeforeSemicolon.subarray(0, i + 1)),
-							token);
+					new LogError("Unexpected bracket.", token);
 				if (last.getType().equals(TokenTypes.COMMA))
-					new LogError("Unexpected comma before bracket:\t"
-							+ Tokens.getText(tokensBeforeSemicolon.subarray(0, i + 1)), token);
+					new LogError("Unexpected comma before bracket.", token);
 				break;
 			case COMMA:
 				if (last == null)
-					new LogError("Unexpected comma:\t" + Tokens.getText(tokensBeforeSemicolon.subarray(0, i + 1)),
-							token);
-				if ((last.getType().equals(TokenTypes.BRACKET) && last.getText().equals("(")))
-					new LogError("Unexpected bracket before comma:\t"
-							+ Tokens.getText(tokensBeforeSemicolon.subarray(0, i + 1)), token);
+					new LogError("Unexpected comma.", token);
+				if (last.getType().equals(TokenTypes.OPENING_BRACKET))
+					new LogError("Unexpected bracket before comma.", token);
 				break;
 			case DOT:
-				if (last == null || (!last.getType().equals(TokenTypes.IDENTIFIER) && !last.getText().equals(")")))
-					new LogError("Unexpected dot:\t" + Tokens.getText(tokensBeforeSemicolon.subarray(0, i + 1)), token);
+				if (last == null || (!last.getType().equals(TokenTypes.IDENTIFIER)
+						&& !last.getType().equals(TokenTypes.CLOSING_BRACKET)))
+					new LogError("Unexpected dot.", token);
 				break;
 			default:
 				return false;
 			}
 			last = token;
-			i++;
 		}
 		return true;
 
@@ -142,14 +138,11 @@ public abstract class Identificator {
 			return false;
 
 		if (tokens.length() == 1 || !tokens.get(1).getType().equals(TokenTypes.IDENTIFIER))
-			new LogError("Expected identifier after \"for\" keyword:\t" + Tokens.getText(tokens),
-					tokens.get(tokens.length() > 1 ? 1 : 0));
+			new LogError("Expected identifier after \"for\" keyword.", tokens.get(tokens.length() > 1 ? 1 : 0));
 		if (tokens.length() == 2 || !tokens.get(2).getType().equals(TokenTypes.IN_KEYWORD))
-			new LogError("Expected \"in\" keyword after \"for\" keyword:\t" + Tokens.getText(tokens),
-					tokens.get(tokens.length() > 2 ? 2 : 1));
+			new LogError("Expected \"in\" keyword after \"for\" keyword.", tokens.get(tokens.length() > 2 ? 2 : 1));
 		if (tokens.length() == 3 || !isExpression(tokens.subarray(3, tokens.length() - 1)))
-			new LogError("Expected expression after \"in\" keyword:\t" + Tokens.getText(tokens),
-					tokens.get(tokens.length() > 3 ? 3 : 2));
+			new LogError("Expected expression after \"in\" keyword.", tokens.get(tokens.length() > 3 ? 3 : 2));
 		return true;
 	}
 
@@ -165,15 +158,9 @@ public abstract class Identificator {
 		if (!isFirstTokenFuncKeyword)
 			return false;
 		if (!isSecondTokenDataTypeKeyword)
-			new LogError(
-					"Expected data type declaration after \"func\" keyword:\t"
-							+ Tokens.getText(tokensBeforeSemicolon.subarray(1, tokensBeforeSemicolon.length())),
-					tokensBeforeSemicolon.get(1));
+			new LogError("Expected data type declaration after \"func\" keyword.", tokensBeforeSemicolon.get(1));
 		if (!isThirdTokenIdentifier)
-			new LogError(
-					"Expected identifier after data type declaration keyword:\t"
-							+ Tokens.getText(tokensBeforeSemicolon.subarray(2, tokensBeforeSemicolon.length())),
-					tokensBeforeSemicolon.get(2));
+			new LogError("Expected identifier after data type declaration keyword.", tokensBeforeSemicolon.get(2));
 		TokenTypes last = null;
 		var isLastTokenDataTypeDeclaration = false;
 		for (int i = 3; i < tokensBeforeSemicolon.length(); i++) {
@@ -182,20 +169,14 @@ public abstract class Identificator {
 				isLastTokenDataTypeDeclaration = true;
 			else if (t.getType().equals(TokenTypes.IDENTIFIER)) {
 				if (!isLastTokenDataTypeDeclaration)
-					new LogError(
-							"Expected data type declaration before identifer:\t"
-									+ Tokens.getText(tokensBeforeSemicolon.subarray(i, tokensBeforeSemicolon.length())),
-							t);
+					new LogError("Expected data type declaration before identifer.", t);
 				isLastTokenDataTypeDeclaration = false;
 			} else if (t.getType().equals(TokenTypes.COMMA)) {
 				if (!(last.equals(TokenTypes.IDENTIFIER) && i + 1 < tokensBeforeSemicolon.length()))
-					new LogError(
-							"Unexpected comma:\t"
-									+ Tokens.getText(tokensBeforeSemicolon.subarray(i, tokensBeforeSemicolon.length())),
-							t);
+					new LogError("Unexpected comma.", t);
 				isLastTokenDataTypeDeclaration = false;
 			} else
-				new LogError("Unexpected token:\t" + t.getText(), t);
+				new LogError("Unexpected token.", t);
 
 			last = t.getType();
 		}
@@ -207,7 +188,7 @@ public abstract class Identificator {
 		if (!tokens.get(0).getType().equals(TokenTypes.IF_KEYWORD))
 			return false;
 		if (tokens.length() == 1 || !isExpression(tokens.subarray(1, tokens.length())))
-			new LogError("Expected expression after \"if\" keyword:\t" + Tokens.getText(tokens),
+			new LogError("Expected expression after \"if\" keyword.",
 					tokens.get(tokens.length() > 1 ? 1 : 0));
 		return true;
 
@@ -230,9 +211,7 @@ public abstract class Identificator {
 			return false;
 		if (tokensBeforeSemicolon.length() > 1
 				&& !isExpression(tokensBeforeSemicolon.subarray(1, tokensBeforeSemicolon.length())))
-			new LogError(
-					"Expected expression or nothing after \"return\" keyword:\t"
-							+ Tokens.getText(tokensBeforeSemicolon),
+			new LogError("Expected expression or nothing after \"return\" keyword.",
 					tokensBeforeSemicolon.get(tokensBeforeSemicolon.length() > 1 ? 1 : 0));
 		return true;
 	}
@@ -241,8 +220,7 @@ public abstract class Identificator {
 		if (!tokens.get(0).getType().equals(TokenTypes.STRUCT_KEYWORD))
 			return false;
 		if (tokens.length() == 1 || !tokens.get(1).getType().equals(TokenTypes.IDENTIFIER))
-			new LogError("Expected name after \"struct\" keyword:\t" + Tokens.getText(tokens),
-					tokens.get(tokens.length() > 1 ? 1 : 0));
+			new LogError("Expected name after \"struct\" keyword.", tokens.get(tokens.length() > 1 ? 1 : 0));
 
 		return true;
 	}
@@ -262,19 +240,18 @@ public abstract class Identificator {
 		int n = 1;
 		if (isFirstTokenDynamicKeyword) {
 			if (!(secondTokenType != null && dataTypesKeywords.contains(secondTokenType)) || tokensSize == 2)
-				new LogError("Expected data type declaration after \"dynamic\" keyword:\t"
-						+ Tokens.getText(tokensBeforeSemicolon), tokensBeforeSemicolon.get(1));
+				new LogError("Expected data type declaration after \"dynamic\" keyword.");
 			n++;
 
 		}
 		if (!tokensBeforeSemicolon.get(n).getType().equals(TokenTypes.IDENTIFIER))
-			new LogError("Expected identifier after data type declaration:\t" + Tokens.getText(tokensBeforeSemicolon),
+			new LogError("Expected identifier after data type declaration.",
 					tokensBeforeSemicolon.get(n));
 
 		if (tokensSize > n + 1) {
 			var expression = tokensBeforeSemicolon.subarray(n, tokensBeforeSemicolon.length());
 			if (!isExpression(expression))
-				new LogError("Wrong expression after data type declaration:\t" + Tokens.getText(expression),
+				new LogError("Wrong expression after data type declaration.",
 						tokensBeforeSemicolon.get(n));
 
 		}
@@ -285,7 +262,7 @@ public abstract class Identificator {
 		if (!tokens.get(0).getType().equals(TokenTypes.WHILE_KEYWORD))
 			return false;
 		if (tokens.length() == 1 || !isExpression(tokens.subarray(1, tokens.length())))
-			new LogError("Expected expression after \"while\" keyword:\t" + Tokens.getText(tokens),
+			new LogError("Expected expression after \"while\" keyword.",
 					tokens.get(tokens.length() > 1 ? 1 : 0));
 		return true;
 

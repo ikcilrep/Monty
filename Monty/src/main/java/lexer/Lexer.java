@@ -60,8 +60,9 @@ public final class Lexer {
 		case ',':
 			return TokenTypes.COMMA;
 		case '(':
+			return TokenTypes.OPENING_BRACKET;
 		case ')':
-			return TokenTypes.BRACKET;
+			return TokenTypes.CLOSING_BRACKET;
 		default:
 			return TokenTypes.SEMICOLON;
 		}
@@ -137,7 +138,7 @@ public final class Lexer {
 				if (c == '#')
 					isInComment = true;
 				if (c == ';' || c == ',' || c == '.' || c == '(' || c == ')')
-					tokens.append(new Token(interpunctionToTokenType(c), "" + c, fileName, line));
+					tokens.append(new Token(interpunctionToTokenType(c), c + "", fileName, line));
 				if (c == '\"')
 					return stringLiteral(code, fileName, line, tokens, i);
 				if (Character.isDigit(c)

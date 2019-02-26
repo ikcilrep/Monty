@@ -44,22 +44,14 @@ public class Tokens {
 		}
 	}
 
+	
 	public static String getText(OptimizedTokensArray array) {
 		var result = new StringBuilder();
-		Token next = null;
-		int i = 0;
-		for (Token token : array) {
-			result.append(token.getText());
-			if (i + 1 < array.length())
-				next = array.get(i + 1);
-			if (!(token.getType().equals(TokenTypes.BRACKET) || token.getType().equals(TokenTypes.COMMA)
-					|| token.getType().equals(TokenTypes.DOT) || next == null
-					|| next.getType().equals(TokenTypes.BRACKET) || next.getType().equals(TokenTypes.COMMA)
-					|| next.getType().equals(TokenTypes.DOT)))
-				result.append(' ');
-			i++;
-			next = null;
-		}
+		for (Token token : array)
+			if (token.getType().equals(TokenTypes.DOT))
+				result.append(".");
+			else
+				result.append(token.getText());
 		return result.toString();
 	}
 
