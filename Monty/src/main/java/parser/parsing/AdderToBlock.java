@@ -65,10 +65,11 @@ public abstract class AdderToBlock {
 
 	public final static Block addElseStatement(Block block, OptimizedTokensArray tokens) {
 		if (!(block instanceof IfStatementNode))
-			new LogError("Unexpected \"else\" keyword", tokens.get(0));
+			new LogError("Unexpected \"else\" keyword.", tokens.get(0));
 		var elseBlock = new Block(block.getParent());
 		elseBlock.setFileName(tokens.get(0).getFileName());
 		elseBlock.setLine(tokens.get(0).getLine());
+		elseBlock.setParent(block.getParent());
 		((IfStatementNode) block).setElseBody(elseBlock);
 
 		return elseBlock;
@@ -81,7 +82,7 @@ public abstract class AdderToBlock {
 	public final static Block addForStatement(Block block, OptimizedTokensArray tokens) {
 		var variableName = tokens.get(1).getText();
 		if (Character.isUpperCase(variableName.charAt(0)))
-			new LogError("Variable name " + variableName + " should start with lower case", tokens.get(1));
+			new LogError("Variable name " + variableName + " should start with lower case.", tokens.get(1));
 		var forStatement = new ForStatementNode(variableName,
 				ExpressionParser.parse(block, tokens.subarray(3, tokens.length())), tokens.get(0).getFileName(),
 				tokens.get(0).getLine(), block);
@@ -113,9 +114,10 @@ public abstract class AdderToBlock {
 		return function.getBody();
 	}
 
-	public final static Block addIfStatement(Block block, OptimizedTokensArray tokens) {
+	public final static Block addIfStatement(Block block, OptimizedTokensArray tokens, boolean isInElse) {
 		var ifStatement = new IfStatementNode(block, ExpressionParser.parse(block, tokens.subarray(1, tokens.length())),
-				tokens.get(0).getFileName(), tokens.get(0).getLine());
+				tokens.get(0).getFileName(), tokens.get(0).getLine(), isInElse);
+		ifStatement.setInElse(isInElse);
 		block.addChild(ifStatement);
 		return ifStatement;
 

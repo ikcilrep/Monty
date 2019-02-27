@@ -19,7 +19,6 @@ package parser.parsing;
 import java.util.HashMap;
 
 import ast.Block;
-import ast.statements.IfStatementNode;
 import lexer.OptimizedTokensArray;
 import lexer.Token;
 import lexer.TokenTypes;
@@ -49,13 +48,12 @@ public final class Parser {
 				} else if (Identificator.isStructDeclaration(tokensBeforeSemicolon)) {
 					block = AdderToBlock.addStructDeclaration(block, tokensBeforeSemicolon);
 				} else if (Identificator.isIfStatement(tokensBeforeSemicolon)) {
-					block = AdderToBlock.addIfStatement(block, tokensBeforeSemicolon);
+					block = AdderToBlock.addIfStatement(block, tokensBeforeSemicolon, false);
 				} else if (Identificator.isElseStatement(tokensBeforeSemicolon)) {
 					block = AdderToBlock.addElseStatement(block, tokensBeforeSemicolon);
 					if (tokensBeforeSemicolon.length() > 1) {
 						block = AdderToBlock.addIfStatement(block,
-								tokensBeforeSemicolon.subarray(1, tokensBeforeSemicolon.length()));
-						((IfStatementNode) block).setInElse(true);
+								tokensBeforeSemicolon.subarray(1, tokensBeforeSemicolon.length()), true);
 					}
 				} else if (Identificator.isWhileStatement(tokensBeforeSemicolon)) {
 					block = AdderToBlock.addWhileStatement(block, tokensBeforeSemicolon);
@@ -79,8 +77,8 @@ public final class Parser {
 					var parent = block.getParent();
 					if (parent == null)
 						new LogError("Nothing to end!", tokensBeforeSemicolon.get(0));
-					if (block instanceof IfStatementNode && ((IfStatementNode) block).isInElse())
-						block = parent;
+					/*if (block instanceof IfStatementNode && ((IfStatementNode) block).isInElse())
+						block = parent;*/
 					block = block.getParent();
 				}
 				tokensBeforeSemicolon.clear();

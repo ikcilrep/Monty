@@ -34,7 +34,7 @@ public class Block extends NodeWithParent implements Cloneable {
 	private ArrayList<RunnableNode> children = new ArrayList<>();
 	protected HashMap<String, FunctionDeclarationNode> functions = new HashMap<>();
 	private HashMap<String, VariableDeclarationNode> variables = new HashMap<>();
-	private Block parent;
+	protected Block parent;
 
 	public Block(Block parent) {
 		this.parent = parent;

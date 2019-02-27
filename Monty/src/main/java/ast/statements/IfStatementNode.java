@@ -26,8 +26,11 @@ public final class IfStatementNode extends ConditionalNode {
 
 	private boolean isInElse = false;
 
-	public IfStatementNode(Block parent, OperationNode condition, String fileName, int line) {
+	public IfStatementNode(Block parent, OperationNode condition, String fileName, int line, boolean isInElse) {
 		super(condition, parent);
+		if (isInElse)
+			this.parent = parent.getParent();
+		this.isInElse = isInElse;
 		this.condition = condition;
 		this.fileName = fileName;
 		this.line = line;
