@@ -18,9 +18,8 @@ package ast.expressions;
 
 import java.util.ArrayList;
 
-import ast.Node;
 
-public final class FunctionCallNode extends Node implements StructContainer {
+public final class FunctionCallNode implements StructContainer {
 
 	private String name;
 	private ArrayList<OperationNode> arguments = new ArrayList<>();

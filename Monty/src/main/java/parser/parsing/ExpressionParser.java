@@ -43,6 +43,7 @@ public class ExpressionParser {
 
 	private final static HashMap<String, ConstantNode> literals = new HashMap<>();
 	private final static HashMap<String, ConstantNode> stringLiterals = new HashMap<>();
+	
 	private final static boolean isFunction(OptimizedTokensArray array, int i) {
 		return i + 1 < array.length() && array.get(i + 1).getType().equals(TokenTypes.OPENING_BRACKET);
 	}
@@ -126,8 +127,6 @@ public class ExpressionParser {
 
 		}
 		var function = new FunctionCallNode(token.getText());
-		function.setFileName(token.getFileName());
-		function.setLine(token.getLine());
 		var splited = splitArguments(array.subarray(i.i + 2, j - 1));
 		// Adds parsed function arguments to object.
 		for (OptimizedTokensArray ts : splited) {
@@ -156,8 +155,6 @@ public class ExpressionParser {
 	private final static OperationNode parseVariable(Block parent, OptimizedTokensArray array, IntegerHolder i) {
 		var token = array.get(i.i);
 		var variable = new VariableNode(token.getText());
-		variable.setFileName(token.getFileName());
-		variable.setLine(token.getLine());
 		parseAfterDot(parent, variable, array, i);
 		var node = new OperationNode(variable, parent);
 		node.setFileName(token.getFileName());

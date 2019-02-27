@@ -16,9 +16,7 @@ limitations under the License.
 
 package ast.expressions;
 
-import ast.Node;
-
-public final class VariableNode extends Node implements StructContainer {
+public final class VariableNode implements StructContainer {
 
 	private String name;
 	private OperationNode next = null;

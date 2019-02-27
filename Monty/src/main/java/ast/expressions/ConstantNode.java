@@ -16,10 +16,9 @@ limitations under the License.
 
 package ast.expressions;
 
-import ast.Node;
 import parser.DataTypes;
 
-public final class ConstantNode extends Node {
+public final class ConstantNode {
 	private Object value;
 	private DataTypes type;
 

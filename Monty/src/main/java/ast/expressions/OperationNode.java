@@ -42,79 +42,65 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 
 		switch (operator.toString()) {
 		case "+":
-			return OperatorOverloading.additionOperator(leftValue, rightValue, operator, type, getFileName(),
-					getLine());
+			return OperatorOverloading.additionOperator(leftValue, rightValue, operator, type, fileName, line);
 		case "-":
-			return OperatorOverloading.subtractionOperator(leftValue, rightValue, operator, type, getFileName(),
-					getLine());
+			return OperatorOverloading.subtractionOperator(leftValue, rightValue, operator, type, fileName, line);
 		case "*":
-			return OperatorOverloading.multiplicationOperator(leftValue, rightValue, operator, type, getFileName(),
-					getLine());
+			return OperatorOverloading.multiplicationOperator(leftValue, rightValue, operator, type, fileName, line);
 		case "/":
-			return OperatorOverloading.divisionOperator(leftValue, rightValue, operator, type, getFileName(),
-					getLine());
+			return OperatorOverloading.divisionOperator(leftValue, rightValue, operator, type, fileName, line);
 		case "%":
-			return OperatorOverloading.moduloOperator(leftValue, rightValue, operator, type, getFileName(), getLine());
+			return OperatorOverloading.moduloOperator(leftValue, rightValue, operator, type, fileName, line);
 		case "!":
-			return OperatorOverloading.negationOperator(leftValue, rightValue, operator, type, getFileName(),
-					getLine());
+			return OperatorOverloading.negationOperator(leftValue, rightValue, operator, type, fileName, line);
 		case "<<":
-			return OperatorOverloading.shiftLeftOperator(leftValue, rightValue, operator, type, getFileName(),
-					getLine());
+			return OperatorOverloading.shiftLeftOperator(leftValue, rightValue, operator, type, fileName, line);
 		case ">>":
-			return OperatorOverloading.shiftRightOperator(leftValue, rightValue, operator, type, getFileName(),
-					getLine());
+			return OperatorOverloading.shiftRightOperator(leftValue, rightValue, operator, type, fileName, line);
 		case "^":
-			return OperatorOverloading.xorOperator(leftValue, rightValue, operator, type, getFileName(), getLine());
+			return OperatorOverloading.xorOperator(leftValue, rightValue, operator, type, fileName, line);
 		case "&":
-			return OperatorOverloading.andOperator(leftValue, rightValue, operator, type, getFileName(), getLine());
+			return OperatorOverloading.andOperator(leftValue, rightValue, operator, type, fileName, line);
 		case "|":
-			return OperatorOverloading.orOperator(leftValue, rightValue, operator, type, getFileName(), getLine());
+			return OperatorOverloading.orOperator(leftValue, rightValue, operator, type, fileName, line);
 		case "==":
-			return OperatorOverloading.equalsOperator(leftValue, rightValue, operator, type, getFileName(), getLine());
+			return OperatorOverloading.equalsOperator(leftValue, rightValue, operator, type, fileName, line);
 		case ">":
-			return OperatorOverloading.greaterOperator(leftValue, rightValue, operator, type, getFileName(), getLine());
+			return OperatorOverloading.greaterOperator(leftValue, rightValue, operator, type, fileName, line);
 		case "<":
-			return OperatorOverloading.lowerOperator(leftValue, rightValue, operator, type, getFileName(), getLine());
+			return OperatorOverloading.lowerOperator(leftValue, rightValue, operator, type, fileName, line);
 		case "<=":
-			return OperatorOverloading.lowerEqualsOperator(leftValue, rightValue, operator, type, getFileName(),
-					getLine());
+			return OperatorOverloading.lowerEqualsOperator(leftValue, rightValue, operator, type, fileName, line);
 		case ">=":
-			return OperatorOverloading.greaterEqualsOperator(leftValue, rightValue, operator, type, getFileName(),
-					getLine());
+			return OperatorOverloading.greaterEqualsOperator(leftValue, rightValue, operator, type, fileName, line);
 		case "!=":
-			return OperatorOverloading.notEqualsOperator(leftValue, rightValue, operator, type, getFileName(),
-					getLine());
+			return OperatorOverloading.notEqualsOperator(leftValue, rightValue, operator, type, fileName, line);
 		case "=":
-			return OperatorOverloading.assignmentOperator(leftValue, rightValue, operator, type, getFileName(),
-					getLine());
+			return OperatorOverloading.assignmentOperator(leftValue, rightValue, operator, type, fileName, line);
 		case "+=":
-			return OperatorOverloading.assignmentAdditionOperator(leftValue, rightValue, operator, type, getFileName(),
-					getLine());
+			return OperatorOverloading.assignmentAdditionOperator(leftValue, rightValue, operator, type, fileName,
+					line);
 		case "-=":
-			return OperatorOverloading.assignmentSubtractionOperator(leftValue, rightValue, operator, type,
-					getFileName(), getLine());
+			return OperatorOverloading.assignmentSubtractionOperator(leftValue, rightValue, operator, type, fileName,
+					line);
 		case "*=":
-			return OperatorOverloading.assignmentMultiplicationOperator(leftValue, rightValue, operator, type,
-					getFileName(), getLine());
+			return OperatorOverloading.assignmentMultiplicationOperator(leftValue, rightValue, operator, type, fileName,
+					line);
 		case "/=":
-			return OperatorOverloading.assignmentDivisionOperator(leftValue, rightValue, operator, type, getFileName(),
-					getLine());
+			return OperatorOverloading.assignmentDivisionOperator(leftValue, rightValue, operator, type, fileName,
+					line);
 		case "<<=":
-			return OperatorOverloading.assignmentShiftLeftOperator(leftValue, rightValue, operator, type, getFileName(),
-					getLine());
+			return OperatorOverloading.assignmentShiftLeftOperator(leftValue, rightValue, operator, type, fileName,
+					line);
 		case ">>=":
-			return OperatorOverloading.assignmentShiftRightOperator(leftValue, rightValue, operator, type,
-					getFileName(), getLine());
+			return OperatorOverloading.assignmentShiftRightOperator(leftValue, rightValue, operator, type, fileName,
+					line);
 		case "^=":
-			return OperatorOverloading.assignmentXorOperator(leftValue, rightValue, operator, type, getFileName(),
-					getLine());
+			return OperatorOverloading.assignmentXorOperator(leftValue, rightValue, operator, type, fileName, line);
 		case "&=":
-			return OperatorOverloading.assignmentAndOperator(leftValue, rightValue, operator, type, getFileName(),
-					getLine());
+			return OperatorOverloading.assignmentAndOperator(leftValue, rightValue, operator, type, fileName, line);
 		case "|=":
-			return OperatorOverloading.assignmentOrOperator(leftValue, rightValue, operator, type, getFileName(),
-					getLine());
+			return OperatorOverloading.assignmentOrOperator(leftValue, rightValue, operator, type, fileName, line);
 		}
 		return null;
 	}
@@ -126,44 +112,35 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 		return DataTypes.getDataType(expression);
 	}
 
-	public final OperationNode getLeftOperand() {
-		return left;
+	private final Object getLiteral(Object expression, String fileName, int line) {
+		return getLiteral(expression, parent, fileName, line);
 	}
 
-	private final Object getLiteral(Object expression) {
-		return getLiteral(expression, parent);
-	}
-
-	private final Object getLiteral(Object expression, Block parent) {
+	private final Object getLiteral(Object expression, Block parent, String fileName, int line) {
 		// Returns value of expression.
 		if (expression instanceof VariableNode) {
 			var variableCall = (VariableNode) expression;
 			var nextV = variableCall.getNext();
-			var variable = parent.getVariable(variableCall.getName(), variableCall.getFileName(),
-					variableCall.getLine());
+			var variable = parent.getVariable(variableCall.getName(), fileName, line);
 
 			if (nextV != null) {
 				var variableValue = variable.getValue();
 				if (variableValue instanceof StructDeclarationNode)
-					return getLiteral(nextV.getOperand(), (StructDeclarationNode) variableValue);
+					return getLiteral(nextV.operand, (StructDeclarationNode) variableValue, nextV.fileName, nextV.line);
 				else
-					new LogError("Can't get attributes from simple data type.", variableCall.getFileName(),
-							variableCall.getLine());
+					new LogError("Can't get attributes from simple data type.", fileName, line);
 			}
 			return variable;
 		} else if (expression instanceof FunctionCallNode) {
 			var functionToCall = ((FunctionCallNode) expression);
-			var function = parent.getFunction(functionToCall.getName(), functionToCall.getFileName(),
-					functionToCall.getLine());
-			var functionCallValue = function.call(functionToCall.getArguments(), functionToCall.getFileName(),
-					functionToCall.getLine());
+			var function = parent.getFunction(functionToCall.getName(), fileName, line);
+			var functionCallValue = function.call(functionToCall.getArguments(), fileName, line);
 			var nextF = functionToCall.getNext();
 			if (nextF != null)
 				if (functionCallValue instanceof StructDeclarationNode)
-					return getLiteral(nextF.getOperand(), (StructDeclarationNode) functionCallValue);
+					return getLiteral(nextF.operand, (StructDeclarationNode) functionCallValue, nextF.fileName, nextF.line);
 				else
-					new LogError("Can't get attributes from simple data type.", functionToCall.getFileName(),
-							functionToCall.getLine());
+					new LogError("Can't get attributes from simple data type.", fileName, line);
 			return functionCallValue;
 		} else if (expression instanceof ConstantNode) {
 			var cn = ((ConstantNode) expression);
@@ -172,24 +149,17 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 			return expression;
 	}
 
-	public final Object getOperand() {
-		return operand;
-	}
+
 
 	public final Block getParent() {
 		return parent;
 	}
 
-	public final OperationNode getRightOperand() {
-		return right;
-	}
-
 	@Override
 	public final Object run() {
 		// Returns calculated value.
-		var operand = getOperand();
 		if (!(operand instanceof String)) {
-			var literal = getLiteral(operand);
+			var literal = getLiteral(operand, fileName, line);
 			if (literal instanceof VariableDeclarationNode) {
 				return ((VariableDeclarationNode) literal).getValue();
 			} else {
@@ -228,16 +198,16 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 	}
 
 	private final Object solve() {
-		if (!(getOperand() instanceof String))
-			return getOperand();
-		Object a = getLeftOperand().solve();
-		Object b = getRightOperand().solve();
-		Object operator = getOperand();
+		if (!(operand instanceof String))
+			return operand;
+		Object a = left.solve();
+		Object b = right.solve();
+		Object operator = operand;
 		var isComparison = operator.toString().equals("==") || operator.toString().equals("!=")
 				|| operator.toString().equals("<=") || operator.toString().equals(">=")
 				|| operator.toString().equals(">") || operator.toString().equals("<");
-		Object leftValue = getLiteral(a);
-		Object rightValue = getLiteral(b);
+		Object leftValue = getLiteral(a, left.fileName, left.line);
+		Object rightValue = getLiteral(b, right.fileName, right.line);
 		DataTypes leftType = getDataType(leftValue);
 		DataTypes rightType = getDataType(rightValue);
 		var isNotAssignment = !operator.toString().contains("=") || isComparison;
@@ -249,14 +219,14 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 
 		if (isNotAssignment && (leftType.equals(DataTypes.INTEGER) && rightType.equals(DataTypes.REAL))) {
 			leftType = DataTypes.REAL;
-			leftValue = ToReal.toReal(leftValue, getFileName(), getLine());
+			leftValue = ToReal.toReal(leftValue, fileName, line);
 		} else if (isNotAssignment && operator.equals("+")
 				&& (rightType.equals(DataTypes.STRING) && !rightType.equals(leftType))) {
 			leftType = DataTypes.STRING;
 			leftValue = leftValue.toString();
 		} else if (leftType.equals(DataTypes.REAL) && rightType.equals(DataTypes.INTEGER)) {
 			rightType = DataTypes.REAL;
-			rightValue = ToReal.toReal(rightValue, getFileName(), getLine());
+			rightValue = ToReal.toReal(rightValue, fileName, line);
 		} else if (operator.toString().contains("+") && leftType.equals(DataTypes.STRING)
 				&& !leftType.equals(rightType)) {
 			rightType = DataTypes.STRING;
@@ -264,9 +234,9 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 		} else if (!isNotAssignment && leftType.equals(DataTypes.ANY) && !leftType.equals(rightType))
 			rightType = DataTypes.ANY;
 		if (!leftType.equals(rightType))
-			new LogError("Type mismatch:\t" + leftType + " and " + rightType, getFileName(), getLine());
+			new LogError("Type mismatch:\t" + leftType + " and " + rightType, fileName, line);
 
-		return calculate(leftValue, rightValue, getOperand(), leftType);
+		return calculate(leftValue, rightValue, operand, leftType);
 
 	}
 
