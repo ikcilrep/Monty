@@ -16,6 +16,8 @@ limitations under the License.
 
 package ast.declarations;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -23,7 +25,9 @@ import ast.Block;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
-import sml.casts.ToReal;
+import sml.casts.IntToReal;
+import sml.casts.RealToInt;
+
 
 public abstract class FunctionDeclarationNode extends DeclarationNode implements Cloneable {
 	Block body;
@@ -76,8 +80,11 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 			var value = argument.run();
 			var argumentDataType = DataTypes.getDataType(value);
 			if (dataType.equals(DataTypes.REAL) && argumentDataType.equals(DataTypes.INTEGER)) {
-				value = ToReal.toReal(value, callFileName, callLine);
+				value = IntToReal.intToReal((BigInteger) value);
 				argumentDataType = DataTypes.REAL;
+			} else if (dataType.equals(DataTypes.INTEGER) && argumentDataType.equals(DataTypes.REAL)) {
+				value = RealToInt.realToInt((BigDecimal) value);
+				argumentDataType = DataTypes.INTEGER;
 			}
 			if (!dataType.equals(DataTypes.ANY))
 				if (!argumentDataType.equals(dataType))

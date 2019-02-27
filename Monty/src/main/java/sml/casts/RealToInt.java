@@ -22,7 +22,7 @@ import java.math.BigInteger;
 public final class RealToInt {
 
 	public static BigInteger realToInt(BigDecimal floating) {
-		return new BigInteger(floating.toString());
+		return floating.toBigInteger();
 	}
 
 }
