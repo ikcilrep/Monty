@@ -142,11 +142,9 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 				else
 					new LogError("Can't get attributes from simple data type.", fileName, line);
 			return functionCallValue;
-		} else if (expression instanceof ConstantNode) {
-			var cn = ((ConstantNode) expression);
-			return cn.getValue();
-		} else
-			return expression;
+		} else if (expression instanceof ConstantNode)
+			return ((ConstantNode) expression).getValue();
+		return expression;
 	}
 
 
