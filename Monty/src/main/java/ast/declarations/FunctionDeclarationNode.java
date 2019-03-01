@@ -88,7 +88,7 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 			}
 			if (!dataType.equals(DataTypes.ANY))
 				if (!argumentDataType.equals(dataType))
-					new LogError("Wrong data type for" + i + "parameter with name\n\"" + name + "\" in " + getName()
+					new LogError("Wrong data type for " + i + " parameter with name\n\"" + name + "\" in " + getName()
 							+ " function call expected " + dataType.toString().toLowerCase() + " got "
 							+ argumentDataType.toString().toLowerCase(), callFileName, callLine);
 
