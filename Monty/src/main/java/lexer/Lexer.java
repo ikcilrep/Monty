@@ -157,6 +157,10 @@ public final class Lexer {
 	public final static OptimizedTokensArray lex(String code, String path) {
 		return lex(code, path, 1, new OptimizedTokensArray(), 0);
 	}
+	
+	public final static OptimizedTokensArray lex(String code, String path, int line) {
+		return lex(code, path, 1, new OptimizedTokensArray(), line);
+	}
 
 	private final static OptimizedTokensArray number(String code, String fileName, int line,
 			OptimizedTokensArray tokens, int i) {

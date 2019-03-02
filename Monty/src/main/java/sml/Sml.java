@@ -30,6 +30,7 @@ import sml.data.stack.NewStack;
 import sml.errors.*;
 import sml.files.*;
 import sml.io.*;
+import sml.language.Run;
 import sml.math.*;
 import sml.system.*;
 import sml.threading.*;
@@ -55,7 +56,9 @@ public final class Sml extends Library {
 		var string = new HashMap<String, Object>();
 		var errors = new HashMap<String, Object>();
 		var files = new HashMap<String, Object>();
-
+		var language = new HashMap<String, Object>();
+		
+		
 		sml.put("casts", casts);
 		sml.put("math", math);
 		sml.put("io", io);
@@ -66,6 +69,8 @@ public final class Sml extends Library {
 		sml.put("math", math);
 		sml.put("errors", errors);
 		sml.put("files", files);
+		sml.put("language", language);
+
 
 		casts.put("toBoolean", new ToBoolean());
 		casts.put("toReal", new ToReal());
@@ -142,6 +147,7 @@ public final class Sml extends Library {
 		files.put("isDir", new IsDir());
 		files.put("isFile", new IsFile());
 
+		language.put("run", new Run());
 	}
 
 }
