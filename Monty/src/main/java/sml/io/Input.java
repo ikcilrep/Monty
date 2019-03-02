@@ -17,6 +17,7 @@ limitations under the License.
 package sml.io;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import ast.Block;
@@ -36,7 +37,12 @@ public final class Input extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		String line = scanner.nextLine();
+			String line = null;
+		try {
+			line = scanner.nextLine();
+		} catch (NoSuchElementException e) {
+			return "";
+		} 
 		return line;
 	}
 
