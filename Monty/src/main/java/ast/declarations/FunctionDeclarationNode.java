@@ -28,7 +28,6 @@ import parser.LogError;
 import sml.casts.IntToReal;
 import sml.casts.RealToInt;
 
-
 public abstract class FunctionDeclarationNode extends DeclarationNode implements Cloneable {
 	Block body;
 	private int parametersSize = 0;

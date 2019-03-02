@@ -37,12 +37,12 @@ public final class Input extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-			String line = null;
+		String line = null;
 		try {
 			line = scanner.nextLine();
 		} catch (NoSuchElementException e) {
 			return "";
-		} 
+		}
 		return line;
 	}
 

@@ -18,7 +18,6 @@ package ast.expressions;
 
 import java.util.ArrayList;
 
-
 public final class FunctionCallNode implements StructContainer {
 
 	private String name;

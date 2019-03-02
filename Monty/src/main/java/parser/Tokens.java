@@ -44,7 +44,6 @@ public class Tokens {
 		}
 	}
 
-	
 	public static String getText(OptimizedTokensArray array) {
 		var result = new StringBuilder();
 		for (Token token : array)

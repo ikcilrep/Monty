@@ -38,8 +38,8 @@ public class ListDir extends FunctionDeclarationNode {
 		setArguments(arguments, callFileName, callLine);
 		var path = (String) getBody().getVariable("path").getValue();
 		try {
-		var list = new File(AbsPath.absPath(path)).list();
-		return list == null ? new Array(0) : new Array(list);
+			var list = new File(AbsPath.absPath(path)).list();
+			return list == null ? new Array(0) : new Array(list);
 		} catch (SecurityException e) {
 			new LogError("Access denied to:\t" + path, callFileName, callLine);
 		}

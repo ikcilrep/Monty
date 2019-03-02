@@ -77,8 +77,10 @@ public final class Parser {
 					var parent = block.getParent();
 					if (parent == null)
 						new LogError("Nothing to end!", tokensBeforeSemicolon.get(0));
-					/*if (block instanceof IfStatementNode && ((IfStatementNode) block).isInElse())
-						block = parent;*/
+					/*
+					 * if (block instanceof IfStatementNode && ((IfStatementNode) block).isInElse())
+					 * block = parent;
+					 */
 					block = block.getParent();
 				}
 				tokensBeforeSemicolon.clear();

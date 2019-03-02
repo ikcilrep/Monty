@@ -42,11 +42,9 @@ public abstract class Identificator {
 		if (!tokens.get(0).getType().equals(TokenTypes.CHANGE_KEYWORD))
 			return false;
 		if (tokensSize == 1 || !tokens.get(1).getType().equals(TokenTypes.IDENTIFIER))
-			new LogError("Expected identifier after \"change\" keyword.",
-					tokens.get(tokens.length() > 1 ? 1 : 0));
+			new LogError("Expected identifier after \"change\" keyword.", tokens.get(tokens.length() > 1 ? 1 : 0));
 		if (tokensSize == 2 || !tokens.get(2).getType().equals(TokenTypes.TO_KEYWORD))
-			new LogError("Expected \"to\" keyword after identifier.",
-					tokens.get(tokens.length() > 2 ? 2 : 1));
+			new LogError("Expected \"to\" keyword after identifier.", tokens.get(tokens.length() > 2 ? 2 : 1));
 		if (tokensSize == 3 | !dataTypesKeywords.contains(tokens.get(3).getType()))
 			new LogError("Expected data type declaration after \"to\" keyword.",
 					tokens.get(tokens.length() > 3 ? 3 : 2));
@@ -66,8 +64,7 @@ public abstract class Identificator {
 		if (!tokens.get(0).getType().equals(TokenTypes.DO_KEYWORD))
 			return false;
 		if (tokens.length() == 1 || !tokens.get(1).getType().equals(TokenTypes.WHILE_KEYWORD))
-			new LogError("Expected \"while\" keyword after \"do\" keyword.",
-					tokens.get(tokens.length() > 1 ? 1 : 0));
+			new LogError("Expected \"while\" keyword after \"do\" keyword.", tokens.get(tokens.length() > 1 ? 1 : 0));
 		if (!isExpression(tokens.subarray(2, tokens.length())))
 			new LogError("Expected expression after \"do\" keyword.", tokens.get(2));
 		return true;
@@ -188,8 +185,7 @@ public abstract class Identificator {
 		if (!tokens.get(0).getType().equals(TokenTypes.IF_KEYWORD))
 			return false;
 		if (tokens.length() == 1 || !isExpression(tokens.subarray(1, tokens.length())))
-			new LogError("Expected expression after \"if\" keyword.",
-					tokens.get(tokens.length() > 1 ? 1 : 0));
+			new LogError("Expected expression after \"if\" keyword.", tokens.get(tokens.length() > 1 ? 1 : 0));
 		return true;
 
 	}
@@ -245,14 +241,12 @@ public abstract class Identificator {
 
 		}
 		if (!tokensBeforeSemicolon.get(n).getType().equals(TokenTypes.IDENTIFIER))
-			new LogError("Expected identifier after data type declaration.",
-					tokensBeforeSemicolon.get(n));
+			new LogError("Expected identifier after data type declaration.", tokensBeforeSemicolon.get(n));
 
 		if (tokensSize > n + 1) {
 			var expression = tokensBeforeSemicolon.subarray(n, tokensBeforeSemicolon.length());
 			if (!isExpression(expression))
-				new LogError("Wrong expression after data type declaration.",
-						tokensBeforeSemicolon.get(n));
+				new LogError("Wrong expression after data type declaration.", tokensBeforeSemicolon.get(n));
 
 		}
 		return true;
@@ -262,8 +256,7 @@ public abstract class Identificator {
 		if (!tokens.get(0).getType().equals(TokenTypes.WHILE_KEYWORD))
 			return false;
 		if (tokens.length() == 1 || !isExpression(tokens.subarray(1, tokens.length())))
-			new LogError("Expected expression after \"while\" keyword.",
-					tokens.get(tokens.length() > 1 ? 1 : 0));
+			new LogError("Expected expression after \"while\" keyword.", tokens.get(tokens.length() > 1 ? 1 : 0));
 		return true;
 
 	}

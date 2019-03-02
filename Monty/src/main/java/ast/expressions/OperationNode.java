@@ -138,7 +138,8 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 			var nextF = functionToCall.getNext();
 			if (nextF != null)
 				if (functionCallValue instanceof StructDeclarationNode)
-					return getLiteral(nextF.operand, (StructDeclarationNode) functionCallValue, nextF.fileName, nextF.line);
+					return getLiteral(nextF.operand, (StructDeclarationNode) functionCallValue, nextF.fileName,
+							nextF.line);
 				else
 					new LogError("Can't get attributes from simple data type.", fileName, line);
 			return functionCallValue;
@@ -146,8 +147,6 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 			return ((ConstantNode) expression).getValue();
 		return expression;
 	}
-
-
 
 	public final Block getParent() {
 		return parent;
