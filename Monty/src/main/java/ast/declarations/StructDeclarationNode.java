@@ -51,6 +51,7 @@ public class StructDeclarationNode extends Block implements Cloneable {
 				var thisVariable = new VariableDeclarationNode("this", DataTypes.ANY);
 				thisVariable.setValue(newStruct);
 				newStruct.addVariable(thisVariable);
+				newStruct.incrementNumber();
 				if (newStruct.hasFunction("init")) {
 					var function = newStruct.getFunction("init");
 					if (!function.getType().equals(DataTypes.VOID)) {
@@ -60,7 +61,6 @@ public class StructDeclarationNode extends Block implements Cloneable {
 					}
 					function.call(arguments, callFileName, callLine);
 				}
-				newStruct.incrementNumber();
 				return newStruct;
 			}
 		};
