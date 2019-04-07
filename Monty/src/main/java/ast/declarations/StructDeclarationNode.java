@@ -50,6 +50,7 @@ public class StructDeclarationNode extends Block implements Cloneable {
 				newStruct.run();
 				var thisVariable = new VariableDeclarationNode("this", DataTypes.ANY);
 				thisVariable.setValue(newStruct);
+				thisVariable.setConst(true);
 				newStruct.addVariable(thisVariable);
 				newStruct.incrementNumber();
 				if (newStruct.hasFunction("init")) {

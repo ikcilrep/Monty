@@ -146,22 +146,31 @@ public abstract class AdderToBlock {
 		int n = isDynamic ? 3 : 2;
 		var dataType = Tokens.getDataType(tokens.get(n - 2).getType());
 		var name = tokens.get(n - 1).getText();
+		var isConst = name.charAt(0) == '$';
 		if (Character.isUpperCase(name.charAt(0)))
 			new LogError("Variable name " + name + " should start with lower case", tokens.get(1));
 		var variable = new VariableDeclarationNode(name, dataType);
 		variable.setDynamic(isDynamic);
 		block.addVariable(variable, tokens.get(n - 2));
-		if (tokens.length() > n)
-			addExpression(block, tokens.subarray(n - 1, tokens.length()));
-
-		var children = block.getChildren();
-		var operation = new OperationNode("=", block);
-		operation.setLeftOperand(new OperationNode(new VariableNode(name), block));
-		operation.setRightOperand(
-				new OperationNode(new ConstantNode(DataTypes.getNeutralValue(dataType), dataType), block));
-		block.setChildren(new ArrayList<RunnableNode>());
-		block.addChild(operation);
-		block.getChildren().addAll(children);
+		if (tokens.length() > n) {
+			if (isConst)
+				ExpressionParser.parse(block, tokens.subarray(n - 1, tokens.length())).run();
+			else
+				addExpression(block, tokens.subarray(n - 1, tokens.length()));
+		} else if (isConst)
+			new LogError("Const value must be declared at the same time as whole variable.", tokens.get(1));
+		
+		variable.setConst(isConst);
+		if (!isConst) {
+			var children = block.getChildren();
+			var operation = new OperationNode("=", block);
+			operation.setLeftOperand(new OperationNode(new VariableNode(name), block));
+			operation.setRightOperand(
+					new OperationNode(new ConstantNode(DataTypes.getNeutralValue(dataType), dataType), block));
+			block.setChildren(new ArrayList<RunnableNode>());
+			block.addChild(operation);
+			block.getChildren().addAll(children);
+		}
 
 	}
 

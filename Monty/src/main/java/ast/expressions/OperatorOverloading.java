@@ -78,7 +78,8 @@ public final class OperatorOverloading {
 		case INTEGER:
 		case REAL:
 		case STRING:
-			variable.setValue(additionOperator(variable.getValue(), rightValue, operator, type, fileName, line));
+			variable.setValue(additionOperator(variable.getValue(), rightValue, operator, type, fileName, line), fileName,
+					line);
 			return variable.getValue();
 		case BOOLEAN:
 			new LogError("Can't add booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
@@ -101,7 +102,8 @@ public final class OperatorOverloading {
 		case INTEGER:
 		case REAL:
 		case STRING:
-			variable.setValue(andOperator(variable.getValue(), rightValue, operator, type, fileName, line));
+			variable.setValue(andOperator(variable.getValue(), rightValue, operator, type, fileName, line), fileName,
+					line);
 			return variable.getValue();
 		case ANY:
 			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
@@ -121,7 +123,8 @@ public final class OperatorOverloading {
 		case INTEGER:
 		case REAL:
 		case STRING:
-			variable.setValue(divisionOperator(variable.getValue(), rightValue, operator, type, fileName, line));
+			variable.setValue(divisionOperator(variable.getValue(), rightValue, operator, type, fileName, line), fileName,
+					line);
 			return variable.getValue();
 		case ANY:
 			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
@@ -141,7 +144,8 @@ public final class OperatorOverloading {
 		case INTEGER:
 		case REAL:
 		case STRING:
-			variable.setValue(multiplicationOperator(variable.getValue(), rightValue, operator, type, fileName, line));
+			variable.setValue(multiplicationOperator(variable.getValue(), rightValue, operator, type, fileName, line), fileName,
+					line);
 			return variable.getValue();
 		case ANY:
 			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
@@ -163,7 +167,8 @@ public final class OperatorOverloading {
 		case STRING:
 		case BOOLEAN:
 		case ANY:
-			variable.setValue(rightValue);
+			variable.setValue(rightValue, fileName,
+					line);
 			return variable.getValue();
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
@@ -180,7 +185,8 @@ public final class OperatorOverloading {
 		case INTEGER:
 		case REAL:
 		case STRING:
-			variable.setValue(orOperator(variable.getValue(), rightValue, operator, type, fileName, line));
+			variable.setValue(orOperator(variable.getValue(), rightValue, operator, type, fileName, line), fileName,
+					line);
 			return variable.getValue();
 		case ANY:
 			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
@@ -200,7 +206,8 @@ public final class OperatorOverloading {
 		case INTEGER:
 		case REAL:
 		case STRING:
-			variable.setValue(shiftLeftOperator(variable.getValue(), rightValue, operator, type, fileName, line));
+			variable.setValue(shiftLeftOperator(variable.getValue(), rightValue, operator, type, fileName, line), fileName,
+					line);
 			return variable.getValue();
 		case ANY:
 			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
@@ -220,7 +227,8 @@ public final class OperatorOverloading {
 		case INTEGER:
 		case REAL:
 		case STRING:
-			variable.setValue(shiftRightOperator(variable.getValue(), rightValue, operator, type, fileName, line));
+			variable.setValue(shiftRightOperator(variable.getValue(), rightValue, operator, type, fileName, line), fileName,
+					line);
 			return variable.getValue();
 		case ANY:
 			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
@@ -240,7 +248,8 @@ public final class OperatorOverloading {
 		case INTEGER:
 		case REAL:
 		case STRING:
-			variable.setValue(subtractionOperator(variable.getValue(), rightValue, operator, type, fileName, line));
+			variable.setValue(subtractionOperator(variable.getValue(), rightValue, operator, type, fileName, line), fileName,
+					line);
 			return variable.getValue();
 		case ANY:
 			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
@@ -260,7 +269,8 @@ public final class OperatorOverloading {
 		case INTEGER:
 		case REAL:
 		case STRING:
-			variable.setValue(xorOperator(variable.getValue(), rightValue, operator, type, fileName, line));
+			variable.setValue(xorOperator(variable.getValue(), rightValue, operator, type, fileName, line), fileName,
+					line);
 			return variable.getValue();
 		case ANY:
 			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,

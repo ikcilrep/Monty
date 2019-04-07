@@ -17,10 +17,20 @@ limitations under the License.
 package ast.declarations;
 
 import parser.DataTypes;
+import parser.LogError;
 
 public final class VariableDeclarationNode extends DeclarationNode implements Cloneable {
 
 	private boolean isDynamic = false;
+	private boolean isConst = false;
+
+	public boolean isConst() {
+		return isConst;
+	}
+
+	public void setConst(boolean isConst) {
+		this.isConst = isConst;
+	}
 
 	private Object value;
 
@@ -47,6 +57,12 @@ public final class VariableDeclarationNode extends DeclarationNode implements Cl
 
 	public final void setDynamic(boolean isDynamic) {
 		this.isDynamic = isDynamic;
+	}
+
+	public final void setValue(Object value, String fileName, int line) {
+		if (isConst)
+			new LogError("Can't change value of const.", fileName, line);
+		this.value = value;
 	}
 
 	public final void setValue(Object value) {
