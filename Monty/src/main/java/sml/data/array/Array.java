@@ -40,7 +40,6 @@ public final class Array extends StructDeclarationNode {
 		super(new Block(null), "Array");
 		addFunctions();
 		this.array = Arrays.copyOf(array, array.length, Object[].class);
-		;
 	}
 
 	public void addFunctions() {

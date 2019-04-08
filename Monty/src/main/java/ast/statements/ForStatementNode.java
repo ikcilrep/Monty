@@ -28,7 +28,7 @@ import sml.data.returning.BreakType;
 import sml.data.returning.ContinueType;
 
 public final class ForStatementNode extends Block {
-
+	private static final ArrayList<OperationNode> emptyArrayList = new ArrayList<>();
 	private OperationNode array;
 	private String variableName;
 
@@ -63,14 +63,14 @@ public final class ForStatementNode extends Block {
 		if (toIter instanceof StructDeclarationNode) {
 			var struct = (StructDeclarationNode) toIter;
 			if (struct.hasFunction("Iterator")) {
-				var iterator = (StructDeclarationNode) struct.getFunction("Iterator").call(new ArrayList<>(), fileName,
+				var iterator = (StructDeclarationNode) struct.getFunction("Iterator").call(emptyArrayList, fileName,
 						line);
 				if (iterator.hasFunction("hasNext") && iterator.hasFunction("next")) {
 					var hasNext = iterator.getFunction("hasNext");
 					var next = iterator.getFunction("next");
 					if (hasNext.getType().equals(DataTypes.BOOLEAN) && !next.getType().equals(DataTypes.VOID))
-						while ((boolean) hasNext.call(new ArrayList<>(), fileName, line)) {
-							Object e = next.call(new ArrayList<>(), fileName, line);
+						while ((boolean) hasNext.call(emptyArrayList, fileName, line)) {
+							Object e = next.call(emptyArrayList, fileName, line);
 							if (isNotNameUnderscore) {
 								VariableDeclarationNode variable = null;
 								if (hasVariable(name))
