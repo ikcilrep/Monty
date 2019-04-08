@@ -16,7 +16,6 @@ limitations under the License.
 
 package sml.data.list;
 
-import ast.Block;
 import ast.declarations.StructDeclarationNode;
 import sml.data.array.Array;
 import sml.data.returning.Nothing;
@@ -27,7 +26,7 @@ public final class List extends StructDeclarationNode {
 	List tail = null;
 
 	public List() {
-		super(new Block(null), "List");
+		super(null, "List");
 		new Append(this);
 		new Contains(this);
 		new Equals(this);

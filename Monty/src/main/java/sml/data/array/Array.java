@@ -18,7 +18,6 @@ package sml.data.array;
 
 import java.util.Arrays;
 
-import ast.Block;
 import ast.declarations.StructDeclarationNode;
 import sml.data.list.List;
 import sml.data.returning.Nothing;
@@ -29,7 +28,7 @@ public final class Array extends StructDeclarationNode {
 	protected Object[] array;
 
 	public Array(int length) {
-		super(new Block(null), "Array");
+		super(null, "Array");
 		addFunctions();
 		array = new Object[length];
 		for (int i = 0; i < length; i++)
@@ -37,7 +36,7 @@ public final class Array extends StructDeclarationNode {
 	}
 
 	public Array(Object[] array) {
-		super(new Block(null), "Array");
+		super(null, "Array");
 		addFunctions();
 		this.array = Arrays.copyOf(array, array.length, Object[].class);
 	}

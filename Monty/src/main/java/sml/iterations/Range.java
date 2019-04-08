@@ -2,7 +2,6 @@ package sml.iterations;
 
 import java.math.BigInteger;
 
-import ast.Block;
 import ast.declarations.StructDeclarationNode;
 
 class Range extends StructDeclarationNode{
@@ -11,7 +10,7 @@ class Range extends StructDeclarationNode{
 	BigInteger step;
 	
 	public Range(BigInteger min, BigInteger max, BigInteger step) {
-		super(new Block(null), "Range");
+		super(null, "Range");
 		this.min = min;
 		this.max = max;
 		this.step = step;

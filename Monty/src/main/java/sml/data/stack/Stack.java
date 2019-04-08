@@ -16,7 +16,6 @@ limitations under the License.
 
 package sml.data.stack;
 
-import ast.Block;
 import ast.declarations.StructDeclarationNode;
 import parser.LogError;
 import sml.data.array.Array;
@@ -28,14 +27,14 @@ public final class Stack extends StructDeclarationNode {
 	int top;
 
 	public Stack() {
-		super(new Block(null), "Stack");
+		super(null, "Stack");
 		addFunctions();
 		array = new Object[128];
 		top = -1;
 	}
 
 	public Stack(Object[] array) {
-		super(new Block(null), "Stack");
+		super(null, "Stack");
 		addFunctions();
 		this.array = array;
 		top = array.length - 1;
