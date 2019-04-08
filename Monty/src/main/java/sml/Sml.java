@@ -30,7 +30,7 @@ import sml.data.stack.NewStack;
 import sml.errors.*;
 import sml.files.*;
 import sml.io.*;
-import sml.iterations.NewRange;
+import sml.iterations.range.NewRange;
 import sml.language.Run;
 import sml.math.*;
 import sml.system.*;

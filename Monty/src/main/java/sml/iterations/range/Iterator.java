@@ -1,4 +1,4 @@
-package sml.iterations;
+package sml.iterations.range;
 
 import java.math.BigInteger;
 
