@@ -15,6 +15,11 @@ class Range extends StructDeclarationNode{
 		this.max = max;
 		this.step = step;
 		new NewIterator(this);
+		new Get(this);
+	}
+	
+	public BigInteger get(BigInteger index) {
+		return min.add(step.multiply(index));
 	}
 
 }

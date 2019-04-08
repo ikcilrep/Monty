@@ -15,6 +15,7 @@ class Next extends Method<Iterator> {
 
 	@Override
 	public BigInteger call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+		setArguments(arguments, callFileName, callLine);
 		BigInteger toReturn = parent.counter;
 		parent.counter  = parent.counter.add(parent.step);
 		return toReturn;

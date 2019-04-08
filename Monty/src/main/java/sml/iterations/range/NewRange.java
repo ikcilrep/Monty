@@ -7,6 +7,7 @@ import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
+import parser.LogError;
 
 public class NewRange extends FunctionDeclarationNode {
 
@@ -23,8 +24,11 @@ public class NewRange extends FunctionDeclarationNode {
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		return new Range((BigInteger) body.getVariable("min").getValue(),
-				(BigInteger) body.getVariable("max").getValue(), (BigInteger) body.getVariable("step").getValue());
+		var min = (BigInteger) body.getVariable("min").getValue();
+		var max = (BigInteger) body.getVariable("max").getValue();
+		if (max.compareTo(min) <= 0)
+			new LogError("Maximum can't be greater or equals minimum.", callFileName, callLine);
+		return new Range(min,max, (BigInteger) body.getVariable("step").getValue());
 	}
 
 }

@@ -14,6 +14,7 @@ class HasNext extends Method<Iterator> {
 
 	@Override
 	public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+		setArguments(arguments, callFileName, callLine);
 		return parent.counter.compareTo(parent.max) < 0;
 	}
 
