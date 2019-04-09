@@ -29,7 +29,7 @@ import parser.LogError;
 
 public class StructDeclarationNode extends Block implements Cloneable {
 	private static int actualStructNumber = -1;
-	private static int number = -1;
+	private static HashMap<Integer, Integer> numbers = new HashMap<>();
 	private int structNumber;
 	private int instanceNumber;
 	private String name;
@@ -38,6 +38,7 @@ public class StructDeclarationNode extends Block implements Cloneable {
 		super(parent);
 		this.name = name;
 		structNumber = ++actualStructNumber;
+		numbers.put(structNumber, -1);
 	}
 
 	public void addNewStruct(Block block, Token token) {
@@ -48,7 +49,7 @@ public class StructDeclarationNode extends Block implements Cloneable {
 			public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 				var newStruct = struct.copy();
 				newStruct.run();
-				var thisVariable = new VariableDeclarationNode("this", DataTypes.ANY);
+				var thisVariable = new VariableDeclarationNode("This", DataTypes.ANY);
 				thisVariable.setValue(newStruct);
 				thisVariable.setConst(true);
 				newStruct.addVariable(thisVariable);
@@ -125,7 +126,9 @@ public class StructDeclarationNode extends Block implements Cloneable {
 	}
 
 	public void incrementNumber() {
-		instanceNumber = ++number;
+		var number = numbers.get(structNumber);
+		numbers.put(structNumber, number + 1);
+		instanceNumber = number+1;
 	}
 
 	public boolean instanceOfMe(StructDeclarationNode s) {
