@@ -25,10 +25,10 @@ public class NewFunction extends FunctionDeclarationNode{
 		setArguments(arguments, callFileName, callLine);
 		var str = (String)getBody().getVariable("str").getValue();
 		var parent = arguments.get(0).getParent();
-		if (!str.startsWith("lambda:"))
+		if (!str.startsWith("/"))
 			return new Function(parent.getFunction(str));
 		var functionDeclaration = new CustomFunctionDeclarationNode(callFileName, DataTypes.ANY);
-		var array = str.substring(7).split("->");
+		var array = str.substring(1).split("->");
 		var fileName = callFileName+":lambda("+callLine+")";
 		AdderToBlock.parseFunctionsParameters(0, Lexer.lex(array[0], fileName), functionDeclaration);
 		var body = new Block(parent);
