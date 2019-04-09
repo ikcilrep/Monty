@@ -13,7 +13,7 @@ class Call extends Method<Function>{
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		return parent.function.call(arguments, callFileName, callLine);
+		return parent.call(arguments, callFileName, callLine);
 	}
 	
 }

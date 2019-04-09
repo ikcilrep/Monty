@@ -38,6 +38,7 @@ public final class List extends StructDeclarationNode {
 		new Head(this);
 		new NewIterator(this);
 		new Length(this);
+		new Map(this);
 		new Replace(this);
 		new ReplaceFirst(this);
 		new ReplaceLast(this);
