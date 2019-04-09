@@ -24,7 +24,9 @@ public class IOBlocks {
 		var functions = block.getFunctions();
 		functions.put("nothing", new sml.data.returning.Nothing());
 		functions.put("f", new sml.functional.function.NewFunction());
-		
+		functions.put("[A]", new sml.data.array.NewArray());
+		functions.put("[L]", new sml.data.list.NewList());
+		functions.put("Range", new sml.iterations.range.NewRange());
 	}
 	public static Block readBlockFromFile(String path, String fileName, int line) {
 		var tokens = Lexer.lex(FileIO.readFile(path, fileName, line), path, 1, new OptimizedTokensArray(), 0);

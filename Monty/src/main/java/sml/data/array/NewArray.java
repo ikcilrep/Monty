@@ -24,7 +24,7 @@ import parser.DataTypes;
 
 public final class NewArray extends FunctionDeclarationNode {
 	public NewArray() {
-		super("Array", DataTypes.ANY);
+		super("[A]", DataTypes.ANY);
 	}
 
 	@Override

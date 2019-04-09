@@ -47,8 +47,9 @@ public final class Lexer {
 	private final static OptimizedTokensArray identifierOrKeyword(String code, String fileName, int line,
 			OptimizedTokensArray tokens, int i) {
 		var tokenText = "" + code.charAt(i);
-		while (++i < code.length() && Character.isJavaIdentifierPart(code.charAt(i)))
-			tokenText += code.charAt(i);
+		char c;
+		while (++i < code.length() && (Character.isJavaIdentifierPart(c = code.charAt(i))  || c == '[' || c == ']'))
+			tokenText += c;
 		tokens.append(new Token(keywordOrIdentifierToTokenType(tokenText), tokenText, fileName, line));
 		return lex(code, fileName, line, tokens, i);
 	}
@@ -146,7 +147,7 @@ public final class Lexer {
 					return number(code, fileName, line, tokens, i);
 				if (operatorsParts.contains(c))
 					return operator(code, fileName, line, tokens, i);
-				if (Character.isJavaIdentifierStart(c))
+				if (Character.isJavaIdentifierStart(c) || c == '[' || c == ']')
 					return identifierOrKeyword(code, fileName, line, tokens, i);
 			}
 		}

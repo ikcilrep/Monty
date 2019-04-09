@@ -26,7 +26,7 @@ public final class List extends StructDeclarationNode {
 	List tail = null;
 
 	public List() {
-		super(null, "List");
+		super(null, "[L]");
 		new Append(this);
 		new Contains(this);
 		new Equals(this);

@@ -24,13 +24,10 @@ import sml.data.Get;
 import sml.data.*;
 import sml.data.string.*;
 import sml.data.checking.*;
-import sml.data.array.NewArray;
-import sml.data.list.NewList;
 import sml.data.stack.NewStack;
 import sml.errors.*;
 import sml.files.*;
 import sml.io.*;
-import sml.iterations.range.NewRange;
 import sml.language.Run;
 import sml.math.*;
 import sml.system.*;
@@ -58,7 +55,6 @@ public final class Sml extends Library {
 		var errors = new HashMap<String, Object>();
 		var files = new HashMap<String, Object>();
 		var language = new HashMap<String, Object>();
-		var iterations = new HashMap<String, Object>();
 		
 		sml.put("casts", casts);
 		sml.put("math", math);
@@ -71,7 +67,6 @@ public final class Sml extends Library {
 		sml.put("errors", errors);
 		sml.put("files", files);
 		sml.put("language", language);
-		sml.put("iterations", iterations);
 
 		casts.put("toBoolean", new ToBoolean());
 		casts.put("toReal", new ToReal());
@@ -80,9 +75,7 @@ public final class Sml extends Library {
 		casts.put("toChar", new ToChar());
 		casts.put("ord", new Ord());
 
-		data.put("Array", new NewArray());
 		data.put("Stack", new NewStack());
-		data.put("List", new NewList());
 		data.put("checking", checking);
 		data.put("string", string);
 		data.put("length", new Length());
@@ -149,8 +142,6 @@ public final class Sml extends Library {
 		files.put("isFile", new IsFile());
 
 		language.put("run", new Run());
-		
-		iterations.put("Range", new NewRange());
 	}
 
 }

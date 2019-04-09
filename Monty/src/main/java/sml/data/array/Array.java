@@ -28,7 +28,7 @@ public final class Array extends StructDeclarationNode {
 	protected Object[] array;
 
 	public Array(int length) {
-		super(null, "Array");
+		super(null, "[A]");
 		addFunctions();
 		array = new Object[length];
 		for (int i = 0; i < length; i++)
@@ -36,7 +36,7 @@ public final class Array extends StructDeclarationNode {
 	}
 
 	public Array(Object[] array) {
-		super(null, "Array");
+		super(null, "[A]");
 		addFunctions();
 		this.array = Arrays.copyOf(array, array.length, Object[].class);
 	}
