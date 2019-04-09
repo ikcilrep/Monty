@@ -27,7 +27,6 @@ import sml.data.checking.*;
 import sml.data.stack.NewStack;
 import sml.errors.*;
 import sml.files.*;
-import sml.io.*;
 import sml.language.Run;
 import sml.math.*;
 import sml.system.*;
@@ -45,7 +44,6 @@ public final class Sml extends Library {
 		var sml = getSublibraries();
 		var casts = new HashMap<String, Object>();
 		var math = new HashMap<String, Object>();
-		var io = new HashMap<String, Object>();
 		var system = new HashMap<String, Object>();
 		var data = new HashMap<String, Object>();
 		var threading = new HashMap<String, Object>();
@@ -58,7 +56,6 @@ public final class Sml extends Library {
 		
 		sml.put("casts", casts);
 		sml.put("math", math);
-		sml.put("io", io);
 		sml.put("system", system);
 		sml.put("data", data);
 		sml.put("threading", threading);
@@ -101,11 +98,7 @@ public final class Sml extends Library {
 		string.put("lowerCase", new LowerCase());
 		string.put("upperCase", new UpperCase());
 		string.put("split", new Split());
-
-		io.put("input", new Input());
-		io.put("print", new Print());
-		io.put("println", new Println());
-
+		
 		system.put("argv", new Argv());
 		system.put("argc", new Argc());
 		system.put("exit", new Exit());
@@ -115,8 +108,8 @@ public final class Sml extends Library {
 		time.put("unixTime", new UnixTime());
 		time.put("unixTimeMillis", new UnixTimeMillis());
 
-		math.put("pi", new Pi());
-		math.put("e", new E());
+		math.put("Pi", new Pi());
+		math.put("E", new E());
 		math.put("pow", new Pow());
 		math.put("root", new Root());
 		math.put("min", new Min());

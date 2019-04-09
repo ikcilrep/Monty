@@ -17,26 +17,18 @@ limitations under the License.
 package sml.math;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
-import ast.expressions.OperationNode;
+import ast.declarations.VariableDeclarationNode;
 import parser.DataTypes;
 
-public class Pi extends FunctionDeclarationNode {
+public class Pi extends VariableDeclarationNode {
+	public Pi() {
+		super("Pi", DataTypes.REAL);
+		setValue(pi);
+	}
+
 	private final static BigDecimal pi = new BigDecimal(
 			"3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679");
 
-	public Pi() {
-		super("pi", DataTypes.REAL);
-		setBody(new Block(null));
-	}
-
-	@Override
-	public BigDecimal call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		return pi;
-	}
 
 }

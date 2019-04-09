@@ -17,26 +17,19 @@ limitations under the License.
 package sml.math;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
-import ast.expressions.OperationNode;
+import ast.declarations.VariableDeclarationNode;
 import parser.DataTypes;
 
-public class E extends FunctionDeclarationNode {
+public class E extends VariableDeclarationNode {
 	private final static BigDecimal e = new BigDecimal(
 			"2.718281828459045235360287471352662497757247093699959574966967627724076630353");
-
+	
 	public E() {
-		super("e", DataTypes.REAL);
-		setBody(new Block(null));
+		super("E", DataTypes.REAL);
+		setValue(e);
 	}
 
-	@Override
-	public BigDecimal call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		return e;
-	}
+
 
 }

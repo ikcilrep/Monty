@@ -19,7 +19,7 @@ package ast.declarations;
 import parser.DataTypes;
 import parser.LogError;
 
-public final class VariableDeclarationNode extends DeclarationNode implements Cloneable {
+public class VariableDeclarationNode extends DeclarationNode implements Cloneable {
 
 	private boolean isDynamic = false;
 	private boolean isConst = false;
