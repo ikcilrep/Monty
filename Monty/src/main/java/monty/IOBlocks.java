@@ -20,12 +20,16 @@ import lexer.Lexer;
 import lexer.OptimizedTokensArray;
 import parser.parsing.Parser;
 public class IOBlocks {
-
+	private static void autoImport(Block block) {
+		var functions = block.getFunctions();
+		functions.put("nothing", new sml.data.returning.Nothing());
+		functions.put("f", new sml.functional.function.NewFunction());
+		
+	}
 	public static Block readBlockFromFile(String path, String fileName, int line) {
 		var tokens = Lexer.lex(FileIO.readFile(path, fileName, line), path, 1, new OptimizedTokensArray(), 0);
 		var block = Parser.parse(tokens);
-		block.getFunctions().put("nothing", new sml.data.returning.Nothing());
-
+		autoImport(block);
 		return block;
 	}
 

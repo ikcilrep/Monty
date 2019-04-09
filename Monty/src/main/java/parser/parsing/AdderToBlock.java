@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.RunnableNode;
 import ast.declarations.CustomFunctionDeclarationNode;
+import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.ConstantNode;
@@ -90,14 +91,10 @@ public abstract class AdderToBlock {
 		return forStatement;
 	}
 
-	public final static Block addFunctionDeclaration(Block block, OptimizedTokensArray tokens) {
-		var functionName = tokens.get(2).getText();
-		var function = new CustomFunctionDeclarationNode(functionName, Tokens.getDataType(tokens.get(1).getType()));
-		if (Character.isUpperCase(functionName.charAt(0)))
-			new LogError("Function name " + functionName + " should start with lower case", tokens.get(2));
+	public final static void parseFunctionsParameters(int start, OptimizedTokensArray tokens, FunctionDeclarationNode function) {
 		DataTypes type = null;
 		String name = null;
-		for (int i = 3; i < tokens.length(); i++) {
+		for (int i = start; i < tokens.length(); i++) {
 			var tokenType = tokens.get(i).getType();
 			var isTokenTypeEqualsComma = tokens.get(i).getType().equals(TokenTypes.COMMA);
 			if (tokenType.equals(TokenTypes.IDENTIFIER)) {
@@ -109,6 +106,14 @@ public abstract class AdderToBlock {
 			if (isTokenTypeEqualsComma || i + 1 >= tokens.length())
 				function.addParameter(name, type);
 		}
+	}
+	
+	public final static Block addFunctionDeclaration(Block block, OptimizedTokensArray tokens) {
+		var functionName = tokens.get(2).getText();
+		var function = new CustomFunctionDeclarationNode(functionName, Tokens.getDataType(tokens.get(1).getType()));
+		if (Character.isUpperCase(functionName.charAt(0)))
+			new LogError("Function name " + functionName + " should start with lower case", tokens.get(2));
+		parseFunctionsParameters(3, tokens, function);
 		function.setBody(new Block(block));
 		block.addFunction(function, tokens.get(1));
 		return function.getBody();
