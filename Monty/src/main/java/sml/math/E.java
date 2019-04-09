@@ -28,6 +28,7 @@ public class E extends VariableDeclarationNode {
 	public E() {
 		super("E", DataTypes.REAL);
 		setValue(e);
+		setConst(true);
 	}
 
 

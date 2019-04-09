@@ -25,6 +25,7 @@ public class Pi extends VariableDeclarationNode {
 	public Pi() {
 		super("Pi", DataTypes.REAL);
 		setValue(pi);
+		setConst(true);
 	}
 
 	private final static BigDecimal pi = new BigDecimal(
