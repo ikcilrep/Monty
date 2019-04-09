@@ -9,6 +9,7 @@ public class Function extends StructDeclarationNode {
 	public Function(FunctionDeclarationNode function) {
 		super(null, "Function");
 		this.function = function;
+		incrementNumber();
 		new Call(this);
 	}
 

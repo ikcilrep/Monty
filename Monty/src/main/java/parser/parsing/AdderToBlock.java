@@ -82,8 +82,6 @@ public abstract class AdderToBlock {
 
 	public final static Block addForStatement(Block block, OptimizedTokensArray tokens) {
 		var variableName = tokens.get(1).getText();
-		if (Character.isUpperCase(variableName.charAt(0)))
-			new LogError("Variable name " + variableName + " should start with lower case.", tokens.get(1));
 		var forStatement = new ForStatementNode(variableName,
 				ExpressionParser.parse(block, tokens.subarray(3, tokens.length())), tokens.get(0).getFileName(),
 				tokens.get(0).getLine(), block);
@@ -97,11 +95,9 @@ public abstract class AdderToBlock {
 		for (int i = start; i < tokens.length(); i++) {
 			var tokenType = tokens.get(i).getType();
 			var isTokenTypeEqualsComma = tokens.get(i).getType().equals(TokenTypes.COMMA);
-			if (tokenType.equals(TokenTypes.IDENTIFIER)) {
+			if (tokenType.equals(TokenTypes.IDENTIFIER))
 				name = tokens.get(i).getText();
-				if (Character.isUpperCase(name.charAt(0)))
-					new LogError("Argument name " + name + " should start with lower case", tokens.get(i));
-			} else if (!isTokenTypeEqualsComma)
+			else if (!isTokenTypeEqualsComma)
 				type = Tokens.getDataType(tokenType);
 			if (isTokenTypeEqualsComma || i + 1 >= tokens.length())
 				function.addParameter(name, type);
@@ -112,7 +108,7 @@ public abstract class AdderToBlock {
 		var functionName = tokens.get(2).getText();
 		var function = new CustomFunctionDeclarationNode(functionName, Tokens.getDataType(tokens.get(1).getType()));
 		if (Character.isUpperCase(functionName.charAt(0)))
-			new LogError("Function name " + functionName + " should start with lower case", tokens.get(2));
+			new LogError("Function name " + functionName + " have to start with lower case.", tokens.get(2));
 		parseFunctionsParameters(3, tokens, function);
 		function.setBody(new Block(block));
 		block.addFunction(function, tokens.get(1));
@@ -140,7 +136,7 @@ public abstract class AdderToBlock {
 	public final static Block addStructDeclaration(Block block, OptimizedTokensArray tokens) {
 		var name = tokens.get(1).getText();
 		if (Character.isLowerCase(name.charAt(0)))
-			new LogError("Struct name should start with upper case", tokens.get(0));
+			new LogError("Struct name have to start with upper case.", tokens.get(0));
 		var struct = new StructDeclarationNode(block, name);
 		struct.addNewStruct(block, tokens.get(0));
 		return struct;
@@ -151,9 +147,7 @@ public abstract class AdderToBlock {
 		int n = isDynamic ? 3 : 2;
 		var dataType = Tokens.getDataType(tokens.get(n - 2).getType());
 		var name = tokens.get(n - 1).getText();
-		var isConst = name.charAt(0) == '$';
-		if (Character.isUpperCase(name.charAt(0)))
-			new LogError("Variable name " + name + " should start with lower case", tokens.get(1));
+		var isConst = Character.isUpperCase(name.charAt(0));
 		var variable = new VariableDeclarationNode(name, dataType);
 		variable.setDynamic(isDynamic);
 		block.addVariable(variable, tokens.get(n - 2));

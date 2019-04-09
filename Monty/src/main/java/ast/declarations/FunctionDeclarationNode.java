@@ -85,11 +85,10 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 				value = RealToInt.realToInt((BigDecimal) value);
 				argumentDataType = DataTypes.INTEGER;
 			}
-			if (!dataType.equals(DataTypes.ANY))
-				if (!argumentDataType.equals(dataType))
-					new LogError("Wrong data type for " + i + " parameter with name\n\"" + name + "\" in " + getName()
-							+ " function call expected " + dataType.toString().toLowerCase() + " got "
-							+ argumentDataType.toString().toLowerCase(), callFileName, callLine);
+			if (!dataType.equals(DataTypes.ANY) && !argumentDataType.equals(dataType))
+				new LogError("Wrong data type for " + i + " parameter with name\n\"" + name + "\" in " + getName()
+						+ " function call expected " + dataType.toString().toLowerCase() + " got "
+						+ argumentDataType.toString().toLowerCase(), callFileName, callLine);
 
 			runnedArguments.set(i, value);
 		}
@@ -102,6 +101,7 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 			} else
 				variable = body.getVariable(name, getFileName(), getLine());
 			variable.setValue(runnedArguments.get(i));
+			variable.setConst(Character.isUpperCase(name.charAt(0)));
 		}
 	}
 

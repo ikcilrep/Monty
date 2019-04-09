@@ -76,11 +76,13 @@ public final class ForStatementNode extends Block {
 								if (hasVariable(name))
 									variable = getVariable(name, getFileName(), getLine());
 								else {
-									variable = new VariableDeclarationNode(name, DataTypes.ANY);
+									variable = new VariableDeclarationNode(name, DataTypes.ANY);										
 									variable.setDynamic(true);
 									addVariable(variable);
 								}
+								variable.setConst(false);
 								variable.setValue(e);
+								variable.setConst(Character.isUpperCase(name.charAt(0)));
 							}
 							result = super.run();
 							if (result instanceof BreakType)
