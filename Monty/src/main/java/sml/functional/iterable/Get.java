@@ -2,25 +2,29 @@ package sml.functional.iterable;
 
 import java.util.ArrayList;
 
+import ast.Block;
 import ast.expressions.OperationNode;
 import lexer.Lexer;
+import monty.IOBlocks;
 import parser.DataTypes;
 import parser.parsing.Parser;
-import sml.data.Length;
 import sml.data.Method;
-import sml.errors.LogError;
 
 final class Get extends Method<Iterable> {
-
-	public Get(Iterable parent) {
-		super(parent,"get", DataTypes.ANY);
-		var body = Parser.parse(Lexer.lex(
+	private static Block code;
+	static {
+		code = Parser.parse(Lexer.lex(
 				"int counter;for x in This;if counter i ==;return x;end;counter 1 +=;end;logError(\"Iterable doesn't have \" i \" element\" + +);",
 				"Get.java"));
-		setBody(body);
-		body.setParent(parent);
-		body.addFunction(new LogError());
-		body.addFunction(new Length());
+		code.addFunction(IOBlocks.logError);
+		code.addFunction(IOBlocks.length);
+
+	}
+
+	public Get(Iterable parent) {
+		super(parent, "get", DataTypes.ANY);
+		code.setParent(parent);
+		setBody(code);
 		addParameter("i", DataTypes.INTEGER);
 	}
 

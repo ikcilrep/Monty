@@ -20,13 +20,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import ast.expressions.OperationNode;
+import monty.IOBlocks;
 import monty.Library;
 import sml.casts.*;
 import sml.data.*;
 import sml.data.string.*;
 import sml.data.checking.*;
 import sml.data.stack.NewStack;
-import sml.errors.*;
 import sml.files.*;
 import sml.language.Run;
 import sml.math.*;
@@ -124,7 +124,7 @@ public final class Sml extends Library {
 		math.put("log", new Log());
 		math.put("abs", new Abs());
 
-		errors.put("logError", new LogError());
+		errors.put("logError", IOBlocks.logError);
 
 		files.put("separator", new Separator());
 		files.put("listDir", new ListDir());

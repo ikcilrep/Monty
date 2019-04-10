@@ -2,26 +2,28 @@ package sml.functional.iterable;
 
 import java.util.ArrayList;
 
+import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import lexer.Lexer;
+import monty.IOBlocks;
 import parser.DataTypes;
 import parser.parsing.Parser;
-import sml.data.Length;
-import sml.data.array.NewArray;
+
 
 public final class Map extends FunctionDeclarationNode {
+	private static Block code;
+	static {
+		code = Parser.parse(Lexer.lex("any array [A]().setLength(length(iterable)) =;int i 0 =;for x in iterable;"
+				+ "array.set(i,function.call(x));i 1 +=;end;return Iterable(array);", "Map.java"));
+		code.addFunction(IOBlocks.length);
+		code.addFunction(IOBlocks.array);
+		code.addFunction(IOBlocks.iterable);
+	}
 
 	public Map() {
 		super("map", DataTypes.ANY);
-
-		var body = Parser.parse(Lexer.lex("any array [A]().setLength(length(iterable)) =;int i 0 =;for x in iterable;"
-				+ "array.set(i,function.call(x));i 1 +=;end;return Iterable(array);", "Map.java"));
-		setBody(body);
-		body.addFunction(new Length());
-		body.addFunction(new NewArray());
-		body.addFunction(new NewIterable());
-
+		setBody(code);
 		addParameter("iterable", DataTypes.ANY);
 		addParameter("function", DataTypes.ANY);
 	}

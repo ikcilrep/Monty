@@ -16,21 +16,27 @@ limitations under the License.
 package monty;
 
 import ast.Block;
+import ast.declarations.FunctionDeclarationNode;
 import lexer.Lexer;
 import lexer.OptimizedTokensArray;
 import parser.parsing.Parser;
 import sml.io.*;
 public class IOBlocks {
+	public static FunctionDeclarationNode array =  new sml.data.array.NewArray();
+	public static FunctionDeclarationNode iterable = new sml.functional.iterable.NewIterable();
+	public static FunctionDeclarationNode length =  new sml.data.Length();
+	public static FunctionDeclarationNode logError =  new sml.errors.LogError();
+
 	private static void autoImport(Block block) {
 		var functions = block.getFunctions();
 		functions.put("nothing", new sml.data.returning.Nothing());
 		functions.put("f", new sml.functional.function.NewFunction());
-		functions.put("[A]", new sml.data.array.NewArray());
+		functions.put("[A]", array);
 		functions.put("[L]", new sml.data.list.NewList());
 		functions.put("Range", new sml.iterations.range.NewRange());
-		functions.put("Iterable", new sml.functional.iterable.NewIterable());
+		functions.put("Iterable", iterable);
 		functions.put("map", new sml.functional.iterable.Map());
-		functions.put("length", new sml.data.Length());
+		functions.put("length", length);
 		functions.put("print", new Print());
 		functions.put("println", new Println());
 		functions.put("input", new Input());
