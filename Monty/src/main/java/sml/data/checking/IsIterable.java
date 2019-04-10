@@ -10,7 +10,7 @@ import parser.DataTypes;
 import sml.Sml;
 
 public class IsIterable extends FunctionDeclarationNode {
-	
+
 	public IsIterable() {
 		super("isIterable", DataTypes.BOOLEAN);
 		setBody(new Block(null));
@@ -31,14 +31,14 @@ public class IsIterable extends FunctionDeclarationNode {
 		var iteratorValue = iterator.call(Sml.emptyArgumentList, callFileName, callLine);
 		if (!(iteratorValue instanceof StructDeclarationNode))
 			return false;
-		var iteratorStruct= (StructDeclarationNode) iteratorValue;
-		if (!(iteratorStruct.hasFunction("hasNext") && iteratorStruct.hasFunction("next")))
-			return false;
-		if (iteratorStruct.getFunction("next").getType().equals(DataTypes.VOID) || !iteratorStruct.getFunction("hasNext").getType().equals(DataTypes.BOOLEAN))
+		var iteratorStruct = (StructDeclarationNode) iteratorValue;
+		if (!(iteratorStruct.hasFunction("hasNext") && iteratorStruct.hasFunction("next"))
+				|| iteratorStruct.getFunction("next").getType().equals(DataTypes.VOID)
+				|| !iteratorStruct.getFunction("hasNext").getType().equals(DataTypes.BOOLEAN))
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
