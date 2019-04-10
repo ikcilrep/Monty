@@ -23,7 +23,7 @@ import ast.expressions.OperationNode;
 import monty.FileIO;
 import parser.DataTypes;
 
-public class Read extends FunctionDeclarationNode {
+public final class Read extends FunctionDeclarationNode {
 
 	public Read() {
 		super("read", DataTypes.STRING);

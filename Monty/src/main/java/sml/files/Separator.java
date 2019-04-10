@@ -23,7 +23,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class Separator extends FunctionDeclarationNode {
+public final class Separator extends FunctionDeclarationNode {
 
 	public Separator() {
 		super("separator", DataTypes.STRING);

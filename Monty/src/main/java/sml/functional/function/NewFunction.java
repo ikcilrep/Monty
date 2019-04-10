@@ -12,7 +12,7 @@ import parser.DataTypes;
 import parser.parsing.AdderToBlock;
 import parser.parsing.ExpressionParser;
 
-public class NewFunction extends FunctionDeclarationNode{
+public final class NewFunction extends FunctionDeclarationNode{
 
 	public NewFunction() {
 		super("f", DataTypes.ANY);

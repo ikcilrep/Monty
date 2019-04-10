@@ -25,7 +25,7 @@ import parser.DataTypes;
 import sml.data.returning.Nothing;
 import sml.data.returning.VoidType;
 
-public class Write extends FunctionDeclarationNode {
+public final class Write extends FunctionDeclarationNode {
 
 	public Write() {
 		super("write", DataTypes.VOID);

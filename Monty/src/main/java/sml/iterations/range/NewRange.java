@@ -9,7 +9,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
 
-public class NewRange extends FunctionDeclarationNode {
+public final class NewRange extends FunctionDeclarationNode {
 
 	public NewRange() {
 		super("Range", DataTypes.ANY);

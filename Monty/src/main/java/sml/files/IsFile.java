@@ -24,7 +24,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
 
-public class IsFile extends FunctionDeclarationNode {
+public final class IsFile extends FunctionDeclarationNode {
 
 	public IsFile() {
 		super("isFile", DataTypes.BOOLEAN);

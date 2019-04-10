@@ -2,7 +2,7 @@ package sml.functional.iterable;
 
 import ast.declarations.StructDeclarationNode;
 
-class Iterator extends StructDeclarationNode{
+final class Iterator extends StructDeclarationNode{
 	StructDeclarationNode iterator;
 	public Iterator(StructDeclarationNode iterator) {
 		super(null, "Iterator");

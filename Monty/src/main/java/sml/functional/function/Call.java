@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import ast.expressions.OperationNode;
 import sml.data.Method;
 
-class Call extends Method<Function>{
+final class Call extends Method<Function>{
 
 	public Call(Function parent) {
 		super(parent, "call", parent.function.getType());		

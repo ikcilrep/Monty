@@ -9,7 +9,7 @@ import parser.LogError;
 import sml.data.Method;
 import sml.functional.function.Function;
 
-class Map extends Method<Array> {
+final class Map extends Method<Array> {
 
 	public Map(Array parent) {
 		super(parent, "map", DataTypes.ANY);

@@ -8,7 +8,7 @@ import parser.DataTypes;
 import sml.Sml;
 import sml.data.Method;
 
-class NewIterator extends Method<Iterable> {
+final class NewIterator extends Method<Iterable> {
 
 	public NewIterator(Iterable parent) {
 		super(parent, "Iterator", DataTypes.ANY);

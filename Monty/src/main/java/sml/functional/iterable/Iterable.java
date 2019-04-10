@@ -6,7 +6,7 @@ import ast.declarations.VariableDeclarationNode;
 import parser.DataTypes;
 import sml.functional.iterable.string.IterableString;
 
-class Iterable extends StructDeclarationNode{
+final class Iterable extends StructDeclarationNode{
 	StructDeclarationNode iterable;
 	public Iterable(Object iterable) {
 		super(null, "Iterable");
@@ -19,6 +19,7 @@ class Iterable extends StructDeclarationNode{
 		addVariable(_this);
 		_this.setValue(this);
 		_this.setConst(true);
+		new Get(this);
 		new NewIterator(this);
 		new ToArray(this);
 	}

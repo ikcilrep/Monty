@@ -10,7 +10,7 @@ import sml.data.Length;
 import sml.data.Method;
 import sml.data.array.NewArray;
 
-public class ToArray extends Method<Iterable> {
+final class ToArray extends Method<Iterable> {
 
 	public ToArray(Iterable parent) {
 		super(parent, "toArray", DataTypes.ANY);

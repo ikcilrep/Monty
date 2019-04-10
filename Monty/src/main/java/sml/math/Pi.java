@@ -21,7 +21,7 @@ import java.math.BigDecimal;
 import ast.declarations.VariableDeclarationNode;
 import parser.DataTypes;
 
-public class Pi extends VariableDeclarationNode {
+public final class Pi extends VariableDeclarationNode {
 	public Pi() {
 		super("Pi", DataTypes.REAL);
 		setValue(pi);

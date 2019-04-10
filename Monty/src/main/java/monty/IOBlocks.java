@@ -19,6 +19,7 @@ import ast.Block;
 import lexer.Lexer;
 import lexer.OptimizedTokensArray;
 import parser.parsing.Parser;
+import sml.io.*;
 public class IOBlocks {
 	private static void autoImport(Block block) {
 		var functions = block.getFunctions();
@@ -28,9 +29,10 @@ public class IOBlocks {
 		functions.put("[L]", new sml.data.list.NewList());
 		functions.put("Range", new sml.iterations.range.NewRange());
 		functions.put("Iterable", new sml.functional.iterable.NewIterable());
-		functions.put("print", new sml.io.Print());
-		functions.put("println", new sml.io.Println());
-		functions.put("input", new sml.io.Input());
+		functions.put("length", new sml.data.Length());
+		functions.put("print", new Print());
+		functions.put("println", new Println());
+		functions.put("input", new Input());
 
 	}
 	public static Block readBlockFromFile(String path, String fileName, int line) {

@@ -24,7 +24,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
 
-public class Exists extends FunctionDeclarationNode {
+public final class Exists extends FunctionDeclarationNode {
 
 	public Exists() {
 		super("exists", DataTypes.BOOLEAN);

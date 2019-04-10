@@ -24,7 +24,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.array.Array;
 
-public class Split extends FunctionDeclarationNode {
+public final class Split extends FunctionDeclarationNode {
 
 	public Split() {
 		super("split", DataTypes.ANY);

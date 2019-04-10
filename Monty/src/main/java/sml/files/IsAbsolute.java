@@ -23,7 +23,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class IsAbsolute extends FunctionDeclarationNode {
+public final class IsAbsolute extends FunctionDeclarationNode {
 
 	public IsAbsolute() {
 		super("isAbsolute", DataTypes.BOOLEAN);

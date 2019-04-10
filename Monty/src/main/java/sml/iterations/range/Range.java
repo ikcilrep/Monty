@@ -4,7 +4,7 @@ import java.math.BigInteger;
 
 import ast.declarations.StructDeclarationNode;
 
-class Range extends StructDeclarationNode{
+final class Range extends StructDeclarationNode{
 	BigInteger min;
 	BigInteger max;
 	BigInteger step;

@@ -6,7 +6,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import sml.data.Method;
 
-class Next extends Method<Iterator>{
+final class Next extends Method<Iterator>{
 	private FunctionDeclarationNode next;
 	public Next(Iterator parent) {
 		super(parent, "next", parent.iterator.getFunction("next").getType());

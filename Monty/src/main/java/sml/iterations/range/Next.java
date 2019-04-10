@@ -7,7 +7,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-class Next extends Method<Iterator> {
+final class Next extends Method<Iterator> {
 
 	public Next(Iterator parent) {
 		super(parent, "next", DataTypes.INTEGER);

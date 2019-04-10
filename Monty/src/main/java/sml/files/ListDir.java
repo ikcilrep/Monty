@@ -25,7 +25,7 @@ import parser.DataTypes;
 import parser.LogError;
 import sml.data.array.Array;
 
-public class ListDir extends FunctionDeclarationNode {
+public final class ListDir extends FunctionDeclarationNode {
 
 	public ListDir() {
 		super("listDir", DataTypes.ANY);

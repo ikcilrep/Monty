@@ -7,7 +7,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class LogError extends FunctionDeclarationNode {
+public final class LogError extends FunctionDeclarationNode {
 
 	public LogError() {
 		super("logError", DataTypes.VOID);

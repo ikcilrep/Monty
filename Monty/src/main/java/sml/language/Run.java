@@ -10,7 +10,7 @@ import parser.DataTypes;
 import parser.parsing.Parser;
 import sml.data.returning.Nothing;
 
-public class Run extends FunctionDeclarationNode{
+public final class Run extends FunctionDeclarationNode{
 
 	public Run() {
 		super("run", DataTypes.VOID);

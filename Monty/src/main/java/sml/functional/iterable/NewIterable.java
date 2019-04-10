@@ -9,7 +9,7 @@ import parser.DataTypes;
 import parser.LogError;
 import sml.data.checking.IsIterable;
 
-public class NewIterable extends FunctionDeclarationNode {
+public final class NewIterable extends FunctionDeclarationNode {
 
 	public NewIterable() {
 		super("Iterable", DataTypes.ANY);

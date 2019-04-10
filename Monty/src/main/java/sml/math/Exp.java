@@ -25,7 +25,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 
-public class Exp extends FunctionDeclarationNode {
+public final class Exp extends FunctionDeclarationNode {
 	private final static int SCALE = 100;
 	private final static BigDecimal PRECISION = BigDecimal.valueOf(100);
 

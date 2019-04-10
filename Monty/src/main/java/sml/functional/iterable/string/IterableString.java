@@ -2,7 +2,7 @@ package sml.functional.iterable.string;
 
 import ast.declarations.StructDeclarationNode;
 
-public class IterableString extends StructDeclarationNode {
+public final class IterableString extends StructDeclarationNode {
 	char[] string;
 	public IterableString(String string) {
 		super(null, "iterableString");

@@ -27,7 +27,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
 
-public class Log extends FunctionDeclarationNode {
+public final class Log extends FunctionDeclarationNode {
 	public Log() {
 		super("log", DataTypes.REAL);
 		setBody(new Block(null));

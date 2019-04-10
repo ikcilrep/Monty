@@ -4,7 +4,7 @@ import java.math.BigInteger;
 
 import ast.declarations.StructDeclarationNode;
 
-class Iterator extends StructDeclarationNode{
+final class Iterator extends StructDeclarationNode{
 	BigInteger counter;
 	BigInteger max;
 	BigInteger step;

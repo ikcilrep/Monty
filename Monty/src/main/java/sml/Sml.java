@@ -22,7 +22,6 @@ import java.util.HashMap;
 import ast.expressions.OperationNode;
 import monty.Library;
 import sml.casts.*;
-import sml.data.Get;
 import sml.data.*;
 import sml.data.string.*;
 import sml.data.checking.*;
@@ -79,7 +78,6 @@ public final class Sml extends Library {
 		data.put("checking", checking);
 		data.put("string", string);
 		data.put("length", new Length());
-		data.put("get", new Get());
 
 		checking.put("isInt", new IsInt());
 		checking.put("isIterable", new IsIterable());

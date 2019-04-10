@@ -7,7 +7,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-class NewIterator extends Method<Range> {
+final class NewIterator extends Method<Range> {
 
 	public NewIterator(Range parent) {
 		super(parent, "Iterator", DataTypes.ANY);

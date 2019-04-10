@@ -24,7 +24,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
 
-public class IsDir extends FunctionDeclarationNode {
+public final class IsDir extends FunctionDeclarationNode {
 
 	public IsDir() {
 		super("isDir", DataTypes.BOOLEAN);

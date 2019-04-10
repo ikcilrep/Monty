@@ -24,7 +24,7 @@ import ast.expressions.OperationNode;
 import monty.Importing;
 import parser.DataTypes;
 
-public class AbsPath extends FunctionDeclarationNode {
+public final class AbsPath extends FunctionDeclarationNode {
 
 	public AbsPath() {
 		super("absPath", DataTypes.STRING);
