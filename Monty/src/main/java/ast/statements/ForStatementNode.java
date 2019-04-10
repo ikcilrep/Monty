@@ -26,6 +26,7 @@ import sml.Sml;
 import sml.data.checking.IsIterable;
 import sml.data.returning.BreakType;
 import sml.data.returning.ContinueType;
+import sml.functional.iterable.string.IterableString;
 
 public final class ForStatementNode extends Block {
 	private OperationNode iterable;
@@ -58,22 +59,33 @@ public final class ForStatementNode extends Block {
 		Object result = null;
 		var name = getVariableName();
 		var isNotNameUnderscore = !name.equals("_");
+		var isConst = Character.isUpperCase(name.charAt(0));
 		var toIter = getIterable().run();
-		if (toIter instanceof String) {
-			var charArray = ((String) toIter).toCharArray();
-			VariableDeclarationNode variable = null;
-			if (isNotNameUnderscore) {
-				if (hasVariable(name))
-					variable = getVariable(name, getFileName(), getLine());
-				else {
-					variable = new VariableDeclarationNode(name, DataTypes.STRING);
-					variable.setDynamic(true);
-					addVariable(variable);
-				}
+		if (toIter instanceof String)
+			toIter = new IterableString((String) toIter);
+
+		if (!IsIterable.isIterable(toIter, fileName, line))
+			new LogError("Can't iterate over not iterable object.", fileName, line);
+		var iterator = (StructDeclarationNode) ((StructDeclarationNode) toIter).getFunction("Iterator")
+				.call(Sml.emptyArgumentList, fileName, line);
+		var hasNext = iterator.getFunction("hasNext");
+		var next = iterator.getFunction("next");
+		VariableDeclarationNode variable = null;
+		if (isNotNameUnderscore)
+			if (hasVariable(name))
+				variable = getVariable(name, getFileName(), getLine());
+			else {
+				variable = new VariableDeclarationNode(name, DataTypes.ANY);
+				variable.setDynamic(true);
+				addVariable(variable);
 			}
-			for (char c : charArray) {
+		if (isNotNameUnderscore)
+			while ((boolean) hasNext.call(Sml.emptyArgumentList, fileName, line)) {
+				Object e = next.call(Sml.emptyArgumentList, fileName, line);
+				variable.setConst(false);
+				variable.setValue(e);
+				variable.setConst(isConst);
 				result = super.run();
-				variable.setValue(Character.toString(c));
 				if (result instanceof BreakType)
 					break;
 				if (result instanceof ContinueType)
@@ -81,41 +93,17 @@ public final class ForStatementNode extends Block {
 				if (result != null)
 					return result;
 			}
-			return null;
-		} else {
-			if (!IsIterable.isIterable(toIter, fileName, line))
-				new LogError("Can't iterate over not iterable object.",
-						fileName, line);
-			var iterator = (StructDeclarationNode) ((StructDeclarationNode) toIter).getFunction("Iterator")
-					.call(Sml.emptyArgumentList, fileName, line);
-			var hasNext = iterator.getFunction("hasNext");
-			var next = iterator.getFunction("next");
-			VariableDeclarationNode variable = null;
-			if (isNotNameUnderscore) {
-				if (hasVariable(name))
-					variable = getVariable(name, getFileName(), getLine());
-				else {
-					variable = new VariableDeclarationNode(name, DataTypes.ANY);
-					variable.setDynamic(true);
-					addVariable(variable);
-				}
-
-				while ((boolean) hasNext.call(Sml.emptyArgumentList, fileName, line)) {
-					Object e = next.call(Sml.emptyArgumentList, fileName, line);
-					variable.setConst(false);
-					variable.setValue(e);
-					variable.setConst(Character.isUpperCase(name.charAt(0)));
-					result = super.run();
-					if (result instanceof BreakType)
-						break;
-					if (result instanceof ContinueType)
-						continue;
-					if (result != null)
-						return result;
-				}
-				return null;
+		else
+			while ((boolean) hasNext.call(Sml.emptyArgumentList, fileName, line)) {
+				next.call(Sml.emptyArgumentList, fileName, line);
+				result = super.run();
+				if (result instanceof BreakType)
+					break;
+				if (result instanceof ContinueType)
+					continue;
+				if (result != null)
+					return result;
 			}
-		}
 		return null;
 	}
 }
