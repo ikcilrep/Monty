@@ -16,8 +16,10 @@ limitations under the License.
 
 package sml;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import ast.expressions.OperationNode;
 import monty.Library;
 import sml.casts.*;
 import sml.data.Get;
@@ -34,6 +36,7 @@ import sml.threading.*;
 import sml.time.*;
 
 public final class Sml extends Library {
+	public static final ArrayList<OperationNode> emptyArgumentList = new ArrayList<>();
 
 	public Sml() {
 		super("sml");
@@ -79,6 +82,7 @@ public final class Sml extends Library {
 		data.put("get", new Get());
 
 		checking.put("isInt", new IsInt());
+		checking.put("isIterable", new IsIterable());
 		checking.put("isReal", new IsReal());
 		checking.put("isBoolean", new IsBoolean());
 		checking.put("isString", new IsString());

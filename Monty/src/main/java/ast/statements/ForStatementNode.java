@@ -16,32 +16,31 @@ limitations under the License.
 
 package ast.statements;
 
-import java.util.ArrayList;
-
 import ast.Block;
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
+import sml.Sml;
+import sml.data.checking.IsIterable;
 import sml.data.returning.BreakType;
 import sml.data.returning.ContinueType;
 
 public final class ForStatementNode extends Block {
-	private static final ArrayList<OperationNode> emptyArgumentList = new ArrayList<>();
-	private OperationNode array;
+	private OperationNode iterable;
 	private String variableName;
 
 	public ForStatementNode(String variableName, OperationNode array, String fileName, int line, Block parent) {
 		super(parent);
 		this.variableName = variableName;
-		this.array = array;
+		this.iterable = array;
 		this.fileName = fileName;
 		this.line = line;
 	}
 
-	public OperationNode getArray() {
-		return array;
+	public OperationNode getIterable() {
+		return iterable;
 	}
 
 	public String getVariableName() {
@@ -51,7 +50,7 @@ public final class ForStatementNode extends Block {
 	@Override
 	public void setParent(Block parent) {
 		super.setParent(parent);
-		array.setParent(parent);
+		iterable.setParent(parent);
 	}
 
 	@Override
@@ -59,57 +58,22 @@ public final class ForStatementNode extends Block {
 		Object result = null;
 		var name = getVariableName();
 		var isNotNameUnderscore = !name.equals("_");
-		var toIter = getArray().run();
-		if (toIter instanceof StructDeclarationNode) {
-			var struct = (StructDeclarationNode) toIter;
-			if (struct.hasFunction("Iterator")) {
-				var iterator = (StructDeclarationNode) struct.getFunction("Iterator").call(emptyArgumentList, fileName,
-						line);
-				if (iterator.hasFunction("hasNext") && iterator.hasFunction("next")) {
-					var hasNext = iterator.getFunction("hasNext");
-					var next = iterator.getFunction("next");
-					if (hasNext.getType().equals(DataTypes.BOOLEAN) && !next.getType().equals(DataTypes.VOID))
-						while ((boolean) hasNext.call(emptyArgumentList, fileName, line)) {
-							Object e = next.call(emptyArgumentList, fileName, line);
-							if (isNotNameUnderscore) {
-								VariableDeclarationNode variable = null;
-								if (hasVariable(name))
-									variable = getVariable(name, getFileName(), getLine());
-								else {
-									variable = new VariableDeclarationNode(name, DataTypes.ANY);										
-									variable.setDynamic(true);
-									addVariable(variable);
-								}
-								variable.setConst(false);
-								variable.setValue(e);
-								variable.setConst(Character.isUpperCase(name.charAt(0)));
-							}
-							result = super.run();
-							if (result instanceof BreakType)
-								break;
-							if (result instanceof ContinueType)
-								continue;
-							if (result != null)
-								return result;
-						}
-					return null;
+		var toIter = getIterable().run();
+		if (toIter instanceof String) {
+			var charArray = ((String) toIter).toCharArray();
+			VariableDeclarationNode variable = null;
+			if (isNotNameUnderscore) {
+				if (hasVariable(name))
+					variable = getVariable(name, getFileName(), getLine());
+				else {
+					variable = new VariableDeclarationNode(name, DataTypes.STRING);
+					variable.setDynamic(true);
+					addVariable(variable);
 				}
 			}
-		} else if (toIter instanceof String) {
-			var charArray = ((String) toIter).toCharArray();
-			for (char x : charArray) {
-				if (isNotNameUnderscore) {
-					VariableDeclarationNode variable = null;
-					if (hasVariable(name))
-						variable = getVariable(name, getFileName(), getLine());
-					else {
-						variable = new VariableDeclarationNode(name, DataTypes.STRING);
-						variable.setDynamic(true);
-						addVariable(variable);
-					}
-					variable.setValue(x + "");
-				}
+			for (char c : charArray) {
 				result = super.run();
+				variable.setValue(Character.toString(c));
 				if (result instanceof BreakType)
 					break;
 				if (result instanceof ContinueType)
@@ -118,9 +82,40 @@ public final class ForStatementNode extends Block {
 					return result;
 			}
 			return null;
+		} else {
+			if (!IsIterable.isIterable(toIter, fileName, line))
+				new LogError("Can't iterate over not iterable object.",
+						fileName, line);
+			var iterator = (StructDeclarationNode) ((StructDeclarationNode) toIter).getFunction("Iterator")
+					.call(Sml.emptyArgumentList, fileName, line);
+			var hasNext = iterator.getFunction("hasNext");
+			var next = iterator.getFunction("next");
+			VariableDeclarationNode variable = null;
+			if (isNotNameUnderscore) {
+				if (hasVariable(name))
+					variable = getVariable(name, getFileName(), getLine());
+				else {
+					variable = new VariableDeclarationNode(name, DataTypes.ANY);
+					variable.setDynamic(true);
+					addVariable(variable);
+				}
+
+				while ((boolean) hasNext.call(Sml.emptyArgumentList, fileName, line)) {
+					Object e = next.call(Sml.emptyArgumentList, fileName, line);
+					variable.setConst(false);
+					variable.setValue(e);
+					variable.setConst(Character.isUpperCase(name.charAt(0)));
+					result = super.run();
+					if (result instanceof BreakType)
+						break;
+					if (result instanceof ContinueType)
+						continue;
+					if (result != null)
+						return result;
+				}
+				return null;
+			}
 		}
-		new LogError("Iterable object have to has nested struct Iterator with next and hasNext methods", fileName,
-				line);
 		return null;
 	}
 }
