@@ -52,7 +52,6 @@ public final class Array extends StructDeclarationNode {
 		new Get(this);
 		new NewIterator(this);
 		new Length(this);
-		new Map(this);
 		new Replace(this);
 		new ReplaceFirst(this);
 		new ReplaceLast(this);

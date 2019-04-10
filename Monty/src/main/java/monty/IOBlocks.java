@@ -29,6 +29,7 @@ public class IOBlocks {
 		functions.put("[L]", new sml.data.list.NewList());
 		functions.put("Range", new sml.iterations.range.NewRange());
 		functions.put("Iterable", new sml.functional.iterable.NewIterable());
+		functions.put("map", new sml.functional.iterable.Map());
 		functions.put("length", new sml.data.Length());
 		functions.put("print", new Print());
 		functions.put("println", new Println());
