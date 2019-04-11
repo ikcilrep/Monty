@@ -36,6 +36,7 @@ public class IOBlocks {
 		functions.put("Range", new sml.iterations.range.NewRange());
 		functions.put("Iterable", iterable);
 		functions.put("map", new sml.functional.iterable.Map());
+		functions.put("filter", new sml.functional.iterable.Filter());
 		functions.put("length", length);
 		functions.put("print", new Print());
 		functions.put("println", new Println());
