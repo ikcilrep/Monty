@@ -66,9 +66,9 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 	public void setArguments(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		var argumentsSize = arguments.size();
 		if (argumentsSize > parametersSize)
-			new LogError("Too many arguments in " + name + " function call", callFileName, callLine);
+			new LogError("Too many arguments in " + name + " function call.", callFileName, callLine);
 		else if (argumentsSize < parametersSize)
-			new LogError("Too few arguments in " + name + " function call", callFileName, callLine);
+			new LogError("Too few arguments in " + name + " function call.", callFileName, callLine);
 		if (argumentsSize == 0)
 			return;
 		var runnedArguments = new ArrayList<Object>(Arrays.asList(new Object[arguments.size()]));

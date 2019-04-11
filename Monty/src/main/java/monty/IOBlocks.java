@@ -30,7 +30,8 @@ public class IOBlocks {
 	private static void autoImport(Block block) {
 		var functions = block.getFunctions();
 		functions.put("nothing", new sml.data.returning.Nothing());
-		functions.put("f", new sml.functional.function.NewFunction());
+		functions.put("f", new sml.functional.function.FunctionByName());
+		functions.put("lambda", new sml.functional.function.Lambda());
 		functions.put("[A]", array);
 		functions.put("[L]", new sml.data.list.NewList());
 		functions.put("Range", new sml.iterations.range.NewRange());

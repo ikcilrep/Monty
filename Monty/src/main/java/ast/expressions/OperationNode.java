@@ -28,6 +28,10 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 
 	private OperationNode left = null;
 	private Object operand;
+	public Object getOperand() {
+		return operand;
+	}
+
 	private Block parent = null;
 
 	private OperationNode right = null;
