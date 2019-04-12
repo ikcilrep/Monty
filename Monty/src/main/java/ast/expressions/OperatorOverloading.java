@@ -19,12 +19,39 @@ package ast.expressions;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 
+import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import parser.DataTypes;
 import parser.LogError;
 
 public final class OperatorOverloading {
+	private static ArrayList<OperationNode> arguments;
+	static {
+		arguments = new ArrayList<>();
+		arguments.add(new OperationNode(null, null));
+		arguments.add(new OperationNode(null, null));
+	}
+
+	private final static Object overloadOperator(Object leftValue, Object rightValue, String nameOfFunction,
+			String fileName, int line) {
+		Object[] values = { leftValue, rightValue };
+		arguments.get(0).setOperand(new ConstantNode(leftValue, DataTypes.ANY));
+		arguments.get(1).setOperand(new ConstantNode(rightValue, DataTypes.ANY));
+		for (Object value : values)
+			if (value instanceof StructDeclarationNode) {
+				var struct = (StructDeclarationNode) value;
+				if (struct.hasFunction(nameOfFunction)) {
+					var operator = struct.getFunction(nameOfFunction);
+					if (!operator.getType().equals(DataTypes.VOID) && operator.getParameters().size() == 2)
+						return operator.call(arguments, fileName, line);
+				}
+			}
+		new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
+				line);
+		return null;
+	}
 
 	public final static Object additionOperator(Object leftValue, Object rightValue, Object operator, DataTypes type,
 			String fileName, int line) {
@@ -39,8 +66,7 @@ public final class OperatorOverloading {
 			new LogError("Can't add booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString(), fileName, line);
 		case ANY:
-			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
-					line);
+			return overloadOperator(leftValue, rightValue, "add", fileName, line);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString(), fileName, line);
@@ -61,8 +87,7 @@ public final class OperatorOverloading {
 			new LogError("Can't do and operation with " + type.toString().toLowerCase() + "s:\t " + leftValue.toString()
 					+ " " + rightValue.toString() + " " + operator.toString(), fileName, line);
 		case ANY:
-			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
-					line);
+			return overloadOperator(leftValue, rightValue, "and", fileName, line);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString(), fileName, line);
@@ -78,15 +103,14 @@ public final class OperatorOverloading {
 		case INTEGER:
 		case REAL:
 		case STRING:
-			variable.setValue(additionOperator(variable.getValue(), rightValue, operator, type, fileName, line), fileName,
-					line);
+			variable.setValue(additionOperator(variable.getValue(), rightValue, operator, type, fileName, line),
+					fileName, line);
 			return variable.getValue();
 		case BOOLEAN:
 			new LogError("Can't add booleans:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString(), fileName, line);
 		case ANY:
-			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
-					line);
+			return overloadOperator(leftValue, rightValue, "assignAdd", fileName, line);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString(), fileName, line);
@@ -106,8 +130,7 @@ public final class OperatorOverloading {
 					line);
 			return variable.getValue();
 		case ANY:
-			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
-					line);
+			return overloadOperator(leftValue, rightValue, "assignAnd", fileName, line);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString(), fileName, line);
@@ -123,12 +146,11 @@ public final class OperatorOverloading {
 		case INTEGER:
 		case REAL:
 		case STRING:
-			variable.setValue(divisionOperator(variable.getValue(), rightValue, operator, type, fileName, line), fileName,
-					line);
+			variable.setValue(divisionOperator(variable.getValue(), rightValue, operator, type, fileName, line),
+					fileName, line);
 			return variable.getValue();
 		case ANY:
-			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
-					line);
+			return overloadOperator(leftValue, rightValue, "assignDiv", fileName, line);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString(), fileName, line);
@@ -144,12 +166,11 @@ public final class OperatorOverloading {
 		case INTEGER:
 		case REAL:
 		case STRING:
-			variable.setValue(multiplicationOperator(variable.getValue(), rightValue, operator, type, fileName, line), fileName,
-					line);
+			variable.setValue(multiplicationOperator(variable.getValue(), rightValue, operator, type, fileName, line),
+					fileName, line);
 			return variable.getValue();
 		case ANY:
-			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
-					line);
+			return overloadOperator(leftValue, rightValue, "assignMul", fileName, line);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString(), fileName, line);
@@ -167,8 +188,7 @@ public final class OperatorOverloading {
 		case STRING:
 		case BOOLEAN:
 		case ANY:
-			variable.setValue(rightValue, fileName,
-					line);
+			variable.setValue(rightValue, fileName, line);
 			return variable.getValue();
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
@@ -189,8 +209,7 @@ public final class OperatorOverloading {
 					line);
 			return variable.getValue();
 		case ANY:
-			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
-					line);
+			return overloadOperator(leftValue, rightValue, "assignOr", fileName, line);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString(), fileName, line);
@@ -206,12 +225,11 @@ public final class OperatorOverloading {
 		case INTEGER:
 		case REAL:
 		case STRING:
-			variable.setValue(shiftLeftOperator(variable.getValue(), rightValue, operator, type, fileName, line), fileName,
-					line);
+			variable.setValue(shiftLeftOperator(variable.getValue(), rightValue, operator, type, fileName, line),
+					fileName, line);
 			return variable.getValue();
 		case ANY:
-			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
-					line);
+			return overloadOperator(leftValue, rightValue, "assignShl", fileName, line);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString(), fileName, line);
@@ -227,12 +245,11 @@ public final class OperatorOverloading {
 		case INTEGER:
 		case REAL:
 		case STRING:
-			variable.setValue(shiftRightOperator(variable.getValue(), rightValue, operator, type, fileName, line), fileName,
-					line);
+			variable.setValue(shiftRightOperator(variable.getValue(), rightValue, operator, type, fileName, line),
+					fileName, line);
 			return variable.getValue();
 		case ANY:
-			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
-					line);
+			return overloadOperator(leftValue, rightValue, "assignShr", fileName, line);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString(), fileName, line);
@@ -248,12 +265,11 @@ public final class OperatorOverloading {
 		case INTEGER:
 		case REAL:
 		case STRING:
-			variable.setValue(subtractionOperator(variable.getValue(), rightValue, operator, type, fileName, line), fileName,
-					line);
+			variable.setValue(subtractionOperator(variable.getValue(), rightValue, operator, type, fileName, line),
+					fileName, line);
 			return variable.getValue();
 		case ANY:
-			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
-					line);
+			return overloadOperator(leftValue, rightValue, "assignSub", fileName, line);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString(), fileName, line);
@@ -273,8 +289,7 @@ public final class OperatorOverloading {
 					line);
 			return variable.getValue();
 		case ANY:
-			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
-					line);
+			return overloadOperator(leftValue, rightValue, "assignXor", fileName, line);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString(), fileName, line);
@@ -304,8 +319,7 @@ public final class OperatorOverloading {
 			new LogError("Can't divide " + type.toString().toLowerCase() + "s:\t" + leftValue.toString() + " "
 					+ rightValue.toString() + " " + operator.toString(), fileName, line);
 		case ANY:
-			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
-					line);
+			return overloadOperator(leftValue, rightValue, "div", fileName, line);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString(), fileName, line);
@@ -346,8 +360,7 @@ public final class OperatorOverloading {
 							+ leftValue.toString() + " " + rightValue.toString() + " " + operator.toString(),
 					fileName, line);
 		case ANY:
-			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
-					line);
+			return overloadOperator(leftValue, rightValue, "ge", fileName, line);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString(), fileName, line);
@@ -368,8 +381,7 @@ public final class OperatorOverloading {
 			new LogError("Can't do greater operation with " + type.toString().toLowerCase() + "s:\t"
 					+ leftValue.toString() + " " + rightValue.toString() + " " + operator.toString(), fileName, line);
 		case ANY:
-			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
-					line);
+			return overloadOperator(leftValue, rightValue, "gt", fileName, line);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString(), fileName, line);
@@ -392,8 +404,7 @@ public final class OperatorOverloading {
 							+ leftValue.toString() + " " + rightValue.toString() + " " + operator.toString(),
 					fileName, line);
 		case ANY:
-			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
-					line);
+			return overloadOperator(leftValue, rightValue, "le", fileName, line);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString(), fileName, line);
@@ -414,8 +425,7 @@ public final class OperatorOverloading {
 			new LogError("Can't do lower operation with " + type.toString().toLowerCase() + "s:\t"
 					+ leftValue.toString() + " " + rightValue.toString() + " " + operator.toString(), fileName, line);
 		case ANY:
-			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
-					line);
+			return overloadOperator(leftValue, rightValue, "lt", fileName, line);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString(), fileName, line);
@@ -442,8 +452,7 @@ public final class OperatorOverloading {
 			new LogError("Can't do modulo operation on " + type.toString().toLowerCase() + "s:\t" + leftValue.toString()
 					+ " " + rightValue.toString() + " " + operator.toString(), fileName, line);
 		case ANY:
-			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
-					line);
+			return overloadOperator(leftValue, rightValue, "mod", fileName, line);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString(), fileName, line);
@@ -464,8 +473,7 @@ public final class OperatorOverloading {
 			new LogError("Can't multiply " + type.toString().toLowerCase() + "s:\t" + leftValue.toString() + " "
 					+ rightValue.toString() + " " + operator.toString(), fileName, line);
 		case ANY:
-			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
-					line);
+			return overloadOperator(leftValue, rightValue, "mul", fileName, line);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString(), fileName, line);
@@ -486,8 +494,7 @@ public final class OperatorOverloading {
 		case BOOLEAN:
 			return !(boolean) rightValue;
 		case ANY:
-			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
-					line);
+			return overloadOperator(leftValue, rightValue, "invert", fileName, line);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString(), fileName,
 					line);
@@ -503,8 +510,8 @@ public final class OperatorOverloading {
 			return ((BigDecimal) leftValue).compareTo((BigDecimal) rightValue) != 0;
 		case INTEGER:
 		case BOOLEAN:
-		case STRING:
 		case ANY:
+		case STRING:
 			return !leftValue.equals(rightValue);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
@@ -526,8 +533,7 @@ public final class OperatorOverloading {
 			new LogError("Can't do or operation with " + type.toString().toLowerCase() + "s:\t " + leftValue.toString()
 					+ " " + rightValue.toString() + " " + operator.toString(), fileName, line);
 		case ANY:
-			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
-					line);
+			return overloadOperator(leftValue, rightValue, "or", fileName, line);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString(), fileName, line);
@@ -557,8 +563,7 @@ public final class OperatorOverloading {
 			new LogError("Can't shift left " + type.toString().toLowerCase() + "s:\t " + leftValue.toString() + " "
 					+ rightValue.toString() + " " + operator.toString(), fileName, line);
 		case ANY:
-			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
-					line);
+			return overloadOperator(leftValue, rightValue, "shl", fileName, line);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString(), fileName, line);
@@ -578,8 +583,7 @@ public final class OperatorOverloading {
 			new LogError("Can't shift right " + type.toString().toLowerCase() + "s:\t " + leftValue.toString() + " "
 					+ rightValue.toString() + " " + operator.toString(), fileName, line);
 		case ANY:
-			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
-					line);
+			return overloadOperator(leftValue, rightValue, "shr", fileName, line);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString(), fileName, line);
@@ -600,8 +604,7 @@ public final class OperatorOverloading {
 			new LogError("Can't subtract " + type.toString().toLowerCase() + "s:\t" + leftValue.toString() + " "
 					+ rightValue.toString() + " " + operator.toString(), fileName, line);
 		case ANY:
-			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
-					line);
+			return overloadOperator(leftValue, rightValue, "sub", fileName, line);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString(), fileName, line);
@@ -621,8 +624,7 @@ public final class OperatorOverloading {
 			new LogError("Can't do xor operation with " + type.toString().toLowerCase() + "s:\t " + leftValue.toString()
 					+ " " + rightValue.toString() + " " + operator.toString(), fileName, line);
 		case ANY:
-			new LogError("Can't do any operations besides assignment and comparison with \"any\" data type", fileName,
-					line);
+			return overloadOperator(leftValue, rightValue, "xor", fileName, line);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue.toString() + " " + rightValue.toString() + " "
 					+ operator.toString(), fileName, line);
