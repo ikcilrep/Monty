@@ -233,7 +233,7 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 				&& !leftType.equals(rightType)) {
 			rightType = DataTypes.STRING;
 			rightValue = rightValue.toString();
-		} else if (!isNotAssignment && leftType.equals(DataTypes.ANY) && !leftType.equals(rightType))
+		} else if (leftType.equals(DataTypes.ANY) && !leftType.equals(rightType))
 			rightType = DataTypes.ANY;
 		else if (rightType.equals(DataTypes.ANY) && !leftType.equals(rightType))
 			leftType = DataTypes.ANY;

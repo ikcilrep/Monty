@@ -51,20 +51,24 @@ public final class OperatorOverloading {
 	}
 
 	public final static Object overloadOperator(Object leftValue, Object rightValue, String nameOfFunction,
-			byte numberOfParameters) {
-		Object[] values = { leftValue, rightValue };
+			int numberOfParameters, boolean isAssignment) {
 		arguments.get(0).setOperand(new ConstantNode(leftValue, DataTypes.ANY));
 		arguments.get(1).setOperand(new ConstantNode(rightValue, DataTypes.ANY));
-		for (Object value : values)
-			if (value instanceof StructDeclarationNode) {
-				var struct = (StructDeclarationNode) value;
-				if (struct.hasFunction(nameOfFunction)) {
-					var operator = struct.getFunction(nameOfFunction);
-					if (!operator.getType().equals(DataTypes.VOID)
-							&& operator.getParameters().size() == numberOfParameters)
-						return operator.call(arguments, temporaryFileName, temporaryLine);
-				}
+		if (leftValue instanceof StructDeclarationNode) {
+			var struct = (StructDeclarationNode) leftValue;
+			if (struct.hasFunction(nameOfFunction)) {
+				var operator = struct.getFunction(nameOfFunction);
+				if (!operator.getType().equals(DataTypes.VOID) && operator.getParameters().size() == numberOfParameters)
+					return operator.call(arguments, temporaryFileName, temporaryLine);
 			}
+		} else if (!isAssignment && rightValue instanceof StructDeclarationNode) {
+			var struct = (StructDeclarationNode) rightValue;
+			if (struct.hasFunction(nameOfFunction)) {
+				var operator = struct.getFunction(nameOfFunction);
+				if (!operator.getType().equals(DataTypes.VOID) && operator.getParameters().size() == numberOfParameters)
+					return operator.call(arguments, temporaryFileName, temporaryLine);
+			}
+		}
 		new LogError(
 				"Can't do any operations besides assignment and comparison with \"any\" data type if there isn't any overload.",
 				temporaryFileName, temporaryLine);
@@ -91,7 +95,7 @@ public final class OperatorOverloading {
 			new LogError("Can't add booleans:\t" + leftValue + " " + rightValue + " +", temporaryFileName,
 					temporaryLine);
 		case ANY:
-			return overloadOperator(leftValue, rightValue, "$add", (byte) 2);
+			return overloadOperator(leftValue, rightValue, "$add", 2, false);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " +", temporaryFileName,
 					temporaryLine);
@@ -111,7 +115,7 @@ public final class OperatorOverloading {
 			new LogError("Can't do and operation with " + type.toString().toLowerCase() + "s:\t " + leftValue + " "
 					+ rightValue + " &", temporaryFileName, temporaryLine);
 		case ANY:
-			return overloadOperator(leftValue, rightValue, "$and", (byte) 2);
+			return overloadOperator(leftValue, rightValue, "$and", 2, false);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " &", temporaryFileName,
 					temporaryLine);
@@ -140,7 +144,7 @@ public final class OperatorOverloading {
 			new LogError("Can't divide " + type.toString().toLowerCase() + "s:\t" + leftValue + " " + rightValue + " /",
 					temporaryFileName, temporaryLine);
 		case ANY:
-			return overloadOperator(leftValue, rightValue, "$div", (byte) 2);
+			return overloadOperator(leftValue, rightValue, "$div", 2, false);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " /", temporaryFileName,
 					temporaryLine);
@@ -177,7 +181,7 @@ public final class OperatorOverloading {
 			new LogError("Can't do greater-equals operation with " + type.toString().toLowerCase() + "s:\t" + leftValue
 					+ " " + rightValue + " >=", temporaryFileName, temporaryLine);
 		case ANY:
-			return overloadOperator(leftValue, rightValue, "$ge", (byte) 2);
+			return overloadOperator(leftValue, rightValue, "$ge", 2, false);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " >=", temporaryFileName,
 					temporaryLine);
@@ -197,7 +201,7 @@ public final class OperatorOverloading {
 			new LogError("Can't do greater operation with " + type.toString().toLowerCase() + "s:\t" + leftValue + " "
 					+ rightValue + " >", temporaryFileName, temporaryLine);
 		case ANY:
-			return overloadOperator(leftValue, rightValue, "$gt", (byte) 2);
+			return overloadOperator(leftValue, rightValue, "$gt", 2, false);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " >", temporaryFileName,
 					temporaryLine);
@@ -217,7 +221,7 @@ public final class OperatorOverloading {
 			new LogError("Can't do lower-equals operation with " + type.toString().toLowerCase() + "s:\t" + leftValue
 					+ " " + rightValue + " <=", temporaryFileName, temporaryLine);
 		case ANY:
-			return overloadOperator(leftValue, rightValue, "$le", (byte) 2);
+			return overloadOperator(leftValue, rightValue, "$le", 2, false);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " <=", temporaryFileName,
 					temporaryLine);
@@ -237,7 +241,7 @@ public final class OperatorOverloading {
 			new LogError("Can't do lower operation with " + type.toString().toLowerCase() + "s:\t" + leftValue + " "
 					+ rightValue + " <", temporaryFileName, temporaryLine);
 		case ANY:
-			return overloadOperator(leftValue, rightValue, "$lt", (byte) 2);
+			return overloadOperator(leftValue, rightValue, "$lt", 2, false);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " <", temporaryFileName,
 					temporaryLine);
@@ -263,7 +267,7 @@ public final class OperatorOverloading {
 			new LogError("Can't do modulo operation on " + type.toString().toLowerCase() + "s:\t" + leftValue + " "
 					+ rightValue + " %", temporaryFileName, temporaryLine);
 		case ANY:
-			return overloadOperator(leftValue, rightValue, "$mod", (byte) 2);
+			return overloadOperator(leftValue, rightValue, "$mod", 2, false);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " %", temporaryFileName,
 					temporaryLine);
@@ -284,7 +288,7 @@ public final class OperatorOverloading {
 					"Can't multiply " + type.toString().toLowerCase() + "s:\t" + leftValue + " " + rightValue + " *",
 					temporaryFileName, temporaryLine);
 		case ANY:
-			return overloadOperator(leftValue, rightValue, "$mul", (byte) 2);
+			return overloadOperator(leftValue, rightValue, "$mul", 2, false);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " *", temporaryFileName,
 					temporaryLine);
@@ -304,7 +308,7 @@ public final class OperatorOverloading {
 		case BOOLEAN:
 			return !(boolean) value;
 		case ANY:
-			return overloadOperator(null, value, "$not", (byte) 1);
+			return overloadOperator(null, value, "$not", 1, false);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + value + " !", temporaryFileName, temporaryLine);
 		default:
@@ -339,7 +343,7 @@ public final class OperatorOverloading {
 			new LogError("Can't do or operation with " + type.toString().toLowerCase() + "s:\t " + leftValue + " "
 					+ rightValue + " |", temporaryFileName, temporaryLine);
 		case ANY:
-			return overloadOperator(leftValue, rightValue, "$or", (byte) 2);
+			return overloadOperator(leftValue, rightValue, "$or", 2, false);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " |", temporaryFileName,
 					temporaryLine);
@@ -360,7 +364,7 @@ public final class OperatorOverloading {
 			new LogError("Can't shift left " + type.toString().toLowerCase() + "s:\t " + leftValue + " " + rightValue
 					+ " <<", temporaryFileName, temporaryLine);
 		case ANY:
-			return overloadOperator(leftValue, rightValue, "$shl", (byte) 2);
+			return overloadOperator(leftValue, rightValue, "$shl", 2, false);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " <<", temporaryFileName,
 					temporaryLine);
@@ -379,7 +383,7 @@ public final class OperatorOverloading {
 			new LogError("Can't shift right " + type.toString().toLowerCase() + "s:\t " + leftValue + " " + rightValue
 					+ " >>", temporaryFileName, temporaryLine);
 		case ANY:
-			return overloadOperator(leftValue, rightValue, "$shr", (byte) 2);
+			return overloadOperator(leftValue, rightValue, "$shr", 2, false);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " >>", temporaryFileName,
 					temporaryLine);
@@ -400,7 +404,7 @@ public final class OperatorOverloading {
 					"Can't subtract " + type.toString().toLowerCase() + "s:\t" + leftValue + " " + rightValue + " -",
 					temporaryFileName, temporaryLine);
 		case ANY:
-			return overloadOperator(leftValue, rightValue, "$sub", (byte) 2);
+			return overloadOperator(leftValue, rightValue, "$sub", 2, false);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " -", temporaryFileName,
 					temporaryLine);
@@ -419,7 +423,7 @@ public final class OperatorOverloading {
 			new LogError("Can't do xor operation with " + type.toString().toString().toLowerCase() + "s:\t " + leftValue
 					+ " " + rightValue + " ^", temporaryFileName, temporaryLine);
 		case ANY:
-			return overloadOperator(leftValue, rightValue, "$xor", (byte) 2);
+			return overloadOperator(leftValue, rightValue, "$xor", 2, false);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " ^", temporaryFileName,
 					temporaryLine);
@@ -441,7 +445,7 @@ public final class OperatorOverloading {
 			new LogError("Can't add booleans:\t" + variable.getName() + " " + rightValue + " +=", temporaryFileName,
 					temporaryLine);
 		case ANY:
-			return overloadOperator(leftValue, rightValue, "$a_add", (byte) 2);
+			return overloadOperator(variable.getValue(), rightValue, "$a_add", 2, true);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + variable.getName() + " " + rightValue + " +=",
 					temporaryFileName, temporaryLine);
@@ -459,7 +463,7 @@ public final class OperatorOverloading {
 			variable.setValue(andOperator(variable.getValue(), rightValue, type), temporaryFileName, temporaryLine);
 			return variable.getValue();
 		case ANY:
-			return overloadOperator(leftValue, rightValue, "$a_and", (byte) 2);
+			return overloadOperator(variable.getValue(), rightValue, "$a_and", 2, true);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + variable.getName() + " " + rightValue + " &=",
 					temporaryFileName, temporaryLine);
@@ -478,7 +482,7 @@ public final class OperatorOverloading {
 					temporaryLine);
 			return variable.getValue();
 		case ANY:
-			return overloadOperator(leftValue, rightValue, "$a_div", (byte) 2);
+			return overloadOperator(variable.getValue(), rightValue, "$a_div", 2, true);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + variable.getName() + " " + rightValue + " /=",
 					temporaryFileName, temporaryLine);
@@ -497,7 +501,7 @@ public final class OperatorOverloading {
 					temporaryLine);
 			return variable.getValue();
 		case ANY:
-			return overloadOperator(leftValue, rightValue, "$a_mul", (byte) 2);
+			return overloadOperator(variable.getValue(), rightValue, "$a_mul", 2, true);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + variable.getName() + " " + rightValue + " *=",
 					temporaryFileName, temporaryLine);
@@ -533,7 +537,7 @@ public final class OperatorOverloading {
 			variable.setValue(orOperator(variable.getValue(), rightValue, type), temporaryFileName, temporaryLine);
 			return variable.getValue();
 		case ANY:
-			return overloadOperator(leftValue, rightValue, "$a_or", (byte) 2);
+			return overloadOperator(variable.getValue(), rightValue, "$a_or", 2, true);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + variable.getName() + " " + rightValue + " |=",
 					temporaryFileName, temporaryLine);
@@ -552,7 +556,7 @@ public final class OperatorOverloading {
 					temporaryLine);
 			return variable.getValue();
 		case ANY:
-			return overloadOperator(leftValue, rightValue, "$a_shl", (byte) 2);
+			return overloadOperator(variable.getValue(), rightValue, "$a_shl", 2, true);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + variable.getName() + " " + rightValue + " <<=",
 					temporaryFileName, temporaryLine);
@@ -571,7 +575,7 @@ public final class OperatorOverloading {
 					temporaryLine);
 			return variable.getValue();
 		case ANY:
-			return overloadOperator(leftValue, rightValue, "$a_shr", (byte) 2);
+			return overloadOperator(variable.getValue(), rightValue, "$a_shr", 2, true);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + variable.getName() + " " + rightValue + " >>=",
 					temporaryFileName, temporaryLine);
@@ -590,7 +594,7 @@ public final class OperatorOverloading {
 					temporaryLine);
 			return variable.getValue();
 		case ANY:
-			return overloadOperator(leftValue, rightValue, "$a_sub", (byte) 2);
+			return overloadOperator(variable.getValue(), rightValue, "$a_sub", 2, true);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + variable.getName() + " " + rightValue + " -=",
 					temporaryFileName, temporaryLine);
@@ -608,7 +612,7 @@ public final class OperatorOverloading {
 			variable.setValue(xorOperator(variable.getValue(), rightValue, type), temporaryFileName, temporaryLine);
 			return variable.getValue();
 		case ANY:
-			return overloadOperator(leftValue, rightValue, "$a_xor", (byte) 2);
+			return overloadOperator(variable.getValue(), rightValue, "$a_xor", 2, true);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + variable.getName() + " " + rightValue + " ^=",
 					temporaryFileName, temporaryLine);

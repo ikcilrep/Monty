@@ -14,28 +14,32 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sml.data.list;
+package sml.data.array;
 
 import java.util.ArrayList;
 
 import ast.expressions.OperationNode;
 import parser.DataTypes;
+import parser.LogError;
 import sml.data.Method;
 
-final class ReplaceLast extends Method<List> {
-	public ReplaceLast(List list) {
-		super(list, "replaceLast", DataTypes.ANY);
-		addParameter("toBeReplaced", DataTypes.ANY);
-		addParameter("replacement", DataTypes.ANY);
+final class AssignAdd extends Method<Array> {
 
+	public AssignAdd(Array array) {
+		super(array, "$a_add", DataTypes.ANY);
+		addParameter("this", DataTypes.ANY);
+		addParameter("other", DataTypes.ANY);
 	}
 
 	@Override
-	public List call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public Array call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var body = getBody();
-		return parent.replaceLast(body.getVariable("toBeReplaced").getValue(),
-				body.getVariable("replacement").getValue());
+		var other = getBody().getVariable("other").getValue();
+		if (!(other instanceof Array))
+			new LogError("Can't extend array with something that isn't array:\t" + other, callFileName, callLine);
+		if (other == parent)
+			other = new Array(((Array) other).array);
+		return parent.extend((Array) other);
 	}
 
 }

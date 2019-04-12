@@ -35,8 +35,7 @@ final class Get extends Method<Array> {
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var index = ((BigInteger) getBody().getVariable("index").getValue()).intValue();
-		var length = parent.length();
-		if (index >= length || index < 0)
+		if (index >= parent.array.length || index < 0)
 			new LogError("This array doesn't have " + index + " element", callFileName, callLine);
 		return parent.get(index);
 	}

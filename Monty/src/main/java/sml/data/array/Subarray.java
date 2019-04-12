@@ -39,12 +39,11 @@ final class Subarray extends Method<Array> {
 		var body = getBody();
 		var begin = ((BigInteger) body.getVariable("begin").getValue()).intValue();
 		var end = ((BigInteger) body.getVariable("end").getValue()).intValue();
-		var length = parent.length();
 		if (begin >= end)
 			new LogError("Begin can't be greater or equals than end", callFileName, callLine);
-		if (begin < 0 || begin >= length)
+		if (begin < 0 || begin >= parent.array.length)
 			new LogError("This list doesn't have " + begin + " index", callFileName, callLine);
-		if (end < 0 || end > length)
+		if (end < 0 || end > parent.array.length)
 			new LogError("This list doesn't have " + end + " index", callFileName, callLine);
 		return parent.subarray(begin, end);
 	}

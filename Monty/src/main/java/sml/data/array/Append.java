@@ -25,14 +25,18 @@ import sml.data.Method;
 final class Append extends Method<Array> {
 
 	public Append(Array array) {
-		super(array, "append", DataTypes.VOID);
-		addParameter("element", DataTypes.ANY);
+		super(array, "append", DataTypes.ANY);
+		addParameter("this", DataTypes.ANY);
+		addParameter("other", DataTypes.ANY);
 	}
 
 	@Override
 	public Array call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return parent.append(getBody().getVariable("element").getValue());
+		var other = getBody().getVariable("other").getValue();
+		if (other == parent)
+			other = new Array(((Array) other).array);
+		return parent.append(other);
 	}
 
 }

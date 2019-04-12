@@ -31,7 +31,7 @@ final class Length extends Method<Array> {
 	@Override
 	public BigInteger call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return BigInteger.valueOf(parent.length());
+		return BigInteger.valueOf(parent.array.length);
 	}
 
 }

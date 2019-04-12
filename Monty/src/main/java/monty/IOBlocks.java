@@ -34,7 +34,6 @@ public class IOBlocks {
 		functions.put("f", new sml.functional.function.FunctionByName());
 		functions.put("lambda", new sml.functional.function.Lambda());
 		functions.put("[A]", array);
-		functions.put("[L]", new sml.data.list.NewList());
 		functions.put("Range", new sml.iterations.range.NewRange());
 		functions.put("Iterable", iterable);
 		functions.put("map", new sml.functional.iterable.Map());

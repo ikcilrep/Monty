@@ -25,7 +25,7 @@ import sml.data.Method;
 final class Equals extends Method<Stack> {
 
 	public Equals(Stack stack) {
-		super(stack, "equals", DataTypes.BOOLEAN);
+		super(stack, "$eq", DataTypes.BOOLEAN);
 		addParameter("other", DataTypes.ANY);
 	}
 

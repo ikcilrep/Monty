@@ -156,7 +156,7 @@ public class StructDeclarationNode extends Block implements Cloneable {
 
 	@Override
 	public boolean equals(Object other) {
-		return ToBoolean.toBoolean(OperatorOverloading.overloadOperator(this, other, "$eq", (byte) 2),
+		return ToBoolean.toBoolean(OperatorOverloading.overloadOperator(this, other, "$eq",  2, false),
 				OperatorOverloading.getTemporaryFileName(), OperatorOverloading.getTemporaryLine());
 	}
 }

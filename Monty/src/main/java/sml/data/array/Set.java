@@ -36,9 +36,8 @@ final class Set extends Method<Array> {
 	public Array call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var length = parent.length();
 		var index = ((BigInteger) body.getVariable("index").getValue()).intValue();
-		if (index >= length || index < 0)
+		if (index >= parent.array.length || index < 0)
 			new LogError("This list doesn't have " + index + " element", callFileName, callLine);
 		return parent.set(index, body.getVariable("value").getValue());
 	}

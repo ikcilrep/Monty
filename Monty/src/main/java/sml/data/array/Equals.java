@@ -25,7 +25,8 @@ import sml.data.Method;
 final class Equals extends Method<Array> {
 
 	public Equals(Array parent) {
-		super(parent, "equals", DataTypes.BOOLEAN);
+		super(parent, "$eq", DataTypes.BOOLEAN);
+		addParameter("this", DataTypes.ANY);
 		addParameter("other", DataTypes.ANY);
 	}
 

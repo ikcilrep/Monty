@@ -85,7 +85,6 @@ public final class Sml extends Library {
 		checking.put("isBoolean", new IsBoolean());
 		checking.put("isString", new IsString());
 		checking.put("isArray", new IsArray());
-		checking.put("isList", new IsList());
 		checking.put("isStack", new IsStack());
 		checking.put("isObject", new IsObject());
 
