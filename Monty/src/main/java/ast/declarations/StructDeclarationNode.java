@@ -20,12 +20,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+
 import ast.Block;
-import ast.expressions.ConstantNode;
 import ast.expressions.OperationNode;
+import ast.expressions.OperatorOverloading;
 import lexer.Token;
 import parser.DataTypes;
 import parser.LogError;
+import sml.casts.ToBoolean;
 
 public class StructDeclarationNode extends Block implements Cloneable {
 	private static int actualStructNumber = -1;
@@ -128,7 +130,7 @@ public class StructDeclarationNode extends Block implements Cloneable {
 	public void incrementNumber() {
 		var number = numbers.get(structNumber);
 		numbers.put(structNumber, number + 1);
-		instanceNumber = number+1;
+		instanceNumber = number + 1;
 	}
 
 	public boolean instanceOfMe(StructDeclarationNode s) {
@@ -155,20 +157,7 @@ public class StructDeclarationNode extends Block implements Cloneable {
 
 	@Override
 	public boolean equals(Object other) {
-		if (hasFunction("equals")) {
-			var function = getFunction("equals");
-			if (!function.getType().equals(DataTypes.BOOLEAN))
-				new LogError("Function equals have to return boolean", function.getFileName(), function.getLine());
-			if (function.getParameters().size() != 1)
-				new LogError("Function equals mustn't have more or less than one parameter", function.getFileName(),
-						function.getLine());
-			if (!function.getParameters().get(0).getType().equals(DataTypes.ANY))
-				new LogError("Function equals have to has parameter with \"any\" data type", function.getFileName(),
-						function.getLine());
-			var arguments = new ArrayList<OperationNode>();
-			arguments.add(new OperationNode(new ConstantNode(other, DataTypes.ANY), new Block(null)));
-			return (boolean) function.call(arguments, function.getFileName(), function.getLine());
-		}
-		return false;
+		return ToBoolean.toBoolean(OperatorOverloading.overloadOperator(this, other, "$eq", (byte) 2),
+				OperatorOverloading.getTemporaryFileName(), OperatorOverloading.getTemporaryLine());
 	}
 }
