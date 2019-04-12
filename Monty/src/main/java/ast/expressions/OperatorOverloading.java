@@ -62,6 +62,9 @@ public final class OperatorOverloading {
 					return operator.call(arguments, temporaryFileName, temporaryLine);
 			}
 		} else if (!isAssignment && rightValue instanceof StructDeclarationNode) {
+			var t = arguments.get(0);
+			arguments.set(0, arguments.get(1));
+			arguments.set(1, t);
 			var struct = (StructDeclarationNode) rightValue;
 			if (struct.hasFunction(nameOfFunction)) {
 				var operator = struct.getFunction(nameOfFunction);
