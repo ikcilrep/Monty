@@ -24,6 +24,13 @@ public class VariableDeclarationNode extends DeclarationNode implements Cloneabl
 	private boolean isDynamic = false;
 	private boolean isConst = false;
 
+	public static VariableDeclarationNode toMe(Object object, String fileName, int line) {
+		if (object instanceof VariableDeclarationNode)
+			return (VariableDeclarationNode) object;
+		new LogError("Can't cast any value to variable.", fileName, line);
+		return null;
+	}
+	
 	public boolean isConst() {
 		return isConst;
 	}
