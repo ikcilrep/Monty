@@ -89,7 +89,8 @@ public abstract class AdderToBlock {
 		return forStatement;
 	}
 
-	public final static void parseFunctionsParameters(int start, OptimizedTokensArray tokens, FunctionDeclarationNode function) {
+	public final static void parseFunctionsParameters(int start, OptimizedTokensArray tokens,
+			FunctionDeclarationNode function) {
 		DataTypes type = null;
 		String name = null;
 		for (int i = start; i < tokens.length(); i++) {
@@ -103,7 +104,7 @@ public abstract class AdderToBlock {
 				function.addParameter(name, type);
 		}
 	}
-	
+
 	public final static Block addFunctionDeclaration(Block block, OptimizedTokensArray tokens) {
 		var functionName = tokens.get(2).getText();
 		var function = new CustomFunctionDeclarationNode(functionName, Tokens.getDataType(tokens.get(1).getType()));
@@ -158,7 +159,7 @@ public abstract class AdderToBlock {
 				addExpression(block, tokens.subarray(n - 1, tokens.length()));
 		} else if (isConst)
 			new LogError("Const value must be declared at the same time as whole variable.", tokens.get(1));
-		
+
 		variable.setConst(isConst);
 		if (!isConst) {
 			var children = block.getChildren();

@@ -9,8 +9,7 @@ import ast.expressions.VariableNode;
 import parser.DataTypes;
 import parser.LogError;
 
-
-public final class FunctionByName extends FunctionDeclarationNode{
+public final class FunctionByName extends FunctionDeclarationNode {
 
 	public FunctionByName() {
 		super("f", DataTypes.ANY);

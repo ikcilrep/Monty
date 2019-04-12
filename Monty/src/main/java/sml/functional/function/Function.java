@@ -1,6 +1,5 @@
 package sml.functional.function;
 
-
 import java.util.ArrayList;
 
 import ast.declarations.FunctionDeclarationNode;
@@ -9,6 +8,7 @@ import ast.expressions.OperationNode;
 
 public class Function extends StructDeclarationNode {
 	FunctionDeclarationNode function;
+
 	public Function(FunctionDeclarationNode function) {
 		super(null, "Function");
 		this.function = function;
@@ -16,7 +16,6 @@ public class Function extends StructDeclarationNode {
 		new Call(this);
 	}
 
-	
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		return function.call(arguments, callFileName, callLine);
 	}

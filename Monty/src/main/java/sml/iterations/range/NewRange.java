@@ -28,7 +28,7 @@ public final class NewRange extends FunctionDeclarationNode {
 		var max = (BigInteger) body.getVariable("max").getValue();
 		if (max.compareTo(min) <= 0)
 			new LogError("Maximum can't be greater or equals minimum.", callFileName, callLine);
-		return new Range(min,max, (BigInteger) body.getVariable("step").getValue());
+		return new Range(min, max, (BigInteger) body.getVariable("step").getValue());
 	}
 
 }

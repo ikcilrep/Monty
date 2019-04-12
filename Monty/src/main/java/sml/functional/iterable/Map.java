@@ -10,7 +10,6 @@ import monty.IOBlocks;
 import parser.DataTypes;
 import parser.parsing.Parser;
 
-
 public final class Map extends FunctionDeclarationNode {
 	private static Block code;
 	static {

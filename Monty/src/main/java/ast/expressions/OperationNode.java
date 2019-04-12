@@ -28,6 +28,7 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 
 	private OperationNode left = null;
 	private Object operand;
+
 	public Object getOperand() {
 		return operand;
 	}
@@ -52,7 +53,7 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 		case "*":
 			return OperatorOverloading.multiplicationOperator(leftValue, rightValue, type);
 		case "/":
-			return OperatorOverloading.divisionOperator(leftValue, rightValue, type );
+			return OperatorOverloading.divisionOperator(leftValue, rightValue, type);
 		case "%":
 			return OperatorOverloading.moduloOperator(leftValue, rightValue, type);
 		case "!":
@@ -62,9 +63,9 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 		case ">>":
 			return OperatorOverloading.shiftRightOperator(leftValue, rightValue, type);
 		case "^":
-			return OperatorOverloading.xorOperator(leftValue, rightValue, type );
+			return OperatorOverloading.xorOperator(leftValue, rightValue, type);
 		case "&":
-			return OperatorOverloading.andOperator(leftValue, rightValue, type );
+			return OperatorOverloading.andOperator(leftValue, rightValue, type);
 		case "|":
 			return OperatorOverloading.orOperator(leftValue, rightValue, type);
 		case "==":
@@ -82,23 +83,17 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 		case "=":
 			return OperatorOverloading.assignmentOperator(leftValue, rightValue, type);
 		case "+=":
-			return OperatorOverloading.assignmentAdditionOperator(leftValue, rightValue, type
-					);
+			return OperatorOverloading.assignmentAdditionOperator(leftValue, rightValue, type);
 		case "-=":
-			return OperatorOverloading.assignmentSubtractionOperator(leftValue, rightValue, type
-					);
+			return OperatorOverloading.assignmentSubtractionOperator(leftValue, rightValue, type);
 		case "*=":
-			return OperatorOverloading.assignmentMultiplicationOperator(leftValue, rightValue, type
-					);
+			return OperatorOverloading.assignmentMultiplicationOperator(leftValue, rightValue, type);
 		case "/=":
-			return OperatorOverloading.assignmentDivisionOperator(leftValue, rightValue, type
-					);
+			return OperatorOverloading.assignmentDivisionOperator(leftValue, rightValue, type);
 		case "<<=":
-			return OperatorOverloading.assignmentShiftLeftOperator(leftValue, rightValue, type
-					);
+			return OperatorOverloading.assignmentShiftLeftOperator(leftValue, rightValue, type);
 		case ">>=":
-			return OperatorOverloading.assignmentShiftRightOperator(leftValue, rightValue, type
-					);
+			return OperatorOverloading.assignmentShiftRightOperator(leftValue, rightValue, type);
 		case "^=":
 			return OperatorOverloading.assignmentXorOperator(leftValue, rightValue, type);
 		case "&=":

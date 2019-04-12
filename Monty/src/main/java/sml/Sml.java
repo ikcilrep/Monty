@@ -55,7 +55,7 @@ public final class Sml extends Library {
 		var errors = new HashMap<String, Object>();
 		var files = new HashMap<String, Object>();
 		var language = new HashMap<String, Object>();
-		
+
 		sml.put("casts", casts);
 		sml.put("math", math);
 		sml.put("system", system);
@@ -100,7 +100,7 @@ public final class Sml extends Library {
 		string.put("lowerCase", new LowerCase());
 		string.put("upperCase", new UpperCase());
 		string.put("split", new Split());
-		
+
 		system.put("argv", new Argv());
 		system.put("argc", new Argc());
 		system.put("exit", new Exit());

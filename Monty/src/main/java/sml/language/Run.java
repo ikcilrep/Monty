@@ -10,7 +10,7 @@ import parser.DataTypes;
 import parser.parsing.Parser;
 import sml.data.returning.Nothing;
 
-public final class Run extends FunctionDeclarationNode{
+public final class Run extends FunctionDeclarationNode {
 
 	public Run() {
 		super("run", DataTypes.VOID);
@@ -21,7 +21,7 @@ public final class Run extends FunctionDeclarationNode{
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		Parser.parse(Lexer.lex((String)getBody().getVariable("code").getValue(), callFileName, callLine)).run();
+		Parser.parse(Lexer.lex((String) getBody().getVariable("code").getValue(), callFileName, callLine)).run();
 		return Nothing.nothing;
 	}
 

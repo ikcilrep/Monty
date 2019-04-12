@@ -30,7 +30,7 @@ public class VariableDeclarationNode extends DeclarationNode implements Cloneabl
 		new LogError("Can't cast any value to variable.", fileName, line);
 		return null;
 	}
-	
+
 	public boolean isConst() {
 		return isConst;
 	}

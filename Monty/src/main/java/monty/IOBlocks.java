@@ -21,11 +21,12 @@ import lexer.Lexer;
 import lexer.OptimizedTokensArray;
 import parser.parsing.Parser;
 import sml.io.*;
+
 public class IOBlocks {
-	public static FunctionDeclarationNode array =  new sml.data.array.NewArray();
+	public static FunctionDeclarationNode array = new sml.data.array.NewArray();
 	public static FunctionDeclarationNode iterable = new sml.functional.iterable.NewIterable();
-	public static FunctionDeclarationNode length =  new sml.data.Length();
-	public static FunctionDeclarationNode logError =  new sml.errors.LogError();
+	public static FunctionDeclarationNode length = new sml.data.Length();
+	public static FunctionDeclarationNode logError = new sml.errors.LogError();
 
 	private static void autoImport(Block block) {
 		var functions = block.getFunctions();
@@ -44,6 +45,7 @@ public class IOBlocks {
 		functions.put("input", new Input());
 
 	}
+
 	public static Block readBlockFromFile(String path, String fileName, int line) {
 		var tokens = Lexer.lex(FileIO.readFile(path, fileName, line), path, 1, new OptimizedTokensArray(), 0);
 		var block = Parser.parse(tokens);

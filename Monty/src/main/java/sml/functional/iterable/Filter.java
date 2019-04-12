@@ -10,12 +10,12 @@ import monty.IOBlocks;
 import parser.DataTypes;
 import parser.parsing.Parser;
 
-
 public final class Filter extends FunctionDeclarationNode {
 	private static Block code;
 	static {
-		code = Parser.parse(Lexer.lex("any array [A]().setLength(length(iterable)) =;int i 0 =;for x in iterable;if function.call(x);"
-				+ "array.set(i,x);i 1 +=;end;end;return Iterable(array.setLength(i));", "Filter.java"));
+		code = Parser.parse(Lexer
+				.lex("any array [A]().setLength(length(iterable)) =;int i 0 =;for x in iterable;if function.call(x);"
+						+ "array.set(i,x);i 1 +=;end;end;return Iterable(array.setLength(i));", "Filter.java"));
 		code.addFunction(IOBlocks.length);
 		code.addFunction(IOBlocks.array);
 		code.addFunction(IOBlocks.iterable);

@@ -25,11 +25,11 @@ public class LogError {
 	}
 
 	public static String getMessage(String message) {
-		if (Character.isAlphabetic(message.charAt(message.length()-1)))
-			return message  + ".";
+		if (Character.isAlphabetic(message.charAt(message.length() - 1)))
+			return message + ".";
 		return message;
 	}
-	
+
 	public LogError(String message, String fileName, int line) {
 		System.out.println(getMessage(message) + "\nLook at " + line + " line in " + fileName + ".");
 		System.exit(0);
@@ -44,12 +44,13 @@ public class LogError {
 			if (i + 1 < lines.length)
 				linesToString += ", ";
 		}
-		System.out.println(getMessage(message)  + "\nLook at " + linesToString + ".");
+		System.out.println(getMessage(message) + "\nLook at " + linesToString + ".");
 		System.exit(0);
 	}
 
 	public LogError(String message, Token token) {
-		System.out.println(getMessage(message)  + "\nLook at " + token.getLine() + " line in " + token.getFileName() + ".");
+		System.out.println(
+				getMessage(message) + "\nLook at " + token.getLine() + " line in " + token.getFileName() + ".");
 		System.exit(0);
 	}
 }

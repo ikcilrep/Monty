@@ -11,7 +11,7 @@ import ast.statements.ReturnStatementNode;
 import parser.DataTypes;
 import parser.LogError;
 
-public class Lambda  extends FunctionDeclarationNode {
+public class Lambda extends FunctionDeclarationNode {
 
 	public Lambda() {
 		super("lambda", DataTypes.ANY);
@@ -20,7 +20,7 @@ public class Lambda  extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		int argumentsLength = arguments.size() - 1;
-		var fileName=  callFileName + "lambda("+callLine+")";
+		var fileName = callFileName + "lambda(" + callLine + ")";
 		var function = new CustomFunctionDeclarationNode("", DataTypes.ANY);
 		var functionExpression = arguments.get(argumentsLength);
 		var block = new Block(functionExpression.getParent());

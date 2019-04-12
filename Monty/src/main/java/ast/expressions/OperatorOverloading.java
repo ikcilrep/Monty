@@ -36,11 +36,12 @@ public final class OperatorOverloading {
 
 	private static int temporaryLine;
 	private static String temporaryFileName;
+
 	public static void setTemporary(String fileName, int line) {
 		temporaryFileName = fileName;
 		temporaryLine = line;
 	}
-	
+
 	public static int getTemporaryLine() {
 		return temporaryLine;
 	}
@@ -78,8 +79,7 @@ public final class OperatorOverloading {
 		return result.toString();
 	}
 
-	public final static Object additionOperator(Object leftValue, Object rightValue, DataTypes type
-			) {
+	public final static Object additionOperator(Object leftValue, Object rightValue, DataTypes type) {
 		switch (type) {
 		case INTEGER:
 			return ((BigInteger) leftValue).add(((BigInteger) rightValue));
@@ -88,18 +88,19 @@ public final class OperatorOverloading {
 		case STRING:
 			return (String) leftValue + (String) rightValue;
 		case BOOLEAN:
-			new LogError("Can't add booleans:\t" + leftValue + " " + rightValue + " +", temporaryFileName, temporaryLine);
+			new LogError("Can't add booleans:\t" + leftValue + " " + rightValue + " +", temporaryFileName,
+					temporaryLine);
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$add", (byte) 2);
 		case VOID:
-			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " +", temporaryFileName, temporaryLine);
+			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " +", temporaryFileName,
+					temporaryLine);
 		default:
 			return null;
 		}
 	}
 
-	public final static Object andOperator(Object leftValue, Object rightValue, DataTypes type
-			) {
+	public final static Object andOperator(Object leftValue, Object rightValue, DataTypes type) {
 		switch (type) {
 		case INTEGER:
 			return ((BigInteger) leftValue).and((BigInteger) rightValue);
@@ -112,14 +113,14 @@ public final class OperatorOverloading {
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$and", (byte) 2);
 		case VOID:
-			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " &", temporaryFileName, temporaryLine);
+			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " &", temporaryFileName,
+					temporaryLine);
 		default:
 			return null;
 		}
 	}
 
-	public final static Object divisionOperator(Object leftValue, Object rightValue, DataTypes type
-			) {
+	public final static Object divisionOperator(Object leftValue, Object rightValue, DataTypes type) {
 		switch (type) {
 		case INTEGER:
 			if (rightValue.equals(BigInteger.ZERO))
@@ -141,14 +142,14 @@ public final class OperatorOverloading {
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$div", (byte) 2);
 		case VOID:
-			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " /", temporaryFileName, temporaryLine);
+			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " /", temporaryFileName,
+					temporaryLine);
 		default:
 			return null;
 		}
 	}
 
-	public final static Object equalsOperator(Object leftValue, Object rightValue, DataTypes type
-			) {
+	public final static Object equalsOperator(Object leftValue, Object rightValue, DataTypes type) {
 		switch (type) {
 		case REAL:
 			return ((BigDecimal) leftValue).compareTo((BigDecimal) rightValue) == 0;
@@ -158,13 +159,14 @@ public final class OperatorOverloading {
 		case ANY:
 			return leftValue.equals(rightValue);
 		case VOID:
-			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " ==", temporaryFileName, temporaryLine);
+			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " ==", temporaryFileName,
+					temporaryLine);
 		default:
 			return null;
 		}
 	}
 
-	public final static Object greaterEqualsOperator(Object leftValue, Object rightValue, DataTypes type ) {
+	public final static Object greaterEqualsOperator(Object leftValue, Object rightValue, DataTypes type) {
 		switch (type) {
 		case INTEGER:
 			return ((BigInteger) leftValue).compareTo((BigInteger) rightValue) >= 0;
@@ -177,14 +179,14 @@ public final class OperatorOverloading {
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$ge", (byte) 2);
 		case VOID:
-			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " >=", temporaryFileName, temporaryLine);
+			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " >=", temporaryFileName,
+					temporaryLine);
 		default:
 			return null;
 		}
 	}
 
-	public final static Object greaterOperator(Object leftValue, Object rightValue, DataTypes type
-			) {
+	public final static Object greaterOperator(Object leftValue, Object rightValue, DataTypes type) {
 		switch (type) {
 		case INTEGER:
 			return ((BigInteger) leftValue).compareTo((BigInteger) rightValue) > 0;
@@ -197,14 +199,14 @@ public final class OperatorOverloading {
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$gt", (byte) 2);
 		case VOID:
-			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " >", temporaryFileName, temporaryLine);
+			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " >", temporaryFileName,
+					temporaryLine);
 		default:
 			return null;
 		}
 	}
 
-	public final static Object lowerEqualsOperator(Object leftValue, Object rightValue, DataTypes type
-			) {
+	public final static Object lowerEqualsOperator(Object leftValue, Object rightValue, DataTypes type) {
 		switch (type) {
 		case INTEGER:
 			return ((BigInteger) leftValue).compareTo((BigInteger) rightValue) <= 0;
@@ -217,14 +219,14 @@ public final class OperatorOverloading {
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$le", (byte) 2);
 		case VOID:
-			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " <=", temporaryFileName, temporaryLine);
+			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " <=", temporaryFileName,
+					temporaryLine);
 		default:
 			return null;
 		}
 	}
 
-	public final static Object lowerOperator(Object leftValue, Object rightValue, DataTypes type
-			) {
+	public final static Object lowerOperator(Object leftValue, Object rightValue, DataTypes type) {
 		switch (type) {
 		case INTEGER:
 			return ((BigInteger) leftValue).compareTo((BigInteger) rightValue) < 0;
@@ -237,14 +239,14 @@ public final class OperatorOverloading {
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$lt", (byte) 2);
 		case VOID:
-			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " <", temporaryFileName, temporaryLine);
+			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " <", temporaryFileName,
+					temporaryLine);
 		default:
 			return null;
 		}
 	}
 
-	public final static Object moduloOperator(Object leftValue, Object rightValue, DataTypes type
-			) {
+	public final static Object moduloOperator(Object leftValue, Object rightValue, DataTypes type) {
 		switch (type) {
 		case INTEGER:
 			var rightI = (BigInteger) rightValue;
@@ -263,13 +265,14 @@ public final class OperatorOverloading {
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$mod", (byte) 2);
 		case VOID:
-			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " %", temporaryFileName, temporaryLine);
+			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " %", temporaryFileName,
+					temporaryLine);
 		default:
 			return null;
 		}
 	}
 
-	public final static Object multiplicationOperator(Object leftValue, Object rightValue, DataTypes type ) {
+	public final static Object multiplicationOperator(Object leftValue, Object rightValue, DataTypes type) {
 		switch (type) {
 		case INTEGER:
 			return ((BigInteger) leftValue).multiply(((BigInteger) rightValue));
@@ -283,7 +286,8 @@ public final class OperatorOverloading {
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$mul", (byte) 2);
 		case VOID:
-			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " *", temporaryFileName, temporaryLine);
+			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " *", temporaryFileName,
+					temporaryLine);
 		default:
 			return null;
 		}
@@ -308,8 +312,7 @@ public final class OperatorOverloading {
 		}
 	}
 
-	public final static Object notEqualsOperator(Object leftValue, Object rightValue, DataTypes type
-			) {
+	public final static Object notEqualsOperator(Object leftValue, Object rightValue, DataTypes type) {
 		switch (type) {
 		case REAL:
 			return ((BigDecimal) leftValue).compareTo((BigDecimal) rightValue) != 0;
@@ -325,8 +328,7 @@ public final class OperatorOverloading {
 		}
 	}
 
-	public final static Object orOperator(Object leftValue, Object rightValue, DataTypes type
-			) {
+	public final static Object orOperator(Object leftValue, Object rightValue, DataTypes type) {
 		switch (type) {
 		case INTEGER:
 			return ((BigInteger) leftValue).or((BigInteger) rightValue);
@@ -339,14 +341,14 @@ public final class OperatorOverloading {
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$or", (byte) 2);
 		case VOID:
-			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " |", temporaryFileName, temporaryLine);
+			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " |", temporaryFileName,
+					temporaryLine);
 		default:
 			return null;
 		}
 	}
 
-	public final static Object shiftLeftOperator(Object leftValue, Object rightValue, DataTypes type
-			) {
+	public final static Object shiftLeftOperator(Object leftValue, Object rightValue, DataTypes type) {
 		switch (type) {
 		case INTEGER:
 			return ((BigInteger) leftValue).shiftLeft(((BigInteger) rightValue).intValue());
@@ -360,14 +362,14 @@ public final class OperatorOverloading {
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$shl", (byte) 2);
 		case VOID:
-			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " <<", temporaryFileName, temporaryLine);
+			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " <<", temporaryFileName,
+					temporaryLine);
 		default:
 			return null;
 		}
 	}
 
-	public final static Object shiftRightOperator(Object leftValue, Object rightValue, DataTypes type
-			) {
+	public final static Object shiftRightOperator(Object leftValue, Object rightValue, DataTypes type) {
 		switch (type) {
 		case INTEGER:
 			return ((BigInteger) leftValue).shiftRight(((BigInteger) rightValue).intValue());
@@ -379,14 +381,14 @@ public final class OperatorOverloading {
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$shr", (byte) 2);
 		case VOID:
-			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " >>", temporaryFileName, temporaryLine);
+			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " >>", temporaryFileName,
+					temporaryLine);
 		default:
 			return null;
 		}
 	}
 
-	public final static Object subtractionOperator(Object leftValue, Object rightValue, DataTypes type
-			) {
+	public final static Object subtractionOperator(Object leftValue, Object rightValue, DataTypes type) {
 		switch (type) {
 		case INTEGER:
 			return ((BigInteger) leftValue).subtract(((BigInteger) rightValue));
@@ -400,14 +402,14 @@ public final class OperatorOverloading {
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$sub", (byte) 2);
 		case VOID:
-			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " -", temporaryFileName, temporaryLine);
+			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " -", temporaryFileName,
+					temporaryLine);
 		default:
 			return null;
 		}
 	}
 
-	public final static Object xorOperator(Object leftValue, Object rightValue, DataTypes type
-			) {
+	public final static Object xorOperator(Object leftValue, Object rightValue, DataTypes type) {
 		switch (type) {
 		case INTEGER:
 			return ((BigInteger) leftValue).xor((BigInteger) rightValue);
@@ -419,32 +421,36 @@ public final class OperatorOverloading {
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$xor", (byte) 2);
 		case VOID:
-			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " ^", temporaryFileName, temporaryLine);
+			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " ^", temporaryFileName,
+					temporaryLine);
 		default:
 			return null;
 		}
 	}
 
-	public final static Object assignmentAdditionOperator(Object leftValue, Object rightValue, DataTypes type ) {
+	public final static Object assignmentAdditionOperator(Object leftValue, Object rightValue, DataTypes type) {
 		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
 		switch (type) {
 		case INTEGER:
 		case REAL:
 		case STRING:
-			variable.setValue(additionOperator(variable.getValue(), rightValue, type), temporaryFileName, temporaryLine);
+			variable.setValue(additionOperator(variable.getValue(), rightValue, type), temporaryFileName,
+					temporaryLine);
 			return variable.getValue();
 		case BOOLEAN:
-			new LogError("Can't add booleans:\t" + variable.getName() + " " + rightValue + " +=", temporaryFileName, temporaryLine);
+			new LogError("Can't add booleans:\t" + variable.getName() + " " + rightValue + " +=", temporaryFileName,
+					temporaryLine);
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$a_add", (byte) 2);
 		case VOID:
-			new LogError("Void hasn't got any value:\t" + variable.getName() + " " + rightValue + " +=",temporaryFileName, temporaryLine);
+			new LogError("Void hasn't got any value:\t" + variable.getName() + " " + rightValue + " +=",
+					temporaryFileName, temporaryLine);
 		default:
 			return null;
 		}
 	}
 
-	public final static Object assignmentAndOperator(Object leftValue, Object rightValue, DataTypes type ) {
+	public final static Object assignmentAndOperator(Object leftValue, Object rightValue, DataTypes type) {
 		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
 		switch (type) {
 		case INTEGER:
@@ -455,48 +461,52 @@ public final class OperatorOverloading {
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$a_and", (byte) 2);
 		case VOID:
-			new LogError("Void hasn't got any value:\t" + variable.getName() + " " + rightValue + " &=",temporaryFileName, temporaryLine);
+			new LogError("Void hasn't got any value:\t" + variable.getName() + " " + rightValue + " &=",
+					temporaryFileName, temporaryLine);
 		default:
 			return null;
 		}
 	}
 
-	public final static Object assignmentDivisionOperator(Object leftValue, Object rightValue, DataTypes type ) {
+	public final static Object assignmentDivisionOperator(Object leftValue, Object rightValue, DataTypes type) {
 		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
 		switch (type) {
 		case INTEGER:
 		case REAL:
 		case STRING:
-			variable.setValue(divisionOperator(variable.getValue(), rightValue, type), temporaryFileName, temporaryLine);
+			variable.setValue(divisionOperator(variable.getValue(), rightValue, type), temporaryFileName,
+					temporaryLine);
 			return variable.getValue();
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$a_div", (byte) 2);
 		case VOID:
-			new LogError("Void hasn't got any value:\t" + variable.getName() + " " + rightValue + " /=",temporaryFileName, temporaryLine);
+			new LogError("Void hasn't got any value:\t" + variable.getName() + " " + rightValue + " /=",
+					temporaryFileName, temporaryLine);
 		default:
 			return null;
 		}
 	}
 
-	public final static Object assignmentMultiplicationOperator(Object leftValue, Object rightValue, DataTypes type ) {
+	public final static Object assignmentMultiplicationOperator(Object leftValue, Object rightValue, DataTypes type) {
 		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
 		switch (type) {
 		case INTEGER:
 		case REAL:
 		case STRING:
-			variable.setValue(multiplicationOperator(variable.getValue(), rightValue, type),temporaryFileName, temporaryLine);
+			variable.setValue(multiplicationOperator(variable.getValue(), rightValue, type), temporaryFileName,
+					temporaryLine);
 			return variable.getValue();
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$a_mul", (byte) 2);
 		case VOID:
-			new LogError("Void hasn't got any value:\t" + variable.getName() + " " + rightValue + " *=",temporaryFileName, temporaryLine);
+			new LogError("Void hasn't got any value:\t" + variable.getName() + " " + rightValue + " *=",
+					temporaryFileName, temporaryLine);
 		default:
 			return null;
 		}
 	}
 
-	public final static Object assignmentOperator(Object leftValue, Object rightValue, DataTypes type
-			) {
+	public final static Object assignmentOperator(Object leftValue, Object rightValue, DataTypes type) {
 		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
 		switch (type) {
 		case INTEGER:
@@ -507,13 +517,14 @@ public final class OperatorOverloading {
 			variable.setValue(rightValue, temporaryFileName, temporaryLine);
 			return variable.getValue();
 		case VOID:
-			new LogError("Void hasn't got any value:\t" + variable.getName() + " " + rightValue + " =", temporaryFileName, temporaryLine);
+			new LogError("Void hasn't got any value:\t" + variable.getName() + " " + rightValue + " =",
+					temporaryFileName, temporaryLine);
 		default:
 			return null;
 		}
 	}
 
-	public final static Object assignmentOrOperator(Object leftValue, Object rightValue, DataTypes type ) {
+	public final static Object assignmentOrOperator(Object leftValue, Object rightValue, DataTypes type) {
 		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
 		switch (type) {
 		case INTEGER:
@@ -524,64 +535,71 @@ public final class OperatorOverloading {
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$a_or", (byte) 2);
 		case VOID:
-			new LogError("Void hasn't got any value:\t" + variable.getName() + " " + rightValue + " |=",temporaryFileName, temporaryLine);
+			new LogError("Void hasn't got any value:\t" + variable.getName() + " " + rightValue + " |=",
+					temporaryFileName, temporaryLine);
 		default:
 			return null;
 		}
 	}
 
-	public final static Object assignmentShiftLeftOperator(Object leftValue, Object rightValue, DataTypes type ) {
+	public final static Object assignmentShiftLeftOperator(Object leftValue, Object rightValue, DataTypes type) {
 		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
 		switch (type) {
 		case INTEGER:
 		case REAL:
 		case STRING:
-			variable.setValue(shiftLeftOperator(variable.getValue(), rightValue, type), temporaryFileName, temporaryLine);
+			variable.setValue(shiftLeftOperator(variable.getValue(), rightValue, type), temporaryFileName,
+					temporaryLine);
 			return variable.getValue();
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$a_shl", (byte) 2);
 		case VOID:
-			new LogError("Void hasn't got any value:\t" + variable.getName() + " " + rightValue + " <<=",temporaryFileName, temporaryLine);
+			new LogError("Void hasn't got any value:\t" + variable.getName() + " " + rightValue + " <<=",
+					temporaryFileName, temporaryLine);
 		default:
 			return null;
 		}
 	}
 
-	public final static Object assignmentShiftRightOperator(Object leftValue, Object rightValue, DataTypes type ) {
+	public final static Object assignmentShiftRightOperator(Object leftValue, Object rightValue, DataTypes type) {
 		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
 		switch (type) {
 		case INTEGER:
 		case REAL:
 		case STRING:
-			variable.setValue(shiftRightOperator(variable.getValue(), rightValue, type),temporaryFileName, temporaryLine);
+			variable.setValue(shiftRightOperator(variable.getValue(), rightValue, type), temporaryFileName,
+					temporaryLine);
 			return variable.getValue();
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$a_shr", (byte) 2);
 		case VOID:
-			new LogError("Void hasn't got any value:\t" + variable.getName() + " " + rightValue + " >>=",temporaryFileName, temporaryLine);
+			new LogError("Void hasn't got any value:\t" + variable.getName() + " " + rightValue + " >>=",
+					temporaryFileName, temporaryLine);
 		default:
 			return null;
 		}
 	}
 
-	public final static Object assignmentSubtractionOperator(Object leftValue, Object rightValue, DataTypes type ) {
+	public final static Object assignmentSubtractionOperator(Object leftValue, Object rightValue, DataTypes type) {
 		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
 		switch (type) {
 		case INTEGER:
 		case REAL:
 		case STRING:
-			variable.setValue(subtractionOperator(variable.getValue(), rightValue, type),temporaryFileName, temporaryLine);
+			variable.setValue(subtractionOperator(variable.getValue(), rightValue, type), temporaryFileName,
+					temporaryLine);
 			return variable.getValue();
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$a_sub", (byte) 2);
 		case VOID:
-			new LogError("Void hasn't got any value:\t" + variable.getName() + " " + rightValue + " -=",temporaryFileName, temporaryLine);
+			new LogError("Void hasn't got any value:\t" + variable.getName() + " " + rightValue + " -=",
+					temporaryFileName, temporaryLine);
 		default:
 			return null;
 		}
 	}
 
-	public final static Object assignmentXorOperator(Object leftValue, Object rightValue, DataTypes type ) {
+	public final static Object assignmentXorOperator(Object leftValue, Object rightValue, DataTypes type) {
 		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
 		switch (type) {
 		case INTEGER:
@@ -592,7 +610,8 @@ public final class OperatorOverloading {
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$a_xor", (byte) 2);
 		case VOID:
-			new LogError("Void hasn't got any value:\t" + variable.getName() + " " + rightValue + " ^=",temporaryFileName, temporaryLine);
+			new LogError("Void hasn't got any value:\t" + variable.getName() + " " + rightValue + " ^=",
+					temporaryFileName, temporaryLine);
 		default:
 			return null;
 		}

@@ -1,6 +1,5 @@
 package sml.iterations.range;
 
-
 import java.util.ArrayList;
 
 import ast.expressions.OperationNode;
@@ -19,5 +18,4 @@ final class NewIterator extends Method<Range> {
 		return new Iterator(parent);
 	}
 
-	
 }
