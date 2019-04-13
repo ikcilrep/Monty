@@ -14,27 +14,22 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sml.data.array;
+package sml.data.list;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 
+import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
-import sml.data.Method;
 
-final class FindLast extends Method<Array> {
-
-	public FindLast(Array array) {
-		super(array, "findLast", DataTypes.INTEGER);
-		addParameter("element", DataTypes.ANY);
-
+public final class NewList extends FunctionDeclarationNode {
+	public NewList() {
+		super("[]", DataTypes.ANY);
 	}
 
 	@Override
-	public BigInteger call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		return BigInteger.valueOf(parent.findLast(getBody().getVariable("element").getValue()));
+	public List call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+		return new List(arguments);
 	}
 
 }

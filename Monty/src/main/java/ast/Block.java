@@ -16,6 +16,8 @@ limitations under the License.
 
 package ast;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -210,7 +212,27 @@ public class Block extends NodeWithParent implements Cloneable {
 		}
 		return block.variables.get(name);
 	}
+	
+	public BigInteger getIntVariableValue(String name) {
+		return (BigInteger) getVariable(name).getValue();
+	}
+	
+	public BigDecimal getRealVariableValue(String name) {
+		return (BigDecimal) getVariable(name).getValue();
+	}
+	
+	public Boolean getBooleanVariableValue(String name) {
+		return (Boolean) getVariable(name).getValue();
+	}
+	
+	public String getStringVariableValue(String name) {
+		return (String) getVariable(name).getValue();
+	}
 
+	public Object getVariableValue(String name) {
+		return getVariable(name).getValue();
+	}
+	
 	public HashMap<String, VariableDeclarationNode> getVariables() {
 		return variables;
 	}

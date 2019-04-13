@@ -16,28 +16,21 @@ limitations under the License.
 
 package sml.data.returning;
 
-import java.util.ArrayList;
 
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
-import ast.expressions.OperationNode;
+import ast.declarations.VariableDeclarationNode;
 import parser.DataTypes;
 
-public final class Nothing extends FunctionDeclarationNode {
+public final class Nothing extends VariableDeclarationNode {
 
 	public static VoidType nothing = new VoidType();
 	public static BreakType breakType = new BreakType();
 	public static ContinueType continueType = new ContinueType();
 
 	public Nothing() {
-		super("nothing", DataTypes.VOID);
-		new Block(null);
+		super("Nothing", DataTypes.VOID);
+		setValue(nothing);
+		setConst(true);
 	}
 
-	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		return nothing;
-	}
 
 }

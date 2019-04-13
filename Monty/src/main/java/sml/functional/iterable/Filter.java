@@ -14,11 +14,12 @@ public final class Filter extends FunctionDeclarationNode {
 	private static Block code;
 	static {
 		code = Parser.parse(Lexer
-				.lex("any array [A]().setLength(length(iterable)) =;int i 0 =;for x in iterable;if function.call(x);"
-						+ "array.set(i,x);i 1 +=;end;end;return Iterable(array.setLength(i));", "Filter.java"));
+				.lex("any list [](Nothing) length(iterable) * =;int i 0 =;for x in iterable;if function.call(x);"
+						+ "list.set(i,x);i 1 +=;end;end;return Iterable(list.setLength(i));", "Filter.java"));
 		code.addFunction(IOBlocks.length);
-		code.addFunction(IOBlocks.array);
+		code.addFunction(IOBlocks.list);
 		code.addFunction(IOBlocks.iterable);
+		code.addVariable(IOBlocks.nothing);
 	}
 
 	public Filter() {

@@ -13,11 +13,12 @@ import parser.parsing.Parser;
 public final class Map extends FunctionDeclarationNode {
 	private static Block code;
 	static {
-		code = Parser.parse(Lexer.lex("any array [A]().setLength(length(iterable)) =;int i 0 =;for x in iterable;"
-				+ "array.set(i,function.call(x));i 1 +=;end;return Iterable(array);", "Map.java"));
+		code = Parser.parse(Lexer.lex("any list [](Nothing) length(iterable) * =;int i 0 =;for x in iterable;"
+				+ "list.set(i,function.call(x));i 1 +=;end;return Iterable(list);", "Map.java"));
 		code.addFunction(IOBlocks.length);
-		code.addFunction(IOBlocks.array);
+		code.addFunction(IOBlocks.list);
 		code.addFunction(IOBlocks.iterable);
+		code.addVariable(IOBlocks.nothing);
 	}
 
 	public Map() {

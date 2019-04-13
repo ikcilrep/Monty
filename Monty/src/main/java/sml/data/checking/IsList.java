@@ -14,27 +14,28 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sml.data.stack;
+package sml.data.checking;
 
 import java.util.ArrayList;
 
+import ast.Block;
+import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
-import parser.LogError;
-import sml.data.Method;
+import sml.data.list.List;
 
-final class Pop extends Method<Stack> {
+public final class IsList extends FunctionDeclarationNode {
 
-	public Pop(Stack stack) {
-		super(stack, "pop", DataTypes.ANY);
+	public IsList() {
+		super("isList", DataTypes.BOOLEAN);
+		setBody(new Block(null));
+		addParameter("toCheck", DataTypes.ANY);
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		if (parent.top < 0)
-			new LogError("Cannot pop from empty stack", callFileName, callLine);
-		return parent.pop();
+		return getBody().getVariable("toCheck").getValue() instanceof List;
 	}
 
 }

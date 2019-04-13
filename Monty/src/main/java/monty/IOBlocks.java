@@ -17,23 +17,25 @@ package monty;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
+import ast.declarations.VariableDeclarationNode;
 import lexer.Lexer;
 import lexer.OptimizedTokensArray;
 import parser.parsing.Parser;
 import sml.io.*;
 
 public class IOBlocks {
-	public static FunctionDeclarationNode array = new sml.data.array.NewArray();
+	public static FunctionDeclarationNode list = new sml.data.list.NewList();
 	public static FunctionDeclarationNode iterable = new sml.functional.iterable.NewIterable();
 	public static FunctionDeclarationNode length = new sml.data.Length();
 	public static FunctionDeclarationNode logError = new sml.errors.LogError();
+	public static VariableDeclarationNode nothing = new sml.data.returning.Nothing();
 
 	private static void autoImport(Block block) {
 		var functions = block.getFunctions();
-		functions.put("nothing", new sml.data.returning.Nothing());
+		block.getVariables().put("Nothing", nothing);
 		functions.put("f", new sml.functional.function.FunctionByName());
 		functions.put("lambda", new sml.functional.function.Lambda());
-		functions.put("[A]", array);
+		functions.put("[]", list);
 		functions.put("Range", new sml.iterations.range.NewRange());
 		functions.put("Iterable", iterable);
 		functions.put("map", new sml.functional.iterable.Map());

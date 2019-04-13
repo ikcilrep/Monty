@@ -18,6 +18,6 @@ package sml.data.returning;
 public final class VoidType {
 	@Override
 	public String toString() {
-		return "void";
+		return "Nothing";
 	}
 }

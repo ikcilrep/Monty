@@ -14,27 +14,28 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sml.data.array;
+package sml.data.list;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-final class FindFirst extends Method<Array> {
+final class Extended extends Method<List> {
 
-	public FindFirst(Array array) {
-		super(array, "findFirst", DataTypes.INTEGER);
-		addParameter("element", DataTypes.ANY);
-
+	public Extended(List array) {
+		super(array, "$add", DataTypes.ANY);
+		addParameter("this", DataTypes.ANY);
+		addParameter("other", DataTypes.ANY);
 	}
 
 	@Override
-	public BigInteger call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public List call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return BigInteger.valueOf(parent.findFirst(getBody().getVariable("element").getValue()));
+		var other = getBody().getVariable("other").getValue();
+		parent.doesCanBeExtendedWith(other, callFileName, callLine);
+		return parent.extended((List)other);
 	}
 
 }

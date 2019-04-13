@@ -26,7 +26,6 @@ import sml.casts.*;
 import sml.data.*;
 import sml.data.string.*;
 import sml.data.checking.*;
-import sml.data.stack.NewStack;
 import sml.files.*;
 import sml.language.Run;
 import sml.math.*;
@@ -74,7 +73,6 @@ public final class Sml extends Library {
 		casts.put("toChar", new ToChar());
 		casts.put("ord", new Ord());
 
-		data.put("Stack", new NewStack());
 		data.put("checking", checking);
 		data.put("string", string);
 		data.put("length", new Length());
@@ -84,8 +82,7 @@ public final class Sml extends Library {
 		checking.put("isReal", new IsReal());
 		checking.put("isBoolean", new IsBoolean());
 		checking.put("isString", new IsString());
-		checking.put("isArray", new IsArray());
-		checking.put("isStack", new IsStack());
+		checking.put("isList", new IsList());
 		checking.put("isObject", new IsObject());
 
 		string.put("charAt", new CharAt());

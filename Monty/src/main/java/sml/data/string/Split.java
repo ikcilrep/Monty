@@ -22,7 +22,7 @@ import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
-import sml.data.array.Array;
+import sml.data.list.List;
 
 public final class Split extends FunctionDeclarationNode {
 
@@ -39,7 +39,7 @@ public final class Split extends FunctionDeclarationNode {
 		var body = getBody();
 		var str = (String) body.getVariable("str").getValue();
 		var regex = (String) body.getVariable("regex").getValue();
-		return new Array(str.split(regex));
+		return new List(str.split(regex));
 	}
 
 }

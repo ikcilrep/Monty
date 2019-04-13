@@ -14,32 +14,28 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sml.data.array;
+package sml.data.list;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 
 import ast.expressions.OperationNode;
 import parser.DataTypes;
-import parser.LogError;
 import sml.data.Method;
 
-final class Set extends Method<Array> {
+final class Extend extends Method<List> {
 
-	public Set(Array array) {
-		super(array, "set", DataTypes.ANY);
-		addParameter("index", DataTypes.INTEGER);
-		addParameter("value", DataTypes.ANY);
+	public Extend(List array) {
+		super(array, "$a_add", DataTypes.ANY);
+		addParameter("this", DataTypes.ANY);
+		addParameter("other", DataTypes.ANY);
 	}
 
 	@Override
-	public Array call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public List call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var body = getBody();
-		var index = ((BigInteger) body.getVariable("index").getValue()).intValue();
-		if (index >= parent.array.length || index < 0)
-			new LogError("This list doesn't have " + index + " element", callFileName, callLine);
-		return parent.set(index, body.getVariable("value").getValue());
+		var other = getBody().getVariable("other").getValue();
+		parent.doesCanBeExtendedWith(other, callFileName, callLine);
+		return parent.extend((List)other);
 	}
 
 }

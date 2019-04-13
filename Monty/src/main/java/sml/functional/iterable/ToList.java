@@ -4,23 +4,23 @@ import java.util.ArrayList;
 
 import ast.expressions.OperationNode;
 import lexer.Lexer;
+import monty.IOBlocks;
 import parser.DataTypes;
 import parser.parsing.Parser;
-import sml.data.Length;
 import sml.data.Method;
-import sml.data.array.NewArray;
 
-final class ToArray extends Method<Iterable> {
+final class ToList extends Method<Iterable> {
 
-	public ToArray(Iterable parent) {
-		super(parent, "toArray", DataTypes.ANY);
+	public ToList(Iterable parent) {
+		super(parent, "toList", DataTypes.ANY);
 		var body = Parser.parse(Lexer.lex(
-				"any result [A]().setLength(length(This)) =;int i 0 =;for x in This;result.set(i, x);i 1 +=;end;return result;",
+				"any result [](Nothing) length(This) * =;int i 0 =;for x in This;result.set(i, x);i 1 +=;end;return result;",
 				"ToArray.java"));
 		setBody(body);
 		body.setParent(parent);
-		body.addFunction(new Length());
-		body.addFunction(new NewArray());
+		body.addFunction(IOBlocks.length);
+		body.addFunction(IOBlocks.list);
+		body.addVariable(IOBlocks.nothing);
 	}
 
 	@Override

@@ -14,32 +14,25 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sml.data.array;
+package sml.data.list;
 
 import java.util.ArrayList;
 
 import ast.expressions.OperationNode;
 import parser.DataTypes;
-import parser.LogError;
 import sml.data.Method;
 
-final class AssignAdd extends Method<Array> {
+final class Add extends Method<List> {
 
-	public AssignAdd(Array array) {
-		super(array, "$a_add", DataTypes.ANY);
-		addParameter("this", DataTypes.ANY);
+	public Add(List array) {
+		super(array, "add", DataTypes.ANY);
 		addParameter("other", DataTypes.ANY);
 	}
 
 	@Override
-	public Array call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public List call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var other = getBody().getVariable("other").getValue();
-		if (!(other instanceof Array))
-			new LogError("Can't extend array with something that isn't array:\t" + other, callFileName, callLine);
-		if (other == parent)
-			other = new Array(((Array) other).array);
-		return parent.extend((Array) other);
+		return parent.add(getBody().getVariable("other").getValue());
 	}
 
 }
