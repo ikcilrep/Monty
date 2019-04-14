@@ -7,7 +7,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-final class Length extends Method<List>{
+final class Length extends Method<List> {
 
 	Length(List parent) {
 		super(parent, "length", DataTypes.INTEGER);

@@ -20,8 +20,9 @@ final class ToList extends Method<Iterable> {
 		code.addFunction(IOBlocks.length);
 		code.addFunction(IOBlocks.list);
 		code.addVariable(IOBlocks.nothing);
-		
+
 	}
+
 	public ToList(Iterable parent) {
 		super(parent, "toList", DataTypes.ANY);
 		setBody(code);
@@ -31,7 +32,7 @@ final class ToList extends Method<Iterable> {
 	@Override
 	public List call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return (List)getBody().run();
+		return (List) getBody().run();
 	}
 
 }

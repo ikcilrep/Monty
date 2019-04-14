@@ -39,7 +39,8 @@ public final class Round extends FunctionDeclarationNode {
 	public BigDecimal call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		return body.getRealVariableValue("f").setScale(body.getIntVariableValue("scale").intValue(), RoundingMode.HALF_UP);
+		return body.getRealVariableValue("f").setScale(body.getIntVariableValue("scale").intValue(),
+				RoundingMode.HALF_UP);
 	}
 
 }

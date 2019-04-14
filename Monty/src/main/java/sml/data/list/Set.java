@@ -6,7 +6,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-final class Set extends Method<List>{
+final class Set extends Method<List> {
 
 	Set(List parent) {
 		super(parent, "set", DataTypes.ANY);

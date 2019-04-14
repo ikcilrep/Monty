@@ -13,8 +13,8 @@ import parser.parsing.Parser;
 public final class Filter extends FunctionDeclarationNode {
 	private static Block code;
 	static {
-		code = Parser.parse(Lexer
-				.lex("any list [](Nothing) length(iterable) * =;int i 0 =;for x in iterable;if function.call(x);"
+		code = Parser.parse(
+				Lexer.lex("any list [](Nothing) length(iterable) * =;int i 0 =;for x in iterable;if function.call(x);"
 						+ "list.set(i,x);i 1 +=;end;end;return Iterable(list.setLength(i));", "Filter.java"));
 		code.addFunction(IOBlocks.length);
 		code.addFunction(IOBlocks.list);

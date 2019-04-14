@@ -6,7 +6,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-final class Pop extends Method<List>{
+final class Pop extends Method<List> {
 
 	Pop(List parent) {
 		super(parent, "pop", DataTypes.ANY);

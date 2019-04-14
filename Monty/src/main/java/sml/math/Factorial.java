@@ -44,7 +44,7 @@ public final class Factorial extends FunctionDeclarationNode {
 		var result = BigInteger.ONE;
 		for (BigInteger i = BigInteger.TWO; i.compareTo(n) <= 0; i = i.add(BigInteger.ONE))
 			result = result.multiply(i);
-		
+
 		return result;
 	}
 

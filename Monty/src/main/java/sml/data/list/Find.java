@@ -7,7 +7,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-final class Find extends Method<List>{
+final class Find extends Method<List> {
 
 	Find(List parent) {
 		super(parent, "find", DataTypes.INTEGER);

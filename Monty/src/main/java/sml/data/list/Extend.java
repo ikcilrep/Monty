@@ -35,7 +35,7 @@ final class Extend extends Method<List> {
 		setArguments(arguments, callFileName, callLine);
 		var other = getBody().getVariable("other").getValue();
 		parent.doesCanBeExtendedWith(other, callFileName, callLine);
-		return parent.extend((List)other);
+		return parent.extend((List) other);
 	}
 
 }

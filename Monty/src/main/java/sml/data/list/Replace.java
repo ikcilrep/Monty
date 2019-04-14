@@ -8,7 +8,7 @@ import sml.data.Method;
 
 final class Replace extends Method<List> {
 
-	 Replace(List parent) {
+	Replace(List parent) {
 		super(parent, "replace", DataTypes.ANY);
 		addParameter("toBeReplaced", DataTypes.ANY);
 		addParameter("replacement", DataTypes.ANY);
@@ -21,5 +21,4 @@ final class Replace extends Method<List> {
 		return parent.replace(body.getVariableValue("toBeReplaced"), body.getVariableValue("replacement"));
 	}
 
-	
 }

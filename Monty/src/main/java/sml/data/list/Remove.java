@@ -18,6 +18,5 @@ final class Remove extends Method<List> {
 		setArguments(arguments, callFileName, callLine);
 		return parent.remove(getBody().getVariableValue("value"));
 	}
-	
 
 }

@@ -6,7 +6,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-final class Get extends Method<List>{
+final class Get extends Method<List> {
 
 	Get(List parent) {
 		super(parent, "get", DataTypes.ANY);

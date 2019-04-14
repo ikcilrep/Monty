@@ -32,7 +32,7 @@ final class Get extends Method<Range> {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return parent.get( getBody().getIntVariableValue("index"));
+		return parent.get(getBody().getIntVariableValue("index"));
 	}
 
 }

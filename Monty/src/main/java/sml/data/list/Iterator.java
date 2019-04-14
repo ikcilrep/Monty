@@ -2,9 +2,10 @@ package sml.data.list;
 
 import ast.declarations.StructDeclarationNode;
 
-final class Iterator  extends StructDeclarationNode {
+final class Iterator extends StructDeclarationNode {
 	int counter = -1;
 	List list;
+
 	Iterator(List list) {
 		super(list, "Iterator");
 		incrementNumber();
@@ -16,7 +17,7 @@ final class Iterator  extends StructDeclarationNode {
 	public boolean hasNext() {
 		return ++counter < list.length();
 	}
-	
+
 	public Object next() {
 		return list.get(counter);
 	}

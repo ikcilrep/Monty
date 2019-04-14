@@ -27,7 +27,7 @@ public class List extends StructDeclarationNode {
 		new Replace(this);
 		new Set(this);
 		new Sublist(this);
-		
+
 	}
 
 	public List(ArrayList<OperationNode> arguments) {
@@ -38,7 +38,7 @@ public class List extends StructDeclarationNode {
 		for (int i = 0; i < length(); i++)
 			set(i, arguments.get(i).run());
 	}
-	
+
 	public List(Object[] array) {
 		super(null, "[]");
 		addFunctions();
@@ -47,7 +47,6 @@ public class List extends StructDeclarationNode {
 		for (int i = 0; i < length(); i++)
 			set(i, array[i]);
 	}
-
 
 	public List(List array) {
 		super(null, "[]");
@@ -159,15 +158,15 @@ public class List extends StructDeclarationNode {
 			sublist.set(j, get(i));
 		return sublist;
 	}
-	
+
 	public Object pop(int index) {
 		var element = get(index);
 		length--;
 		for (int i = index; i < length(); i++)
-			set(i, get(i+1));
+			set(i, get(i + 1));
 		return element;
 	}
-	
+
 	public int count(Object value) {
 		int counter = 0;
 		for (int i = 0; i < length(); i++)
@@ -175,12 +174,12 @@ public class List extends StructDeclarationNode {
 				counter++;
 		return counter;
 	}
-	
+
 	public List remove(Object value) {
 		pop(find(value));
 		return this;
 	}
-	
+
 	public void doesHaveElement(int index, String fileName, int line) {
 		if (index >= length())
 			new LogError("This list doesn't have " + index + " element.", fileName, line);
