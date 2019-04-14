@@ -97,14 +97,12 @@ public final class Sml extends Library {
 		string.put("upperCase", new UpperCase());
 		string.put("split", new Split());
 
-		system.put("argv", new Argv());
-		system.put("argc", new Argc());
-		system.put("exit", new Exit());
+		system.put("Argv", new Argv());
 
 		threading.put("sleep", new Sleep());
 
-		time.put("unixTime", new UnixTime());
-		time.put("unixTimeMillis", new UnixTimeMillis());
+		time.put("seconds", new Seconds());
+		time.put("millis", new Millis());
 
 		math.put("Pi", new Pi());
 		math.put("E", new E());

@@ -14,30 +14,27 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sml.system;
+package sml.time;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
-import sml.data.returning.Nothing;
-import sml.data.returning.VoidType;
 
-public final class Exit extends FunctionDeclarationNode {
+public final class Millis extends FunctionDeclarationNode {
 
-	public Exit() {
-		super("exit", DataTypes.VOID);
+	public Millis() {
+		super("millis", DataTypes.INTEGER);
 		setBody(new Block(null));
-		addParameter("status", DataTypes.INTEGER);
 	}
 
 	@Override
-	public VoidType call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public BigInteger call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		System.exit(getBody().getIntVariableValue("status").intValue());
-		return Nothing.nothing;
+		return BigInteger.valueOf(System.currentTimeMillis());
 	}
 
 }

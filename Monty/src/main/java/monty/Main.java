@@ -29,9 +29,9 @@ public class Main {
 			System.exit(1);
 		}
 
+		argv = args;
 		Parser.libraries.put("sml", new sml.Sml());
 		path = args[0];
-		argv = args;
 		IOBlocks.readBlockFromFile(path, "command line", 1).run();
 	}
 

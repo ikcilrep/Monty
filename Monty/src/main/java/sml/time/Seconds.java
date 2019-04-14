@@ -14,28 +14,29 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sml.system;
+package sml.time;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import monty.Main;
 import parser.DataTypes;
 
-public final class Argc extends FunctionDeclarationNode {
+public final class Seconds extends FunctionDeclarationNode {
+	private final static BigDecimal THOUSAND = BigDecimal.valueOf(1000);
 
-	public Argc() {
-		super("argc", DataTypes.INTEGER);
+	public Seconds() {
+		super("seconds", DataTypes.REAL);
 		setBody(new Block(null));
 	}
 
 	@Override
-	public BigInteger call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public BigDecimal call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return BigInteger.valueOf(Main.argv.length);
+		return BigDecimal.valueOf(System.currentTimeMillis()).divide(THOUSAND, 3, RoundingMode.HALF_UP);
 	}
 
 }

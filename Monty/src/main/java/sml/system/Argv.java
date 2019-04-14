@@ -16,30 +16,16 @@ limitations under the License.
 
 package sml.system;
 
-import java.util.ArrayList;
-
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
-import ast.expressions.OperationNode;
+import ast.declarations.VariableDeclarationNode;
 import monty.Main;
 import parser.DataTypes;
-import parser.LogError;
+import sml.data.list.List;
 
-public final class Argv extends FunctionDeclarationNode {
-
+public final class Argv extends VariableDeclarationNode {
 	public Argv() {
-		super("argv", DataTypes.STRING);
-		setBody(new Block(null));
-		addParameter("index", DataTypes.INTEGER);
-	}
-
-	@Override
-	public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		var index = getBody().getIntVariableValue("index").intValue();
-		if (index < 0 || index >= Main.argv.length)
-			new LogError("Index " + index + " is too large for length " + Main.argv.length, callFileName, callLine);
-		return Main.argv[index];
+		super("Argv", DataTypes.ANY);
+		setValue(new List(Main.argv));
+		setConst(true);
 	}
 
 }

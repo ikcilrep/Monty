@@ -226,7 +226,7 @@ public class Block extends NodeWithParent implements Cloneable {
 	}
 
 	public String getStringVariableValue(String name) {
-		return (String) getVariable(name).getValue();
+		return getVariable(name).getValue().toString();
 	}
 
 	public Object getVariableValue(String name) {
