@@ -194,11 +194,11 @@ public class List extends StructDeclarationNode {
 	public boolean equals(Object other) {
 		if (!(other instanceof List))
 			return false;
-		var otherArray = (List) other;
-		if (otherArray.length() != length())
+		var otherList = (List) other;
+		if (otherList.length() != length())
 			return false;
 		for (int i = 0; i < length(); i++)
-			if (!get(i).equals(otherArray.get(i)))
+			if (!get(i).equals(otherList.get(i)))
 				return false;
 		return true;
 
