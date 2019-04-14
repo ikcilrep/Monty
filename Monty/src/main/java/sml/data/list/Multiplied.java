@@ -6,7 +6,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-public class Multiplied extends Method<List>{
+final class Multiplied extends Method<List>{
 	public Multiplied(List parent) {
 		super(parent, "$mul", DataTypes.ANY);
 		addParameter("this", DataTypes.ANY);

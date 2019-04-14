@@ -2,23 +2,21 @@ package sml.data.list;
 
 import java.util.ArrayList;
 
+
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-final class Pop extends Method<List>{
+final class NewIterator extends Method<List> {
 
-	Pop(List parent) {
-		super(parent, "pop", DataTypes.ANY);
-		addParameter("index", DataTypes.INTEGER);
+	public NewIterator(List parent) {
+		super(parent, "Iterator", DataTypes.ANY);
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var index = getBody().getIntVariableValue("index").intValue();
-		parent.doesHaveElement(index, callFileName, callLine);
-		return parent.pop(index);
+		return new Iterator(parent);
 	}
 
 }

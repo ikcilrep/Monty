@@ -7,9 +7,9 @@ import parser.DataTypes;
 import parser.LogError;
 import sml.data.Method;
 
-public class Sublist extends Method<List> {
+final class Sublist extends Method<List> {
 
-	public Sublist(List parent) {
+	Sublist(List parent) {
 		super(parent, "sublist", DataTypes.ANY);
 		addParameter("begin", DataTypes.INTEGER);
 		addParameter("end", DataTypes.INTEGER);

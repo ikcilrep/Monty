@@ -24,7 +24,7 @@ import sml.data.Method;
 
 final class Extended extends Method<List> {
 
-	public Extended(List array) {
+	Extended(List array) {
 		super(array, "$add", DataTypes.ANY);
 		addParameter("this", DataTypes.ANY);
 		addParameter("other", DataTypes.ANY);

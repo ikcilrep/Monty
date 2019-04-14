@@ -24,7 +24,7 @@ import sml.data.Method;
 
 final class Add extends Method<List> {
 
-	public Add(List array) {
+	Add(List array) {
 		super(array, "add", DataTypes.ANY);
 		addParameter("other", DataTypes.ANY);
 	}

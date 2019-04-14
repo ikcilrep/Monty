@@ -6,9 +6,9 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-public class Set extends Method<List>{
+final class Set extends Method<List>{
 
-	public Set(List parent) {
+	Set(List parent) {
 		super(parent, "set", DataTypes.ANY);
 		addParameter("index", DataTypes.INTEGER);
 		addParameter("value", DataTypes.ANY);

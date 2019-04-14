@@ -6,9 +6,9 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-public class Remove extends Method<List> {
+final class Remove extends Method<List> {
 
-	public Remove(List parent) {
+	Remove(List parent) {
 		super(parent, "remove", DataTypes.ANY);
 		addParameter("value", DataTypes.ANY);
 	}

@@ -6,9 +6,9 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-public class Count extends Method<List> {
+final class Count extends Method<List> {
 
-	public Count(List parent) {
+	Count(List parent) {
 		super(parent, "count", DataTypes.INTEGER);
 		addParameter("value", DataTypes.ANY);
 	}

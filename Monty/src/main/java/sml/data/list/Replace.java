@@ -6,9 +6,9 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.Method;
 
-public class Replace extends Method<List> {
+final class Replace extends Method<List> {
 
-	public Replace(List parent) {
+	 Replace(List parent) {
 		super(parent, "replace", DataTypes.ANY);
 		addParameter("toBeReplaced", DataTypes.ANY);
 		addParameter("replacement", DataTypes.ANY);

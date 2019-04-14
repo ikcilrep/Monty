@@ -18,6 +18,7 @@ public class List extends StructDeclarationNode {
 		new Extended(this);
 		new Find(this);
 		new Get(this);
+		new NewIterator(this);
 		new Length(this);
 		new Multiplied(this);
 		new Multiply(this);
@@ -26,7 +27,7 @@ public class List extends StructDeclarationNode {
 		new Replace(this);
 		new Set(this);
 		new Sublist(this);
-
+		
 	}
 
 	public List(ArrayList<OperationNode> arguments) {
