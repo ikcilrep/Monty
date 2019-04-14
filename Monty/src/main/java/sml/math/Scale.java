@@ -16,7 +16,6 @@ limitations under the License.
 
 package sml.math;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
@@ -36,7 +35,7 @@ public final class Scale extends FunctionDeclarationNode {
 	@Override
 	public BigInteger call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return BigInteger.valueOf(((BigDecimal) getBody().getVariable("f").getValue()).scale());
+		return BigInteger.valueOf(getBody().getRealVariableValue("f").scale());
 	}
 
 }

@@ -21,7 +21,7 @@ public final class NewRange extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public Range call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
 		var min = (BigInteger) body.getVariable("min").getValue();

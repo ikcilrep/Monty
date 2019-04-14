@@ -34,6 +34,6 @@ public final class IsAbsolute extends FunctionDeclarationNode {
 	@Override
 	public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return new File(getBody().getVariable("path").getValue().toString()).isAbsolute();
+		return new File(getBody().getStringVariableValue("path")).isAbsolute();
 	}
 }

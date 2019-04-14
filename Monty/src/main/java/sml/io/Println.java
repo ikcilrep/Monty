@@ -23,6 +23,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import sml.data.returning.Nothing;
+import sml.data.returning.VoidType;
 
 public final class Println extends FunctionDeclarationNode {
 
@@ -33,9 +34,9 @@ public final class Println extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public VoidType call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		System.out.println(getBody().getVariable("toPrint").getValue());
+		System.out.println(getBody().getStringVariableValue("toPrint"));
 		return Nothing.nothing;
 	}
 

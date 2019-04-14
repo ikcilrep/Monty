@@ -18,7 +18,7 @@ public final class FunctionByName extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public Function call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		var argumentsSize = arguments.size();
 		if (argumentsSize > 1)
 			new LogError("Too many arguments in " + name + " function call.", callFileName, callLine);

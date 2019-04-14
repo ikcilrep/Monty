@@ -18,7 +18,7 @@ public class Lambda extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public Function call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		int argumentsLength = arguments.size() - 1;
 		var fileName = callFileName + "lambda(" + callLine + ")";
 		var function = new CustomFunctionDeclarationNode("", DataTypes.ANY);
@@ -31,7 +31,7 @@ public class Lambda extends FunctionDeclarationNode {
 		for (int i = 0; i < argumentsLength; i++) {
 			var argument = arguments.get(i).getOperand();
 			if (!(argument instanceof VariableNode))
-				new LogError("Argument " + i + " (counting from zero) should be just name.", callFileName, callLine);
+				new LogError("Argument " + i + " (counting from zero) should be just parameter name.", callFileName, callLine);
 			function.addParameter(((VariableNode) argument).getName(), DataTypes.ANY);
 		}
 		return new Function(function);

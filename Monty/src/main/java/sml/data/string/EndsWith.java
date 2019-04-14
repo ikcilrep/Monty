@@ -33,7 +33,7 @@ public final class EndsWith extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
 		var str = (String) body.getVariable("str").getValue();

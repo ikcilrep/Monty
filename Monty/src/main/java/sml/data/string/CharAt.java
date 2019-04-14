@@ -15,7 +15,6 @@ limitations under the License.
 */
 package sml.data.string;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 
 import ast.Block;
@@ -34,11 +33,11 @@ public final class CharAt extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var str = (String) body.getVariable("str").getValue();
-		var index = ((BigInteger) body.getVariable("index").getValue()).intValue();
+		var str = body.getStringVariableValue("str");
+		var index = body.getIntVariableValue("index").intValue();
 		var length = str.length();
 		if (index >= length || index < 0)
 			new LogError("This string doesn't have " + index + " element", callFileName, callLine);

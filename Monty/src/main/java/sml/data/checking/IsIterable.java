@@ -42,7 +42,7 @@ public class IsIterable extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return isIterable(getBody().getVariable("toCheck").getValue(), callFileName, callLine);
+		return isIterable(getBody().getVariableValue("toCheck"), callFileName, callLine);
 	}
 
 }

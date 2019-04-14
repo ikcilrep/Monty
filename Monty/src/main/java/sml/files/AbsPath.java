@@ -41,6 +41,6 @@ public final class AbsPath extends FunctionDeclarationNode {
 	@Override
 	public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return absPath(getBody().getVariable("path").getValue().toString());
+		return absPath(getBody().getStringVariableValue("path"));
 	}
 }

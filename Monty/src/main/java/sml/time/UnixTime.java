@@ -26,7 +26,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 
 public final class UnixTime extends FunctionDeclarationNode {
-	private final static BigDecimal thousand = BigDecimal.valueOf(1000);
+	private final static BigDecimal THOUSAND = BigDecimal.valueOf(1000);
 
 	public UnixTime() {
 		super("unixTime", DataTypes.REAL);
@@ -34,9 +34,9 @@ public final class UnixTime extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public BigDecimal call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return BigDecimal.valueOf(System.currentTimeMillis()).divide(thousand, 3, RoundingMode.HALF_UP);
+		return BigDecimal.valueOf(System.currentTimeMillis()).divide(THOUSAND, 3, RoundingMode.HALF_UP);
 	}
 
 }

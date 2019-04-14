@@ -18,9 +18,9 @@ public final class NewIterable extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public Iterable call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var iterable = getBody().getVariable("iterable").getValue();
+		var iterable = getBody().getVariableValue("iterable");
 		if (!IsIterable.isIterable(iterable, callFileName, callLine))
 			new LogError("Iterable can be created only with iterable object.", callFileName, callLine);
 		return new Iterable(iterable);

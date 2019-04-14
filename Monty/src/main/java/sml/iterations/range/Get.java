@@ -16,7 +16,6 @@ limitations under the License.
 
 package sml.iterations.range;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 
 import ast.expressions.OperationNode;
@@ -33,7 +32,7 @@ final class Get extends Method<Range> {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return parent.get((BigInteger) getBody().getVariable("index").getValue());
+		return parent.get( getBody().getIntVariableValue("index"));
 	}
 
 }

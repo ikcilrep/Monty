@@ -16,7 +16,7 @@ limitations under the License.
 
 package sml.casts;
 
-public final class StringToBoolean {
+final class StringToBoolean {
 
 	public static Boolean stringToBoolean(String str) {
 		return Boolean.parseBoolean(str);

@@ -52,9 +52,9 @@ public final class ToBoolean extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var a = getBody().getVariable("a").getValue();
+		var a = getBody().getVariableValue("a");
 		return toBoolean(a, callFileName, callLine);
 	}
 

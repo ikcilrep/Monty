@@ -17,7 +17,6 @@ limitations under the License.
 package sml.math;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 
@@ -40,8 +39,7 @@ public final class Round extends FunctionDeclarationNode {
 	public BigDecimal call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var f = ((BigDecimal) body.getVariable("f").getValue());
-		return f.setScale(((BigInteger) body.getVariable("scale").getValue()).intValue(), RoundingMode.HALF_UP);
+		return body.getRealVariableValue("f").setScale(body.getIntVariableValue("scale").intValue(), RoundingMode.HALF_UP);
 	}
 
 }

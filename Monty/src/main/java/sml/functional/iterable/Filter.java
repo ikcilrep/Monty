@@ -30,9 +30,9 @@ public final class Filter extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public Iterable call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return getBody().run();
+		return (Iterable) getBody().run();
 	}
 
 }

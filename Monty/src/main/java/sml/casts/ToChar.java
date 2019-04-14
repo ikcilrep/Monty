@@ -16,7 +16,6 @@ limitations under the License.
 
 package sml.casts;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 
 import ast.Block;
@@ -32,10 +31,9 @@ public final class ToChar extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var integer = ((BigInteger) getBody().getVariable("integer").getValue()).intValue();
-		return String.valueOf(Character.valueOf((char) integer));
+		return String.valueOf(Character.valueOf((char) getBody().getIntVariableValue("integer").intValue()));
 	}
 
 }

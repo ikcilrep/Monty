@@ -34,7 +34,7 @@ public final class IsBoolean extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return getBody().getVariable("toCheck").getValue() instanceof Boolean;
+		return getBody().getVariableValue("toCheck") instanceof Boolean;
 	}
 
 }

@@ -13,7 +13,7 @@ final class NewIterator extends Method<IterableString> {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public Iterator call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		return new Iterator(parent.string);
 	}

@@ -34,7 +34,7 @@ public final class IsString extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return getBody().getVariable("toCheck").getValue() instanceof String;
+		return getBody().getVariableValue("toCheck") instanceof String;
 	}
 
 }

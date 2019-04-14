@@ -18,7 +18,7 @@ package sml.casts;
 
 import java.math.BigInteger;
 
-public final class IntToBoolean {
+final class IntToBoolean {
 
 	public static Boolean intToBoolean(BigInteger integer) {
 		return integer.compareTo(BigInteger.valueOf(0)) > 0;

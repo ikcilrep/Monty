@@ -33,7 +33,7 @@ public final class Argc extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public BigInteger call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		return BigInteger.valueOf(Main.argv.length);
 	}

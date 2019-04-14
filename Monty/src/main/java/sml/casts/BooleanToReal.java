@@ -18,7 +18,7 @@ package sml.casts;
 
 import java.math.BigDecimal;
 
-public final class BooleanToReal {
+final class BooleanToReal {
 
 	public static BigDecimal booleanToReal(Boolean bool) {
 		if (bool == true)

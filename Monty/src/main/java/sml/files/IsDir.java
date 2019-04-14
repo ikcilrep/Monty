@@ -35,7 +35,7 @@ public final class IsDir extends FunctionDeclarationNode {
 	@Override
 	public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var path = getBody().getVariable("path").getValue().toString();
+		var path = getBody().getStringVariableValue("path");
 		try {
 			return new File(AbsPath.absPath(path)).isDirectory();
 		} catch (SecurityException e) {

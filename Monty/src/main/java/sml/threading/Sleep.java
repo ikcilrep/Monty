@@ -16,7 +16,6 @@ limitations under the License.
 
 package sml.threading;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 
 import ast.Block;
@@ -25,6 +24,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
 import sml.data.returning.Nothing;
+import sml.data.returning.VoidType;
 
 public final class Sleep extends FunctionDeclarationNode {
 
@@ -35,9 +35,9 @@ public final class Sleep extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public VoidType call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var millis = ((BigInteger) getBody().getVariable("millis").getValue()).intValue();
+		var millis = getBody().getIntVariableValue("millis").intValue();
 		try {
 			Thread.sleep(millis);
 		} catch (InterruptedException e) {

@@ -36,7 +36,7 @@ public final class ListDir extends FunctionDeclarationNode {
 	@Override
 	public List call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var path = (String) getBody().getVariable("path").getValue();
+		var path = getBody().getStringVariableValue("path");
 		try {
 			var list = new File(AbsPath.absPath(path)).list();
 			return list == null ? new List(0) : new List(list);

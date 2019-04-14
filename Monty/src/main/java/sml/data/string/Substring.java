@@ -16,7 +16,6 @@ limitations under the License.
 
 package sml.data.string;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 
 import ast.Block;
@@ -33,16 +32,15 @@ public final class Substring extends FunctionDeclarationNode {
 		addParameter("str", DataTypes.STRING);
 		addParameter("begin", DataTypes.INTEGER);
 		addParameter("end", DataTypes.INTEGER);
-
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var str = (String) body.getVariable("str").getValue();
-		var begin = ((BigInteger) body.getVariable("begin").getValue()).intValue();
-		var end = ((BigInteger) body.getVariable("end").getValue()).intValue();
+		var str = body.getStringVariableValue("str");
+		var begin = body.getIntVariableValue("begin").intValue();
+		var end = body.getIntVariableValue("end").intValue();
 		var length = str.length();
 		if (end > length)
 			new LogError("End " + length + " is too large for length " + length);

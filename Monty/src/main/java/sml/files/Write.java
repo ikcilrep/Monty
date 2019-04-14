@@ -39,9 +39,8 @@ public final class Write extends FunctionDeclarationNode {
 	public VoidType call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		FileIO.writeFile(AbsPath.absPath((String) getBody().getVariable("path").getValue()),
-				(String) body.getVariable("text").getValue(), (boolean) body.getVariable("isAppend").getValue(),
-				callFileName, callLine);
+		FileIO.writeFile(AbsPath.absPath(body.getStringVariableValue("path")), body.getStringVariableValue("text"),
+				body.getBooleanVariableValue("isAppend"), callFileName, callLine);
 		return Nothing.nothing;
 	}
 

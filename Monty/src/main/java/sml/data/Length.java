@@ -1,5 +1,6 @@
 package sml.data;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 import ast.Block;
@@ -20,9 +21,9 @@ public final class Length extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public BigInteger call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return getBody().run();
+		return (BigInteger) getBody().run();
 	}
 
 }

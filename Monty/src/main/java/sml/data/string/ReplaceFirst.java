@@ -35,13 +35,11 @@ public final class ReplaceFirst extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var str = (String) body.getVariable("str").getValue();
-		var toBeReplaced = (String) body.getVariable("regex").getValue();
-		var replacement = (String) body.getVariable("replacement").getValue();
-		return str.replaceFirst(toBeReplaced, replacement);
+		return body.getStringVariableValue("str").replaceFirst(body.getStringVariableValue("regex"),
+				body.getStringVariableValue("replacement"));
 	}
 
 }

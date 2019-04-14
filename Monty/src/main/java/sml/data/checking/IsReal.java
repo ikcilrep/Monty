@@ -36,7 +36,7 @@ public final class IsReal extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var value = getBody().getVariable("toCheck").getValue();
+		var value = getBody().getVariableValue("toCheck");
 		return value instanceof BigDecimal || value instanceof BigInteger;
 	}
 

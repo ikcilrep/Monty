@@ -17,7 +17,7 @@ package sml.casts;
 
 import java.math.BigDecimal;
 
-public final class RealToBoolean {
+final class RealToBoolean {
 
 	public static Boolean realToBoolean(BigDecimal floating) {
 		return floating.compareTo(BigDecimal.ZERO) > 0;

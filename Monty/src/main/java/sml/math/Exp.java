@@ -51,7 +51,7 @@ public final class Exp extends FunctionDeclarationNode {
 	public BigDecimal call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		return exp((BigDecimal) body.getVariable("x").getValue());
+		return exp(body.getRealVariableValue("x"));
 	}
 
 }

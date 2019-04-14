@@ -35,7 +35,7 @@ public final class Exists extends FunctionDeclarationNode {
 	@Override
 	public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var path = AbsPath.absPath(getBody().getVariable("path").getValue().toString());
+		var path = AbsPath.absPath(getBody().getStringVariableValue("path"));
 		try {
 			return new File(path).exists();
 		} catch (SecurityException e) {

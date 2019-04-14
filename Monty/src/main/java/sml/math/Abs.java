@@ -35,7 +35,7 @@ public final class Abs extends FunctionDeclarationNode {
 	@Override
 	public BigDecimal call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return ((BigDecimal) getBody().getVariable("f").getValue()).abs();
+		return getBody().getRealVariableValue("f").abs();
 	}
 
 }

@@ -15,7 +15,7 @@ final class NewIterator extends Method<Iterable> {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public Iterator call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		return new Iterator((StructDeclarationNode) parent.iterable.getFunction("Iterator").call(Sml.emptyArgumentList,
 				callFileName, callLine));
 	}

@@ -52,9 +52,9 @@ public final class ToInt extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public BigInteger call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var a = getBody().getVariable("a").getValue();
+		var a = getBody().getVariableValue("a");
 		return toInt(a, callFileName, callLine);
 	}
 

@@ -16,8 +16,8 @@ final class HasNext extends Method<Iterator> {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		return hasNext.call(arguments, callFileName, callLine);
+	public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+		return (Boolean) hasNext.call(arguments, callFileName, callLine);
 	}
 
 }

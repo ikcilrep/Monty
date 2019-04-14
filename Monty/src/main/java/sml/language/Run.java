@@ -9,6 +9,7 @@ import lexer.Lexer;
 import parser.DataTypes;
 import parser.parsing.Parser;
 import sml.data.returning.Nothing;
+import sml.data.returning.VoidType;
 
 public final class Run extends FunctionDeclarationNode {
 
@@ -19,9 +20,9 @@ public final class Run extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public VoidType call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		Parser.parse(Lexer.lex((String) getBody().getVariable("code").getValue(), callFileName, callLine)).run();
+		Parser.parse(Lexer.lex(getBody().getStringVariableValue("code"), callFileName, callLine)).run();
 		return Nothing.nothing;
 	}
 

@@ -35,7 +35,7 @@ public final class IsList extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return getBody().getVariable("toCheck").getValue() instanceof List;
+		return getBody().getVariableValue("toCheck") instanceof List;
 	}
 
 }

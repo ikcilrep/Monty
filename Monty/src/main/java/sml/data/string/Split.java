@@ -34,12 +34,10 @@ public final class Split extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public List call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var str = (String) body.getVariable("str").getValue();
-		var regex = (String) body.getVariable("regex").getValue();
-		return new List(str.split(regex));
+		return new List(body.getStringVariableValue("str").split(body.getStringVariableValue("regex")));
 	}
 
 }
