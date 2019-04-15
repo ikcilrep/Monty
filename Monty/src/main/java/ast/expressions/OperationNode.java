@@ -42,10 +42,11 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 		this.parent = parent;
 	}
 
-	private final Object calculate(Object leftValue, Object rightValue, Object operator, DataTypes type) {
+	private final Object calculate(Object leftValue, Object rightValue, String operator, DataTypes type) {
 		// Calculates the result of math operation.
-		OperatorOverloading.setTemporary(fileName, line);
-		switch (operator.toString()) {
+		switch (operator) {
+		case ".":
+			return OperatorOverloading.dotOperator(leftValue, rightValue, type);
 		case "+":
 			return OperatorOverloading.additionOperator(leftValue, rightValue, type);
 		case "-":
@@ -115,33 +116,14 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 		return getLiteral(expression, parent, fileName, line);
 	}
 
-	private final Object getLiteral(Object expression, Block parent, String fileName, int line) {
+	final static Object getLiteral(Object expression, Block parent, String fileName, int line) {
 		// Returns value of expression.
-		if (expression instanceof VariableNode) {
-			var variableCall = (VariableNode) expression;
-			var nextV = variableCall.getNext();
-			var variable = parent.getVariable(variableCall.getName(), fileName, line);
-
-			if (nextV != null) {
-				var variableValue = variable.getValue();
-				if (variableValue instanceof StructDeclarationNode)
-					return getLiteral(nextV.operand, (StructDeclarationNode) variableValue, nextV.fileName, nextV.line);
-				else
-					new LogError("Can't get attributes from simple data type.", fileName, line);
-			}
-			return variable;
-		} else if (expression instanceof FunctionCallNode) {
+		if (expression instanceof VariableNode)
+			return parent.getVariable(((VariableNode) expression).getName(), fileName, line);
+		else if (expression instanceof FunctionCallNode) {
 			var functionToCall = ((FunctionCallNode) expression);
-			var function = parent.getFunction(functionToCall.getName(), fileName, line);
-			var functionCallValue = function.call(functionToCall.getArguments(), fileName, line);
-			var nextF = functionToCall.getNext();
-			if (nextF != null)
-				if (functionCallValue instanceof StructDeclarationNode)
-					return getLiteral(nextF.operand, (StructDeclarationNode) functionCallValue, nextF.fileName,
-							nextF.line);
-				else
-					new LogError("Can't get attributes from simple data type.", fileName, line);
-			return functionCallValue;
+			return parent.getFunction(functionToCall.getName(), fileName, line).call(functionToCall.getArguments(),
+					fileName, line);
 		} else if (expression instanceof ConstantNode)
 			return ((ConstantNode) expression).getValue();
 		return expression;
@@ -182,11 +164,6 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 			for (OperationNode argument : arguments)
 				argument.setParent(parent);
 		}
-		if (operand instanceof StructContainer) {
-			var next = ((StructContainer) operand).getNext();
-			if (next != null)
-				next.setParent(parent);
-		}
 	}
 
 	public final void setRightOperand(OperationNode right) {
@@ -196,20 +173,34 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 	private final Object solve() {
 		if (!(operand instanceof String))
 			return operand;
-		Object a = left.solve();
-		Object b = right.solve();
-		Object operator = operand;
-		var isComparison = operator.toString().equals("==") || operator.toString().equals("!=")
-				|| operator.toString().equals("<=") || operator.toString().equals(">=")
-				|| operator.toString().equals(">") || operator.toString().equals("<");
-		Object leftValue = getLiteral(a, left.fileName, left.line);
-		Object rightValue = getLiteral(b, right.fileName, right.line);
-		DataTypes leftType = getDataType(leftValue);
-		DataTypes rightType = getDataType(rightValue);
-		var isNotAssignment = !operator.toString().contains("=") || isComparison;
+		OperatorOverloading.setTemporary(fileName, line);
+
+		var operator = (String) operand;
+		var isComparison = operator.equals("==") || operator.equals("!=") || operator.equals("<=")
+				|| operator.equals(">=") || operator.equals(">") || operator.equals("<");
+
+		var isDot = operator.equals(".");
+		var isNotAssignment = !operator.contains("=") || isComparison;
+
+		var a = left.solve();
+		var b = right.solve();
+
+		var leftValue = getLiteral(a, left.fileName, left.line);
+		var leftType = getDataType(leftValue);
+
 		if (isNotAssignment)
 			if (leftValue instanceof VariableDeclarationNode)
 				leftValue = ((VariableDeclarationNode) leftValue).getValue();
+
+		if (isDot) {
+			if (!(b instanceof NamedExpression))
+				new LogError("Variable or function can only be getted from struct.", fileName, line);
+			return OperatorOverloading.dotOperator(leftValue, b, leftType);
+		}
+
+		var rightValue = getLiteral(b, right.fileName, right.line);
+		var rightType = getDataType(rightValue);
+
 		if (rightValue instanceof VariableDeclarationNode)
 			rightValue = ((VariableDeclarationNode) rightValue).getValue();
 
@@ -219,28 +210,29 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 		if (rightType.equals(DataTypes.ANY) && !(rightValue instanceof StructDeclarationNode))
 			rightType = DataTypes.getDataType(rightValue);
 
-		if (isNotAssignment && (leftType.equals(DataTypes.INTEGER) && rightType.equals(DataTypes.REAL))) {
-			leftType = DataTypes.REAL;
-			leftValue = ToReal.toReal(leftValue, fileName, line);
-		} else if (isNotAssignment && operator.equals("+")
-				&& (rightType.equals(DataTypes.STRING) && !rightType.equals(leftType))) {
-			leftType = DataTypes.STRING;
-			leftValue = leftValue.toString();
-		} else if (leftType.equals(DataTypes.REAL) && rightType.equals(DataTypes.INTEGER)) {
-			rightType = DataTypes.REAL;
-			rightValue = ToReal.toReal(rightValue, fileName, line);
-		} else if (operator.toString().contains("+") && leftType.equals(DataTypes.STRING)
-				&& !leftType.equals(rightType)) {
-			rightType = DataTypes.STRING;
-			rightValue = rightValue.toString();
-		} else if (leftType.equals(DataTypes.ANY) && !leftType.equals(rightType))
-			rightType = DataTypes.ANY;
-		else if (rightType.equals(DataTypes.ANY) && !leftType.equals(rightType))
-			leftType = DataTypes.ANY;
-		if (!leftType.equals(rightType))
-			new LogError("Type mismatch:\t" + leftType + " and " + rightType, fileName, line);
+		if (!leftType.equals(rightType)) {
+			if (isNotAssignment && (leftType.equals(DataTypes.INTEGER) && rightType.equals(DataTypes.REAL))) {
+				leftType = DataTypes.REAL;
+				leftValue = ToReal.toReal(leftValue, fileName, line);
+			} else if (isNotAssignment && operator.equals("+") && rightType.equals(DataTypes.STRING)) {
+				leftType = DataTypes.STRING;
+				leftValue = leftValue.toString();
+			} else if (leftType.equals(DataTypes.REAL) && rightType.equals(DataTypes.INTEGER)) {
+				rightType = DataTypes.REAL;
+				rightValue = ToReal.toReal(rightValue, fileName, line);
+			} else if (operator.contains("+") && leftType.equals(DataTypes.STRING)) {
+				rightType = DataTypes.STRING;
+				rightValue = rightValue.toString();
+			} else if (leftType.equals(DataTypes.ANY))
+				rightType = DataTypes.ANY;
+			else if (rightType.equals(DataTypes.ANY))
+				leftType = DataTypes.ANY;
+			else
+				new LogError("Type mismatch:\t" + leftType.toString().toLowerCase() + " and "
+						+ rightType.toString().toLowerCase(), fileName, line);
+		}
 
-		return calculate(leftValue, rightValue, operand, leftType);
+		return calculate(leftValue, rightValue, operator, leftType);
 
 	}
 

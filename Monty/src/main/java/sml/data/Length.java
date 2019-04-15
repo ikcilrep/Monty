@@ -12,7 +12,7 @@ import parser.parsing.Parser;
 
 public final class Length extends FunctionDeclarationNode {
 	private final static Block code = Parser
-			.parse(Lexer.lex("int counter;for _ in iterable;counter 1+=;end;return counter;", "Length.java"));
+			.parse(Lexer.lex("int counter;for _ in iterable;counter += 1;end;return counter;", "Length.java"));
 
 	public Length() {
 		super("length", DataTypes.INTEGER);

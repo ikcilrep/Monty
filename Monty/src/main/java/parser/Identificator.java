@@ -24,8 +24,8 @@ import lexer.Token;
 import lexer.TokenTypes;
 
 public abstract class Identificator {
-	public static final Pattern importRegex = Pattern.compile("^[A-Z_]+ (DOT [A-Z_]+ )*$");
-	public static final Set<TokenTypes> dataTypesKeywords = Set.of(TokenTypes.INT_KEYWORD, TokenTypes.REAL_KEYWORD,
+	public static final Pattern IMPORT_REGEX = Pattern.compile("^[A-Z_]+ (DOT [A-Z_]+ )*$");
+	public static final Set<TokenTypes> DATA_TYPES_KEYWORDS = Set.of(TokenTypes.INT_KEYWORD, TokenTypes.REAL_KEYWORD,
 			TokenTypes.BOOLEAN_KEYWORD, TokenTypes.STRING_KEYWORD, TokenTypes.VOID_KEYWORD, TokenTypes.ANY_KEYWORD);
 
 	public static boolean isBreakStatement(OptimizedTokensArray tokens) {
@@ -45,7 +45,7 @@ public abstract class Identificator {
 			new LogError("Expected identifier after \"change\" keyword.", tokens.get(tokens.length() > 1 ? 1 : 0));
 		if (tokensSize == 2 || !tokens.get(2).getType().equals(TokenTypes.TO_KEYWORD))
 			new LogError("Expected \"to\" keyword after identifier.", tokens.get(tokens.length() > 2 ? 2 : 1));
-		if (tokensSize == 3 | !dataTypesKeywords.contains(tokens.get(3).getType()))
+		if (tokensSize == 3 | !DATA_TYPES_KEYWORDS.contains(tokens.get(3).getType()))
 			new LogError("Expected data type declaration after \"to\" keyword.",
 					tokens.get(tokens.length() > 3 ? 3 : 2));
 		return true;
@@ -149,7 +149,7 @@ public abstract class Identificator {
 		if (tokensBeforeSemicolon.length() >= 2)
 			secondTokenType = tokensBeforeSemicolon.get(1).getType();
 		var isSecondTokenDataTypeKeyword = tokensBeforeSemicolon.length() > 1
-				&& dataTypesKeywords.contains(secondTokenType);
+				&& DATA_TYPES_KEYWORDS.contains(secondTokenType);
 		var isThirdTokenIdentifier = tokensBeforeSemicolon.length() > 2
 				&& tokensBeforeSemicolon.get(2).getType().equals(TokenTypes.IDENTIFIER);
 		if (!isFirstTokenFuncKeyword)
@@ -162,7 +162,7 @@ public abstract class Identificator {
 		var isLastTokenDataTypeDeclaration = false;
 		for (int i = 3; i < tokensBeforeSemicolon.length(); i++) {
 			var t = tokensBeforeSemicolon.get(i);
-			if (dataTypesKeywords.contains(t.getType()))
+			if (DATA_TYPES_KEYWORDS.contains(t.getType()))
 				isLastTokenDataTypeDeclaration = true;
 			else if (t.getType().equals(TokenTypes.IDENTIFIER)) {
 				if (!isLastTokenDataTypeDeclaration)
@@ -192,12 +192,12 @@ public abstract class Identificator {
 
 	public static boolean isImport(OptimizedTokensArray tokens) {
 		return tokens.get(0).getType().equals(TokenTypes.IMPORT_KEYWORD)
-				&& importRegex.matcher(Tokens.getTypesToString(tokens.subarray(1, tokens.length()))).matches();
+				&& IMPORT_REGEX.matcher(Tokens.getTypesToString(tokens.subarray(1, tokens.length()))).matches();
 	}
 
 	public static boolean isJar(OptimizedTokensArray tokens) {
 		return tokens.get(0).getType().equals(TokenTypes.JAR_KEYWORD)
-				&& importRegex.matcher(Tokens.getTypesToString(tokens.subarray(1, tokens.length()))).matches();
+				&& IMPORT_REGEX.matcher(Tokens.getTypesToString(tokens.subarray(1, tokens.length()))).matches();
 	}
 
 	public static boolean isReturnStatement(OptimizedTokensArray tokensBeforeSemicolon) {
@@ -223,7 +223,7 @@ public abstract class Identificator {
 
 	public static boolean isVariableDeclaration(OptimizedTokensArray tokensBeforeSemicolon) {
 		var firstTokenType = tokensBeforeSemicolon.get(0).getType();
-		var isFirstTokenDataTypeKeyword = dataTypesKeywords.contains(firstTokenType);
+		var isFirstTokenDataTypeKeyword = DATA_TYPES_KEYWORDS.contains(firstTokenType);
 		var isFirstTokenDynamicKeyword = firstTokenType.equals(TokenTypes.DYNAMIC_KEYWORD);
 		var tokensSize = tokensBeforeSemicolon.length();
 		TokenTypes secondTokenType = null;
@@ -235,7 +235,7 @@ public abstract class Identificator {
 			return false;
 		int n = 1;
 		if (isFirstTokenDynamicKeyword) {
-			if (!(secondTokenType != null && dataTypesKeywords.contains(secondTokenType)) || tokensSize == 2)
+			if (!(secondTokenType != null && DATA_TYPES_KEYWORDS.contains(secondTokenType)) || tokensSize == 2)
 				new LogError("Expected data type declaration after \"dynamic\" keyword.");
 			n++;
 

@@ -232,6 +232,10 @@ public class Block extends NodeWithParent implements Cloneable {
 	public Object getVariableValue(String name) {
 		return getVariable(name).getValue();
 	}
+	
+	public Object getVariableValue(String name, String fileName, int line) {
+		return getVariable(name, fileName, line).getValue();
+	}
 
 	public HashMap<String, VariableDeclarationNode> getVariables() {
 		return variables;

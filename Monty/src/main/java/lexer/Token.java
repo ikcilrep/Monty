@@ -21,6 +21,15 @@ public final class Token implements Cloneable {
 	private String fileName;
 	TokenTypes type;
 	private int line;
+	private boolean isFunction;
+	
+	public boolean isFunction() {
+		return isFunction;
+	}
+
+	public void setFunction(boolean isFunction) {
+		this.isFunction = isFunction;
+	}
 
 	public Token(TokenTypes type) {
 		this.type = type;

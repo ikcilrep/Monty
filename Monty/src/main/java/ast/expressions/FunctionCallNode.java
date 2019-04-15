@@ -18,11 +18,10 @@ package ast.expressions;
 
 import java.util.ArrayList;
 
-public final class FunctionCallNode implements StructContainer {
+public final class FunctionCallNode extends NamedExpression {
 
 	private String name;
 	private ArrayList<OperationNode> arguments = new ArrayList<>();
-	private OperationNode next;
 
 	public FunctionCallNode(String name) {
 		this.name = name;
@@ -35,19 +34,14 @@ public final class FunctionCallNode implements StructContainer {
 	public final ArrayList<OperationNode> getArguments() {
 		return arguments;
 	}
+	public void setArguments(ArrayList<OperationNode> arguments) {
+		this.arguments = arguments;
+	}
 
+	@Override
 	public final String getName() {
 		return name;
 	}
 
-	@Override
-	public final OperationNode getNext() {
-		return next;
-	}
-
-	@Override
-	public final void setNext(OperationNode variableOrFunction) {
-		next = variableOrFunction;
-	}
 
 }

@@ -156,6 +156,25 @@ public final class OperatorOverloading {
 		}
 	}
 
+	public final static Object dotOperator(Object leftValue, Object rightValue, DataTypes type) {
+		switch (type) {
+		case VOID:
+			new LogError("Can't get attributes or methods from Nothing.", temporaryFileName, temporaryLine);
+		case INTEGER:
+			break;
+		case REAL:
+			break;
+		case STRING:
+			break;
+		case BOOLEAN:
+			break;
+		case ANY:
+			return OperationNode.getLiteral(rightValue, (StructDeclarationNode) leftValue, temporaryFileName,
+					temporaryLine);
+		}
+		return null;
+	}
+
 	public final static Object equalsOperator(Object leftValue, Object rightValue, DataTypes type) {
 		switch (type) {
 		case REAL:

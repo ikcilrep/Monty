@@ -15,7 +15,7 @@ final class ToList extends Method<Iterable> {
 	private static Block code;
 	static {
 		code = Parser.parse(Lexer.lex(
-				"any result [](Nothing) length(This) * =;int i 0 =;for x in This;result.set(i, x);i 1 +=;end;return result;",
+				"any result = [](Nothing) * length(This);int i = 0;for x in This;result.set(i, x);i += 1;end;return result;",
 				"ToArray.java"));
 		code.addFunction(IOBlocks.length);
 		code.addFunction(IOBlocks.list);

@@ -14,7 +14,7 @@ final class Get extends Method<Iterable> {
 	private static Block code;
 	static {
 		code = Parser.parse(Lexer.lex(
-				"int counter;for x in This;if counter i ==;return x;end;counter 1 +=;end;logError(\"Iterable doesn't have \" i \" element\" + +);",
+				"int counter;for x in This;if counter i ==;return x;end;counter 1 +=;end;logError(\"Iterable doesn't have \" +  i + \" element\");",
 				"Get.java"));
 		code.addFunction(IOBlocks.logError);
 		code.addFunction(IOBlocks.length);

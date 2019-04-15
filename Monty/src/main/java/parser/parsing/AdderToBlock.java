@@ -57,7 +57,7 @@ public abstract class AdderToBlock {
 	}
 
 	public final static Block addDoWhileStatement(Block block, OptimizedTokensArray tokens) {
-		var whileStatement = new WhileStatementNode(ExpressionParser.parse(block, tokens.subarray(2, tokens.length())),
+		var whileStatement = new WhileStatementNode(ExpressionParser.parseInfix(block, tokens, 2),
 				tokens.get(0).getFileName(), tokens.get(0).getLine(), true, block);
 		block.addChild(whileStatement);
 		return whileStatement;
@@ -77,14 +77,17 @@ public abstract class AdderToBlock {
 	}
 
 	public final static void addExpression(Block block, OptimizedTokensArray tokensBeforeSemicolon) {
-		block.addChild(ExpressionParser.parse(block, tokensBeforeSemicolon));
+		block.addChild(ExpressionParser.parseInfix(block, tokensBeforeSemicolon));
+	}
+
+	public final static void addExpression(Block block, OptimizedTokensArray tokensBeforeSemicolon, int start) {
+		block.addChild(ExpressionParser.parseInfix(block, tokensBeforeSemicolon, start));
 	}
 
 	public final static Block addForStatement(Block block, OptimizedTokensArray tokens) {
 		var variableName = tokens.get(1).getText();
-		var forStatement = new ForStatementNode(variableName,
-				ExpressionParser.parse(block, tokens.subarray(3, tokens.length())), tokens.get(0).getFileName(),
-				tokens.get(0).getLine(), block);
+		var forStatement = new ForStatementNode(variableName, ExpressionParser.parseInfix(block, tokens, 3),
+				tokens.get(0).getFileName(), tokens.get(0).getLine(), block);
 		block.addChild(forStatement);
 		return forStatement;
 	}
@@ -117,7 +120,7 @@ public abstract class AdderToBlock {
 	}
 
 	public final static Block addIfStatement(Block block, OptimizedTokensArray tokens, boolean isInElse) {
-		var ifStatement = new IfStatementNode(block, ExpressionParser.parse(block, tokens.subarray(1, tokens.length())),
+		var ifStatement = new IfStatementNode(block, ExpressionParser.parseInfix(block, tokens, 1),
 				tokens.get(0).getFileName(), tokens.get(0).getLine(), isInElse);
 		ifStatement.setInElse(isInElse);
 		block.addChild(ifStatement);
@@ -128,7 +131,7 @@ public abstract class AdderToBlock {
 	public final static void addReturnStatement(Block block, OptimizedTokensArray tokens) {
 		OperationNode expression = null;
 		if (tokens.length() > 1)
-			expression = ExpressionParser.parse(block, tokens.subarray(1, tokens.length()));
+			expression = ExpressionParser.parseInfix(block, tokens, 1);
 		else
 			expression = new OperationNode(new FunctionCallNode("nothing"), block);
 		block.addChild(new ReturnStatementNode(expression, tokens.get(0).getFileName(), tokens.get(0).getLine()));
@@ -154,9 +157,9 @@ public abstract class AdderToBlock {
 		block.addVariable(variable, tokens.get(n - 2));
 		if (tokens.length() > n) {
 			if (isConst)
-				ExpressionParser.parse(block, tokens.subarray(n - 1, tokens.length())).run();
+				ExpressionParser.parseInfix(block, tokens, n - 1).run();
 			else
-				addExpression(block, tokens.subarray(n - 1, tokens.length()));
+				addExpression(block, tokens, n - 1);
 		} else if (isConst)
 			new LogError("Const value must be declared at the same time as whole variable.", tokens.get(1));
 
@@ -175,8 +178,9 @@ public abstract class AdderToBlock {
 	}
 
 	public final static Block addWhileStatement(Block block, OptimizedTokensArray tokens) {
-		var whileStatement = new WhileStatementNode(ExpressionParser.parse(block, tokens.subarray(1, tokens.length())),
-				tokens.get(0).getFileName(), tokens.get(0).getLine(), false, block);
+		var whileStatement = new WhileStatementNode(
+				ExpressionParser.parseInfix(block, tokens,1), tokens.get(0).getFileName(),
+				tokens.get(0).getLine(), false, block);
 		block.addChild(whileStatement);
 		return whileStatement;
 

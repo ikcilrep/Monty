@@ -16,31 +16,24 @@ limitations under the License.
 
 package ast.expressions;
 
-public final class VariableNode implements StructContainer {
+public final class VariableNode extends NamedExpression {
 
 	private String name;
-	private OperationNode next = null;
 
 	public VariableNode(String name) {
-		this.name = name;
+		setName(name);
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}
 
-	@Override
-	public OperationNode getNext() {
-		return next;
-	}
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	@Override
-	public void setNext(OperationNode variableOrFunction) {
-		next = variableOrFunction;
-	}
+
 
 }

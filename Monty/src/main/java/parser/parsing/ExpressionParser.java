@@ -18,21 +18,18 @@ package parser.parsing;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Stack;
 
 import ast.Block;
 import ast.expressions.ConstantNode;
 import ast.expressions.FunctionCallNode;
 import ast.expressions.OperationNode;
-import ast.expressions.StructContainer;
 import ast.expressions.VariableNode;
 import lexer.OptimizedTokensArray;
 import lexer.Token;
-import lexer.TokenTypes;
 import parser.DataTypes;
-import parser.Identificator;
 import parser.LogError;
 import parser.Tokens;
 
@@ -40,22 +37,26 @@ public class ExpressionParser {
 	/*
 	 * Parses list of tokens to abstract syntax tree.
 	 */
-
-	private final static HashMap<String, ConstantNode> literals = new HashMap<>();
-	private final static HashMap<String, ConstantNode> stringLiterals = new HashMap<>();
-
-	private final static boolean isFunction(OptimizedTokensArray array, int i) {
-		return i + 1 < array.length() && array.get(i + 1).getType().equals(TokenTypes.OPENING_BRACKET);
+	private static LinkedList<FunctionCallNode> functions;
+	private final static HashMap<String, ConstantNode> LITERALS = new HashMap<>();
+	private final static HashMap<String, ConstantNode> STRING_LITERALS = new HashMap<>();
+	
+	
+	public final static OperationNode parseInfix(Block parent, OptimizedTokensArray tokens)  {
+		return parse(parent, Converter.infixToSuffix(tokens, parent));
+	}
+	public final static OperationNode parseInfix(Block parent, OptimizedTokensArray tokens, int start)  {
+		return parse(parent, Converter.infixToSuffix(tokens, parent), new Stack<>(), new IntegerHolder(start));
 	}
 
-	public final static OperationNode parse(Block parent, OptimizedTokensArray array) {
-		return parse(parent, array, new Stack<>(), new IntegerHolder());
+	private final static OperationNode parse(Block parent, OptimizedTokensArray tokens) {
+		return parse(parent, tokens, new Stack<>(), new IntegerHolder(0));
 	}
 
-	public final static OperationNode parse(Block parent, OptimizedTokensArray array, Stack<OperationNode> stack,
+	private final static OperationNode parse(Block parent, OptimizedTokensArray tokens, Stack<OperationNode> stack,
 			IntegerHolder i) {
-		if (i.i < array.length()) {
-			var token = array.get(i.i);
+		if (i.i < tokens.length()) {
+			var token = tokens.get(i.i);
 			OperationNode node = null;
 			switch (token.getType()) {
 			case OPERATOR: // If token is operator
@@ -72,7 +73,7 @@ public class ExpressionParser {
 				node.setLeftOperand(stack.pop());
 				break;
 			case IDENTIFIER: // If token is identifier
-				return recParseIdentifier(parent, array, stack, i);
+				return recParseIdentifier(parent, tokens, stack, i);
 			default:
 				// Otherwise token in expression can be only constant.
 				var dataType = Tokens.getDataType(token.getType());
@@ -83,63 +84,20 @@ public class ExpressionParser {
 			node.setFileName(token.getFileName());
 			node.setLine(token.getLine());
 			i.i++;
-			return parse(parent, array, stack, i);
+			return parse(parent, tokens, stack, i);
 		}
 		if (stack.size() != 1)
-			new LogError("Ambiguous result for operation.", array.get(0));
+			new LogError("Ambiguous result for operation.", tokens.get(0));
 		return stack.pop();
 	}
 
-	private final static OperationNode parseAfterDot(Block parent, StructContainer structContainer,
-			OptimizedTokensArray array, IntegerHolder i) {
-		if (i.i + 1 < array.length() && array.get(i.i + 1).getType().equals(TokenTypes.DOT))
-			if ((i.i += 2) < array.length() && array.get(i.i).getType().equals(TokenTypes.IDENTIFIER)) {
-				var variableOrFunctionOperationNode = parseIdentifier(parent, array, i);
-				structContainer.setNext(variableOrFunctionOperationNode);
-				return variableOrFunctionOperationNode;
-			} else
-				new LogError("Expression after dot have to be function or variable.", array.get(i.i - 1));
-		return null;
+	public static void setFunctions(LinkedList<FunctionCallNode> functions) {
+		ExpressionParser.functions = functions;
 	}
 
 	private final static OperationNode parseFunction(Block parent, OptimizedTokensArray array, IntegerHolder i) {
 		var token = array.get(i.i);
-		int j = 0;
-		int openBracketCounter = 1;
-		int closeBracketCounter = 0;
-		// Separates function arguments from identifier.
-		for (j = i.i + 2; openBracketCounter > closeBracketCounter; j++) {
-			if (j >= array.length()) {
-				if (openBracketCounter > closeBracketCounter)
-					new LogError("Expected closing bracket.", token);
-				break;
-			}
-			switch (array.get(j).getType()) {
-			case OPENING_BRACKET:
-				openBracketCounter++;
-				break;
-			case CLOSING_BRACKET:
-				closeBracketCounter++;
-				break;
-			default:
-				break;
-			}
-
-		}
-		var function = new FunctionCallNode(token.getText());
-		var splited = splitArguments(array.subarray(i.i + 2, j - 1));
-		// Adds parsed function arguments to object.
-		for (OptimizedTokensArray ts : splited) {
-			// If there isn't any arguments breaks loop.
-			if (ts.length() == 0)
-				break;
-
-			if (!Identificator.isExpression(ts))
-				new LogError("Expected expression as function " + token.getText() + " call's argument.", token);
-			function.addArgument(parse(parent, ts, new Stack<>(), new IntegerHolder()));
-		}
-		i.i = j - 1;
-		parseAfterDot(parent, function, array, i);
+		var function = functions.poll();
 		var node = new OperationNode(function, parent);
 		node.setFileName(token.getFileName());
 		node.setLine(token.getLine());
@@ -147,7 +105,7 @@ public class ExpressionParser {
 	}
 
 	private final static OperationNode parseIdentifier(Block parent, OptimizedTokensArray array, IntegerHolder i) {
-		if (isFunction(array, i.i))
+		if (array.get(i.i).isFunction())
 			return parseFunction(parent, array, i);
 		return parseVariable(parent, array, i);
 	}
@@ -155,43 +113,19 @@ public class ExpressionParser {
 	private final static OperationNode parseVariable(Block parent, OptimizedTokensArray array, IntegerHolder i) {
 		var token = array.get(i.i);
 		var variable = new VariableNode(token.getText());
-		parseAfterDot(parent, variable, array, i);
 		var node = new OperationNode(variable, parent);
 		node.setFileName(token.getFileName());
 		node.setLine(token.getLine());
 		return node;
 	}
 
-	private final static OperationNode recParseIdentifier(Block parent, OptimizedTokensArray array,
+	private final static OperationNode recParseIdentifier(Block parent, OptimizedTokensArray tokens,
 			Stack<OperationNode> stack, IntegerHolder i) {
-		stack.push(parseIdentifier(parent, array, i));
+		stack.push(parseIdentifier(parent, tokens, i));
 		i.i++;
-		return parse(parent, array, stack, i);
+		return parse(parent, tokens, stack, i);
 	}
 
-	private final static ArrayList<OptimizedTokensArray> splitArguments(OptimizedTokensArray array) {
-		// Splits function arguments into two dimensional array.
-		ArrayList<OptimizedTokensArray> newArray = new ArrayList<>();
-		newArray.add(new OptimizedTokensArray());
-		int i = 0;
-		int openBracketCounter = 1;
-		int closeBracketCounter = 0;
-		for (Token t : array) {
-			if (t.getType().equals(TokenTypes.OPENING_BRACKET))
-				openBracketCounter++;
-			else if (t.getType().equals(TokenTypes.CLOSING_BRACKET))
-				closeBracketCounter++;
-			// If every pair of bracket except last is closed and actual token type is comma
-			// appends new arguments.
-			if (t.getType().equals(TokenTypes.COMMA) && openBracketCounter - 1 == closeBracketCounter) {
-				newArray.add(new OptimizedTokensArray());
-				i++;
-			} else {
-				newArray.get(i).append(t);
-			}
-		}
-		return newArray;
-	}
 
 	private final static ConstantNode toDataType(Token token, DataTypes dataType) {
 		// Returns values with proper data type.
@@ -199,15 +133,15 @@ public class ExpressionParser {
 		if (dataType == null)
 			new LogError("Unexpected token \"" + literal + "\"", token);
 		if (dataType.equals(DataTypes.STRING))
-			if (stringLiterals.containsKey(literal))
-				return stringLiterals.get(literal);
+			if (STRING_LITERALS.containsKey(literal))
+				return STRING_LITERALS.get(literal);
 			else {
 				var newStringLiteral = new ConstantNode(literal, dataType);
-				stringLiterals.put(literal, newStringLiteral);
+				STRING_LITERALS.put(literal, newStringLiteral);
 				return newStringLiteral;
 			}
-		if (literals.containsKey(literal))
-			return literals.get(literal);
+		if (LITERALS.containsKey(literal))
+			return LITERALS.get(literal);
 		Object valueOfDataType = null;
 		switch (dataType) {
 		case INTEGER:
@@ -223,8 +157,10 @@ public class ExpressionParser {
 			new LogError("There isn't constant of " + dataType.toString().toLowerCase());
 		}
 		var newLiteral = new ConstantNode(valueOfDataType, dataType);
-		literals.put(literal, newLiteral);
+		LITERALS.put(literal, newLiteral);
 		return newLiteral;
 	}
+
+
 
 }
