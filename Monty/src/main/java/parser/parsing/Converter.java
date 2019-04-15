@@ -19,6 +19,7 @@ public class Converter {
 	private static HashMap<String, Integer> precedence;
 	private static Set<String> rightAssociative = Set.of("=", "+=", "-=", "*=", "/=", "%=", "&=", "^=", "|=", "<<=",
 			">>=");
+	private static Set<String> notAssociative = Set.of("<", "<=", ">=", ">");
 	static {
 		precedence = new HashMap<>();
 		precedence.put(".", 16);
@@ -66,18 +67,18 @@ public class Converter {
 				if (!operatorStack.empty()) {
 					var top = operatorStack.peek();
 					if (!top.getType().equals(TokenTypes.OPENING_BRACKET)) {
-						var topText = top.getText();
-						int topPrecedence = precedence.get(topText);
+						var operatorAtTheTop = top.getText();
+						int topPrecedence = precedence.get(operatorAtTheTop);
 						int thisPrecedence = precedence.get(token.getText());
 						while (topPrecedence > thisPrecedence
-								|| (topPrecedence == thisPrecedence && !rightAssociative.contains(topText))) {
+								|| (topPrecedence == thisPrecedence && isLeftAssociative(operatorAtTheTop))) {
 							outputQueue.append(operatorStack.pop());
 							if (operatorStack.empty())
 								break;
 							top = operatorStack.peek();
 							if (top.getType().equals(TokenTypes.OPENING_BRACKET))
 								break;
-							topText = top.getText();
+							operatorAtTheTop = top.getText();
 							topPrecedence = precedence.get(top.getText());
 							thisPrecedence = precedence.get(token.getText());
 						}
@@ -113,6 +114,10 @@ public class Converter {
 			outputQueue.append(operatorStack.pop());
 		ExpressionParser.setFunctions(functions);
 		return outputQueue;
+	}
+
+	private final static boolean isLeftAssociative(String operator) {
+		return !(rightAssociative.contains(operator) || notAssociative.contains(operator));
 	}
 
 	private final static FunctionCallNode parseFunction(String name, OptimizedTokensArray tokens, Block parent,
