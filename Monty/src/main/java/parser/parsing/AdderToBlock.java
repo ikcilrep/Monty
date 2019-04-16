@@ -16,7 +16,6 @@ limitations under the License.
 
 package parser.parsing;
 
-
 import ast.Block;
 import ast.declarations.CustomFunctionDeclarationNode;
 import ast.declarations.FunctionDeclarationNode;
@@ -38,7 +37,6 @@ public abstract class AdderToBlock {
 	public final static void addBreakStatement(Block block, String fileName, int line) {
 		block.addChild(new BreakStatementNode(fileName, line));
 	}
-
 
 	public final static void addContinueStatement(Block block, String fileName, int line) {
 		block.addChild(new ContinueStatementNode(fileName, line));
@@ -136,21 +134,16 @@ public abstract class AdderToBlock {
 		var isConst = Character.isUpperCase(name.charAt(0));
 		var variable = new VariableDeclarationNode(name);
 		block.addVariable(variable, tokens.get(0));
-		if (tokens.length() > 2) {
-			if (isConst)
-				ExpressionParser.parseInfix(block, tokens, 1).run();
-			else
-				addExpression(block, tokens, 1);
-		} else if (isConst)
+		if (tokens.length() > 2)
+			addExpression(block, tokens, 1);
+		else if (isConst)
 			new LogError("Const value must be declared at the same time as whole variable.", tokens.get(1));
-
 		variable.setConst(isConst);
 	}
 
 	public final static Block addWhileStatement(Block block, OptimizedTokensArray tokens) {
-		var whileStatement = new WhileStatementNode(
-				ExpressionParser.parseInfix(block, tokens,1), tokens.get(0).getFileName(),
-				tokens.get(0).getLine(), false, block);
+		var whileStatement = new WhileStatementNode(ExpressionParser.parseInfix(block, tokens, 1),
+				tokens.get(0).getFileName(), tokens.get(0).getLine(), false, block);
 		block.addChild(whileStatement);
 		return whileStatement;
 

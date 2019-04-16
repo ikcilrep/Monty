@@ -22,7 +22,7 @@ import sml.data.returning.Nothing;
 public class VariableDeclarationNode extends DeclarationNode implements Cloneable {
 
 	private boolean isConst = false;
-
+	private boolean wasValueChanged = false;
 	public static VariableDeclarationNode toMe(Object object, String fileName, int line) {
 		if (object instanceof VariableDeclarationNode)
 			return (VariableDeclarationNode) object;
@@ -59,9 +59,10 @@ public class VariableDeclarationNode extends DeclarationNode implements Cloneabl
 
 
 	public final void setValue(Object value, String fileName, int line) {
-		if (isConst)
+		if (isConst && wasValueChanged)
 			new LogError("Can't change value of const.", fileName, line);
 		this.value = value;
+		wasValueChanged = true;
 	}
 
 	public final void setValue(Object value) {
