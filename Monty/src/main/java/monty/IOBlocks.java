@@ -22,28 +22,54 @@ import lexer.Lexer;
 import lexer.OptimizedTokensArray;
 import parser.parsing.Parser;
 import sml.io.*;
+import sml.functional.iterable.*;
+import sml.functional.function.*;
 
 public class IOBlocks {
-	public static FunctionDeclarationNode list = new sml.data.list.NewList();
-	public static FunctionDeclarationNode iterable = new sml.functional.iterable.NewIterable();
-	public static FunctionDeclarationNode length = new sml.data.Length();
-	public static FunctionDeclarationNode logError = new sml.errors.LogError();
-	public static VariableDeclarationNode nothing = new sml.data.returning.Nothing();
+	public static FunctionDeclarationNode list;
+	public static FunctionDeclarationNode iterable;
+	public static FunctionDeclarationNode length;
+	public static FunctionDeclarationNode logError;
+	public static FunctionDeclarationNode f;
+	public static FunctionDeclarationNode lambda;
+	public static FunctionDeclarationNode range;
+	public static FunctionDeclarationNode print;
+	public static FunctionDeclarationNode println;
+	public static FunctionDeclarationNode input;
+	public static FunctionDeclarationNode map;
+	public static FunctionDeclarationNode filter;
+	public static VariableDeclarationNode nothing;
+
+	static {
+		list = new sml.data.list.NewList();
+		iterable = new NewIterable();
+		logError = new sml.errors.LogError();
+		nothing = new sml.data.returning.Nothing();
+		f = new FunctionByName();
+		lambda = new Lambda();
+		range = new sml.iterations.range.NewRange();
+		print = new Print();
+		println = new Println();
+		input = new Input();
+		length = new sml.data.Length();
+		map = new Map();
+		filter = new Filter();
+	}
 
 	private static void autoImport(Block block) {
 		var functions = block.getFunctions();
 		block.getVariables().put("Nothing", nothing);
-		functions.put("f", new sml.functional.function.FunctionByName());
-		functions.put("lambda", new sml.functional.function.Lambda());
-		functions.put("[]", list);
-		functions.put("Range", new sml.iterations.range.NewRange());
+		functions.put("f", f);
+		functions.put("lambda", lambda);
+		functions.put("Range", range);
+		functions.put("List", list);
 		functions.put("Iterable", iterable);
-		functions.put("map", new sml.functional.iterable.Map());
-		functions.put("filter", new sml.functional.iterable.Filter());
+		functions.put("map", map);
+		functions.put("filter", filter);
 		functions.put("length", length);
-		functions.put("print", new Print());
-		functions.put("println", new Println());
-		functions.put("input", new Input());
+		functions.put("print", print);
+		functions.put("println", println);
+		functions.put("input", input);
 
 	}
 

@@ -102,13 +102,10 @@ public abstract class Identificator {
 			case BOOLEAN_LITERAL:
 			case STRING_LITERAL:
 			case IDENTIFIER:
-				break;
 			case OPENING_BRACKET:
 			case CLOSING_BRACKET:
-				if (last == null)
-					new LogError("Unexpected bracket.", token);
-				if (last.getType().equals(TokenTypes.COMMA))
-					new LogError("Unexpected comma before bracket.", token);
+			case OPENING_SQUARE_BRACKET:
+			case CLOSING_SQUARE_BRACKET:
 				break;
 			case COMMA:
 				if (last == null)

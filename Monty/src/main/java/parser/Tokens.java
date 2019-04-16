@@ -47,17 +47,18 @@ public class Tokens {
 	public static String getText(OptimizedTokensArray array) {
 		var result = new StringBuilder();
 		for (Token token : array)
-			if (token.getType().equals(TokenTypes.DOT))
-				result.append(".");
-			else
-				result.append(token.getText());
+			result.append(token.getText());
 		return result.toString();
 	}
 
 	public static String getTypesToString(OptimizedTokensArray array) {
 		var result = new StringBuilder();
 		for (Token token : array) {
-			result.append(token.getType());
+			if (token.getType().equals(TokenTypes.OPERATOR) && token.getText().equals("."))
+				result.append("DOT");
+			else
+				result.append(token.getType());
+
 			result.append(' ');
 		}
 		return result.toString();

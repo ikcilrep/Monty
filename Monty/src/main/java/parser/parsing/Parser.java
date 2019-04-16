@@ -37,9 +37,7 @@ public final class Parser {
 			if (token.getType().equals(TokenTypes.SEMICOLON)) {
 				if (tokensBeforeSemicolon.length() == 0)
 					continue;
-				if (Identificator.isExpression(tokensBeforeSemicolon)) {
-					AdderToBlock.addExpression(block, tokensBeforeSemicolon);
-				} else if (Identificator.isVariableDeclaration(tokensBeforeSemicolon)) {
+				if (Identificator.isVariableDeclaration(tokensBeforeSemicolon)) {
 					AdderToBlock.addVariableDeclaration(block, tokensBeforeSemicolon);
 				} else if (Identificator.isReturnStatement(tokensBeforeSemicolon)) {
 					AdderToBlock.addReturnStatement(block, tokensBeforeSemicolon);
@@ -82,6 +80,8 @@ public final class Parser {
 					 * block = parent;
 					 */
 					block = block.getParent();
+				} else if (Identificator.isExpression(tokensBeforeSemicolon)) {
+					AdderToBlock.addExpression(block, tokensBeforeSemicolon);
 				}
 				tokensBeforeSemicolon.clear();
 			} else

@@ -38,14 +38,20 @@ public class ExpressionParser {
 	 * Parses list of tokens to abstract syntax tree.
 	 */
 	private static LinkedList<FunctionCallNode> functions;
+	private static LinkedList<FunctionCallNode> lists;
+
+	public static void setLists(LinkedList<FunctionCallNode> lists) {
+		ExpressionParser.lists = lists;
+	}
+
 	private final static HashMap<String, ConstantNode> LITERALS = new HashMap<>();
 	private final static HashMap<String, ConstantNode> STRING_LITERALS = new HashMap<>();
-	
-	
-	public final static OperationNode parseInfix(Block parent, OptimizedTokensArray tokens)  {
+
+	public final static OperationNode parseInfix(Block parent, OptimizedTokensArray tokens) {
 		return parse(parent, Converter.infixToSuffix(tokens, parent));
 	}
-	public final static OperationNode parseInfix(Block parent, OptimizedTokensArray tokens, int start)  {
+
+	public final static OperationNode parseInfix(Block parent, OptimizedTokensArray tokens, int start) {
 		return parse(parent, Converter.infixToSuffix(tokens, parent), new Stack<>(), new IntegerHolder(start));
 	}
 
@@ -74,6 +80,8 @@ public class ExpressionParser {
 				break;
 			case IDENTIFIER: // If token is identifier
 				return recParseIdentifier(parent, tokens, stack, i);
+			case OPENING_SQUARE_BRACKET:
+				return recParseList(parent, tokens, stack, i);
 			default:
 				// Otherwise token in expression can be only constant.
 				var dataType = Tokens.getDataType(token.getType());
@@ -95,13 +103,20 @@ public class ExpressionParser {
 		ExpressionParser.functions = functions;
 	}
 
-	private final static OperationNode parseFunction(Block parent, OptimizedTokensArray array, IntegerHolder i) {
-		var token = array.get(i.i);
+	private final static OperationNode parseFunction(Block parent, OptimizedTokensArray tokens, IntegerHolder i) {
+		var token = tokens.get(i.i);
 		var function = functions.poll();
 		var node = new OperationNode(function, parent);
 		node.setFileName(token.getFileName());
 		node.setLine(token.getLine());
 		return node;
+	}
+
+	private final static OperationNode recParseList(Block parent, OptimizedTokensArray tokens, Stack<OperationNode> stack,
+			IntegerHolder i) {
+		stack.push(new OperationNode(lists.poll(), parent));
+		i.i++;
+		return parse(parent, tokens,stack, i);
 	}
 
 	private final static OperationNode parseIdentifier(Block parent, OptimizedTokensArray array, IntegerHolder i) {
@@ -125,7 +140,6 @@ public class ExpressionParser {
 		i.i++;
 		return parse(parent, tokens, stack, i);
 	}
-
 
 	private final static ConstantNode toDataType(Token token, DataTypes dataType) {
 		// Returns values with proper data type.
@@ -160,7 +174,5 @@ public class ExpressionParser {
 		LITERALS.put(literal, newLiteral);
 		return newLiteral;
 	}
-
-
 
 }

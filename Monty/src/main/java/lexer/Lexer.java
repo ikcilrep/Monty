@@ -25,8 +25,8 @@ import parser.LogError;
 public final class Lexer {
 	private final static Set<Character> operatorsParts = Set.of('+', '-', '*', '/', '!', '<', '>', '=', '|', '&', '%',
 			'^', '.');
-	private final static Set<String> operators = Set.of(".","!", "+", "-", "*", "/", "<", ">", "&", "|", "^", "=", "<<",
-			">>", "!=", "+=", "-=", "*=", "/=", "<=", ">=", "&=", "|=", "^=", "==", "<<=", ">>=", "%", "%=");
+	private final static Set<String> operators = Set.of(".", "!", "+", "-", "*", "/", "<", ">", "&", "|", "^", "=",
+			"<<", ">>", "!=", "+=", "-=", "*=", "/=", "<=", ">=", "&=", "|=", "^=", "==", "<<=", ">>=", "%", "%=");
 
 	private final static TokenTypes operatorToTokenType(String tokenText, String fileName, int line) {
 		if (operators.contains(tokenText))
@@ -48,7 +48,7 @@ public final class Lexer {
 			OptimizedTokensArray tokens, int i) {
 		var tokenText = "" + code.charAt(i);
 		char c;
-		while (++i < code.length() && (Character.isJavaIdentifierPart(c = code.charAt(i)) || c == '[' || c == ']'))
+		while (++i < code.length() && Character.isJavaIdentifierPart(c = code.charAt(i)))
 			tokenText += c;
 		tokens.append(new Token(keywordOrIdentifierToTokenType(tokenText), tokenText, fileName, line));
 		return lex(code, fileName, line, tokens, i);
@@ -62,6 +62,10 @@ public final class Lexer {
 			return TokenTypes.OPENING_BRACKET;
 		case ')':
 			return TokenTypes.CLOSING_BRACKET;
+		case'[':
+			return TokenTypes.OPENING_SQUARE_BRACKET;
+		case ']':
+			return TokenTypes.CLOSING_SQUARE_BRACKET;
 		default:
 			return TokenTypes.SEMICOLON;
 		}
@@ -136,7 +140,7 @@ public final class Lexer {
 			if (!isInComment) {
 				if (c == '#')
 					isInComment = true;
-				if (c == ';' || c == ',' || c == '(' || c == ')')
+				if (c == ';' || c == ',' || c == '(' || c == ')'|| c == '[' || c == ']')
 					tokens.append(new Token(interpunctionToTokenType(c), c + "", fileName, line));
 				if (c == '\"')
 					return stringLiteral(code, fileName, line, tokens, i);
@@ -145,7 +149,7 @@ public final class Lexer {
 					return number(code, fileName, line, tokens, i);
 				if (operatorsParts.contains(c))
 					return operator(code, fileName, line, tokens, i);
-				if (Character.isJavaIdentifierStart(c) || c == '[' || c == ']')
+				if (Character.isJavaIdentifierStart(c))
 					return identifierOrKeyword(code, fileName, line, tokens, i);
 			}
 		}

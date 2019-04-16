@@ -24,7 +24,7 @@ import parser.DataTypes;
 
 public final class NewList extends FunctionDeclarationNode {
 	public NewList() {
-		super("[]", DataTypes.ANY);
+		super("List", DataTypes.ANY);
 	}
 
 	@Override
