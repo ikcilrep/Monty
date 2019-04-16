@@ -27,6 +27,7 @@ import ast.declarations.VariableDeclarationNode;
 import parser.DataTypes;
 import parser.LogError;
 import sml.data.string.StringStruct;
+import sml.math.MathStruct;
 
 public final class OperatorOverloading {
 	public static ArrayList<OperationNode> arguments;
@@ -159,28 +160,35 @@ public final class OperatorOverloading {
 	}
 
 	public final static Object dotOperator(Object leftValue, Object rightValue, DataTypes type, Block parent) {
-		switch (type) {
-		case VOID:
-			new LogError("Can't get attributes or methods from Nothing.", temporaryFileName, temporaryLine);
-		case INTEGER:
-			break;
-		case REAL:
-			break;
-		case STRING:
-			if (rightValue instanceof FunctionCallNode) {
-				var function = (FunctionCallNode) rightValue;
-				var arguments = function.getArguments();
-				arguments.add(0, new OperationNode(new ConstantNode(leftValue), parent));
-				return StringStruct.getFunction(function.getName(), temporaryFileName, temporaryLine)
-						.call(arguments, temporaryFileName, temporaryLine);
-			}
-		case BOOLEAN:
-			break;
-		case ANY:
+		if (type.equals(DataTypes.ANY))
 			return OperationNode.getLiteral(rightValue, (StructDeclarationNode) leftValue, temporaryFileName,
 					temporaryLine);
+		if (rightValue instanceof FunctionCallNode) {
+			if (leftValue instanceof BigInteger) {
+				leftValue = sml.casts.IntToReal.intToReal((BigInteger) leftValue);
+				type = DataTypes.REAL;
+			}
+			var function = (FunctionCallNode) rightValue;
+			var arguments = function.getArguments();
+			arguments.add(0, new OperationNode(new ConstantNode(leftValue), parent));
+
+			switch (type) {
+			case VOID:
+				new LogError("Can't get attributes or methods from Nothing.", temporaryFileName, temporaryLine);
+			case BOOLEAN:
+				new LogError("Can't get attributes or methods from boolean.", temporaryFileName, temporaryLine);
+			case REAL:
+				return MathStruct.getStruct().getFunction(function.getName(), temporaryFileName, temporaryLine).call(arguments,
+						temporaryFileName, temporaryLine);
+			case STRING:
+				return StringStruct.getStruct().getFunction(function.getName(), temporaryFileName, temporaryLine).call(arguments,
+						temporaryFileName, temporaryLine);
+			default:
+				return null;
+			}
 		}
 		return null;
+
 	}
 
 	public final static Object equalsOperator(Object leftValue, Object rightValue, DataTypes type) {

@@ -29,6 +29,7 @@ public final class Scale extends FunctionDeclarationNode {
 		super("scale");
 		setBody(new Block(null));
 		addParameter("f");
+		MathStruct.getStruct().addFunction(this);
 	}
 
 	@Override

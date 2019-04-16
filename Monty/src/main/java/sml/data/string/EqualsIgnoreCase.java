@@ -29,7 +29,7 @@ final class EqualsIgnoreCase extends FunctionDeclarationNode {
 		setBody(new Block(null));
 		addParameter("str");
 		addParameter("toCompare");
-		StringStruct.addFunction(this);
+		StringStruct.getStruct().addFunction(this);
 	}
 
 	@Override

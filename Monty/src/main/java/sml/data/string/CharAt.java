@@ -29,7 +29,7 @@ final class CharAt extends FunctionDeclarationNode {
 		setBody(new Block(null));
 		addParameter("str");
 		addParameter("index");
-		StringStruct.addFunction(this);
+		StringStruct.getStruct().addFunction(this);
 	}
 
 	@Override

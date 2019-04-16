@@ -29,6 +29,7 @@ public final class Abs extends FunctionDeclarationNode {
 		super("abs");
 		setBody(new Block(null));
 		addParameter("f");
+		MathStruct.getStruct().addFunction(this);
 	}
 
 	@Override

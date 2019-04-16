@@ -32,6 +32,7 @@ public final class Exp extends FunctionDeclarationNode {
 		super("exp");
 		setBody(new Block(null));
 		addParameter("x");
+		MathStruct.getStruct().addFunction(this);
 	}
 
 	public final static BigDecimal exp(BigDecimal x) {

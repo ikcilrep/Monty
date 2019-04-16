@@ -2,13 +2,13 @@ package sml.data.string;
 
 import java.util.HashMap;
 
-import ast.declarations.FunctionDeclarationNode;
-import parser.LogError;
+import sml.data.StaticStruct;
 
 public final class StringStruct {
-	private static HashMap<String, FunctionDeclarationNode> functions;
+	private static StaticStruct struct = new StaticStruct();
+
 	static {
-		functions = new HashMap<>();
+		struct.setFunctions(new HashMap<>());
 		new CharAt();
 		new EndsWith();
 		new EqualsIgnoreCase();
@@ -21,16 +21,7 @@ public final class StringStruct {
 		new Substring();
 		new UpperCase();
 	}
-
-	public static void addFunction(FunctionDeclarationNode function) {
-		functions.put(function.getName(), function);
+	public static StaticStruct getStruct() {
+		return struct;
 	}
-
-	public static FunctionDeclarationNode getFunction(String name, String fileName, int line) {
-		if (!functions.containsKey(name))
-			new LogError("There isn't function with name:\t" + name, fileName, line);
-
-		return functions.get(name);
-	}
-
 }

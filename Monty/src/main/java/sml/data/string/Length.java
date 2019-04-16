@@ -29,7 +29,7 @@ final class Length extends FunctionDeclarationNode {
 		super("length");
 		setBody(new Block(null));
 		addParameter("str");
-		StringStruct.addFunction(this);
+		StringStruct.getStruct().addFunction(this);
 	}
 
 	@Override

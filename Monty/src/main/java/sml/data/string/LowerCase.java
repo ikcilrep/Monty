@@ -28,7 +28,7 @@ final class LowerCase extends FunctionDeclarationNode {
 		super("lowerCase");
 		setBody(new Block(null));
 		addParameter("str");
-		StringStruct.addFunction(this);
+		StringStruct.getStruct().addFunction(this);
 	}
 
 	@Override

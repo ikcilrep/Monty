@@ -32,6 +32,7 @@ public final class Pow extends FunctionDeclarationNode {
 		setBody(new Block(null));
 		addParameter("basis");
 		addParameter("index");
+		MathStruct.getStruct().addFunction(this);
 	}
 
 	@Override

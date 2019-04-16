@@ -30,6 +30,7 @@ public final class Factorial extends FunctionDeclarationNode {
 		super("factorial");
 		setBody(new Block(null));
 		addParameter("n");
+		MathStruct.getStruct().addFunction(this);
 	}
 
 	@Override

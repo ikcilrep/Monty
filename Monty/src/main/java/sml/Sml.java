@@ -46,19 +46,10 @@ import sml.files.Read;
 import sml.files.Separator;
 import sml.files.Write;
 import sml.language.Run;
-import sml.math.Abs;
 import sml.math.E;
-import sml.math.Exp;
-import sml.math.Factorial;
-import sml.math.Log;
 import sml.math.Max;
 import sml.math.Min;
 import sml.math.Pi;
-import sml.math.Pow;
-import sml.math.Random;
-import sml.math.Root;
-import sml.math.Round;
-import sml.math.Scale;
 import sml.system.Argv;
 import sml.threading.Sleep;
 import sml.time.Millis;
@@ -116,7 +107,6 @@ public final class Sml extends Library {
 		checking.put("isList", new IsList());
 		checking.put("isObject", new IsObject());
 
-
 		system.put("Argv", new Argv());
 
 		threading.put("sleep", new Sleep());
@@ -126,17 +116,8 @@ public final class Sml extends Library {
 
 		math.put("Pi", new Pi());
 		math.put("E", new E());
-		math.put("pow", new Pow());
-		math.put("root", new Root());
 		math.put("min", new Min());
 		math.put("max", new Max());
-		math.put("random", new Random());
-		math.put("round", new Round());
-		math.put("factorial", new Factorial());
-		math.put("scale", new Scale());
-		math.put("exp", new Exp());
-		math.put("log", new Log());
-		math.put("abs", new Abs());
 
 		errors.put("logError", IOBlocks.logError);
 

@@ -30,7 +30,7 @@ final class ReplaceFirst extends FunctionDeclarationNode {
 		addParameter("str");
 		addParameter("regex");
 		addParameter("replacement");
-		StringStruct.addFunction(this);
+		StringStruct.getStruct().addFunction(this);
 
 	}
 

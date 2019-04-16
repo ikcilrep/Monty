@@ -31,7 +31,7 @@ public final class Round extends FunctionDeclarationNode {
 		setBody(new Block(null));
 		addParameter("f");
 		addParameter("scale");
-
+		MathStruct.getStruct().addFunction(this);
 	}
 
 	@Override

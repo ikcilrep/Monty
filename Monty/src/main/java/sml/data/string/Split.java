@@ -30,7 +30,7 @@ final class Split extends FunctionDeclarationNode {
 		setBody(new Block(null));
 		addParameter("str");
 		addParameter("regex");
-		StringStruct.addFunction(this);
+		StringStruct.getStruct().addFunction(this);
 	}
 
 	@Override

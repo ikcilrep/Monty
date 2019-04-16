@@ -31,7 +31,7 @@ final class Substring extends FunctionDeclarationNode {
 		addParameter("str");
 		addParameter("begin");
 		addParameter("end");
-		StringStruct.addFunction(this);
+		StringStruct.getStruct().addFunction(this);
 	}
 
 	@Override

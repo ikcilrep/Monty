@@ -29,7 +29,7 @@ final class EndsWith extends FunctionDeclarationNode {
 		setBody(new Block(null));
 		addParameter("str");
 		addParameter("suffix");
-		StringStruct.addFunction(this);
+		StringStruct.getStruct().addFunction(this);
 	}
 
 	@Override

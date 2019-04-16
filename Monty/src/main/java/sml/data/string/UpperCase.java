@@ -27,7 +27,7 @@ final class UpperCase extends FunctionDeclarationNode {
 		super("upperCase");
 		setBody(new Block(null));
 		addParameter("str");
-		StringStruct.addFunction(this);
+		StringStruct.getStruct().addFunction(this);
 	}
 
 	@Override
