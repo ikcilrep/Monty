@@ -22,14 +22,13 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 
 public final class Abs extends FunctionDeclarationNode {
 
 	public Abs() {
-		super("abs", DataTypes.REAL);
+		super("abs");
 		setBody(new Block(null));
-		addParameter("f", DataTypes.REAL);
+		addParameter("f");
 	}
 
 	@Override

@@ -6,15 +6,14 @@ import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.StructDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import sml.Sml;
 
 public class IsIterable extends FunctionDeclarationNode {
 
 	public IsIterable() {
-		super("isIterable", DataTypes.BOOLEAN);
+		super("isIterable");
 		setBody(new Block(null));
-		addParameter("toCheck", DataTypes.ANY);
+		addParameter("toCheck");
 	}
 
 	public static boolean isIterable(Object toCheck, String callFileName, int callLine) {
@@ -32,9 +31,7 @@ public class IsIterable extends FunctionDeclarationNode {
 		if (!(iteratorValue instanceof StructDeclarationNode))
 			return false;
 		var iteratorStruct = (StructDeclarationNode) iteratorValue;
-		if (!(iteratorStruct.hasFunction("hasNext") && iteratorStruct.hasFunction("next"))
-				|| iteratorStruct.getFunction("next").getType().equals(DataTypes.VOID)
-				|| !iteratorStruct.getFunction("hasNext").getType().equals(DataTypes.BOOLEAN))
+		if (!(iteratorStruct.hasFunction("hasNext") && iteratorStruct.hasFunction("next")))
 			return false;
 		return true;
 	}

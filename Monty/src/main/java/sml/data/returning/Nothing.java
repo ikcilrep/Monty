@@ -17,7 +17,6 @@ limitations under the License.
 package sml.data.returning;
 
 import ast.declarations.VariableDeclarationNode;
-import parser.DataTypes;
 
 public final class Nothing extends VariableDeclarationNode {
 
@@ -26,7 +25,7 @@ public final class Nothing extends VariableDeclarationNode {
 	public static ContinueType continueType = new ContinueType();
 
 	public Nothing() {
-		super("Nothing", DataTypes.VOID);
+		super("Nothing");
 		setValue(nothing);
 		setConst(true);
 	}

@@ -5,16 +5,15 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import parser.LogError;
 import sml.data.checking.IsIterable;
 
 public final class NewIterable extends FunctionDeclarationNode {
 
 	public NewIterable() {
-		super("Iterable", DataTypes.ANY);
+		super("Iterable");
 		setBody(new Block(null));
-		addParameter("iterable", DataTypes.ANY);
+		addParameter("iterable");
 	}
 
 	@Override

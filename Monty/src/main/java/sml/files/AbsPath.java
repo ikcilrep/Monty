@@ -22,14 +22,13 @@ import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import monty.Importing;
-import parser.DataTypes;
 
 public final class AbsPath extends FunctionDeclarationNode {
 
 	public AbsPath() {
-		super("absPath", DataTypes.STRING);
+		super("absPath");
 		setBody(new Block(null));
-		addParameter("path", DataTypes.STRING);
+		addParameter("path");
 	}
 
 	public static String absPath(String path) {

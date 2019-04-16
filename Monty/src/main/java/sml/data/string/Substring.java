@@ -21,17 +21,17 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import parser.LogError;
 
-public final class Substring extends FunctionDeclarationNode {
+final class Substring extends FunctionDeclarationNode {
 
 	public Substring() {
-		super("substring", DataTypes.STRING);
+		super("substring");
 		setBody(new Block(null));
-		addParameter("str", DataTypes.STRING);
-		addParameter("begin", DataTypes.INTEGER);
-		addParameter("end", DataTypes.INTEGER);
+		addParameter("str");
+		addParameter("begin");
+		addParameter("end");
+		StringStruct.addFunction(this);
 	}
 
 	@Override

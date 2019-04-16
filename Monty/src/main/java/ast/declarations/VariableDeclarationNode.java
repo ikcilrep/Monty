@@ -16,12 +16,11 @@ limitations under the License.
 
 package ast.declarations;
 
-import parser.DataTypes;
 import parser.LogError;
+import sml.data.returning.Nothing;
 
 public class VariableDeclarationNode extends DeclarationNode implements Cloneable {
 
-	private boolean isDynamic = false;
 	private boolean isConst = false;
 
 	public static VariableDeclarationNode toMe(Object object, String fileName, int line) {
@@ -39,10 +38,10 @@ public class VariableDeclarationNode extends DeclarationNode implements Cloneabl
 		this.isConst = isConst;
 	}
 
-	private Object value;
+	private Object value = Nothing.nothing;
 
-	public VariableDeclarationNode(String name, DataTypes type) {
-		super(name, type);
+	public VariableDeclarationNode(String name) {
+		super(name);
 	}
 
 	public final VariableDeclarationNode copy() {
@@ -58,13 +57,6 @@ public class VariableDeclarationNode extends DeclarationNode implements Cloneabl
 		return value;
 	}
 
-	public final boolean isDynamic() {
-		return isDynamic;
-	}
-
-	public final void setDynamic(boolean isDynamic) {
-		this.isDynamic = isDynamic;
-	}
 
 	public final void setValue(Object value, String fileName, int line) {
 		if (isConst)

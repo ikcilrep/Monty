@@ -23,13 +23,12 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 
 public final class Seconds extends FunctionDeclarationNode {
 	private final static BigDecimal THOUSAND = BigDecimal.valueOf(1000);
 
 	public Seconds() {
-		super("seconds", DataTypes.REAL);
+		super("seconds");
 		setBody(new Block(null));
 	}
 

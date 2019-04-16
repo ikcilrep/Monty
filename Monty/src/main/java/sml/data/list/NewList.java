@@ -20,11 +20,10 @@ import java.util.ArrayList;
 
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 
 public final class NewList extends FunctionDeclarationNode {
 	public NewList() {
-		super("List", DataTypes.ANY);
+		super("List");
 	}
 
 	@Override

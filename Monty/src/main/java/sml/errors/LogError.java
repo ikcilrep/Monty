@@ -5,16 +5,15 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import sml.data.returning.Nothing;
 import sml.data.returning.VoidType;
 
 public final class LogError extends FunctionDeclarationNode {
 
 	public LogError() {
-		super("logError", DataTypes.VOID);
+		super("logError");
 		setBody(new Block(null));
-		addParameter("message", DataTypes.STRING);
+		addParameter("message");
 	}
 
 	@Override

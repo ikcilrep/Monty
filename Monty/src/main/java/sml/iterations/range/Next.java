@@ -4,13 +4,12 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import sml.data.Method;
 
 final class Next extends Method<Iterator> {
 
 	public Next(Iterator parent) {
-		super(parent, "next", DataTypes.INTEGER);
+		super(parent, "next");
 	}
 
 	@Override

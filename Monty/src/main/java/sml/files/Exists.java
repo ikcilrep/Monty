@@ -21,15 +21,14 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import parser.LogError;
 
 public final class Exists extends FunctionDeclarationNode {
 
 	public Exists() {
-		super("exists", DataTypes.BOOLEAN);
+		super("exists");
 		setBody(new Block(null));
-		addParameter("path", DataTypes.STRING);
+		addParameter("path");
 	}
 
 	@Override

@@ -21,14 +21,13 @@ import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import monty.FileIO;
-import parser.DataTypes;
 
 public final class Read extends FunctionDeclarationNode {
 
 	public Read() {
-		super("read", DataTypes.STRING);
+		super("read");
 		setBody(new Block(null));
-		addParameter("path", DataTypes.STRING);
+		addParameter("path");
 	}
 
 	@Override

@@ -21,12 +21,11 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 
 public final class Separator extends FunctionDeclarationNode {
 
 	public Separator() {
-		super("separator", DataTypes.STRING);
+		super("separator");
 		setBody(new Block(null));
 	}
 

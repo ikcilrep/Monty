@@ -6,15 +6,14 @@ import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import ast.expressions.VariableNode;
-import parser.DataTypes;
 import parser.LogError;
 
 public final class FunctionByName extends FunctionDeclarationNode {
 
 	public FunctionByName() {
-		super("f", DataTypes.ANY);
+		super("f");
 		setBody(new Block(null));
-		addParameter("name", DataTypes.ANY);
+		addParameter("name");
 	}
 
 	@Override

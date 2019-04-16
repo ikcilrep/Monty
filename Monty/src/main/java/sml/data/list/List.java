@@ -212,7 +212,10 @@ public class List extends StructDeclarationNode {
 		int i = 0;
 		if (length > 0)
 			while (true) {
-				stringBuilder.append(get(i++).toString());
+				var value = get(i++).toString();
+				if (value instanceof String)
+					value = "\"" + value + "\"";
+				stringBuilder.append(value);
 				if (i < length)
 					stringBuilder.append(',');
 				else

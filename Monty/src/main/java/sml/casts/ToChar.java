@@ -21,13 +21,12 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 
 public final class ToChar extends FunctionDeclarationNode {
 	public ToChar() {
-		super("toChar", DataTypes.STRING);
+		super("toChar");
 		setBody(new Block(null));
-		addParameter("integer", DataTypes.INTEGER);
+		addParameter("integer");
 	}
 
 	@Override

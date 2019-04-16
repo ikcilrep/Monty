@@ -7,13 +7,12 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import lexer.Lexer;
 import monty.IOBlocks;
-import parser.DataTypes;
 import parser.parsing.Parser;
 
 public final class Map extends FunctionDeclarationNode {
 	private static Block code;
 	static {
-		code = Parser.parse(Lexer.lex("any list = [Nothing] * length(iterable);int i = 0;for x in iterable;"
+		code = Parser.parse(Lexer.lex("var list = [Nothing] * length(iterable);var i = 0;for x in iterable;"
 				+ "list.set(i,function.call(x));i += 1;end;return Iterable(list);", "Map.java"));
 		code.addFunction(IOBlocks.length);
 		code.addFunction(IOBlocks.list);
@@ -22,10 +21,10 @@ public final class Map extends FunctionDeclarationNode {
 	}
 
 	public Map() {
-		super("map", DataTypes.ANY);
+		super("map");
 		setBody(code);
-		addParameter("iterable", DataTypes.ANY);
-		addParameter("function", DataTypes.ANY);
+		addParameter("iterable");
+		addParameter("function");
 	}
 
 	@Override

@@ -22,15 +22,14 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 
 public final class Max extends FunctionDeclarationNode {
 
 	public Max() {
-		super("max", DataTypes.REAL);
+		super("max");
 		setBody(new Block(null));
-		addParameter("a", DataTypes.REAL);
-		addParameter("b", DataTypes.REAL);
+		addParameter("a");
+		addParameter("b");
 	}
 
 	@Override

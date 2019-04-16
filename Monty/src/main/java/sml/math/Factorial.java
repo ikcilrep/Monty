@@ -22,15 +22,14 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import parser.LogError;;
 
 public final class Factorial extends FunctionDeclarationNode {
 
 	public Factorial() {
-		super("factorial", DataTypes.INTEGER);
+		super("factorial");
 		setBody(new Block(null));
-		addParameter("n", DataTypes.INTEGER);
+		addParameter("n");
 	}
 
 	@Override

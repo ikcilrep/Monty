@@ -21,16 +21,15 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 
-public final class StartsWith extends FunctionDeclarationNode {
+final class StartsWith extends FunctionDeclarationNode {
 
 	public StartsWith() {
-		super("startsWith", DataTypes.BOOLEAN);
+		super("startsWith");
 		setBody(new Block(null));
-		addParameter("str", DataTypes.STRING);
-		addParameter("prefix", DataTypes.STRING);
-
+		addParameter("str");
+		addParameter("prefix");
+		StringStruct.addFunction(this);
 	}
 
 	@Override

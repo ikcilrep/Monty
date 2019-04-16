@@ -21,18 +21,17 @@ import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import monty.FileIO;
-import parser.DataTypes;
 import sml.data.returning.Nothing;
 import sml.data.returning.VoidType;
 
 public final class Write extends FunctionDeclarationNode {
 
 	public Write() {
-		super("write", DataTypes.VOID);
+		super("write");
 		setBody(new Block(null));
-		addParameter("path", DataTypes.STRING);
-		addParameter("text", DataTypes.STRING);
-		addParameter("isAppend", DataTypes.BOOLEAN);
+		addParameter("path");
+		addParameter("text");
+		addParameter("isAppend");
 	}
 
 	@Override

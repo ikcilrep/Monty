@@ -21,10 +21,12 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 
+import ast.Block;
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import parser.DataTypes;
 import parser.LogError;
+import sml.data.string.StringStruct;
 
 public final class OperatorOverloading {
 	public static ArrayList<OperationNode> arguments;
@@ -52,13 +54,13 @@ public final class OperatorOverloading {
 
 	public final static Object overloadOperator(Object leftValue, Object rightValue, String nameOfFunction,
 			int numberOfParameters, boolean isAssignment) {
-		arguments.get(0).setOperand(new ConstantNode(leftValue, DataTypes.ANY));
-		arguments.get(1).setOperand(new ConstantNode(rightValue, DataTypes.ANY));
+		arguments.get(0).setOperand(new ConstantNode(leftValue));
+		arguments.get(1).setOperand(new ConstantNode(rightValue));
 		if (leftValue instanceof StructDeclarationNode) {
 			var struct = (StructDeclarationNode) leftValue;
 			if (struct.hasFunction(nameOfFunction)) {
 				var operator = struct.getFunction(nameOfFunction);
-				if (!operator.getType().equals(DataTypes.VOID) && operator.getParameters().size() == numberOfParameters)
+				if (operator.getParameters().size() == numberOfParameters)
 					return operator.call(arguments, temporaryFileName, temporaryLine);
 			}
 		} else if (!isAssignment && rightValue instanceof StructDeclarationNode) {
@@ -68,7 +70,7 @@ public final class OperatorOverloading {
 			var struct = (StructDeclarationNode) rightValue;
 			if (struct.hasFunction(nameOfFunction)) {
 				var operator = struct.getFunction(nameOfFunction);
-				if (!operator.getType().equals(DataTypes.VOID) && operator.getParameters().size() == numberOfParameters)
+				if (operator.getParameters().size() == numberOfParameters)
 					return operator.call(arguments, temporaryFileName, temporaryLine);
 			}
 		}
@@ -156,7 +158,7 @@ public final class OperatorOverloading {
 		}
 	}
 
-	public final static Object dotOperator(Object leftValue, Object rightValue, DataTypes type) {
+	public final static Object dotOperator(Object leftValue, Object rightValue, DataTypes type, Block parent) {
 		switch (type) {
 		case VOID:
 			new LogError("Can't get attributes or methods from Nothing.", temporaryFileName, temporaryLine);
@@ -165,7 +167,13 @@ public final class OperatorOverloading {
 		case REAL:
 			break;
 		case STRING:
-			break;
+			if (rightValue instanceof FunctionCallNode) {
+				var function = (FunctionCallNode) rightValue;
+				var arguments = function.getArguments();
+				arguments.add(0, new OperationNode(new ConstantNode(leftValue), parent));
+				return StringStruct.getFunction(function.getName(), temporaryFileName, temporaryLine)
+						.call(arguments, temporaryFileName, temporaryLine);
+			}
 		case BOOLEAN:
 			break;
 		case ANY:

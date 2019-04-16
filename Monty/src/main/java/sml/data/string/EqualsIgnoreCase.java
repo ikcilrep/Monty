@@ -21,16 +21,15 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 
-public final class EqualsIgnoreCase extends FunctionDeclarationNode {
+final class EqualsIgnoreCase extends FunctionDeclarationNode {
 
 	public EqualsIgnoreCase() {
-		super("equalsIgnoreCase", DataTypes.STRING);
+		super("equalsIgnoreCase");
 		setBody(new Block(null));
-		addParameter("str", DataTypes.STRING);
-		addParameter("toCompare", DataTypes.STRING);
-
+		addParameter("str");
+		addParameter("toCompare");
+		StringStruct.addFunction(this);
 	}
 
 	@Override

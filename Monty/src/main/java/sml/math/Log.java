@@ -24,16 +24,15 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import parser.LogError;
 
 public final class Log extends FunctionDeclarationNode {
 	public Log() {
-		super("log", DataTypes.REAL);
+		super("log");
 		setBody(new Block(null));
-		addParameter("a", DataTypes.REAL);
-		addParameter("b", DataTypes.REAL);
-		addParameter("scale", DataTypes.INTEGER);
+		addParameter("a");
+		addParameter("b");
+		addParameter("scale");
 	}
 
 	public static int nearestPower(BigDecimal a, BigDecimal b) {

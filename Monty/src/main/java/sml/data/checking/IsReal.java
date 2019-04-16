@@ -23,14 +23,13 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 
 public final class IsReal extends FunctionDeclarationNode {
 
 	public IsReal() {
-		super("isReal", DataTypes.BOOLEAN);
+		super("isReal");
 		setBody(new Block(null));
-		addParameter("toCheck", DataTypes.ANY);
+		addParameter("toCheck");
 	}
 
 	@Override

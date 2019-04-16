@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import parser.LogError;
 import sml.data.returning.VoidType;
 
@@ -46,9 +45,9 @@ public final class ToBoolean extends FunctionDeclarationNode {
 	}
 
 	public ToBoolean() {
-		super("toBoolean", DataTypes.BOOLEAN);
+		super("toBoolean");
 		setBody(new Block(null));
-		addParameter("a", DataTypes.ANY);
+		addParameter("a");
 	}
 
 	@Override

@@ -21,9 +21,14 @@ import ast.declarations.VariableDeclarationNode;
 import lexer.Lexer;
 import lexer.OptimizedTokensArray;
 import parser.parsing.Parser;
-import sml.io.*;
-import sml.functional.iterable.*;
-import sml.functional.function.*;
+import sml.functional.function.FunctionByName;
+import sml.functional.function.Lambda;
+import sml.functional.iterable.Filter;
+import sml.functional.iterable.Map;
+import sml.functional.iterable.NewIterable;
+import sml.io.Input;
+import sml.io.Print;
+import sml.io.Println;
 
 public class IOBlocks {
 	public static FunctionDeclarationNode list;

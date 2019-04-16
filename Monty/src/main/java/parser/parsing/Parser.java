@@ -61,8 +61,6 @@ public final class Parser {
 					Importing.importFile(block, tokensBeforeSemicolon);
 				} else if (Identificator.isJar(tokensBeforeSemicolon)) {
 					Importing.addJarLibrary(tokensBeforeSemicolon);
-				} else if (Identificator.isChangeToStatement(tokensBeforeSemicolon)) {
-					AdderToBlock.addChangeToStatement(block, tokensBeforeSemicolon);
 				} else if (Identificator.isBreakStatement(tokensBeforeSemicolon)) {
 					AdderToBlock.addBreakStatement(block, tokensBeforeSemicolon.get(0).getFileName(),
 							tokensBeforeSemicolon.get(0).getLine());
@@ -80,7 +78,7 @@ public final class Parser {
 					 * block = parent;
 					 */
 					block = block.getParent();
-				} else if (Identificator.isExpression(tokensBeforeSemicolon)) {
+				} else if (Identificator.isExpression(tokensBeforeSemicolon, 0, tokensBeforeSemicolon.length())) {
 					AdderToBlock.addExpression(block, tokensBeforeSemicolon);
 				}
 				tokensBeforeSemicolon.clear();

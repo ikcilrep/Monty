@@ -6,17 +6,16 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import parser.LogError;
 
 public final class NewRange extends FunctionDeclarationNode {
 
 	public NewRange() {
-		super("Range", DataTypes.ANY);
+		super("Range");
 		setBody(new Block(null));
-		addParameter("min", DataTypes.INTEGER);
-		addParameter("max", DataTypes.INTEGER);
-		addParameter("step", DataTypes.INTEGER);
+		addParameter("min");
+		addParameter("max");
+		addParameter("step");
 
 	}
 

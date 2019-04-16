@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import parser.LogError;
 import sml.data.returning.VoidType;
 
@@ -46,9 +45,9 @@ public final class ToInt extends FunctionDeclarationNode {
 	}
 
 	public ToInt() {
-		super("toInt", DataTypes.INTEGER);
+		super("toInt");
 		setBody(new Block(null));
-		addParameter("a", DataTypes.ANY);
+		addParameter("a");
 	}
 
 	@Override

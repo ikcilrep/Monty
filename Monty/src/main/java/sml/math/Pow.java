@@ -23,16 +23,15 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import parser.LogError;
 
 public final class Pow extends FunctionDeclarationNode {
 
 	public Pow() {
-		super("pow", DataTypes.REAL);
+		super("pow");
 		setBody(new Block(null));
-		addParameter("basis", DataTypes.REAL);
-		addParameter("index", DataTypes.INTEGER);
+		addParameter("basis");
+		addParameter("index");
 	}
 
 	@Override

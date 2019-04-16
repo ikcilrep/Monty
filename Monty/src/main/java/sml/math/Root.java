@@ -22,16 +22,15 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import parser.LogError;
 
 public final class Root extends FunctionDeclarationNode {
 	public Root() {
-		super("root", DataTypes.REAL);
+		super("root");
 		setBody(new Block(null));
-		addParameter("degree", DataTypes.INTEGER);
-		addParameter("f", DataTypes.REAL);
-		addParameter("scale", DataTypes.INTEGER);
+		addParameter("degree");
+		addParameter("f");
+		addParameter("scale");
 	}
 
 	@Override

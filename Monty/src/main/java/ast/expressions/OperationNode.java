@@ -45,8 +45,6 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 	private final Object calculate(Object leftValue, Object rightValue, String operator, DataTypes type) {
 		// Calculates the result of math operation.
 		switch (operator) {
-		case ".":
-			return OperatorOverloading.dotOperator(leftValue, rightValue, type);
 		case "+":
 			return OperatorOverloading.additionOperator(leftValue, rightValue, type);
 		case "-":
@@ -103,13 +101,6 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 			return OperatorOverloading.assignmentOrOperator(leftValue, rightValue, type);
 		}
 		return null;
-	}
-
-	private final DataTypes getDataType(Object expression) {
-		// Returns data type of expression.
-		if (expression instanceof VariableDeclarationNode)
-			return ((VariableDeclarationNode) expression).getType();
-		return DataTypes.getDataType(expression);
 	}
 
 	private final Object getLiteral(Object expression, String fileName, int line) {
@@ -181,12 +172,11 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 
 		var isDot = operator.equals(".");
 		var isNotAssignment = !operator.contains("=") || isComparison;
-
-		var a = left.solve();
 		var b = right.solve();
 
+		var a = left.solve();
 		var leftValue = getLiteral(a, left.fileName, left.line);
-		var leftType = getDataType(leftValue);
+		
 
 		if (isNotAssignment)
 			if (leftValue instanceof VariableDeclarationNode)
@@ -195,14 +185,20 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 		if (isDot) {
 			if (!(b instanceof NamedExpression))
 				new LogError("Variable or function can only be getted from struct.", fileName, line);
-			return OperatorOverloading.dotOperator(leftValue, b, leftType);
+			return OperatorOverloading.dotOperator(leftValue, b, DataTypes.getDataType(leftValue), parent);
 		}
 
 		var rightValue = getLiteral(b, right.fileName, right.line);
-		var rightType = getDataType(rightValue);
 
 		if (rightValue instanceof VariableDeclarationNode)
 			rightValue = ((VariableDeclarationNode) rightValue).getValue();
+		var rightType = DataTypes.getDataType(rightValue);
+		DataTypes leftType = null;
+		if (!isNotAssignment)
+			leftType =  rightType;
+		else
+			leftType =  DataTypes.getDataType(leftValue);
+
 
 		if (leftType.equals(DataTypes.ANY) && !(leftValue instanceof StructDeclarationNode)
 				&& !(leftValue instanceof VariableDeclarationNode))

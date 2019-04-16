@@ -7,14 +7,13 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import lexer.Lexer;
 import monty.IOBlocks;
-import parser.DataTypes;
 import parser.parsing.Parser;
 
 public final class Filter extends FunctionDeclarationNode {
 	private static Block code;
 	static {
 		code = Parser.parse(
-				Lexer.lex("any list = [];int i = 0;for x in iterable;if function.call(x);"
+				Lexer.lex("var list = [];var i = 0;for x in iterable;if function.call(x);"
 						+ "list.add(x);i += 1;end;end;return Iterable(list);", "Filter.java"));
 		code.addFunction(IOBlocks.length);
 		code.addFunction(IOBlocks.list);
@@ -23,10 +22,10 @@ public final class Filter extends FunctionDeclarationNode {
 	}
 
 	public Filter() {
-		super("filter", DataTypes.ANY);
+		super("filter");
 		setBody(code);
-		addParameter("iterable", DataTypes.ANY);
-		addParameter("function", DataTypes.ANY);
+		addParameter("iterable");
+		addParameter("function");
 	}
 
 	@Override

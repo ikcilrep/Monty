@@ -21,14 +21,14 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 
-public final class LowerCase extends FunctionDeclarationNode {
+final class LowerCase extends FunctionDeclarationNode {
 
 	public LowerCase() {
-		super("lowerCase", DataTypes.STRING);
+		super("lowerCase");
 		setBody(new Block(null));
-		addParameter("str", DataTypes.STRING);
+		addParameter("str");
+		StringStruct.addFunction(this);
 	}
 
 	@Override

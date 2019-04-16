@@ -10,7 +10,7 @@ final class Next extends Method<Iterator> {
 	private FunctionDeclarationNode next;
 
 	public Next(Iterator parent) {
-		super(parent, "next", parent.iterator.getFunction("next").getType());
+		super(parent, "next");
 		next = parent.iterator.getFunction("next");
 	}
 

@@ -19,13 +19,12 @@ package sml.data;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.StructDeclarationNode;
-import parser.DataTypes;
 
 public abstract class Method<T extends StructDeclarationNode> extends FunctionDeclarationNode {
 	protected T parent;
 
-	public Method(T parent, String name, DataTypes type) {
-		super(name, type);
+	public Method(T parent, String name) {
+		super(name);
 		setBody(new Block(parent));
 		this.parent = parent;
 		parent.addFunction(this);

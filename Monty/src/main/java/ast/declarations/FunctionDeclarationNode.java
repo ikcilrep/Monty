@@ -16,29 +16,26 @@ limitations under the License.
 
 package ast.declarations;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import ast.Block;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import parser.LogError;
-import sml.casts.IntToReal;
-import sml.casts.RealToInt;
+
 
 public abstract class FunctionDeclarationNode extends DeclarationNode implements Cloneable {
 	Block body;
 	private int parametersSize = 0;
 	public ArrayList<VariableDeclarationNode> parameters = new ArrayList<>();
 
-	public FunctionDeclarationNode(String name, DataTypes type) {
-		super(name, type);
+	public FunctionDeclarationNode(String name) {
+		super(name);
 	}
 
-	public void addParameter(String name, DataTypes type) {
-		parameters.add(new VariableDeclarationNode(name, type));
+	public void addParameter(String name) {
+		parameters.add(new VariableDeclarationNode(name));
 		parametersSize++;
 	}
 
@@ -73,30 +70,14 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 			return;
 		var runnedArguments = new ArrayList<Object>(Arrays.asList(new Object[arguments.size()]));
 
-		for (int i = 0; i < arguments.size(); i++) {
-			var dataType = parameters.get(i).getType();
-			var argument = arguments.get(i);
-			var value = argument.run();
-			var argumentDataType = DataTypes.getDataType(value);
-			if (dataType.equals(DataTypes.REAL) && argumentDataType.equals(DataTypes.INTEGER)) {
-				value = IntToReal.intToReal((BigInteger) value);
-				argumentDataType = DataTypes.REAL;
-			} else if (dataType.equals(DataTypes.INTEGER) && argumentDataType.equals(DataTypes.REAL)) {
-				value = RealToInt.realToInt((BigDecimal) value);
-				argumentDataType = DataTypes.INTEGER;
-			}
-			if (!dataType.equals(DataTypes.ANY) && !argumentDataType.equals(dataType))
-				new LogError("Wrong data type for " + i + " parameter with name\n\"" + name + "\" in " + getName()
-						+ " function call expected " + dataType.toString().toLowerCase() + " got "
-						+ argumentDataType.toString().toLowerCase(), callFileName, callLine);
-
-			runnedArguments.set(i, value);
-		}
+		for (int i = 0; i < arguments.size(); i++)
+			runnedArguments.set(i, arguments.get(i).run());
+		
 		for (int i = 0; i < runnedArguments.size(); i++) {
 			var name = parameters.get(i).getName();
 			VariableDeclarationNode variable = null;
 			if (!body.hasVariable(name)) {
-				variable = new VariableDeclarationNode(name, parameters.get(i).getType());
+				variable = new VariableDeclarationNode(name);
 				body.addVariable(variable, fileName, line);
 			} else
 				variable = body.getVariable(name, getFileName(), getLine());

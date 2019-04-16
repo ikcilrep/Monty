@@ -86,18 +86,8 @@ public final class Lexer {
 			return TokenTypes.STRUCT_KEYWORD;
 		case "return":
 			return TokenTypes.RETURN_KEYWORD;
-		case "int":
-			return TokenTypes.INT_KEYWORD;
-		case "void":
-			return TokenTypes.VOID_KEYWORD;
-		case "real":
-			return TokenTypes.REAL_KEYWORD;
-		case "string":
-			return TokenTypes.STRING_KEYWORD;
-		case "boolean":
-			return TokenTypes.BOOLEAN_KEYWORD;
-		case "any":
-			return TokenTypes.ANY_KEYWORD;
+		case "var":
+			return TokenTypes.VAR_KEYWORD;
 		case "for":
 			return TokenTypes.FOR_KEYWORD;
 		case "while":

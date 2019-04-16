@@ -21,15 +21,15 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 
-public final class EndsWith extends FunctionDeclarationNode {
+final class EndsWith extends FunctionDeclarationNode {
 
 	public EndsWith() {
-		super("endsWith", DataTypes.BOOLEAN);
+		super("endsWith");
 		setBody(new Block(null));
-		addParameter("str", DataTypes.STRING);
-		addParameter("suffix", DataTypes.STRING);
+		addParameter("str");
+		addParameter("suffix");
+		StringStruct.addFunction(this);
 	}
 
 	@Override

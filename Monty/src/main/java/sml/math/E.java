@@ -19,14 +19,13 @@ package sml.math;
 import java.math.BigDecimal;
 
 import ast.declarations.VariableDeclarationNode;
-import parser.DataTypes;
 
 public final class E extends VariableDeclarationNode {
 	private final static BigDecimal e = new BigDecimal(
 			"2.718281828459045235360287471352662497757247093699959574966967627724076630353");
 
 	public E() {
-		super("E", DataTypes.REAL);
+		super("E");
 		setValue(e);
 		setConst(true);
 	}

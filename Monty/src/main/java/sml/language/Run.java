@@ -6,7 +6,6 @@ import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import lexer.Lexer;
-import parser.DataTypes;
 import parser.parsing.Parser;
 import sml.data.returning.Nothing;
 import sml.data.returning.VoidType;
@@ -14,8 +13,8 @@ import sml.data.returning.VoidType;
 public final class Run extends FunctionDeclarationNode {
 
 	public Run() {
-		super("run", DataTypes.VOID);
-		addParameter("code", DataTypes.STRING);
+		super("run");
+		addParameter("code");
 		setBody(new Block(null));
 	}
 

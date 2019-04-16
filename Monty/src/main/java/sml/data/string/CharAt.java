@@ -20,16 +20,16 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import parser.LogError;
 
-public final class CharAt extends FunctionDeclarationNode {
+final class CharAt extends FunctionDeclarationNode {
 
 	public CharAt() {
-		super("charAt", DataTypes.STRING);
+		super("charAt");
 		setBody(new Block(null));
-		addParameter("index", DataTypes.INTEGER);
-		addParameter("str", DataTypes.STRING);
+		addParameter("str");
+		addParameter("index");
+		StringStruct.addFunction(this);
 	}
 
 	@Override

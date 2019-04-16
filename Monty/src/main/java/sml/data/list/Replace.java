@@ -3,15 +3,14 @@ package sml.data.list;
 import java.util.ArrayList;
 
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import sml.data.Method;
 
 final class Replace extends Method<List> {
 
 	Replace(List parent) {
-		super(parent, "replace", DataTypes.ANY);
-		addParameter("toBeReplaced", DataTypes.ANY);
-		addParameter("replacement", DataTypes.ANY);
+		super(parent, "replace");
+		addParameter("toBeReplaced");
+		addParameter("replacement");
 	}
 
 	@Override

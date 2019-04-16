@@ -3,14 +3,13 @@ package sml.data.list;
 import java.util.ArrayList;
 
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import sml.data.Method;
 
 final class Remove extends Method<List> {
 
 	Remove(List parent) {
-		super(parent, "remove", DataTypes.ANY);
-		addParameter("value", DataTypes.ANY);
+		super(parent, "remove");
+		addParameter("value");
 	}
 
 	@Override

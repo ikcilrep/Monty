@@ -3,16 +3,15 @@ package sml.data.list;
 import java.util.ArrayList;
 
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import parser.LogError;
 import sml.data.Method;
 
 final class Sublist extends Method<List> {
 
 	Sublist(List parent) {
-		super(parent, "sublist", DataTypes.ANY);
-		addParameter("begin", DataTypes.INTEGER);
-		addParameter("end", DataTypes.INTEGER);
+		super(parent, "sublist");
+		addParameter("begin");
+		addParameter("end");
 	}
 
 	@Override

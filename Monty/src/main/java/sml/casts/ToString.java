@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 
 public final class ToString extends FunctionDeclarationNode {
 
@@ -30,9 +29,9 @@ public final class ToString extends FunctionDeclarationNode {
 	}
 
 	public ToString() {
-		super("toString", DataTypes.STRING);
+		super("toString");
 		setBody(new Block(null));
-		addParameter("a", DataTypes.ANY);
+		addParameter("a");
 	}
 
 	@Override

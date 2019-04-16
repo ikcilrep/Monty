@@ -21,14 +21,13 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 
 public final class IsAbsolute extends FunctionDeclarationNode {
 
 	public IsAbsolute() {
-		super("isAbsolute", DataTypes.BOOLEAN);
+		super("isAbsolute");
 		setBody(new Block(null));
-		addParameter("path", DataTypes.STRING);
+		addParameter("path");
 	}
 
 	@Override

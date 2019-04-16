@@ -21,16 +21,16 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import sml.data.list.List;
 
-public final class Split extends FunctionDeclarationNode {
+final class Split extends FunctionDeclarationNode {
 
 	public Split() {
-		super("split", DataTypes.ANY);
+		super("split");
 		setBody(new Block(null));
-		addParameter("str", DataTypes.STRING);
-		addParameter("regex", DataTypes.STRING);
+		addParameter("str");
+		addParameter("regex");
+		StringStruct.addFunction(this);
 	}
 
 	@Override

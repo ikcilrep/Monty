@@ -20,7 +20,6 @@ import ast.Block;
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import parser.LogError;
 import sml.Sml;
 import sml.data.checking.IsIterable;
@@ -75,8 +74,7 @@ public final class ForStatementNode extends Block {
 			if (hasVariable(name))
 				variable = getVariable(name, getFileName(), getLine());
 			else {
-				variable = new VariableDeclarationNode(name, DataTypes.ANY);
-				variable.setDynamic(true);
+				variable = new VariableDeclarationNode(name);
 				addVariable(variable);
 			}
 		if (isNotNameUnderscore)

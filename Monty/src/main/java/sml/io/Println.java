@@ -21,16 +21,15 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import sml.data.returning.Nothing;
 import sml.data.returning.VoidType;
 
 public final class Println extends FunctionDeclarationNode {
 
 	public Println() {
-		super("println", DataTypes.VOID);
+		super("println");
 		setBody(new Block(null));
-		addParameter("toPrint", DataTypes.ANY);
+		addParameter("toPrint");
 	}
 
 	@Override

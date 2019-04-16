@@ -18,12 +18,11 @@ package sml.system;
 
 import ast.declarations.VariableDeclarationNode;
 import monty.Main;
-import parser.DataTypes;
 import sml.data.list.List;
 
 public final class Argv extends VariableDeclarationNode {
 	public Argv() {
-		super("Argv", DataTypes.ANY);
+		super("Argv");
 		setValue(new List(Main.argv));
 		setConst(true);
 	}

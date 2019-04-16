@@ -22,14 +22,14 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 
-public final class Strlen extends FunctionDeclarationNode {
+final class Length extends FunctionDeclarationNode {
 
-	public Strlen() {
-		super("strlen", DataTypes.INTEGER);
+	public Length() {
+		super("length");
 		setBody(new Block(null));
-		addParameter("str", DataTypes.STRING);
+		addParameter("str");
+		StringStruct.addFunction(this);
 	}
 
 	@Override

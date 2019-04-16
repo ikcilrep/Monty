@@ -21,16 +21,15 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import parser.LogError;
 import sml.data.list.List;
 
 public final class ListDir extends FunctionDeclarationNode {
 
 	public ListDir() {
-		super("listDir", DataTypes.ANY);
+		super("listDir");
 		setBody(new Block(null));
-		addParameter("path", DataTypes.STRING);
+		addParameter("path");
 	}
 
 	@Override

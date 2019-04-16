@@ -3,14 +3,13 @@ package sml.data.list;
 import java.util.ArrayList;
 
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import sml.data.Method;
 
 final class Multiply extends Method<List> {
 	public Multiply(List parent) {
-		super(parent, "$a_mul", DataTypes.ANY);
-		addParameter("this", DataTypes.ANY);
-		addParameter("times", DataTypes.INTEGER);
+		super(parent, "$a_mul");
+		addParameter("this");
+		addParameter("times");
 	}
 
 	@Override

@@ -21,14 +21,13 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 
 public final class IsBoolean extends FunctionDeclarationNode {
 
 	public IsBoolean() {
-		super("isBoolean", DataTypes.BOOLEAN);
+		super("isBoolean");
 		setBody(new Block(null));
-		addParameter("toCheck", DataTypes.ANY);
+		addParameter("toCheck");
 	}
 
 	@Override

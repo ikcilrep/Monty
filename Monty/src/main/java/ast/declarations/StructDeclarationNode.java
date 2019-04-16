@@ -24,8 +24,6 @@ import ast.Block;
 import ast.expressions.OperationNode;
 import ast.expressions.OperatorOverloading;
 import lexer.Token;
-import parser.DataTypes;
-import parser.LogError;
 import sml.casts.ToBoolean;
 
 public class StructDeclarationNode extends Block implements Cloneable {
@@ -44,24 +42,19 @@ public class StructDeclarationNode extends Block implements Cloneable {
 
 	public void addNewStruct(Block block, Token token) {
 		var struct = this;
-		var newStructFunction = new FunctionDeclarationNode(name, DataTypes.ANY) {
+		var newStructFunction = new FunctionDeclarationNode(name) {
 
 			@Override
 			public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 				var newStruct = struct.copy();
 				newStruct.run();
-				var thisVariable = new VariableDeclarationNode("This", DataTypes.ANY);
+				var thisVariable = new VariableDeclarationNode("This");
 				thisVariable.setValue(newStruct);
 				thisVariable.setConst(true);
 				newStruct.addVariable(thisVariable);
 				newStruct.incrementNumber();
 				if (newStruct.hasFunction("init")) {
 					var function = newStruct.getFunction("init");
-					if (!function.getType().equals(DataTypes.VOID)) {
-						String[] fileNames = { function.getFileName(), callFileName };
-						int[] lines = { function.getLine(), callLine };
-						new LogError("Init method have to be void", fileNames, lines);
-					}
 					function.call(arguments, callFileName, callLine);
 				}
 				return newStruct;
@@ -69,7 +62,7 @@ public class StructDeclarationNode extends Block implements Cloneable {
 		};
 		newStructFunction.setBody(new Block(null));
 		block.addFunction(newStructFunction, token);
-		var checkingFunction = new FunctionDeclarationNode("is" + name, DataTypes.BOOLEAN) {
+		var checkingFunction = new FunctionDeclarationNode("is" + name) {
 
 			@Override
 			public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
@@ -82,7 +75,7 @@ public class StructDeclarationNode extends Block implements Cloneable {
 
 		};
 		checkingFunction.setBody(new Block(null));
-		checkingFunction.addParameter("other", DataTypes.ANY);
+		checkingFunction.addParameter("other");
 		block.addFunction(checkingFunction, token);
 	}
 
@@ -144,11 +137,6 @@ public class StructDeclarationNode extends Block implements Cloneable {
 	public String toString() {
 		if (hasFunction("toString")) {
 			var function = getFunction("toString");
-			if (!function.getType().equals(DataTypes.STRING))
-				new LogError("Function toString have to return string", function.getFileName(), function.getLine());
-			if (function.getParameters().size() != 0)
-				new LogError("Function toString mustn't have any parameter", function.getFileName(),
-						function.getLine());
 			return function.call(new ArrayList<>(), function.getFileName(), function.getLine()).toString();
 		}
 		return name + "#" + getInstanceNumber();

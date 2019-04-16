@@ -20,14 +20,14 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 
-public final class UpperCase extends FunctionDeclarationNode {
+final class UpperCase extends FunctionDeclarationNode {
 
 	public UpperCase() {
-		super("upperCase", DataTypes.STRING);
+		super("upperCase");
 		setBody(new Block(null));
-		addParameter("str", DataTypes.STRING);
+		addParameter("str");
+		StringStruct.addFunction(this);
 	}
 
 	@Override

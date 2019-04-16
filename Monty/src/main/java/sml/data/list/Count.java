@@ -4,14 +4,13 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import sml.data.Method;
 
 final class Count extends Method<List> {
 
 	Count(List parent) {
-		super(parent, "count", DataTypes.INTEGER);
-		addParameter("value", DataTypes.ANY);
+		super(parent, "count");
+		addParameter("value");
 	}
 
 	@Override

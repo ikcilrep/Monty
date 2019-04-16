@@ -21,15 +21,14 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import sml.data.list.List;
 
 public final class IsList extends FunctionDeclarationNode {
 
 	public IsList() {
-		super("isList", DataTypes.BOOLEAN);
+		super("isList");
 		setBody(new Block(null));
-		addParameter("toCheck", DataTypes.ANY);
+		addParameter("toCheck");
 	}
 
 	@Override

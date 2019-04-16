@@ -19,11 +19,10 @@ package sml.math;
 import java.math.BigDecimal;
 
 import ast.declarations.VariableDeclarationNode;
-import parser.DataTypes;
 
 public final class Pi extends VariableDeclarationNode {
 	public Pi() {
-		super("Pi", DataTypes.REAL);
+		super("Pi");
 		setValue(pi);
 		setConst(true);
 	}

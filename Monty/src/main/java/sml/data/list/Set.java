@@ -3,15 +3,14 @@ package sml.data.list;
 import java.util.ArrayList;
 
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import sml.data.Method;
 
 final class Set extends Method<List> {
 
 	Set(List parent) {
-		super(parent, "set", DataTypes.ANY);
-		addParameter("index", DataTypes.INTEGER);
-		addParameter("value", DataTypes.ANY);
+		super(parent, "set");
+		addParameter("index");
+		addParameter("value");
 	}
 
 	@Override

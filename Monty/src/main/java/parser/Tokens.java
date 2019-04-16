@@ -24,21 +24,13 @@ public class Tokens {
 	public static DataTypes getDataType(TokenTypes type) {
 		switch (type) {
 		case INTEGER_LITERAL:
-		case INT_KEYWORD:
 			return DataTypes.INTEGER;
 		case REAL_LITERAL:
-		case REAL_KEYWORD:
 			return DataTypes.REAL;
 		case BOOLEAN_LITERAL:
-		case BOOLEAN_KEYWORD:
 			return DataTypes.BOOLEAN;
 		case STRING_LITERAL:
-		case STRING_KEYWORD:
 			return DataTypes.STRING;
-		case ANY_KEYWORD:
-			return DataTypes.ANY;
-		case VOID_KEYWORD:
-			return DataTypes.VOID;
 		default:
 			return null;
 		}

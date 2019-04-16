@@ -4,14 +4,13 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import sml.data.Method;
 
 final class Find extends Method<List> {
 
 	Find(List parent) {
-		super(parent, "find", DataTypes.INTEGER);
-		addParameter("value", DataTypes.ANY);
+		super(parent, "find");
+		addParameter("value");
 	}
 
 	@Override

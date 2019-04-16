@@ -16,7 +16,6 @@ limitations under the License.
 
 package parser;
 
-import java.util.Set;
 import java.util.regex.Pattern;
 
 import lexer.OptimizedTokensArray;
@@ -25,8 +24,6 @@ import lexer.TokenTypes;
 
 public abstract class Identificator {
 	public static final Pattern IMPORT_REGEX = Pattern.compile("^[A-Z_]+ (DOT [A-Z_]+ )*$");
-	public static final Set<TokenTypes> DATA_TYPES_KEYWORDS = Set.of(TokenTypes.INT_KEYWORD, TokenTypes.REAL_KEYWORD,
-			TokenTypes.BOOLEAN_KEYWORD, TokenTypes.STRING_KEYWORD, TokenTypes.VOID_KEYWORD, TokenTypes.ANY_KEYWORD);
 
 	public static boolean isBreakStatement(OptimizedTokensArray tokens) {
 		if (!tokens.get(0).getType().equals(TokenTypes.BREAK_KEYWORD))
@@ -35,20 +32,6 @@ public abstract class Identificator {
 			new LogError("Nothing expected after \"break\" keyword", tokens.get(1));
 		return true;
 
-	}
-
-	public static boolean isChangeToStatement(OptimizedTokensArray tokens) {
-		var tokensSize = tokens.length();
-		if (!tokens.get(0).getType().equals(TokenTypes.CHANGE_KEYWORD))
-			return false;
-		if (tokensSize == 1 || !tokens.get(1).getType().equals(TokenTypes.IDENTIFIER))
-			new LogError("Expected identifier after \"change\" keyword.", tokens.get(tokens.length() > 1 ? 1 : 0));
-		if (tokensSize == 2 || !tokens.get(2).getType().equals(TokenTypes.TO_KEYWORD))
-			new LogError("Expected \"to\" keyword after identifier.", tokens.get(tokens.length() > 2 ? 2 : 1));
-		if (tokensSize == 3 | !DATA_TYPES_KEYWORDS.contains(tokens.get(3).getType()))
-			new LogError("Expected data type declaration after \"to\" keyword.",
-					tokens.get(tokens.length() > 3 ? 3 : 2));
-		return true;
 	}
 
 	public static boolean isContinueStatement(OptimizedTokensArray tokens) {
@@ -65,7 +48,7 @@ public abstract class Identificator {
 			return false;
 		if (tokens.length() == 1 || !tokens.get(1).getType().equals(TokenTypes.WHILE_KEYWORD))
 			new LogError("Expected \"while\" keyword after \"do\" keyword.", tokens.get(tokens.length() > 1 ? 1 : 0));
-		if (!isExpression(tokens.subarray(2, tokens.length())))
+		if (!isExpression(tokens, 2, tokens.length()))
 			new LogError("Expected expression after \"do\" keyword.", tokens.get(2));
 		return true;
 
@@ -89,9 +72,10 @@ public abstract class Identificator {
 		return true;
 	}
 
-	public static boolean isExpression(OptimizedTokensArray tokensBeforeSemicolon) {
+	public static boolean isExpression(OptimizedTokensArray tokensBeforeSemicolon, int start, int end) {
 		Token last = null;
-		for (Token token : tokensBeforeSemicolon) {
+		for (; start < tokensBeforeSemicolon.length(); start++) {
+			var token = tokensBeforeSemicolon.get(start);
 			switch (token.getType()) {
 			case OPERATOR:
 				if (last == null || last.getType().equals(TokenTypes.COMMA))
@@ -135,42 +119,27 @@ public abstract class Identificator {
 			new LogError("Expected identifier after \"for\" keyword.", tokens.get(tokens.length() > 1 ? 1 : 0));
 		if (tokens.length() == 2 || !tokens.get(2).getType().equals(TokenTypes.IN_KEYWORD))
 			new LogError("Expected \"in\" keyword after \"for\" keyword.", tokens.get(tokens.length() > 2 ? 2 : 1));
-		if (tokens.length() == 3 || !isExpression(tokens.subarray(3, tokens.length() - 1)))
+		if (tokens.length() == 3 || !isExpression(tokens, 3, tokens.length() - 1))
 			new LogError("Expected expression after \"in\" keyword.", tokens.get(tokens.length() > 3 ? 3 : 2));
 		return true;
 	}
 
 	public static boolean isFunctionDeclaration(OptimizedTokensArray tokensBeforeSemicolon) {
 		var isFirstTokenFuncKeyword = tokensBeforeSemicolon.get(0).getType().equals(TokenTypes.FUNC_KEYWORD);
-		TokenTypes secondTokenType = null;
-		if (tokensBeforeSemicolon.length() >= 2)
-			secondTokenType = tokensBeforeSemicolon.get(1).getType();
-		var isSecondTokenDataTypeKeyword = tokensBeforeSemicolon.length() > 1
-				&& DATA_TYPES_KEYWORDS.contains(secondTokenType);
-		var isThirdTokenIdentifier = tokensBeforeSemicolon.length() > 2
-				&& tokensBeforeSemicolon.get(2).getType().equals(TokenTypes.IDENTIFIER);
+		var isSecondTokenIdentifier = tokensBeforeSemicolon.length() > 1
+				&& tokensBeforeSemicolon.get(1).getType().equals(TokenTypes.IDENTIFIER);
 		if (!isFirstTokenFuncKeyword)
 			return false;
-		if (!isSecondTokenDataTypeKeyword)
-			new LogError("Expected data type declaration after \"func\" keyword.", tokensBeforeSemicolon.get(1));
-		if (!isThirdTokenIdentifier)
-			new LogError("Expected identifier after data type declaration keyword.", tokensBeforeSemicolon.get(2));
+		if (!isSecondTokenIdentifier)
+			new LogError("Expected identifier after \"func\" keyword.", tokensBeforeSemicolon.get(1));
 		TokenTypes last = null;
-		var isLastTokenDataTypeDeclaration = false;
-		for (int i = 3; i < tokensBeforeSemicolon.length(); i++) {
+		for (int i = 2; i < tokensBeforeSemicolon.length(); i++) {
 			var t = tokensBeforeSemicolon.get(i);
-			if (DATA_TYPES_KEYWORDS.contains(t.getType()))
-				isLastTokenDataTypeDeclaration = true;
-			else if (t.getType().equals(TokenTypes.IDENTIFIER)) {
-				if (!isLastTokenDataTypeDeclaration)
-					new LogError("Expected data type declaration before identifer.", t);
-				isLastTokenDataTypeDeclaration = false;
-			} else if (t.getType().equals(TokenTypes.COMMA)) {
+			 if (t.getType().equals(TokenTypes.COMMA)) {
 				if (!(last.equals(TokenTypes.IDENTIFIER) && i + 1 < tokensBeforeSemicolon.length()))
 					new LogError("Unexpected comma.", t);
-				isLastTokenDataTypeDeclaration = false;
-			} else
-				new LogError("Unexpected token.", t);
+			} else if (!t.getType().equals(TokenTypes.IDENTIFIER))
+				new LogError("Unexpected token:\t\"" + t.getText() + "\"", t);
 
 			last = t.getType();
 		}
@@ -181,7 +150,7 @@ public abstract class Identificator {
 	public static boolean isIfStatement(OptimizedTokensArray tokens) {
 		if (!tokens.get(0).getType().equals(TokenTypes.IF_KEYWORD))
 			return false;
-		if (tokens.length() == 1 || !isExpression(tokens.subarray(1, tokens.length())))
+		if (tokens.length() == 1 || !isExpression(tokens, 1, tokens.length()))
 			new LogError("Expected expression after \"if\" keyword.", tokens.get(tokens.length() > 1 ? 1 : 0));
 		return true;
 
@@ -203,7 +172,7 @@ public abstract class Identificator {
 		if (!isFirstTokenReturnKeyword)
 			return false;
 		if (tokensBeforeSemicolon.length() > 1
-				&& !isExpression(tokensBeforeSemicolon.subarray(1, tokensBeforeSemicolon.length())))
+				&& !isExpression(tokensBeforeSemicolon, 1, tokensBeforeSemicolon.length()))
 			new LogError("Expected expression or nothing after \"return\" keyword.",
 					tokensBeforeSemicolon.get(tokensBeforeSemicolon.length() > 1 ? 1 : 0));
 		return true;
@@ -219,40 +188,21 @@ public abstract class Identificator {
 	}
 
 	public static boolean isVariableDeclaration(OptimizedTokensArray tokensBeforeSemicolon) {
-		var firstTokenType = tokensBeforeSemicolon.get(0).getType();
-		var isFirstTokenDataTypeKeyword = DATA_TYPES_KEYWORDS.contains(firstTokenType);
-		var isFirstTokenDynamicKeyword = firstTokenType.equals(TokenTypes.DYNAMIC_KEYWORD);
-		var tokensSize = tokensBeforeSemicolon.length();
-		TokenTypes secondTokenType = null;
-
-		if (tokensSize >= 2)
-			secondTokenType = tokensBeforeSemicolon.get(1).getType();
-
-		if (!(isFirstTokenDataTypeKeyword || isFirstTokenDynamicKeyword))
+		if (!tokensBeforeSemicolon.get(0).getType().equals(TokenTypes.VAR_KEYWORD))
 			return false;
-		int n = 1;
-		if (isFirstTokenDynamicKeyword) {
-			if (!(secondTokenType != null && DATA_TYPES_KEYWORDS.contains(secondTokenType)) || tokensSize == 2)
-				new LogError("Expected data type declaration after \"dynamic\" keyword.");
-			n++;
+		if (tokensBeforeSemicolon.length() == 1 || !tokensBeforeSemicolon.get(1).getType().equals(TokenTypes.IDENTIFIER))
+			new LogError("Expected identifier after \"var\" keyword.", tokensBeforeSemicolon.get(1));
+		if (tokensBeforeSemicolon.length() > 2
+				&& !isExpression(tokensBeforeSemicolon, 1, tokensBeforeSemicolon.length()))
+			new LogError("Expected expression after \"var\" keyword.", tokensBeforeSemicolon.get(1));
 
-		}
-		if (!tokensBeforeSemicolon.get(n).getType().equals(TokenTypes.IDENTIFIER))
-			new LogError("Expected identifier after data type declaration.", tokensBeforeSemicolon.get(n));
-
-		if (tokensSize > n + 1) {
-			var expression = tokensBeforeSemicolon.subarray(n, tokensBeforeSemicolon.length());
-			if (!isExpression(expression))
-				new LogError("Wrong expression after data type declaration.", tokensBeforeSemicolon.get(n));
-
-		}
 		return true;
 	}
 
 	public static boolean isWhileStatement(OptimizedTokensArray tokens) {
 		if (!tokens.get(0).getType().equals(TokenTypes.WHILE_KEYWORD))
 			return false;
-		if (tokens.length() == 1 || !isExpression(tokens.subarray(1, tokens.length())))
+		if (tokens.length() == 1 || !isExpression(tokens, 1, tokens.length()))
 			new LogError("Expected expression after \"while\" keyword.", tokens.get(tokens.length() > 1 ? 1 : 0));
 		return true;
 

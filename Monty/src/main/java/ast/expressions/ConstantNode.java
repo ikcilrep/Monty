@@ -16,19 +16,11 @@ limitations under the License.
 
 package ast.expressions;
 
-import parser.DataTypes;
-
 public final class ConstantNode {
 	private Object value;
-	private DataTypes type;
 
-	public ConstantNode(Object value, DataTypes type) {
+	public ConstantNode(Object value) {
 		this.value = value;
-		this.type = type;
-	}
-
-	public final DataTypes getType() {
-		return type;
 	}
 
 	public final Object getValue() {

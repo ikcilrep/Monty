@@ -22,14 +22,13 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 
 public final class IsInt extends FunctionDeclarationNode {
 
 	public IsInt() {
-		super("isInt", DataTypes.BOOLEAN);
+		super("isInt");
 		setBody(new Block(null));
-		addParameter("toCheck", DataTypes.ANY);
+		addParameter("toCheck");
 	}
 
 	@Override

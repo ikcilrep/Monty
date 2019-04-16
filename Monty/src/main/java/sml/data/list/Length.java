@@ -4,13 +4,12 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import sml.data.Method;
 
 final class Length extends Method<List> {
 
 	Length(List parent) {
-		super(parent, "length", DataTypes.INTEGER);
+		super(parent, "length");
 	}
 
 	@Override

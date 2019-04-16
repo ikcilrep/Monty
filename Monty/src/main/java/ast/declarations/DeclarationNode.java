@@ -17,27 +17,17 @@ limitations under the License.
 package ast.declarations;
 
 import ast.Node;
-import parser.DataTypes;
 
 abstract class DeclarationNode extends Node {
 
 	protected String name;
-	protected DataTypes type;
 
-	public DeclarationNode(String name, DataTypes type) {
+	public DeclarationNode(String name) {
 		this.name = name;
-		this.type = type;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public DataTypes getType() {
-		return type;
-	}
-
-	public void setType(DataTypes type) {
-		this.type = type;
-	}
 }

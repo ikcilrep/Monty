@@ -3,13 +3,12 @@ package sml.data.list;
 import java.util.ArrayList;
 
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import sml.data.Method;
 
 final class NewIterator extends Method<List> {
 
 	public NewIterator(List parent) {
-		super(parent, "Iterator", DataTypes.ANY);
+		super(parent, "Iterator");
 	}
 
 	@Override

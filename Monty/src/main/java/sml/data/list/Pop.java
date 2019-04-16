@@ -3,14 +3,13 @@ package sml.data.list;
 import java.util.ArrayList;
 
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import sml.data.Method;
 
 final class Pop extends Method<List> {
 
 	Pop(List parent) {
-		super(parent, "pop", DataTypes.ANY);
-		addParameter("index", DataTypes.INTEGER);
+		super(parent, "pop");
+		addParameter("index");
 	}
 
 	@Override

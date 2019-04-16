@@ -8,20 +8,19 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import ast.expressions.VariableNode;
 import ast.statements.ReturnStatementNode;
-import parser.DataTypes;
 import parser.LogError;
 
 public class Lambda extends FunctionDeclarationNode {
 
 	public Lambda() {
-		super("lambda", DataTypes.ANY);
+		super("lambda");
 	}
 
 	@Override
 	public Function call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		int argumentsLength = arguments.size() - 1;
 		var fileName = callFileName + "lambda(" + callLine + ")";
-		var function = new CustomFunctionDeclarationNode("", DataTypes.ANY);
+		var function = new CustomFunctionDeclarationNode("");
 		var functionExpression = arguments.get(argumentsLength);
 		var block = new Block(functionExpression.getParent());
 		functionExpression.setParent(block);
@@ -33,7 +32,7 @@ public class Lambda extends FunctionDeclarationNode {
 			if (!(argument instanceof VariableNode))
 				new LogError("Argument " + i + " (counting from zero) should be just parameter name.", callFileName,
 						callLine);
-			function.addParameter(((VariableNode) argument).getName(), DataTypes.ANY);
+			function.addParameter(((VariableNode) argument).getName());
 		}
 		return new Function(function);
 	}

@@ -150,7 +150,7 @@ public class ExpressionParser {
 			if (STRING_LITERALS.containsKey(literal))
 				return STRING_LITERALS.get(literal);
 			else {
-				var newStringLiteral = new ConstantNode(literal, dataType);
+				var newStringLiteral = new ConstantNode(literal);
 				STRING_LITERALS.put(literal, newStringLiteral);
 				return newStringLiteral;
 			}
@@ -170,7 +170,7 @@ public class ExpressionParser {
 		default:
 			new LogError("There isn't constant of " + dataType.toString().toLowerCase());
 		}
-		var newLiteral = new ConstantNode(valueOfDataType, dataType);
+		var newLiteral = new ConstantNode(valueOfDataType);
 		LITERALS.put(literal, newLiteral);
 		return newLiteral;
 	}

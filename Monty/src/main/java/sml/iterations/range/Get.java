@@ -19,14 +19,13 @@ package sml.iterations.range;
 import java.util.ArrayList;
 
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import sml.data.Method;
 
 final class Get extends Method<Range> {
 
 	public Get(Range range) {
-		super(range, "get", DataTypes.ANY);
-		addParameter("index", DataTypes.INTEGER);
+		super(range, "get");
+		addParameter("index");
 	}
 
 	@Override

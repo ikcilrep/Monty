@@ -3,14 +3,13 @@ package sml.data.list;
 import java.util.ArrayList;
 
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import sml.data.Method;
 
 final class Get extends Method<List> {
 
 	Get(List parent) {
-		super(parent, "get", DataTypes.ANY);
-		addParameter("index", DataTypes.INTEGER);
+		super(parent, "get");
+		addParameter("index");
 	}
 
 	@Override

@@ -19,14 +19,13 @@ package sml.data.list;
 import java.util.ArrayList;
 
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import sml.data.Method;
 
 final class Add extends Method<List> {
 
 	Add(List array) {
-		super(array, "add", DataTypes.ANY);
-		addParameter("other", DataTypes.ANY);
+		super(array, "add");
+		addParameter("other");
 	}
 
 	@Override

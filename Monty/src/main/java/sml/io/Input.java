@@ -23,14 +23,13 @@ import java.util.Scanner;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 
 public final class Input extends FunctionDeclarationNode {
 
 	public static Scanner scanner = new Scanner(System.in);
 
 	public Input() {
-		super("input", DataTypes.STRING);
+		super("input");
 		setBody(new Block(null));
 	}
 

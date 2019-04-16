@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import parser.LogError;
 import sml.data.returning.Nothing;
 import sml.data.returning.VoidType;
@@ -29,9 +28,9 @@ import sml.data.returning.VoidType;
 public final class Sleep extends FunctionDeclarationNode {
 
 	public Sleep() {
-		super("sleep", DataTypes.VOID);
+		super("sleep");
 		setBody(new Block(null));
-		addParameter("millis", DataTypes.INTEGER);
+		addParameter("millis");
 	}
 
 	@Override

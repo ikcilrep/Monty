@@ -22,12 +22,11 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 
 public final class Random extends FunctionDeclarationNode {
 
 	public Random() {
-		super("random", DataTypes.REAL);
+		super("random");
 		setBody(new Block(null));
 
 	}

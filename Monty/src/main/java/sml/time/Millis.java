@@ -22,12 +22,11 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 
 public final class Millis extends FunctionDeclarationNode {
 
 	public Millis() {
-		super("millis", DataTypes.INTEGER);
+		super("millis");
 		setBody(new Block(null));
 	}
 

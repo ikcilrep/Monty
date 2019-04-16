@@ -8,7 +8,7 @@ import sml.data.Method;
 final class Call extends Method<Function> {
 
 	public Call(Function parent) {
-		super(parent, "call", parent.function.getType());
+		super(parent, "call");
 	}
 
 	@Override

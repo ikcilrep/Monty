@@ -16,20 +16,15 @@ limitations under the License.
 
 package parser.parsing;
 
-import java.util.ArrayList;
 
 import ast.Block;
-import ast.RunnableNode;
 import ast.declarations.CustomFunctionDeclarationNode;
 import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
-import ast.expressions.ConstantNode;
 import ast.expressions.FunctionCallNode;
 import ast.expressions.OperationNode;
-import ast.expressions.VariableNode;
 import ast.statements.BreakStatementNode;
-import ast.statements.ChangeToStatementNode;
 import ast.statements.ContinueStatementNode;
 import ast.statements.ForStatementNode;
 import ast.statements.IfStatementNode;
@@ -37,20 +32,13 @@ import ast.statements.ReturnStatementNode;
 import ast.statements.WhileStatementNode;
 import lexer.OptimizedTokensArray;
 import lexer.TokenTypes;
-import parser.DataTypes;
 import parser.LogError;
-import parser.Tokens;
 
 public abstract class AdderToBlock {
 	public final static void addBreakStatement(Block block, String fileName, int line) {
 		block.addChild(new BreakStatementNode(fileName, line));
 	}
 
-	public final static void addChangeToStatement(Block block, OptimizedTokensArray tokens) {
-		block.addChild(new ChangeToStatementNode(new VariableNode(tokens.get(1).getText()),
-				Tokens.getDataType(tokens.get(3).getType()), tokens.get(0).getFileName(), tokens.get(0).getLine(),
-				block));
-	}
 
 	public final static void addContinueStatement(Block block, String fileName, int line) {
 		block.addChild(new ContinueStatementNode(fileName, line));
@@ -94,26 +82,23 @@ public abstract class AdderToBlock {
 
 	public final static void parseFunctionsParameters(int start, OptimizedTokensArray tokens,
 			FunctionDeclarationNode function) {
-		DataTypes type = null;
 		String name = null;
 		for (int i = start; i < tokens.length(); i++) {
 			var tokenType = tokens.get(i).getType();
 			var isTokenTypeEqualsComma = tokens.get(i).getType().equals(TokenTypes.COMMA);
 			if (tokenType.equals(TokenTypes.IDENTIFIER))
 				name = tokens.get(i).getText();
-			else if (!isTokenTypeEqualsComma)
-				type = Tokens.getDataType(tokenType);
 			if (isTokenTypeEqualsComma || i + 1 >= tokens.length())
-				function.addParameter(name, type);
+				function.addParameter(name);
 		}
 	}
 
 	public final static Block addFunctionDeclaration(Block block, OptimizedTokensArray tokens) {
-		var functionName = tokens.get(2).getText();
-		var function = new CustomFunctionDeclarationNode(functionName, Tokens.getDataType(tokens.get(1).getType()));
+		var functionName = tokens.get(1).getText();
+		var function = new CustomFunctionDeclarationNode(functionName);
 		if (Character.isUpperCase(functionName.charAt(0)))
 			new LogError("Function name " + functionName + " have to start with lower case.", tokens.get(2));
-		parseFunctionsParameters(3, tokens, function);
+		parseFunctionsParameters(2, tokens, function);
 		function.setBody(new Block(block));
 		block.addFunction(function, tokens.get(1));
 		return function.getBody();
@@ -147,34 +132,19 @@ public abstract class AdderToBlock {
 	}
 
 	public final static void addVariableDeclaration(Block block, OptimizedTokensArray tokens) {
-		var isDynamic = tokens.get(0).getType().equals(TokenTypes.DYNAMIC_KEYWORD);
-		int n = isDynamic ? 3 : 2;
-		var dataType = Tokens.getDataType(tokens.get(n - 2).getType());
-		var name = tokens.get(n - 1).getText();
+		var name = tokens.get(1).getText();
 		var isConst = Character.isUpperCase(name.charAt(0));
-		var variable = new VariableDeclarationNode(name, dataType);
-		variable.setDynamic(isDynamic);
-		block.addVariable(variable, tokens.get(n - 2));
-		if (tokens.length() > n) {
+		var variable = new VariableDeclarationNode(name);
+		block.addVariable(variable, tokens.get(0));
+		if (tokens.length() > 2) {
 			if (isConst)
-				ExpressionParser.parseInfix(block, tokens, n - 1).run();
+				ExpressionParser.parseInfix(block, tokens, 1).run();
 			else
-				addExpression(block, tokens, n - 1);
+				addExpression(block, tokens, 1);
 		} else if (isConst)
 			new LogError("Const value must be declared at the same time as whole variable.", tokens.get(1));
 
 		variable.setConst(isConst);
-		if (!isConst) {
-			var children = block.getChildren();
-			var operation = new OperationNode("=", block);
-			operation.setLeftOperand(new OperationNode(new VariableNode(name), block));
-			operation.setRightOperand(
-					new OperationNode(new ConstantNode(DataTypes.getNeutralValue(dataType), dataType), block));
-			block.setChildren(new ArrayList<RunnableNode>());
-			block.addChild(operation);
-			block.getChildren().addAll(children);
-		}
-
 	}
 
 	public final static Block addWhileStatement(Block block, OptimizedTokensArray tokens) {

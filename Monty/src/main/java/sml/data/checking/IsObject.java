@@ -22,14 +22,13 @@ import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.StructDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 
 public final class IsObject extends FunctionDeclarationNode {
 
 	public IsObject() {
-		super("isObject", DataTypes.BOOLEAN);
+		super("isObject");
 		setBody(new Block(null));
-		addParameter("toCheck", DataTypes.ANY);
+		addParameter("toCheck");
 	}
 
 	@Override

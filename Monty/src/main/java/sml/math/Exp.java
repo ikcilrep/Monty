@@ -23,16 +23,15 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 
 public final class Exp extends FunctionDeclarationNode {
 	private final static int SCALE = 100;
 	private final static BigDecimal PRECISION = BigDecimal.valueOf(100);
 
 	public Exp() {
-		super("exp", DataTypes.REAL);
+		super("exp");
 		setBody(new Block(null));
-		addParameter("x", DataTypes.REAL);
+		addParameter("x");
 	}
 
 	public final static BigDecimal exp(BigDecimal x) {

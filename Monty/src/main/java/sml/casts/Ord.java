@@ -22,15 +22,14 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import parser.LogError;
 
 public final class Ord extends FunctionDeclarationNode {
 
 	public Ord() {
-		super("ord", DataTypes.INTEGER);
+		super("ord");
 		setBody(new Block(null));
-		addParameter("chr", DataTypes.STRING);
+		addParameter("chr");
 	}
 
 	@Override

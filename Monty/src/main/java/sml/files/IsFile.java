@@ -21,15 +21,14 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 import parser.LogError;
 
 public final class IsFile extends FunctionDeclarationNode {
 
 	public IsFile() {
-		super("isFile", DataTypes.BOOLEAN);
+		super("isFile");
 		setBody(new Block(null));
-		addParameter("path", DataTypes.STRING);
+		addParameter("path");
 	}
 
 	@Override

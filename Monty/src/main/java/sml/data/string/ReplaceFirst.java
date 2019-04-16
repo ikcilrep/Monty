@@ -21,16 +21,16 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 
-public final class ReplaceFirst extends FunctionDeclarationNode {
+final class ReplaceFirst extends FunctionDeclarationNode {
 
 	public ReplaceFirst() {
-		super("replaceFirst", DataTypes.STRING);
+		super("replaceFirst");
 		setBody(new Block(null));
-		addParameter("str", DataTypes.STRING);
-		addParameter("regex", DataTypes.STRING);
-		addParameter("replacement", DataTypes.STRING);
+		addParameter("str");
+		addParameter("regex");
+		addParameter("replacement");
+		StringStruct.addFunction(this);
 
 	}
 

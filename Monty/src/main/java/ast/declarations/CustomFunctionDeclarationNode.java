@@ -22,15 +22,14 @@ import java.util.Map;
 
 import ast.expressions.OperationNode;
 import ast.statements.ContinueStatementNode;
-import parser.DataTypes;
 import parser.LogError;
 import sml.data.returning.BreakType;
+import sml.data.returning.Nothing;
 
 public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
 
-	public CustomFunctionDeclarationNode(String name, DataTypes type) {
-		super(name, type);
-
+	public CustomFunctionDeclarationNode(String name) {
+		super(name);
 	}
 
 	@Override
@@ -53,7 +52,7 @@ public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode
 		}
 
 		if (result == null)
-			result = DataTypes.getNeutralValue(getType());
+			result = Nothing.nothing;
 		else {
 			if (result instanceof BreakType)
 				new LogError("Trying to break function " + getName(), fileNames, lines);
@@ -61,12 +60,6 @@ public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode
 				new LogError("Trying to continue function " + getName(), fileNames, lines);
 		}
 		body.setVariables(variables);
-		var resultDataType = DataTypes.getDataType(result);
-		if (resultDataType == null)
-			resultDataType = getType();
-		else if (!(type.equals(DataTypes.ANY) || resultDataType.equals(type)))
-			new LogError("Function " + getName() + " should return " + type.toString().toLowerCase()
-					+ ",\nbut returned " + resultDataType.toString().toLowerCase(), fileNames, lines);
 		return result;
 	}
 }

@@ -23,15 +23,14 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.DataTypes;
 
 public final class Round extends FunctionDeclarationNode {
 
 	public Round() {
-		super("round", DataTypes.REAL);
+		super("round");
 		setBody(new Block(null));
-		addParameter("f", DataTypes.REAL);
-		addParameter("scale", DataTypes.INTEGER);
+		addParameter("f");
+		addParameter("scale");
 
 	}
 
