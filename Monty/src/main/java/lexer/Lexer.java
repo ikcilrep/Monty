@@ -23,13 +23,17 @@ import org.apache.commons.text.StringEscapeUtils;
 import parser.LogError;
 
 public final class Lexer {
-	private final static Set<Character> operatorsParts = Set.of('+', '-', '*', '/', '!', '<', '>', '=', '|', '&', '%',
+	private final static Set<Character> OPERATORS_PARTS = Set.of('+', '-', '*', '/', '!', '<', '>', '=', '|', '&', '%',
 			'^', '.');
-	private final static Set<String> operators = Set.of(".", "!", "+", "-", "*", "/", "<", ">", "&", "|", "^", "=",
+	private final static Set<String> OPERATORS = Set.of(".", "!", "+", "-", "*", "/", "<", ">", "&", "|", "^", "=",
 			"<<", ">>", "!=", "+=", "-=", "*=", "/=", "<=", ">=", "&=", "|=", "^=", "==", "<<=", ">>=", "%", "%=");
 
+	private final static Set<TokenTypes> hasValue = Set.of(TokenTypes.BOOLEAN_LITERAL, TokenTypes.INTEGER_LITERAL,
+			TokenTypes.STRING_LITERAL, TokenTypes.REAL_LITERAL, TokenTypes.IDENTIFIER, TokenTypes.CLOSING_BRACKET,
+			TokenTypes.CLOSING_SQUARE_BRACKET);
+
 	private final static TokenTypes operatorToTokenType(String tokenText, String fileName, int line) {
-		if (operators.contains(tokenText))
+		if (OPERATORS.contains(tokenText))
 			return TokenTypes.OPERATOR;
 		new LogError("Unknown operator:\t" + tokenText, fileName, line);
 		return null;
@@ -62,7 +66,7 @@ public final class Lexer {
 			return TokenTypes.OPENING_BRACKET;
 		case ')':
 			return TokenTypes.CLOSING_BRACKET;
-		case'[':
+		case '[':
 			return TokenTypes.OPENING_SQUARE_BRACKET;
 		case ']':
 			return TokenTypes.CLOSING_SQUARE_BRACKET;
@@ -130,14 +134,15 @@ public final class Lexer {
 			if (!isInComment) {
 				if (c == '#')
 					isInComment = true;
-				if (c == ';' || c == ',' || c == '(' || c == ')'|| c == '[' || c == ']')
+				if (c == ';' || c == ',' || c == '(' || c == ')' || c == '[' || c == ']')
 					tokens.append(new Token(interpunctionToTokenType(c), c + "", fileName, line));
 				if (c == '\"')
 					return stringLiteral(code, fileName, line, tokens, i);
-				if (Character.isDigit(c)
-						|| ((c == '+' || c == '-') && (i + 1 < code.length() && Character.isDigit(code.charAt(i + 1)))))
+				if (Character.isDigit(c) || ((c == '+' || c == '-')
+						&& (tokens.length() == 0 || !hasValue.contains(tokens.get(tokens.length() - 1).getType())
+								&& (i + 1 < code.length() && Character.isDigit(code.charAt(i + 1))))))
 					return number(code, fileName, line, tokens, i);
-				if (operatorsParts.contains(c))
+				if (OPERATORS_PARTS.contains(c))
 					return operator(code, fileName, line, tokens, i);
 				if (Character.isJavaIdentifierStart(c))
 					return identifierOrKeyword(code, fileName, line, tokens, i);
@@ -169,7 +174,7 @@ public final class Lexer {
 	private final static OptimizedTokensArray operator(String code, String fileName, int line,
 			OptimizedTokensArray tokens, int i) {
 		var tokenText = "" + code.charAt(i);
-		while (++i < code.length() && operatorsParts.contains(code.charAt(i)))
+		while (++i < code.length() && OPERATORS_PARTS.contains(code.charAt(i)))
 			tokenText += code.charAt(i);
 		Token token = new Token(operatorToTokenType(tokenText, fileName, line), tokenText, fileName, line);
 		tokens.append(token);

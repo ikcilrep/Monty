@@ -25,7 +25,6 @@ public class Main {
 	public static String path;
 
 	public static void main(String[] args) throws FileNotFoundException {
-
 		if (args.length < 1) {
 			System.out.println("To run:\tjava -jar Monty.jar [file_name.mt]");
 			System.exit(1);
