@@ -19,7 +19,7 @@ public class Converter {
 	private static HashMap<String, Integer> precedence;
 	private static Set<String> rightAssociative = Set.of("=", "+=", "-=", "*=", "/=", "%=", "&=", "^=", "|=", "<<=",
 			">>=");
-	private static Set<String> notAssociative = Set.of("<", "<=", ">=", ">");
+	private static Set<String> notAssociative = Set.of("<", "<=", ">=", ">");//, "instanceof");
 
 	static {
 		precedence = new HashMap<>();
@@ -36,6 +36,7 @@ public class Converter {
 		precedence.put("<=", 9);
 		precedence.put(">", 9);
 		precedence.put(">=", 9);
+		//precedence.put("instanceof", 9);
 		precedence.put("==", 8);
 		precedence.put("!=", 8);
 		precedence.put("&", 7);

@@ -207,45 +207,78 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 			rightType = DataTypes.getDataType(rightValue);
 
 		if (!leftType.equals(rightType)) {
-			if (leftType.equals(DataTypes.INTEGER) && rightType.equals(DataTypes.FLOAT)) {
-				leftType = DataTypes.FLOAT;
-				leftValue = Double.valueOf((int) leftValue);
-			} else if (leftType.equals(DataTypes.BIG_INTEGER) && rightType.equals(DataTypes.FLOAT)) {
-				leftType = DataTypes.FLOAT;
-				if (isNotAssignment) {
-					leftValue = ToFloat.toReal(leftValue, fileName, line);
-				} else {
-					var variable = (VariableDeclarationNode) leftValue;
-					variable.setValue(ToFloat.toReal(variable.getValue(), fileName, line));
+			switch (leftType) {
+			case INTEGER:
+				switch (rightType) {
+				case FLOAT:
+					leftType = DataTypes.FLOAT;
+					leftValue = Double.valueOf((int) leftValue);
+					break;
+				case BIG_INTEGER:
+					leftType = DataTypes.BIG_INTEGER;
+					if (isNotAssignment)
+						leftValue = BigInteger.valueOf((int) leftValue);
+					else {
+						var variable = (VariableDeclarationNode) leftValue;
+						variable.setValue(BigInteger.valueOf((int) variable.getValue()), fileName, line);
+					}
+					break;
+				default:
+					break;
 				}
-			} else if (leftType.equals(DataTypes.BIG_INTEGER) && rightType.equals(DataTypes.INTEGER)) {
-				rightType = DataTypes.BIG_INTEGER;
-				rightValue = BigInteger.valueOf((int) rightValue);
-			} else if (leftType.equals(DataTypes.INTEGER) && rightType.equals(DataTypes.BIG_INTEGER)) {
-				leftType = DataTypes.BIG_INTEGER;
-				if (isNotAssignment) {
-					leftValue = BigInteger.valueOf((int) leftValue);
-				} else {
-					var variable = (VariableDeclarationNode) leftValue;
-					variable.setValue(BigInteger.valueOf((int) variable.getValue()), fileName, line);
+			case BIG_INTEGER:
+				switch (rightType) {
+				case FLOAT:
+					leftType = DataTypes.FLOAT;
+					if (isNotAssignment) {
+						leftValue = ToFloat.toReal(leftValue, fileName, line);
+					} else {
+						var variable = (VariableDeclarationNode) leftValue;
+						variable.setValue(ToFloat.toReal(variable.getValue(), fileName, line));
+					}
+					break;
+				case INTEGER:
+					rightType = DataTypes.BIG_INTEGER;
+					rightValue = BigInteger.valueOf((int) rightValue);
+					break;
+				default:
+					break;
 				}
-			} else if (isNotAssignment && operator.equals("+") && rightType.equals(DataTypes.STRING)) {
+				break;
+			case FLOAT:
+				switch (rightType) {
+				case BIG_INTEGER:
+					rightType = DataTypes.FLOAT;
+					rightValue = ((BigInteger) leftValue).doubleValue();
+					break;
+				case INTEGER:
+					rightType = DataTypes.FLOAT;
+					rightValue = Double.valueOf((int) rightValue);
+					break;
+				default:
+					break;
+				}
+				break;
+			case STRING:
+				if (operator.contains("+")) {
+					rightType = DataTypes.STRING;
+					rightValue = rightValue.toString();
+				}
+				break;
+			case ANY:
+				rightType = DataTypes.ANY;
+				break;
+			default:
+				break;
+			}
+		}
+		if (!leftType.equals(rightType)) {
+			if (rightType.equals(DataTypes.ANY))
+				leftType = DataTypes.ANY;
+			else if (isNotAssignment && operator.equals("+") && rightType.equals(DataTypes.STRING)) {
 				leftType = DataTypes.STRING;
 				leftValue = leftValue.toString();
-			} else if (leftType.equals(DataTypes.FLOAT) && rightType.equals(DataTypes.BIG_INTEGER)) {
-				rightType = DataTypes.FLOAT;
-				rightValue = ToFloat.toReal(rightValue, fileName, line);
-			} else if (leftType.equals(DataTypes.FLOAT) && rightType.equals(DataTypes.INTEGER)) {
-				rightType = DataTypes.FLOAT;
-				rightValue = Double.valueOf((int) rightValue);
-			} else if (operator.contains("+") && leftType.equals(DataTypes.STRING)) {
-				rightType = DataTypes.STRING;
-				rightValue = rightValue.toString();
-			} else if (leftType.equals(DataTypes.ANY))
-				rightType = DataTypes.ANY;
-			else if (rightType.equals(DataTypes.ANY))
-				leftType = DataTypes.ANY;
-			else
+			} else
 				new LogError("Type mismatch:\t" + leftType.toString().toLowerCase() + " and "
 						+ rightType.toString().toLowerCase(), fileName, line);
 		}

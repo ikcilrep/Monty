@@ -114,6 +114,8 @@ public final class Lexer {
 			return TokenTypes.DO_KEYWORD;
 		case "to":
 			return TokenTypes.TO_KEYWORD;
+		/*case "instanceof":
+			return TokenTypes.OPERATOR;*/
 		case "true":
 		case "false":
 			return TokenTypes.BOOLEAN_LITERAL;
