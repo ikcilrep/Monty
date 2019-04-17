@@ -141,12 +141,14 @@ public class StructDeclarationNode extends Block implements Cloneable {
 		this.functions = functions;
 	}
 
-	/*
-	 * @Override public String toString() { if (hasFunction("toString")) { var
-	 * function = getFunction("toString"); return function.call(new ArrayList<>(),
-	 * function.getFileName(), function.getLine()).toString(); } return name + "#" +
-	 * getInstanceNumber(); }
-	 */
+	@Override
+	public String toString() {
+		if (hasFunction("toString")) {
+			var function = getFunction("toString");
+			return function.call(new ArrayList<>(), function.getFileName(), function.getLine()).toString();
+		}
+		return name + "#" + getInstanceNumber();
+	}
 
 	@Override
 	public boolean equals(Object other) {
