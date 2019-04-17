@@ -50,8 +50,7 @@ public class LogError {
 
 	public LogError(String message, Token token) {
 		System.out.println(
-				getMessage(message) 
-				+ "\nLook at " + token.getLine() + " line in " + token.getFileName() + ".");
+				getMessage(message) + "\nLook at " + token.getLine() + " line in " + token.getFileName() + ".");
 		System.exit(0);
 	}
 }

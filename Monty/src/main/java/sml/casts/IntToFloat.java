@@ -13,14 +13,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
 package sml.casts;
 
-import java.math.BigDecimal;
+import java.math.BigInteger;
 
-final class RealToBoolean {
+public final class IntToFloat {
 
-	public static Boolean realToBoolean(BigDecimal floating) {
-		return floating.compareTo(BigDecimal.ZERO) > 0;
+	public static double intToFloat(BigInteger integer) {
+		return integer.doubleValue();
+
 	}
 
 }

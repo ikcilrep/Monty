@@ -129,8 +129,7 @@ public class Converter {
 	private final static FunctionCallNode parseFunction(String name, OptimizedTokensArray tokens, Block parent,
 			IntegerHolder i) {
 		var function = new FunctionCallNode(name);
-		function.setArguments(parseExpressionsSeparatedByComma(
-				tokens, parent, i));
+		function.setArguments(parseExpressionsSeparatedByComma(tokens, parent, i));
 		return function;
 	}
 
@@ -156,7 +155,7 @@ public class Converter {
 			try {
 				type = token.getType();
 			} catch (NullPointerException e) {
-				new LogError("Unclosed bracket.", tokens.get(i.i-1));
+				new LogError("Unclosed bracket.", tokens.get(i.i - 1));
 			}
 
 			if (type.equals(TokenTypes.OPENING_BRACKET))

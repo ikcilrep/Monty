@@ -16,13 +16,15 @@ limitations under the License.
 
 package ast.expressions;
 
+import java.math.BigInteger;
+
 import ast.Block;
 import ast.NodeWithParent;
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import parser.DataTypes;
 import parser.LogError;
-import sml.casts.ToReal;
+import sml.casts.ToFloat;
 
 public final class OperationNode extends NodeWithParent implements Cloneable {
 
@@ -129,13 +131,15 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 		// Returns calculated value.
 		if (!(operand instanceof String)) {
 			var literal = getLiteral(operand, fileName, line);
-			if (literal instanceof VariableDeclarationNode) {
+			if (literal instanceof VariableDeclarationNode)
 				return ((VariableDeclarationNode) literal).getValue();
-			} else {
+			else
 				return literal;
-			}
 		}
-		return solve();
+		var value = solve();
+		if (value instanceof VariableDeclarationNode)
+			return ((VariableDeclarationNode) value).getValue();
+		return value;
 	}
 
 	public final void setLeftOperand(OperationNode left) {
@@ -176,7 +180,6 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 
 		var a = left.solve();
 		var leftValue = getLiteral(a, left.fileName, left.line);
-		
 
 		if (isNotAssignment)
 			if (leftValue instanceof VariableDeclarationNode)
@@ -193,12 +196,9 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 		if (rightValue instanceof VariableDeclarationNode)
 			rightValue = ((VariableDeclarationNode) rightValue).getValue();
 		var rightType = DataTypes.getDataType(rightValue);
-		DataTypes leftType = null;
-		if (!isNotAssignment)
-			leftType =  rightType;
-		else
-			leftType =  DataTypes.getDataType(leftValue);
-
+		DataTypes leftType = DataTypes.getDataType(leftValue);
+		if (!isNotAssignment && (leftType == null || leftType == DataTypes.VOID))
+			leftType = rightType;
 
 		if (leftType.equals(DataTypes.ANY) && !(leftValue instanceof StructDeclarationNode)
 				&& !(leftValue instanceof VariableDeclarationNode))
@@ -207,15 +207,37 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 			rightType = DataTypes.getDataType(rightValue);
 
 		if (!leftType.equals(rightType)) {
-			if (isNotAssignment && (leftType.equals(DataTypes.INTEGER) && rightType.equals(DataTypes.REAL))) {
-				leftType = DataTypes.REAL;
-				leftValue = ToReal.toReal(leftValue, fileName, line);
+			if (leftType.equals(DataTypes.INTEGER) && rightType.equals(DataTypes.FLOAT)) {
+				leftType = DataTypes.FLOAT;
+				leftValue = Double.valueOf((int) leftValue);
+			} else if (leftType.equals(DataTypes.BIG_INTEGER) && rightType.equals(DataTypes.FLOAT)) {
+				leftType = DataTypes.FLOAT;
+				if (isNotAssignment) {
+					leftValue = ToFloat.toReal(leftValue, fileName, line);
+				} else {
+					var variable = (VariableDeclarationNode) leftValue;
+					variable.setValue(ToFloat.toReal(variable.getValue(), fileName, line));
+				}
+			} else if (leftType.equals(DataTypes.BIG_INTEGER) && rightType.equals(DataTypes.INTEGER)) {
+				rightType = DataTypes.BIG_INTEGER;
+				rightValue = BigInteger.valueOf((int) rightValue);
+			} else if (leftType.equals(DataTypes.INTEGER) && rightType.equals(DataTypes.BIG_INTEGER)) {
+				leftType = DataTypes.BIG_INTEGER;
+				if (isNotAssignment) {
+					leftValue = BigInteger.valueOf((int) leftValue);
+				} else {
+					var variable = (VariableDeclarationNode) leftValue;
+					variable.setValue(BigInteger.valueOf((int) variable.getValue()), fileName, line);
+				}
 			} else if (isNotAssignment && operator.equals("+") && rightType.equals(DataTypes.STRING)) {
 				leftType = DataTypes.STRING;
 				leftValue = leftValue.toString();
-			} else if (leftType.equals(DataTypes.REAL) && rightType.equals(DataTypes.INTEGER)) {
-				rightType = DataTypes.REAL;
-				rightValue = ToReal.toReal(rightValue, fileName, line);
+			} else if (leftType.equals(DataTypes.FLOAT) && rightType.equals(DataTypes.BIG_INTEGER)) {
+				rightType = DataTypes.FLOAT;
+				rightValue = ToFloat.toReal(rightValue, fileName, line);
+			} else if (leftType.equals(DataTypes.FLOAT) && rightType.equals(DataTypes.INTEGER)) {
+				rightType = DataTypes.FLOAT;
+				rightValue = Double.valueOf((int) rightValue);
 			} else if (operator.contains("+") && leftType.equals(DataTypes.STRING)) {
 				rightType = DataTypes.STRING;
 				rightValue = rightValue.toString();

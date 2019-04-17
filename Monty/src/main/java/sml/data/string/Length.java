@@ -22,14 +22,15 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
+import sml.data.StaticStruct;
 
 final class Length extends FunctionDeclarationNode {
 
-	public Length() {
+	public Length(StaticStruct struct) {
 		super("length");
 		setBody(new Block(null));
 		addParameter("str");
-		StringStruct.getStruct().addFunction(this);
+		struct.addFunction(this);
 	}
 
 	@Override

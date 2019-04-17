@@ -34,6 +34,7 @@ public final class FunctionCallNode extends NamedExpression {
 	public final ArrayList<OperationNode> getArguments() {
 		return arguments;
 	}
+
 	public void setArguments(ArrayList<OperationNode> arguments) {
 		this.arguments = arguments;
 	}
@@ -42,6 +43,5 @@ public final class FunctionCallNode extends NamedExpression {
 	public final String getName() {
 		return name;
 	}
-
 
 }

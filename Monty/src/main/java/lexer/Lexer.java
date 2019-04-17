@@ -165,7 +165,7 @@ public final class Lexer {
 		var tokenText = "" + code.charAt(i);
 		while (++i < code.length() && Character.isDigit(code.charAt(i)))
 			tokenText += code.charAt(i);
-		if (i < code.length() && code.charAt(i) == '.')
+		if (i + 1 < code.length() && code.charAt(i) == '.' && Character.isDigit(code.charAt(i + 1)))
 			return realLiteral(code, tokenText + '.', fileName, line, tokens, i);
 		tokens.append(new Token(TokenTypes.INTEGER_LITERAL, tokenText, fileName, line));
 		return lex(code, fileName, line, tokens, i);

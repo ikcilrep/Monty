@@ -22,7 +22,7 @@ public final class Token implements Cloneable {
 	TokenTypes type;
 	private int line;
 	private boolean isFunction;
-	
+
 	public boolean isFunction() {
 		return isFunction;
 	}

@@ -16,14 +16,12 @@ limitations under the License.
 
 package ast.declarations;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import ast.Block;
 import ast.expressions.OperationNode;
 import parser.LogError;
-
 
 public abstract class FunctionDeclarationNode extends DeclarationNode implements Cloneable {
 	Block body;
@@ -72,7 +70,7 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 
 		for (int i = 0; i < arguments.size(); i++)
 			runnedArguments.set(i, arguments.get(i).run());
-		
+
 		for (int i = 0; i < runnedArguments.size(); i++) {
 			var name = parameters.get(i).getName();
 			VariableDeclarationNode variable = null;

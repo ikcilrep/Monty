@@ -14,29 +14,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sml.math;
+package sml.casts;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.math.BigInteger;
 
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
-import ast.expressions.OperationNode;
+public final class FloatToInt {
 
-public final class Min extends FunctionDeclarationNode {
-
-	public Min() {
-		super("min");
-		setBody(new Block(null));
-		addParameter("a");
-		addParameter("b");
-	}
-
-	@Override
-	public BigDecimal call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		var body = getBody();
-		return body.getRealVariableValue("a").min(body.getRealVariableValue("b"));
+	public static BigInteger floatToInt(BigDecimal floating) {
+		return floating.toBigInteger();
 	}
 
 }

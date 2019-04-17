@@ -34,7 +34,7 @@ public final class ToBoolean extends FunctionDeclarationNode {
 		if (a instanceof BigInteger)
 			return IntToBoolean.intToBoolean((BigInteger) a);
 		if (a instanceof BigDecimal)
-			return RealToBoolean.realToBoolean((BigDecimal) a);
+			return FloatToBoolean.floatToBoolean((BigDecimal) a);
 		if (a instanceof Boolean)
 			return (boolean) a;
 		if (a instanceof String)

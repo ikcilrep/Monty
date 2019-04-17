@@ -17,6 +17,7 @@ package parser.parsing;
 
 public final class IntegerHolder {
 	int i;
+
 	public IntegerHolder(int i) {
 		this.i = i;
 	}

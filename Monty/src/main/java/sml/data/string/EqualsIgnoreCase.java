@@ -21,15 +21,16 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
+import sml.data.StaticStruct;
 
 final class EqualsIgnoreCase extends FunctionDeclarationNode {
 
-	public EqualsIgnoreCase() {
+	public EqualsIgnoreCase(StaticStruct struct) {
 		super("equalsIgnoreCase");
 		setBody(new Block(null));
 		addParameter("str");
 		addParameter("toCompare");
-		StringStruct.getStruct().addFunction(this);
+		struct.addFunction(this);
 	}
 
 	@Override

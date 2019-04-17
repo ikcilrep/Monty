@@ -29,11 +29,8 @@ public final class VariableNode extends NamedExpression {
 		return name;
 	}
 
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
-
 
 }

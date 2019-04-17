@@ -135,7 +135,7 @@ public abstract class Identificator {
 		TokenTypes last = null;
 		for (int i = 2; i < tokensBeforeSemicolon.length(); i++) {
 			var t = tokensBeforeSemicolon.get(i);
-			 if (t.getType().equals(TokenTypes.COMMA)) {
+			if (t.getType().equals(TokenTypes.COMMA)) {
 				if (!(last.equals(TokenTypes.IDENTIFIER) && i + 1 < tokensBeforeSemicolon.length()))
 					new LogError("Unexpected comma.", t);
 			} else if (!t.getType().equals(TokenTypes.IDENTIFIER))
@@ -190,7 +190,8 @@ public abstract class Identificator {
 	public static boolean isVariableDeclaration(OptimizedTokensArray tokensBeforeSemicolon) {
 		if (!tokensBeforeSemicolon.get(0).getType().equals(TokenTypes.VAR_KEYWORD))
 			return false;
-		if (tokensBeforeSemicolon.length() == 1 || !tokensBeforeSemicolon.get(1).getType().equals(TokenTypes.IDENTIFIER))
+		if (tokensBeforeSemicolon.length() == 1
+				|| !tokensBeforeSemicolon.get(1).getType().equals(TokenTypes.IDENTIFIER))
 			new LogError("Expected identifier after \"var\" keyword.", tokensBeforeSemicolon.get(1));
 		if (tokensBeforeSemicolon.length() > 2
 				&& !isExpression(tokensBeforeSemicolon, 1, tokensBeforeSemicolon.length()))

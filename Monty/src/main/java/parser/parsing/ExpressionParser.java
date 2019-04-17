@@ -16,7 +16,6 @@ limitations under the License.
 
 package parser.parsing;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -112,11 +111,11 @@ public class ExpressionParser {
 		return node;
 	}
 
-	private final static OperationNode recParseList(Block parent, OptimizedTokensArray tokens, Stack<OperationNode> stack,
-			IntegerHolder i) {
+	private final static OperationNode recParseList(Block parent, OptimizedTokensArray tokens,
+			Stack<OperationNode> stack, IntegerHolder i) {
 		stack.push(new OperationNode(lists.poll(), parent));
 		i.i++;
-		return parse(parent, tokens,stack, i);
+		return parse(parent, tokens, stack, i);
 	}
 
 	private final static OperationNode parseIdentifier(Block parent, OptimizedTokensArray array, IntegerHolder i) {
@@ -159,10 +158,18 @@ public class ExpressionParser {
 		Object valueOfDataType = null;
 		switch (dataType) {
 		case INTEGER:
-			valueOfDataType = new BigInteger(literal);
+			try {
+				valueOfDataType = Integer.parseInt(literal);
+			} catch (NumberFormatException e) {
+				valueOfDataType = new BigInteger(literal);
+			}
 			break;
-		case REAL:
-			valueOfDataType = new BigDecimal(literal);
+		case FLOAT:
+			try {
+				valueOfDataType = Double.parseDouble(literal);
+			} catch (NumberFormatException e) {
+				new LogError("Float overflow.", token);
+			}
 			break;
 		case BOOLEAN:
 			valueOfDataType = Boolean.parseBoolean(literal);

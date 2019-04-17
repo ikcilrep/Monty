@@ -16,18 +16,13 @@ limitations under the License.
 
 package sml.math;
 
-import java.math.BigDecimal;
-
 import ast.declarations.VariableDeclarationNode;
 
 public final class Pi extends VariableDeclarationNode {
 	public Pi() {
 		super("Pi");
-		setValue(pi);
+		setValue(Math.PI);
 		setConst(true);
 	}
-
-	private final static BigDecimal pi = new BigDecimal(
-			"3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679");
 
 }

@@ -26,7 +26,7 @@ import sml.casts.Ord;
 import sml.casts.ToBoolean;
 import sml.casts.ToChar;
 import sml.casts.ToInt;
-import sml.casts.ToReal;
+import sml.casts.ToFloat;
 import sml.casts.ToString;
 import sml.data.Length;
 import sml.data.checking.IsBoolean;
@@ -34,7 +34,7 @@ import sml.data.checking.IsInt;
 import sml.data.checking.IsIterable;
 import sml.data.checking.IsList;
 import sml.data.checking.IsObject;
-import sml.data.checking.IsReal;
+import sml.data.checking.IsFloat;
 import sml.data.checking.IsString;
 import sml.files.AbsPath;
 import sml.files.Exists;
@@ -47,8 +47,6 @@ import sml.files.Separator;
 import sml.files.Write;
 import sml.language.Run;
 import sml.math.E;
-import sml.math.Max;
-import sml.math.Min;
 import sml.math.Pi;
 import sml.system.Argv;
 import sml.threading.Sleep;
@@ -89,7 +87,7 @@ public final class Sml extends Library {
 		sml.put("language", language);
 
 		casts.put("toBoolean", new ToBoolean());
-		casts.put("toReal", new ToReal());
+		casts.put("toFloat", new ToFloat());
 		casts.put("toInt", new ToInt());
 		casts.put("toString", new ToString());
 		casts.put("toChar", new ToChar());
@@ -101,7 +99,7 @@ public final class Sml extends Library {
 
 		checking.put("isInt", new IsInt());
 		checking.put("isIterable", new IsIterable());
-		checking.put("isReal", new IsReal());
+		checking.put("isFloat", new IsFloat());
 		checking.put("isBoolean", new IsBoolean());
 		checking.put("isString", new IsString());
 		checking.put("isList", new IsList());
@@ -116,8 +114,6 @@ public final class Sml extends Library {
 
 		math.put("Pi", new Pi());
 		math.put("E", new E());
-		math.put("min", new Min());
-		math.put("max", new Max());
 
 		errors.put("logError", IOBlocks.logError);
 

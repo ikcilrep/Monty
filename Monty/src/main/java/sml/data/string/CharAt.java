@@ -15,21 +15,24 @@ limitations under the License.
 */
 package sml.data.string;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
+import parser.DataTypes;
 import parser.LogError;
+import sml.data.StaticStruct;
 
 final class CharAt extends FunctionDeclarationNode {
 
-	public CharAt() {
+	public CharAt(StaticStruct struct) {
 		super("charAt");
 		setBody(new Block(null));
 		addParameter("str");
 		addParameter("index");
-		StringStruct.getStruct().addFunction(this);
+		struct.addFunction(this);
 	}
 
 	@Override
@@ -37,10 +40,18 @@ final class CharAt extends FunctionDeclarationNode {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
 		var str = body.getStringVariableValue("str");
-		var index = body.getIntVariableValue("index").intValue();
-		var length = str.length();
-		if (index >= length || index < 0)
-			new LogError("This string doesn't have " + index + " element", callFileName, callLine);
+		var _index = body.getVariableValue("index");
+		int index = 0;
+		if (_index instanceof Integer)
+			index = (int) _index;
+		else if (_index instanceof BigInteger) {
+			var bigIndex = (BigInteger) _index;
+			if (bigIndex.compareTo(DataTypes.INT_MAX) > 0)
+				new LogError("Index have to be less or equals 2^31-1.", callFileName, callLine);
+			else if (bigIndex.compareTo(DataTypes.INT_MIN) < 0)
+				new LogError("Index have to be greater or equals -2^31.", callFileName, callLine);
+			index = bigIndex.intValue();
+		}
 		return String.valueOf(str.charAt(index));
 	}
 

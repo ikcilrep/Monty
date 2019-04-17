@@ -17,22 +17,24 @@ limitations under the License.
 package sml.math;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
+import sml.data.StaticStruct;
 
 public final class Exp extends FunctionDeclarationNode {
 	private final static int SCALE = 100;
 	private final static BigDecimal PRECISION = BigDecimal.valueOf(100);
 
-	public Exp() {
+	public Exp(StaticStruct struct) {
 		super("exp");
 		setBody(new Block(null));
 		addParameter("x");
-		MathStruct.getStruct().addFunction(this);
+		struct.addFunction(this);
 	}
 
 	public final static BigDecimal exp(BigDecimal x) {
@@ -48,10 +50,17 @@ public final class Exp extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public BigDecimal call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var body = getBody();
-		return exp(body.getRealVariableValue("x"));
+		var x = getBody().getVariableValue("x");
+		if (x instanceof Double)
+			return Math.exp((double) x);
+		else if (x instanceof Integer)
+			return Math.exp(Double.valueOf((int) x));
+		else if (x instanceof BigInteger)
+			return Math.exp(((BigInteger) x).doubleValue());
+
+		return null;
 	}
 
 }

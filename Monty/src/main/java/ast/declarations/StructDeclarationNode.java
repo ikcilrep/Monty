@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ast.Block;
+import ast.NodeWithParent;
+import ast.RunnableNode;
 import ast.expressions.OperationNode;
 import ast.expressions.OperatorOverloading;
 import lexer.Token;
@@ -32,6 +34,7 @@ public class StructDeclarationNode extends Block implements Cloneable {
 	private int structNumber;
 	private int instanceNumber;
 	private String name;
+	private Constructor constructor;
 
 	public StructDeclarationNode(Block parent, String name) {
 		super(parent);
@@ -40,28 +43,12 @@ public class StructDeclarationNode extends Block implements Cloneable {
 		numbers.put(structNumber, -1);
 	}
 
-	public void addNewStruct(Block block, Token token) {
-		var struct = this;
-		var newStructFunction = new FunctionDeclarationNode(name) {
+	public void addNewStruct(Token token) {
 
-			@Override
-			public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-				var newStruct = struct.copy();
-				newStruct.run();
-				var thisVariable = new VariableDeclarationNode("This");
-				thisVariable.setValue(newStruct);
-				thisVariable.setConst(true);
-				newStruct.addVariable(thisVariable);
-				newStruct.incrementNumber();
-				if (newStruct.hasFunction("init")) {
-					var function = newStruct.getFunction("init");
-					function.call(arguments, callFileName, callLine);
-				}
-				return newStruct;
-			}
-		};
-		newStructFunction.setBody(new Block(null));
-		block.addFunction(newStructFunction, token);
+		constructor = new Constructor(this);
+		parent.addStructure(this, token.getFileName(), token.getLine());
+		parent.addFunction(constructor, token);
+
 		var checkingFunction = new FunctionDeclarationNode("is" + name) {
 
 			@Override
@@ -69,14 +56,14 @@ public class StructDeclarationNode extends Block implements Cloneable {
 				setArguments(arguments, callFileName, callLine);
 				var other = getBody().getVariable("other").getValue();
 				if (other instanceof StructDeclarationNode)
-					return struct.instanceOfMe(((StructDeclarationNode) other));
+					return instanceOfMe(((StructDeclarationNode) other));
 				return false;
 			}
 
 		};
 		checkingFunction.setBody(new Block(null));
 		checkingFunction.addParameter("other");
-		block.addFunction(checkingFunction, token);
+		parent.addFunction(checkingFunction, token);
 	}
 
 	@Override
@@ -84,22 +71,43 @@ public class StructDeclarationNode extends Block implements Cloneable {
 		StructDeclarationNode copied = null;
 		try {
 			copied = (StructDeclarationNode) clone();
+			copied.constructor.setStruct(copied);
+			var structs = new HashMap<String, StructDeclarationNode>();
+			for (Map.Entry<String, StructDeclarationNode> entry : getStructures().entrySet()) {
+				var key = entry.getKey();
+				var value = entry.getValue().copy();
+				value.setParent(copied);
+				structs.put(key, value);
+			}
+			copied.setStructures(structs);
+
 			var variables = new HashMap<String, VariableDeclarationNode>();
-			var variablesSet = copied.getVariables().entrySet();
-			for (Map.Entry<String, VariableDeclarationNode> entry : variablesSet) {
+			for (Map.Entry<String, VariableDeclarationNode> entry : getVariables().entrySet()) {
 				var key = entry.getKey();
 				variables.put(key, entry.getValue().copy());
 			}
 			copied.setVariables(variables);
+
 			var functions = new HashMap<String, FunctionDeclarationNode>();
-			var functionsSet = copied.getFunctions().entrySet();
-			for (Map.Entry<String, FunctionDeclarationNode> entry : functionsSet) {
+			for (Map.Entry<String, FunctionDeclarationNode> entry : getFunctions().entrySet()) {
 				var key = entry.getKey();
 				var value = entry.getValue().copy();
 				value.getBody().setParent(copied);
 				functions.put(key, value);
 			}
 			copied.setFunctions(functions);
+
+			var myChildren = getChildren();
+			var children = new ArrayList<RunnableNode>(myChildren.size());
+			for (var child : myChildren) {
+				if (child instanceof NodeWithParent) {
+					var castedChildCopy = ((NodeWithParent) child).copy();
+					castedChildCopy.setParent(copied);
+					children.add(castedChildCopy);
+				} else
+					children.add(child);
+			}
+			copied.setChildren(children);
 
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
@@ -133,14 +141,12 @@ public class StructDeclarationNode extends Block implements Cloneable {
 		this.functions = functions;
 	}
 
-	@Override
-	public String toString() {
-		if (hasFunction("toString")) {
-			var function = getFunction("toString");
-			return function.call(new ArrayList<>(), function.getFileName(), function.getLine()).toString();
-		}
-		return name + "#" + getInstanceNumber();
-	}
+	/*
+	 * @Override public String toString() { if (hasFunction("toString")) { var
+	 * function = getFunction("toString"); return function.call(new ArrayList<>(),
+	 * function.getFileName(), function.getLine()).toString(); } return name + "#" +
+	 * getInstanceNumber(); }
+	 */
 
 	@Override
 	public boolean equals(Object other) {

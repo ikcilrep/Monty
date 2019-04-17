@@ -16,13 +16,12 @@ limitations under the License.
 
 package ast;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import ast.declarations.FunctionDeclarationNode;
+import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.statements.BreakStatementNode;
 import ast.statements.ContinueStatementNode;
@@ -36,6 +35,7 @@ public class Block extends NodeWithParent implements Cloneable {
 	private ArrayList<RunnableNode> children = new ArrayList<>();
 	protected HashMap<String, FunctionDeclarationNode> functions = new HashMap<>();
 	private HashMap<String, VariableDeclarationNode> variables = new HashMap<>();
+	private HashMap<String, StructDeclarationNode> structures = new HashMap<>();
 	protected Block parent;
 
 	public Block(Block parent) {
@@ -97,6 +97,19 @@ public class Block extends NodeWithParent implements Cloneable {
 			new LogError("Variable " + name + " already exists", fileNames, lines);
 		}
 		variables.put(name, variable);
+	}
+
+	public void addStructure(StructDeclarationNode structure, String fileName, int line) {
+		String name = structure.getName();
+		structure.setFileName(fileName);
+		structure.setLine(line);
+		if (structures.containsKey(name)) {
+			var existing_structure = structures.get(name);
+			int[] lines = { existing_structure.getLine(), structure.getLine() };
+			String[] fileNames = { existing_structure.getFileName(), structure.getFileName() };
+			new LogError("Variable " + name + " already exists", fileNames, lines);
+		}
+		structures.put(name, structure);
 	}
 
 	public void addVariable(VariableDeclarationNode variable, Token token) {
@@ -213,12 +226,23 @@ public class Block extends NodeWithParent implements Cloneable {
 		return block.variables.get(name);
 	}
 
-	public BigInteger getIntVariableValue(String name) {
-		return (BigInteger) getVariable(name).getValue();
+	public HashMap<String, StructDeclarationNode> getStructures() {
+		return structures;
 	}
 
-	public BigDecimal getRealVariableValue(String name) {
-		return (BigDecimal) getVariable(name).getValue();
+	public void setStructures(HashMap<String, StructDeclarationNode> structures) {
+		this.structures = structures;
+	}
+
+	public StructDeclarationNode getStructure(String name, String fileName, int line) {
+		Block block = this;
+		while (!block.structures.containsKey(name)) {
+			var parent = block.getParent();
+			if (parent == null)
+				new LogError("There isn't variable with name:\t" + name, fileName, line);
+			block = parent;
+		}
+		return block.structures.get(name);
 	}
 
 	public Boolean getBooleanVariableValue(String name) {
@@ -232,7 +256,7 @@ public class Block extends NodeWithParent implements Cloneable {
 	public Object getVariableValue(String name) {
 		return getVariable(name).getValue();
 	}
-	
+
 	public Object getVariableValue(String name, String fileName, int line) {
 		return getVariable(name, fileName, line).getValue();
 	}

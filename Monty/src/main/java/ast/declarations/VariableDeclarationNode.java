@@ -23,6 +23,7 @@ public class VariableDeclarationNode extends DeclarationNode implements Cloneabl
 
 	private boolean isConst = false;
 	private boolean wasValueChanged = false;
+
 	public static VariableDeclarationNode toMe(Object object, String fileName, int line) {
 		if (object instanceof VariableDeclarationNode)
 			return (VariableDeclarationNode) object;
@@ -56,7 +57,6 @@ public class VariableDeclarationNode extends DeclarationNode implements Cloneabl
 	public final Object getValue() {
 		return value;
 	}
-
 
 	public final void setValue(Object value, String fileName, int line) {
 		if (isConst && wasValueChanged)

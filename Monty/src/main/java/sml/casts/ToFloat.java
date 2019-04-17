@@ -16,7 +16,6 @@ limitations under the License.
 
 package sml.casts;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
@@ -26,32 +25,32 @@ import ast.expressions.OperationNode;
 import parser.LogError;
 import sml.data.returning.VoidType;
 
-public final class ToReal extends FunctionDeclarationNode {
+public final class ToFloat extends FunctionDeclarationNode {
 
-	public static BigDecimal toReal(Object a, String callFileName, int callLine) {
+	public static Double toReal(Object a, String callFileName, int callLine) {
 		if (a instanceof VoidType)
 			new LogError("Can't cast void to real", callFileName, callLine);
 		if (a instanceof BigInteger)
-			return IntToReal.intToReal((BigInteger) a);
+			return IntToFloat.intToFloat((BigInteger) a);
 		if (a instanceof Boolean)
-			return BooleanToReal.booleanToReal((Boolean) a);
-		if (a instanceof BigDecimal)
-			return (BigDecimal) a;
+			return BooleanToFloat.booleanToFloat((Boolean) a);
+		if (a instanceof Double)
+			return (double) a;
 		if (a instanceof String)
-			return StringToReal.stringToReal((String) a, callFileName, callLine);
+			return StringToFloat.stringToFloat((String) a, callFileName, callLine);
 		else
 			new LogError("Can't cast structure to real", callFileName, callLine);
 		return null;
 	}
 
-	public ToReal() {
-		super("toReal");
+	public ToFloat() {
+		super("toFloat");
 		setBody(new Block(null));
 		addParameter("a");
 	}
 
 	@Override
-	public BigDecimal call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public Double call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var a = getBody().getVariableValue("a");
 		return toReal(a, callFileName, callLine);

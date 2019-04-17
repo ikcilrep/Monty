@@ -13,30 +13,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-
-package sml.math;
+package sml.casts;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
-import ast.expressions.OperationNode;
+final class FloatToBoolean {
 
-public final class Max extends FunctionDeclarationNode {
-
-	public Max() {
-		super("max");
-		setBody(new Block(null));
-		addParameter("a");
-		addParameter("b");
-	}
-
-	@Override
-	public BigDecimal call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		var body = getBody();
-		return body.getRealVariableValue("a").max(body.getRealVariableValue("b"));
+	public static Boolean floatToBoolean(BigDecimal floating) {
+		return floating.compareTo(BigDecimal.ZERO) > 0;
 	}
 
 }

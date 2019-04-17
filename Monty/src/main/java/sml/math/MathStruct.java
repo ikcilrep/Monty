@@ -4,17 +4,17 @@ import java.util.HashMap;
 
 import sml.data.StaticStruct;
 
-public final class MathStruct{
+public final class MathStruct {
 	private static StaticStruct struct = new StaticStruct();
 	static {
 		struct.setFunctions(new HashMap<>());
-		new Abs();
-		new Exp();
-		new Factorial();
-		new Pow();
-		new Round();
-		new Scale();
+		new Abs(struct);
+		new Pow(struct);
+		new Exp(struct);
+		new Round(struct);
+		new Factorial(struct);
 	}
+
 	public static StaticStruct getStruct() {
 		return struct;
 	}

@@ -21,14 +21,15 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
+import sml.data.StaticStruct;
 
 final class LowerCase extends FunctionDeclarationNode {
 
-	public LowerCase() {
+	public LowerCase(StaticStruct struct) {
 		super("lowerCase");
 		setBody(new Block(null));
 		addParameter("str");
-		StringStruct.getStruct().addFunction(this);
+		struct.addFunction(this);
 	}
 
 	@Override

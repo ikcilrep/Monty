@@ -16,22 +16,25 @@ limitations under the License.
 
 package parser;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import ast.declarations.StructDeclarationNode;
-import sml.data.returning.Nothing;
 import sml.data.returning.VoidType;
 
 public enum DataTypes {
-	BOOLEAN, INTEGER, REAL, STRING, VOID, ANY;
+	BOOLEAN, INTEGER, BIG_INTEGER, FLOAT, STRING, VOID, ANY;
+	public final static BigInteger INT_MAX = BigInteger.valueOf(Integer.MAX_VALUE);
+	public final static BigInteger INT_MIN = BigInteger.valueOf(Integer.MIN_VALUE);
+
 	public final static DataTypes getDataType(Object value) {
 		if (value instanceof VoidType)
 			return DataTypes.VOID;
 		if (value instanceof BigInteger)
+			return DataTypes.BIG_INTEGER;
+		if (value instanceof Integer)
 			return DataTypes.INTEGER;
-		if (value instanceof BigDecimal)
-			return DataTypes.REAL;
+		if (value instanceof Double)
+			return DataTypes.FLOAT;
 		if (value instanceof String)
 			return DataTypes.STRING;
 		if (value instanceof Boolean)
@@ -42,18 +45,4 @@ public enum DataTypes {
 
 	}
 
-	public final static Object getNeutralValue(DataTypes dataType) {
-		switch (dataType) {
-		case INTEGER:
-			return BigInteger.ZERO;
-		case REAL:
-			return BigDecimal.ZERO;
-		case STRING:
-			return "";
-		case BOOLEAN:
-			return false;
-		default:
-			return Nothing.nothing;
-		}
-	}
 }

@@ -16,26 +16,36 @@ limitations under the License.
 
 package sml.math;
 
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
+import parser.LogError;
+import sml.data.StaticStruct;
 
 public final class Abs extends FunctionDeclarationNode {
 
-	public Abs() {
+	public Abs(StaticStruct struct) {
 		super("abs");
 		setBody(new Block(null));
 		addParameter("f");
-		MathStruct.getStruct().addFunction(this);
+		struct.addFunction(this);
 	}
 
 	@Override
-	public BigDecimal call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return getBody().getRealVariableValue("f").abs();
+		var f = getBody().getVariableValue("f");
+		if (f instanceof Double)
+			return Math.abs((double) f);
+		else if (f instanceof BigInteger)
+			return ((BigInteger) f).abs();
+		else if (f instanceof Integer)
+			return Math.abs((int) f);
+		new LogError("Can't calculate absolute value of not a number.", callFileName, callLine);
+		return null;
 	}
 
 }

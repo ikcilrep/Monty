@@ -7,13 +7,12 @@ import parser.LogError;
 
 public class StaticStruct {
 	protected HashMap<String, FunctionDeclarationNode> functions;
-	
-	
-	public  void addFunction(FunctionDeclarationNode function) {
+
+	public void addFunction(FunctionDeclarationNode function) {
 		functions.put(function.getName(), function);
 	}
 
-	public  FunctionDeclarationNode getFunction(String name, String fileName, int line) {
+	public FunctionDeclarationNode getFunction(String name, String fileName, int line) {
 		if (!functions.containsKey(name))
 			new LogError("There isn't function with name:\t" + name, fileName, line);
 

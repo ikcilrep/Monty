@@ -21,15 +21,16 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
+import sml.data.StaticStruct;
 
 final class StartsWith extends FunctionDeclarationNode {
 
-	public StartsWith() {
+	public StartsWith(StaticStruct struct) {
 		super("startsWith");
 		setBody(new Block(null));
 		addParameter("str");
 		addParameter("prefix");
-		StringStruct.getStruct().addFunction(this);
+		struct.addFunction(this);
 	}
 
 	@Override

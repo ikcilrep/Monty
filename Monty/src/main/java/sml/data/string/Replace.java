@@ -21,16 +21,17 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
+import sml.data.StaticStruct;
 
 final class Replace extends FunctionDeclarationNode {
 
-	public Replace() {
+	public Replace(StaticStruct struct) {
 		super("replace");
 		setBody(new Block(null));
 		addParameter("str");
 		addParameter("regex");
 		addParameter("replacement");
-		StringStruct.getStruct().addFunction(this);
+		struct.addFunction(this);
 
 	}
 

@@ -16,18 +16,12 @@ limitations under the License.
 
 package sml.casts;
 
-import java.math.BigDecimal;
+final class BooleanToFloat {
 
-import parser.LogError;
-
-final class StringToReal {
-
-	public static BigDecimal stringToReal(String str, String fileName, int line) {
-		if (str.matches("[+-]?[0-9]+(\\.[0-9]+)?"))
-			return new BigDecimal(str);
-		else
-			new LogError("Unknown number format for real type:\t" + str, fileName, line);
-		return null;
+	public static double booleanToFloat(Boolean bool) {
+		if (bool == true)
+			return 1;
+		return 0;
 	}
 
 }

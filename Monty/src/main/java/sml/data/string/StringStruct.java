@@ -9,18 +9,19 @@ public final class StringStruct {
 
 	static {
 		struct.setFunctions(new HashMap<>());
-		new CharAt();
-		new EndsWith();
-		new EqualsIgnoreCase();
-		new Length();
-		new LowerCase();
-		new Replace();
-		new ReplaceFirst();
-		new Split();
-		new StartsWith();
-		new Substring();
-		new UpperCase();
+		new CharAt(struct);
+		new EndsWith(struct);
+		new EqualsIgnoreCase(struct);
+		new Length(struct);
+		new LowerCase(struct);
+		new Replace(struct);
+		new ReplaceFirst(struct);
+		new Split(struct);
+		new StartsWith(struct);
+		new Substring(struct);
+		new UpperCase(struct);
 	}
+
 	public static StaticStruct getStruct() {
 		return struct;
 	}

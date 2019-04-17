@@ -20,14 +20,15 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
+import sml.data.StaticStruct;
 
 final class UpperCase extends FunctionDeclarationNode {
 
-	public UpperCase() {
+	public UpperCase(StaticStruct struct) {
 		super("upperCase");
 		setBody(new Block(null));
 		addParameter("str");
-		StringStruct.getStruct().addFunction(this);
+		struct.addFunction(this);
 	}
 
 	@Override

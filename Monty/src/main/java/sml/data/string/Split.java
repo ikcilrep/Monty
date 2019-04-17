@@ -21,16 +21,17 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
+import sml.data.StaticStruct;
 import sml.data.list.List;
 
 final class Split extends FunctionDeclarationNode {
 
-	public Split() {
+	public Split(StaticStruct struct) {
 		super("split");
 		setBody(new Block(null));
 		addParameter("str");
 		addParameter("regex");
-		StringStruct.getStruct().addFunction(this);
+		struct.addFunction(this);
 	}
 
 	@Override

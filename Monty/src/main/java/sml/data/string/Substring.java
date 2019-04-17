@@ -16,22 +16,25 @@ limitations under the License.
 
 package sml.data.string;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
+import parser.DataTypes;
 import parser.LogError;
+import sml.data.StaticStruct;
 
 final class Substring extends FunctionDeclarationNode {
 
-	public Substring() {
+	public Substring(StaticStruct struct) {
 		super("substring");
 		setBody(new Block(null));
 		addParameter("str");
 		addParameter("begin");
 		addParameter("end");
-		StringStruct.getStruct().addFunction(this);
+		struct.addFunction(this);
 	}
 
 	@Override
@@ -39,14 +42,40 @@ final class Substring extends FunctionDeclarationNode {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
 		var str = body.getStringVariableValue("str");
-		var begin = body.getIntVariableValue("begin").intValue();
-		var end = body.getIntVariableValue("end").intValue();
-		var length = str.length();
-		if (end > length)
-			new LogError("End " + length + " is too large for length " + length);
-		if (begin < 0)
-			new LogError("Begin cannot be lower than 0");
+		var _begin = body.getVariableValue("begin");
+		var _end = body.getVariableValue("end");
 
+		int begin = 0;
+		int end = 0;
+
+		if (_begin instanceof Integer)
+			begin = (int) _begin;
+		else if (_begin instanceof BigInteger) {
+			var bigIndex = (BigInteger) _begin;
+			if (bigIndex.compareTo(DataTypes.INT_MAX) > 0)
+				new LogError("Index have to be less or equals 2^31-1.", callFileName, callLine);
+			else if (bigIndex.compareTo(DataTypes.INT_MIN) < 0)
+				new LogError("Index have to be greater or equals -2^31.", callFileName, callLine);
+			begin = bigIndex.intValue();
+		}
+
+		if (_end instanceof Integer)
+			end = (int) _end;
+		else if (_begin instanceof BigInteger) {
+			var bigIndex = (BigInteger) _end;
+			if (bigIndex.compareTo(DataTypes.INT_MAX) > 0)
+				new LogError("Index have to be less or equals 2^31-1.", callFileName, callLine);
+			else if (bigIndex.compareTo(DataTypes.INT_MIN) < 0)
+				new LogError("Index have to be greater or equals -2^31.", callFileName, callLine);
+			end = bigIndex.intValue();
+		}
+
+		if (begin < 0)
+			new LogError("Begin can't be negative.", callFileName, callLine);
+		if (end > str.length())
+			new LogError("End can't be greater than length of list.", callFileName, callLine);
+		if (begin > end)
+			new LogError("Begin can't be greater or equals to end.", callFileName, callLine);
 		return str.substring(begin, end);
 	}
 

@@ -16,30 +16,31 @@ limitations under the License.
 
 package sml.math;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
+import parser.LogError;
+import sml.data.StaticStruct;
 
 public final class Round extends FunctionDeclarationNode {
 
-	public Round() {
+	public Round(StaticStruct struct) {
 		super("round");
 		setBody(new Block(null));
 		addParameter("f");
 		addParameter("scale");
-		MathStruct.getStruct().addFunction(this);
+		struct.addFunction(this);
 	}
 
 	@Override
-	public BigDecimal call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var body = getBody();
-		return body.getRealVariableValue("f").setScale(body.getIntVariableValue("scale").intValue(),
-				RoundingMode.HALF_UP);
+		var f = getBody().getVariableValue("f");
+		if (f instanceof Double)
+			return Math.round((double) f);
+		return new LogError("Can't round not a number.", callFileName, callLine);
 	}
 
 }
