@@ -20,6 +20,7 @@ public final class StringStruct {
 		new StartsWith(struct);
 		new Substring(struct);
 		new UpperCase(struct);
+		new Iterator(struct);
 	}
 
 	public static StaticStruct getStruct() {
