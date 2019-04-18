@@ -52,7 +52,6 @@ public class StructDeclarationNode extends Block implements Cloneable {
 	}
 
 	public void addNewStruct(Block block, String fileName, int line) {
-		setParent(block);
 		block.addStructure(this, fileName, line);
 		block.addFunction(constructor = new Constructor(this), fileName, line);
 	}

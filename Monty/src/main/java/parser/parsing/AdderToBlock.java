@@ -95,7 +95,7 @@ public abstract class AdderToBlock {
 		var functionName = tokens.get(1).getText();
 		var function = new CustomFunctionDeclarationNode(functionName);
 		if (Character.isUpperCase(functionName.charAt(0)))
-			new LogError("Function name " + functionName + " have to start with lower case.", tokens.get(2));
+			new LogError("Function name " + functionName + " can't start with upper case.", tokens.get(2));
 		parseFunctionsParameters(2, tokens, function);
 		function.setBody(new Block(block));
 		block.addFunction(function, tokens.get(1));
@@ -122,7 +122,7 @@ public abstract class AdderToBlock {
 
 	public final static Block addStructDeclaration(Block block, OptimizedTokensArray tokens) {
 		var name = tokens.get(1).getText();
-		if (Character.isLowerCase(name.charAt(0)))
+		if (!Character.isUpperCase(name.charAt(0)))
 			new LogError("Struct name have to start with upper case.", tokens.get(0));
 		var struct = new StructDeclarationNode(block, name);
 		struct.addNewStruct(block, tokens.get(0));

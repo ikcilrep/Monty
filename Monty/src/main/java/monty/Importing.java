@@ -124,6 +124,10 @@ public class Importing {
 			if (doesContainFunction) {
 				var function = importedBlock.getFunction(name);
 				block.addFunction(function, function.getFileName(), function.getLine());
+				if (Character.isUpperCase(name.charAt(0))) {
+					var struct = importedBlock.getStructure(name);
+					block.addStructure(struct, struct.getFileName(), struct.getLine());
+				}
 			}
 		} else {
 			new LogError("There aren't any function or variable with this name to import:\t" + name

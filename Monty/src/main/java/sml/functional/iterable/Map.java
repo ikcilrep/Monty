@@ -16,6 +16,7 @@ public final class Map extends FunctionDeclarationNode {
 				+ "list.set(i,function.call(x));i += 1;end;return Iterable(list);", "Map.java"));
 		code.addFunction(IOBlocks.list);
 		code.addFunction(IOBlocks.iterable);
+		code.addVariable(IOBlocks.nothing);
 		code.addFunction(IOBlocks.length);
 	}
 

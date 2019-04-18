@@ -20,7 +20,7 @@ public final class Iterable extends StructDeclarationNode {
 		_this.setConst(true);
 		new Get(this);
 		new NewIterator(this);
-		//new ToList(this);
+		new ToList(this);
 	}
 
 }

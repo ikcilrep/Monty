@@ -112,6 +112,16 @@ public class Block extends NodeWithParent implements Cloneable {
 		structures.put(name, structure);
 	}
 
+	public void addStructure(StructDeclarationNode structure) {
+		String name = structure.getName();
+		if (structures.containsKey(name)) {
+			var existing_structure = structures.get(name);
+			new LogError("Struct " + name + " already exists", existing_structure.getFileName(),
+					existing_structure.getLine());
+		}
+		structures.put(name, structure);
+	}
+
 	public void addVariable(VariableDeclarationNode variable, Token token) {
 		String name = variable.getName();
 		variable.setFileName(token.getFileName());
@@ -134,6 +144,10 @@ public class Block extends NodeWithParent implements Cloneable {
 		var functionsSet = block.getFunctions().entrySet();
 		for (Map.Entry<String, FunctionDeclarationNode> entry : functionsSet) {
 			addFunction(entry.getValue());
+		}
+		var structSet = block.getStructures().entrySet();
+		for (Map.Entry<String, StructDeclarationNode> entry : structSet) {
+			addStructure(entry.getValue());
 		}
 	}
 
@@ -173,7 +187,7 @@ public class Block extends NodeWithParent implements Cloneable {
 		while (!block.functions.containsKey(name)) {
 			var parent = block.getParent();
 			if (parent == null)
-				new LogError("There isn't function with name:\t" + name);
+				new LogError("There isn't any function with name:\t" + name);
 			block = parent;
 		}
 		return block.functions.get(name);
@@ -185,7 +199,7 @@ public class Block extends NodeWithParent implements Cloneable {
 		while (!block.functions.containsKey(name)) {
 			var parent = block.getParent();
 			if (parent == null)
-				new LogError("There isn't function with name:\t" + name, fileName, line);
+				new LogError("There isn't any function with name:\t" + name, fileName, line);
 			block = parent;
 		}
 		return block.functions.get(name);
@@ -209,7 +223,7 @@ public class Block extends NodeWithParent implements Cloneable {
 		while (!block.variables.containsKey(name)) {
 			var parent = block.getParent();
 			if (parent == null)
-				new LogError("There isn't variable with name:\t" + name);
+				new LogError("There isn't any variable with name:\t" + name);
 			block = parent;
 		}
 		return block.variables.get(name);
@@ -220,7 +234,7 @@ public class Block extends NodeWithParent implements Cloneable {
 		while (!block.variables.containsKey(name)) {
 			var parent = block.getParent();
 			if (parent == null)
-				new LogError("There isn't variable with name:\t" + name, fileName, line);
+				new LogError("There isn't any variable with name:\t" + name, fileName, line);
 			block = parent;
 		}
 		return block.variables.get(name);
@@ -239,7 +253,18 @@ public class Block extends NodeWithParent implements Cloneable {
 		while (!block.structures.containsKey(name)) {
 			var parent = block.getParent();
 			if (parent == null)
-				new LogError("There isn't variable with name:\t" + name, fileName, line);
+				new LogError("There isn't any struct with name:\t" + name, fileName, line);
+			block = parent;
+		}
+		return block.structures.get(name);
+	}
+
+	public StructDeclarationNode getStructure(String name) {
+		Block block = this;
+		while (!block.structures.containsKey(name)) {
+			var parent = block.getParent();
+			if (parent == null)
+				new LogError("There isn't any struct with name:\t" + name);
 			block = parent;
 		}
 		return block.structures.get(name);

@@ -30,9 +30,8 @@ public class Constructor extends FunctionDeclarationNode {
 		thisVariable.setConst(true);
 		newStruct.addVariable(thisVariable);
 		newStruct.incrementNumber();
-		if (newStruct.hasFunction("init")) {
+		if (newStruct.hasFunction("init"))
 			newStruct.getFunction("init").call(arguments, callFileName, callLine);
-		System.out.println(arguments);}
 		newStruct.run();
 		return newStruct;
 	}

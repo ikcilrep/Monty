@@ -17,6 +17,7 @@ final class ToList extends Method<Iterable> {
 				"var result = [Nothing] * length(This);var i = 0;for x in This;result.set(i, x);i += 1;end;return result;",
 				"ToArray.java"));
 		code.addFunction(IOBlocks.length);
+		code.addVariable(IOBlocks.nothing);
 		code.addFunction(IOBlocks.list);
 	}
 
