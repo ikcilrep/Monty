@@ -38,13 +38,13 @@ public class IOBlocks {
 	public static FunctionDeclarationNode logError;
 	public static FunctionDeclarationNode f;
 	public static FunctionDeclarationNode lambda;
-	public static Block range;
 	public static FunctionDeclarationNode print;
 	public static FunctionDeclarationNode println;
 	public static FunctionDeclarationNode input;
 	public static FunctionDeclarationNode map;
 	public static FunctionDeclarationNode filter;
 	public static VariableDeclarationNode nothing;
+	public static Block range;
 
 	static {
 		list = new sml.data.list.NewList();

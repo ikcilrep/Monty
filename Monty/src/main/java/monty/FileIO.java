@@ -64,6 +64,9 @@ public abstract class FileIO {
 		return readFile(new BufferedReader(new InputStreamReader(in)), path, callFileName, callLine);
 	}
 	
+	public static String readFile(InputStream in, String path) {
+		return readFile(new BufferedReader(new InputStreamReader(in)), path, "Sml.java", -1);
+	}
 	public static void writeFile(String path, String text, boolean isAppend, String callFileName, int callLine) {
 		try {
 			File file = new File(path);
