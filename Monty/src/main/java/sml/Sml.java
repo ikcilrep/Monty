@@ -29,15 +29,6 @@ import sml.casts.ToInt;
 import sml.casts.ToFloat;
 import sml.casts.ToString;
 import sml.data.Length;
-import sml.files.AbsPath;
-import sml.files.Exists;
-import sml.files.IsAbsolute;
-import sml.files.IsDir;
-import sml.files.IsFile;
-import sml.files.ListDir;
-import sml.files.Read;
-import sml.files.Separator;
-import sml.files.Write;
 import sml.language.Run;
 import sml.math.E;
 import sml.math.Pi;
@@ -99,16 +90,6 @@ public final class Sml extends Library {
 		math.put("E", new E());
 
 		errors.put("logError", IOBlocks.logError);
-
-		files.put("separator", new Separator());
-		files.put("listDir", new ListDir());
-		files.put("absPath", new AbsPath());
-		files.put("write", new Write());
-		files.put("read", new Read());
-		files.put("exists", new Exists());
-		files.put("isAbsolute", new IsAbsolute());
-		files.put("isDir", new IsDir());
-		files.put("isFile", new IsFile());
 
 		language.put("run", new Run());
 	}
