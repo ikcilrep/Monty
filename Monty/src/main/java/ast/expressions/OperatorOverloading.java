@@ -141,7 +141,7 @@ public final class OperatorOverloading {
 	public final static Object divisionOperator(Object leftValue, Object rightValue, DataTypes type) {
 		switch (type) {
 		case INTEGER:
-			return (int) leftValue / (int) leftValue;
+			return (int) leftValue / (int) rightValue;
 		case BIG_INTEGER:
 			if (rightValue.equals(BigInteger.ZERO))
 				new LogError("Can't divide by zero.", temporaryFileName, temporaryLine);
