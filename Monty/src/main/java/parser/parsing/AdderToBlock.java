@@ -125,7 +125,7 @@ public abstract class AdderToBlock {
 		if (Character.isLowerCase(name.charAt(0)))
 			new LogError("Struct name have to start with upper case.", tokens.get(0));
 		var struct = new StructDeclarationNode(block, name);
-		struct.addNewStruct(tokens.get(0));
+		struct.addNewStruct(block, tokens.get(0));
 		return struct;
 	}
 

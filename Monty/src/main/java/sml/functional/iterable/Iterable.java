@@ -4,7 +4,7 @@ import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import sml.functional.iterable.string.IterableString;
 
-final class Iterable extends StructDeclarationNode {
+public final class Iterable extends StructDeclarationNode {
 	StructDeclarationNode iterable;
 
 	public Iterable(Object iterable) {
@@ -20,7 +20,7 @@ final class Iterable extends StructDeclarationNode {
 		_this.setConst(true);
 		new Get(this);
 		new NewIterator(this);
-		new ToList(this);
+		//new ToList(this);
 	}
 
 }

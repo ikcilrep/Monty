@@ -107,7 +107,7 @@ public class Block extends NodeWithParent implements Cloneable {
 			var existing_structure = structures.get(name);
 			int[] lines = { existing_structure.getLine(), structure.getLine() };
 			String[] fileNames = { existing_structure.getFileName(), structure.getFileName() };
-			new LogError("Variable " + name + " already exists", fileNames, lines);
+			new LogError("Struct " + name + " already exists", fileNames, lines);
 		}
 		structures.put(name, structure);
 	}

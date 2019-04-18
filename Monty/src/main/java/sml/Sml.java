@@ -29,13 +29,6 @@ import sml.casts.ToInt;
 import sml.casts.ToFloat;
 import sml.casts.ToString;
 import sml.data.Length;
-import sml.data.checking.IsBoolean;
-import sml.data.checking.IsInt;
-import sml.data.checking.IsIterable;
-import sml.data.checking.IsList;
-import sml.data.checking.IsObject;
-import sml.data.checking.IsFloat;
-import sml.data.checking.IsString;
 import sml.files.AbsPath;
 import sml.files.Exists;
 import sml.files.IsAbsolute;
@@ -69,7 +62,6 @@ public final class Sml extends Library {
 		var data = new HashMap<String, Object>();
 		var threading = new HashMap<String, Object>();
 		var time = new HashMap<String, Object>();
-		var checking = new HashMap<String, Object>();
 		var string = new HashMap<String, Object>();
 		var errors = new HashMap<String, Object>();
 		var files = new HashMap<String, Object>();
@@ -93,17 +85,8 @@ public final class Sml extends Library {
 		casts.put("toChar", new ToChar());
 		casts.put("ord", new Ord());
 
-		data.put("checking", checking);
 		data.put("string", string);
 		data.put("length", new Length());
-
-		checking.put("isInt", new IsInt());
-		checking.put("isIterable", new IsIterable());
-		checking.put("isFloat", new IsFloat());
-		checking.put("isBoolean", new IsBoolean());
-		checking.put("isString", new IsString());
-		checking.put("isList", new IsList());
-		checking.put("isObject", new IsObject());
 
 		system.put("Argv", new Argv());
 

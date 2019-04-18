@@ -14,10 +14,9 @@ public final class Map extends FunctionDeclarationNode {
 	static {
 		code = Parser.parse(Lexer.lex("var list = [Nothing] * length(iterable);var i = 0;for x in iterable;"
 				+ "list.set(i,function.call(x));i += 1;end;return Iterable(list);", "Map.java"));
-		code.addFunction(IOBlocks.length);
 		code.addFunction(IOBlocks.list);
 		code.addFunction(IOBlocks.iterable);
-		code.addVariable(IOBlocks.nothing);
+		code.addFunction(IOBlocks.length);
 	}
 
 	public Map() {

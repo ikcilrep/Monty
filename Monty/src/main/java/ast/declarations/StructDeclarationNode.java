@@ -23,7 +23,6 @@ import java.util.Map;
 import ast.Block;
 import ast.NodeWithParent;
 import ast.RunnableNode;
-import ast.expressions.OperationNode;
 import ast.expressions.OperatorOverloading;
 import lexer.Token;
 import sml.casts.ToBoolean;
@@ -43,27 +42,19 @@ public class StructDeclarationNode extends Block implements Cloneable {
 		numbers.put(structNumber, -1);
 	}
 
-	public void addNewStruct(Token token) {
+	public void addNewStruct(Block block, Token token) {
+		addNewStruct(block, token.getFileName(), token.getLine());
+	}
 
-		constructor = new Constructor(this);
-		parent.addStructure(this, token.getFileName(), token.getLine());
-		parent.addFunction(constructor, token);
 
-		var checkingFunction = new FunctionDeclarationNode("is" + name) {
+	public Constructor getConstructor() {
+		return constructor;
+	}
 
-			@Override
-			public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-				setArguments(arguments, callFileName, callLine);
-				var other = getBody().getVariable("other").getValue();
-				if (other instanceof StructDeclarationNode)
-					return instanceOfMe(((StructDeclarationNode) other));
-				return false;
-			}
-
-		};
-		checkingFunction.setBody(new Block(null));
-		checkingFunction.addParameter("other");
-		parent.addFunction(checkingFunction, token);
+	public void addNewStruct(Block block, String fileName, int line) {
+		setParent(block);
+		block.addStructure(this, fileName, line);
+		block.addFunction(constructor = new Constructor(this), fileName, line);
 	}
 
 	@Override

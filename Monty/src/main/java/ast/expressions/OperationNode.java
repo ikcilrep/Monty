@@ -20,7 +20,6 @@ import java.math.BigInteger;
 
 import ast.Block;
 import ast.NodeWithParent;
-import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import parser.DataTypes;
 import parser.LogError;
@@ -70,7 +69,7 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 		case "|":
 			return OperatorOverloading.orOperator(leftValue, rightValue, type);
 		case "==":
-			return OperatorOverloading.equalsOperator(leftValue, rightValue, type);
+			return OperatorOverloading.equalsOperator(leftValue, rightValue);
 		case ">":
 			return OperatorOverloading.greaterOperator(leftValue, rightValue, type);
 		case "<":
@@ -80,7 +79,7 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 		case ">=":
 			return OperatorOverloading.greaterEqualsOperator(leftValue, rightValue, type);
 		case "!=":
-			return OperatorOverloading.notEqualsOperator(leftValue, rightValue, type);
+			return OperatorOverloading.notEqualsOperator(leftValue, rightValue);
 		case "=":
 			return OperatorOverloading.assignmentOperator(leftValue, rightValue, type);
 		case "+=":
@@ -174,21 +173,25 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 		var isComparison = operator.equals("==") || operator.equals("!=") || operator.equals("<=")
 				|| operator.equals(">=") || operator.equals(">") || operator.equals("<");
 
-		var isDot = operator.equals(".");
 		var isNotAssignment = !operator.contains("=") || isComparison;
 		var b = right.solve();
 
 		var a = left.solve();
 		var leftValue = getLiteral(a, left.fileName, left.line);
-
 		if (isNotAssignment)
 			if (leftValue instanceof VariableDeclarationNode)
 				leftValue = ((VariableDeclarationNode) leftValue).getValue();
 
-		if (isDot) {
+		var leftType = DataTypes.getDataType(leftValue);
+
+		if (operator.equals(".")) {
 			if (!(b instanceof NamedExpression))
 				new LogError("Variable or function can only be getted from struct.", fileName, line);
-			return OperatorOverloading.dotOperator(leftValue, b, DataTypes.getDataType(leftValue), parent);
+			return OperatorOverloading.dotOperator(leftValue, b, leftType, parent);
+		} else if (operator.equals("instanceof")) {
+			if (!(b instanceof NamedExpression))
+				new LogError("Right value have to be type name.", fileName, line);
+			return OperatorOverloading.instanceOfOperator(leftValue, b, leftType, parent);
 		}
 
 		var rightValue = getLiteral(b, right.fileName, right.line);
@@ -196,92 +199,90 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 		if (rightValue instanceof VariableDeclarationNode)
 			rightValue = ((VariableDeclarationNode) rightValue).getValue();
 		var rightType = DataTypes.getDataType(rightValue);
-		DataTypes leftType = DataTypes.getDataType(leftValue);
 		if (!isNotAssignment && (leftType == null || leftType == DataTypes.VOID))
 			leftType = rightType;
-
-		if (leftType.equals(DataTypes.ANY) && !(leftValue instanceof StructDeclarationNode)
-				&& !(leftValue instanceof VariableDeclarationNode))
-			leftType = DataTypes.getDataType(leftValue);
-		if (rightType.equals(DataTypes.ANY) && !(rightValue instanceof StructDeclarationNode))
-			rightType = DataTypes.getDataType(rightValue);
-
-		if (!leftType.equals(rightType)) {
-			switch (leftType) {
-			case INTEGER:
-				switch (rightType) {
-				case FLOAT:
-					leftType = DataTypes.FLOAT;
-					leftValue = Double.valueOf((int) leftValue);
-					break;
+		if (!(operator.equals("==") || operator.equals("!="))) {
+			if (!leftType.equals(rightType)) {
+				switch (leftType) {
+				case INTEGER:
+					switch (rightType) {
+					case FLOAT:
+						leftType = DataTypes.FLOAT;
+						leftValue = Double.valueOf((int) leftValue);
+						break;
+					case BIG_INTEGER:
+						leftType = DataTypes.BIG_INTEGER;
+						if (isNotAssignment)
+							leftValue = BigInteger.valueOf((int) leftValue);
+						else {
+							var variable = (VariableDeclarationNode) leftValue;
+							variable.setValue(BigInteger.valueOf((int) variable.getValue()), fileName, line);
+						}
+						break;
+					default:
+						break;
+					}
 				case BIG_INTEGER:
-					leftType = DataTypes.BIG_INTEGER;
-					if (isNotAssignment)
-						leftValue = BigInteger.valueOf((int) leftValue);
-					else {
-						var variable = (VariableDeclarationNode) leftValue;
-						variable.setValue(BigInteger.valueOf((int) variable.getValue()), fileName, line);
+					switch (rightType) {
+					case FLOAT:
+						leftType = DataTypes.FLOAT;
+						if (isNotAssignment) {
+							leftValue = ToFloat.toReal(leftValue, fileName, line);
+						} else {
+							var variable = (VariableDeclarationNode) leftValue;
+							variable.setValue(ToFloat.toReal(variable.getValue(), fileName, line));
+						}
+						break;
+					case INTEGER:
+						rightType = DataTypes.BIG_INTEGER;
+						rightValue = BigInteger.valueOf((int) rightValue);
+						break;
+					default:
+						break;
 					}
 					break;
-				default:
-					break;
-				}
-			case BIG_INTEGER:
-				switch (rightType) {
 				case FLOAT:
-					leftType = DataTypes.FLOAT;
-					if (isNotAssignment) {
-						leftValue = ToFloat.toReal(leftValue, fileName, line);
-					} else {
-						var variable = (VariableDeclarationNode) leftValue;
-						variable.setValue(ToFloat.toReal(variable.getValue(), fileName, line));
+					switch (rightType) {
+					case BIG_INTEGER:
+						rightType = DataTypes.FLOAT;
+						rightValue = ((BigInteger) leftValue).doubleValue();
+						break;
+					case INTEGER:
+						rightType = DataTypes.FLOAT;
+						rightValue = Double.valueOf((int) rightValue);
+						break;
+					default:
+						break;
 					}
 					break;
-				case INTEGER:
-					rightType = DataTypes.BIG_INTEGER;
-					rightValue = BigInteger.valueOf((int) rightValue);
+				case STRING:
+					if (operator.contains("+")) {
+						rightType = DataTypes.STRING;
+						rightValue = rightValue.toString();
+					}
+					break;
+				case ANY:
+					rightType = DataTypes.ANY;
 					break;
 				default:
 					break;
 				}
-				break;
-			case FLOAT:
-				switch (rightType) {
-				case BIG_INTEGER:
-					rightType = DataTypes.FLOAT;
-					rightValue = ((BigInteger) leftValue).doubleValue();
-					break;
-				case INTEGER:
-					rightType = DataTypes.FLOAT;
-					rightValue = Double.valueOf((int) rightValue);
-					break;
-				default:
-					break;
-				}
-				break;
-			case STRING:
-				if (operator.contains("+")) {
-					rightType = DataTypes.STRING;
-					rightValue = rightValue.toString();
-				}
-				break;
-			case ANY:
-				rightType = DataTypes.ANY;
-				break;
-			default:
-				break;
 			}
-		}
-		if (!leftType.equals(rightType)) {
-			if (rightType.equals(DataTypes.ANY))
-				leftType = DataTypes.ANY;
-			else if (isNotAssignment && operator.equals("+") && rightType.equals(DataTypes.STRING)) {
-				leftType = DataTypes.STRING;
-				leftValue = leftValue.toString();
-			} else
-				new LogError("Type mismatch:\t" + leftType.toString().toLowerCase() + " and "
-						+ rightType.toString().toLowerCase(), fileName, line);
-		}
+			if (!leftType.equals(rightType)) {
+				if (rightType.equals(DataTypes.ANY))
+					leftType = DataTypes.ANY;
+				else if (isNotAssignment && operator.equals("+") && rightType.equals(DataTypes.STRING)) {
+					leftType = DataTypes.STRING;
+					leftValue = leftValue.toString();
+				} else
+					new LogError("Type mismatch:\t" + leftType.toString().toLowerCase() + " and "
+							+ rightType.toString().toLowerCase(), fileName, line);
+			}
+		} else if (!leftType.equals(rightType))
+			if (leftType.equals(DataTypes.INTEGER) && rightType.equals(DataTypes.BIG_INTEGER))
+				leftValue = BigInteger.valueOf((int) leftValue);
+			else if (rightType.equals(DataTypes.INTEGER) && leftType.equals(DataTypes.BIG_INTEGER))
+				rightValue = BigInteger.valueOf((int) rightValue);
 
 		return calculate(leftValue, rightValue, operator, leftType);
 

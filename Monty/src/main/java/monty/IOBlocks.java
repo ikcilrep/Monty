@@ -61,13 +61,14 @@ public class IOBlocks {
 		filter = new Filter();
 	}
 
-	private static void autoImport(Block block) {
+	
+	public static void autoImport(Block block) {
 		var functions = block.getFunctions();
 		block.getVariables().put("Nothing", nothing);
+		functions.put("List", list);
 		functions.put("f", f);
 		functions.put("lambda", lambda);
 		functions.put("Range", range);
-		functions.put("List", list);
 		functions.put("Iterable", iterable);
 		functions.put("map", map);
 		functions.put("filter", filter);
@@ -79,8 +80,7 @@ public class IOBlocks {
 	}
 
 	public static Block readBlockFromFile(String path, String fileName, int line) {
-		var tokens = Lexer.lex(FileIO.readFile(path, fileName, line), path, 1, new OptimizedTokensArray(), 0);
-		var block = Parser.parse(tokens);
+		var block = Parser.parse(Lexer.lex(FileIO.readFile(path, fileName, line), path, 1, new OptimizedTokensArray(), 0));
 		autoImport(block);
 		return block;
 	}

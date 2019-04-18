@@ -19,7 +19,7 @@ public class Converter {
 	private static HashMap<String, Integer> precedence;
 	private static Set<String> rightAssociative = Set.of("=", "+=", "-=", "*=", "/=", "%=", "&=", "^=", "|=", "<<=",
 			">>=");
-	private static Set<String> notAssociative = Set.of("<", "<=", ">=", ">");// , "instanceof");
+	private static Set<String> notAssociative = Set.of("<", "<=", ">=", ">", "instanceof");
 
 	static {
 		precedence = new HashMap<>();
@@ -36,7 +36,7 @@ public class Converter {
 		precedence.put("<=", 9);
 		precedence.put(">", 9);
 		precedence.put(">=", 9);
-		// precedence.put("instanceof", 9);
+		precedence.put("instanceof", 9);
 		precedence.put("==", 8);
 		precedence.put("!=", 8);
 		precedence.put("&", 7);
@@ -138,7 +138,7 @@ public class Converter {
 	private final static FunctionCallNode parseList(OptimizedTokensArray tokens, Block parent, IntegerHolder i) {
 		var function = new FunctionCallNode("List");
 		i.i++;
-		function.setArguments(parseExpressionsSeparatedByComma(tokens, parent, i,true));
+		function.setArguments(parseExpressionsSeparatedByComma(tokens, parent, i, true));
 		return function;
 	}
 
@@ -161,7 +161,7 @@ public class Converter {
 				new LogError("Unclosed bracket.", tokens.get(i.i - 1));
 			}
 
-			switch(type) {
+			switch (type) {
 			case OPENING_BRACKET:
 				brackets[0]++;
 				break;

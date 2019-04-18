@@ -10,7 +10,6 @@ import sml.data.returning.Nothing;
 public class List extends StructDeclarationNode {
 	private Object[] array;
 	private int length = 0;
-
 	private void addFunctions() {
 		new Add(this);
 		new Count(this);
@@ -31,7 +30,7 @@ public class List extends StructDeclarationNode {
 	}
 
 	public List(ArrayList<OperationNode> arguments) {
-		super(null, "[]");
+		super(null, "List");
 		addFunctions();
 		increaseCapacity((arguments.size() << 1) + 1);
 		length = arguments.size();
@@ -40,7 +39,7 @@ public class List extends StructDeclarationNode {
 	}
 
 	public List(Object[] array) {
-		super(null, "[]");
+		super(null, "List");
 		addFunctions();
 		increaseCapacity((array.length << 1) + 1);
 		length = array.length;
@@ -49,7 +48,7 @@ public class List extends StructDeclarationNode {
 	}
 
 	public List(List array) {
-		super(null, "[]");
+		super(null, "List");
 		addFunctions();
 		this.array = new Object[array.length()];
 		length = array.length();
@@ -59,23 +58,32 @@ public class List extends StructDeclarationNode {
 	}
 
 	public List(int length) {
-		super(null, "[]");
+		super(null, "List");
 		addFunctions();
 		increaseCapacity(length << 1);
 		this.length = length;
 	}
+	
+	public List() {
+		super(null, "List");
+	}
+	
 
 	public Object[] getArray() {
 		return array;
 	}
 
-	private void increaseCapacity(int capacity) {
+	public void increaseCapacity(int capacity) {
 		var newArray = new Object[capacity];
 		for (int i = 0; i < length(); i++)
 			newArray[i] = get(i);
 		for (int i = length(); i < capacity; i++)
 			newArray[i] = Nothing.nothing;
 		setArray(newArray);
+	}
+
+	public void setLength(int length) {
+		this.length = length;
 	}
 
 	public void setArray(Object[] array) {

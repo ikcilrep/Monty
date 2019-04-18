@@ -18,8 +18,6 @@ final class ToList extends Method<Iterable> {
 				"ToArray.java"));
 		code.addFunction(IOBlocks.length);
 		code.addFunction(IOBlocks.list);
-		code.addVariable(IOBlocks.nothing);
-
 	}
 
 	public ToList(Iterable parent) {
