@@ -19,7 +19,7 @@ public class Converter {
 	private static HashMap<String, Integer> precedence;
 	private static Set<String> rightAssociative = Set.of("=", "+=", "-=", "*=", "/=", "%=", "&=", "^=", "|=", "<<=",
 			">>=");
-	private static Set<String> notAssociative = Set.of("<", "<=", ">=", ">");//, "instanceof");
+	private static Set<String> notAssociative = Set.of("<", "<=", ">=", ">");// , "instanceof");
 
 	static {
 		precedence = new HashMap<>();
@@ -36,7 +36,7 @@ public class Converter {
 		precedence.put("<=", 9);
 		precedence.put(">", 9);
 		precedence.put(">=", 9);
-		//precedence.put("instanceof", 9);
+		// precedence.put("instanceof", 9);
 		precedence.put("==", 8);
 		precedence.put("!=", 8);
 		precedence.put("&", 7);
@@ -129,29 +129,31 @@ public class Converter {
 
 	private final static FunctionCallNode parseFunction(String name, OptimizedTokensArray tokens, Block parent,
 			IntegerHolder i) {
+		i.i++;
 		var function = new FunctionCallNode(name);
-		function.setArguments(parseExpressionsSeparatedByComma(tokens, parent, i));
+		function.setArguments(parseExpressionsSeparatedByComma(tokens, parent, i, false));
 		return function;
 	}
 
 	private final static FunctionCallNode parseList(OptimizedTokensArray tokens, Block parent, IntegerHolder i) {
 		var function = new FunctionCallNode("List");
-		function.setArguments(parseExpressionsSeparatedByComma(tokens, parent, i));
+		i.i++;
+		function.setArguments(parseExpressionsSeparatedByComma(tokens, parent, i,true));
 		return function;
 	}
 
 	private final static ArrayList<OperationNode> parseExpressionsSeparatedByComma(OptimizedTokensArray tokens,
-			Block parent, IntegerHolder i) {
+			Block parent, IntegerHolder i, boolean isList) {
 		var result = new ArrayList<OperationNode>();
 		var expression = new OptimizedTokensArray();
 		var type = tokens.get(i.i).getType();
-		int openedBrackets = 0, openedSquareBrackets = 0;
-		if (type.equals(TokenTypes.OPENING_BRACKET))
-			openedBrackets++;
-		else if (type.equals(TokenTypes.OPENING_SQUARE_BRACKET))
-			openedSquareBrackets++;
-		i.i++;
-		for (; openedBrackets > 0 || openedSquareBrackets > 0; i.i++) {
+		short a = 0;
+		short b = 1;
+		if (isList) {
+			a = 1;
+			b = 0;
+		}
+		for (short[] brackets = { b, a }; brackets[a] > 0; i.i++) {
 			var token = tokens.get(i.i);
 			try {
 				type = token.getType();
@@ -159,21 +161,26 @@ public class Converter {
 				new LogError("Unclosed bracket.", tokens.get(i.i - 1));
 			}
 
-			if (type.equals(TokenTypes.OPENING_BRACKET))
-				openedBrackets++;
-			else if (type.equals(TokenTypes.OPENING_SQUARE_BRACKET))
-				openedSquareBrackets++;
-			else if (type.equals(TokenTypes.CLOSING_BRACKET))
-				openedBrackets--;
-			else if (type.equals(TokenTypes.CLOSING_SQUARE_BRACKET))
-				openedSquareBrackets--;
-			// If every pair of open and close except last is closed and actual token type
-			// is comma
-			// appends new expression.
-			var sum = openedBrackets + openedSquareBrackets;
-			if ((type.equals(TokenTypes.COMMA) && sum == 1) || sum == 0) {
+			switch(type) {
+			case OPENING_BRACKET:
+				brackets[0]++;
+				break;
+			case CLOSING_BRACKET:
+				brackets[0]--;
+				break;
+			case OPENING_SQUARE_BRACKET:
+				brackets[1]++;
+				break;
+			case CLOSING_SQUARE_BRACKET:
+				brackets[1]--;
+				break;
+			default:
+				break;
+			}
+
+			if (brackets[b] == 0 && ((type.equals(TokenTypes.COMMA) && brackets[a] == 1) || brackets[a] == 0)) {
 				if (expression.length() == 0)
-					if (sum == 1)
+					if (brackets[a] == 1)
 						new LogError("Unexpected comma.", tokens.get(0));
 					else
 						continue;

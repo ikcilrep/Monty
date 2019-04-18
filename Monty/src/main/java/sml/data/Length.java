@@ -1,6 +1,5 @@
 package sml.data;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 
 import ast.Block;
@@ -11,7 +10,7 @@ import parser.parsing.Parser;
 
 public final class Length extends FunctionDeclarationNode {
 	private final static Block code = Parser
-			.parse(Lexer.lex("var counter;for _ in iterable;counter += 1;end;return counter;", "Length.java"));
+			.parse(Lexer.lex("var counter = 0;for _ in iterable;counter += 1;end;return counter;", "Length.java"));
 
 	public Length() {
 		super("length");
@@ -20,9 +19,9 @@ public final class Length extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public BigInteger call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return (BigInteger) getBody().run();
+		return getBody().run();
 	}
 
 }

@@ -13,7 +13,7 @@ final class Get extends Method<Iterable> {
 	private static Block code;
 	static {
 		code = Parser.parse(Lexer.lex(
-				"var counter;for x in This;if counter i ==;return x;end;counter 1 +=;end;logError(\"Iterable doesn't have \" +  i + \" element\");",
+				"var counter;for x in This;if counter index ==;return x;end;counter 1 +=;end;logError(\"Iterable doesn't have \" +  index + \" element\");",
 				"Get.java"));
 		code.addFunction(IOBlocks.logError);
 		code.addFunction(IOBlocks.length);
@@ -24,7 +24,7 @@ final class Get extends Method<Iterable> {
 		super(parent, "get");
 		code.setParent(parent);
 		setBody(code);
-		addParameter("i");
+		addParameter("index");
 	}
 
 	@Override

@@ -17,7 +17,6 @@ limitations under the License.
 package monty;
 
 import java.io.FileNotFoundException;
-
 import parser.parsing.Parser;
 
 public class Main {
