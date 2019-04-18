@@ -112,8 +112,7 @@ public final class OperatorOverloading {
 		case STRING:
 			return (String) leftValue + (String) rightValue;
 		case BOOLEAN:
-			new LogError("Can't add booleans.", temporaryFileName,
-					temporaryLine);
+			new LogError("Can't add booleans.", temporaryFileName, temporaryLine);
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$add", 2, false);
 		case VOID:
@@ -133,7 +132,8 @@ public final class OperatorOverloading {
 			return ((Boolean) leftValue) && ((Boolean) rightValue);
 		case FLOAT:
 		case STRING:
-			new LogError("Can't do and operation with " + type.toString().toLowerCase() + "s", temporaryFileName, temporaryLine);
+			new LogError("Can't do and operation with " + type.toString().toLowerCase() + "s", temporaryFileName,
+					temporaryLine);
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$and", 2, false);
 		case VOID:
@@ -155,8 +155,7 @@ public final class OperatorOverloading {
 			return (double) leftValue / (double) rightValue;
 		case STRING:
 		case BOOLEAN:
-			new LogError("Can't divide " + type.toString().toLowerCase() + "s",
-					temporaryFileName, temporaryLine);
+			new LogError("Can't divide " + type.toString().toLowerCase() + "s", temporaryFileName, temporaryLine);
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$div", 2, false);
 		case VOID:
@@ -264,7 +263,7 @@ public final class OperatorOverloading {
 						.instanceOfMe((StructDeclarationNode) leftValue);
 			break;
 		}
-			
+
 		return null;
 	}
 
@@ -322,12 +321,12 @@ public final class OperatorOverloading {
 			return (double) leftValue % (double) rightValue;
 		case STRING:
 		case BOOLEAN:
-			new LogError("Can't do modulo operation with " + type.toString().toLowerCase() + "s", temporaryFileName, temporaryLine);
+			new LogError("Can't do modulo operation with " + type.toString().toLowerCase() + "s", temporaryFileName,
+					temporaryLine);
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$mod", 2, false);
 		case VOID:
-			new LogError("Can't do modulo operation with Nothing.", temporaryFileName,
-					temporaryLine);
+			new LogError("Can't do modulo operation with Nothing.", temporaryFileName, temporaryLine);
 		default:
 			return null;
 		}
@@ -349,9 +348,7 @@ public final class OperatorOverloading {
 			return (double) leftValue * (double) rightValue;
 		case STRING:
 		case BOOLEAN:
-			new LogError(
-					"Can't multiply " + type.toString().toLowerCase() + "s",
-					temporaryFileName, temporaryLine);
+			new LogError("Can't multiply " + type.toString().toLowerCase() + "s", temporaryFileName, temporaryLine);
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$mul", 2, false);
 		case VOID:
@@ -403,7 +400,8 @@ public final class OperatorOverloading {
 			return ((Boolean) leftValue) || ((Boolean) rightValue);
 		case FLOAT:
 		case STRING:
-			new LogError("Can't do or operation with " + type.toString().toLowerCase() + "s", temporaryFileName, temporaryLine);
+			new LogError("Can't do or operation with " + type.toString().toLowerCase() + "s", temporaryFileName,
+					temporaryLine);
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$or", 2, false);
 		case VOID:
@@ -429,8 +427,7 @@ public final class OperatorOverloading {
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$shl", 2, false);
 		case VOID:
-			new LogError("Can't shift left Nothing.", temporaryFileName,
-					temporaryLine);
+			new LogError("Can't shift left Nothing.", temporaryFileName, temporaryLine);
 		default:
 			return null;
 		}
@@ -445,12 +442,11 @@ public final class OperatorOverloading {
 		case FLOAT:
 		case STRING:
 		case BOOLEAN:
-			new LogError("Can't shift right " + type.toString().toLowerCase()+ "s", temporaryFileName, temporaryLine);
+			new LogError("Can't shift right " + type.toString().toLowerCase() + "s", temporaryFileName, temporaryLine);
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$shr", 2, false);
 		case VOID:
-			new LogError("Can't shift right Nothing.", temporaryFileName,
-					temporaryLine);
+			new LogError("Can't shift right Nothing.", temporaryFileName, temporaryLine);
 		default:
 			return null;
 		}
@@ -472,14 +468,11 @@ public final class OperatorOverloading {
 			return (double) leftValue - (double) rightValue;
 		case STRING:
 		case BOOLEAN:
-			new LogError(
-					"Can't subtract " + type.toString().toLowerCase() + "s",
-					temporaryFileName, temporaryLine);
+			new LogError("Can't subtract " + type.toString().toLowerCase() + "s", temporaryFileName, temporaryLine);
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$sub", 2, false);
 		case VOID:
-			new LogError("Can't subtract Nothing.", temporaryFileName,
-					temporaryLine);
+			new LogError("Can't subtract Nothing.", temporaryFileName, temporaryLine);
 		default:
 			return null;
 		}
@@ -494,7 +487,8 @@ public final class OperatorOverloading {
 		case FLOAT:
 		case STRING:
 		case BOOLEAN:
-			new LogError("Can't do xor operation with " + type.toString().toString().toLowerCase()+ "s", temporaryFileName, temporaryLine);
+			new LogError("Can't do xor operation with " + type.toString().toString().toLowerCase() + "s",
+					temporaryFileName, temporaryLine);
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$xor", 2, false);
 		case VOID:

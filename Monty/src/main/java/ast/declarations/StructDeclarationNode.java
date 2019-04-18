@@ -46,7 +46,6 @@ public class StructDeclarationNode extends Block implements Cloneable {
 		addNewStruct(block, token.getFileName(), token.getLine());
 	}
 
-
 	public Constructor getConstructor() {
 		return constructor;
 	}
@@ -61,7 +60,7 @@ public class StructDeclarationNode extends Block implements Cloneable {
 		StructDeclarationNode copied = null;
 		try {
 			copied = (StructDeclarationNode) clone();
-			copied.constructor.setStruct(copied);
+			copied.getConstructor().setStruct(copied);
 			var structs = new HashMap<String, StructDeclarationNode>();
 			for (Map.Entry<String, StructDeclarationNode> entry : getStructures().entrySet()) {
 				var key = entry.getKey();

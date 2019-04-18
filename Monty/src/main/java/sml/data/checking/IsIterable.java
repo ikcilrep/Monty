@@ -24,7 +24,7 @@ public class IsIterable extends FunctionDeclarationNode {
 		var structToCheck = (StructDeclarationNode) toCheck;
 		if (!structToCheck.hasFunction("Iterator"))
 			return false;
-		
+
 		var iterator = structToCheck.getFunction("Iterator");
 		if (iterator.parameters.size() > 0)
 			return false;

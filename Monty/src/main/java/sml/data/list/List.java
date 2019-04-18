@@ -10,6 +10,7 @@ import sml.data.returning.Nothing;
 public class List extends StructDeclarationNode {
 	private Object[] array;
 	private int length = 0;
+
 	private void addFunctions() {
 		new Add(this);
 		new Count(this);
@@ -63,11 +64,10 @@ public class List extends StructDeclarationNode {
 		increaseCapacity(length << 1);
 		this.length = length;
 	}
-	
+
 	public List() {
 		super(null, "List");
 	}
-	
 
 	public Object[] getArray() {
 		return array;

@@ -183,7 +183,7 @@ public abstract class Identificator {
 			return false;
 		if (tokens.length() == 1 || !tokens.get(1).getType().equals(TokenTypes.IDENTIFIER))
 			new LogError("Expected name after \"struct\" keyword.", tokens.get(tokens.length() > 1 ? 1 : 0));
-		
+
 		return true;
 	}
 

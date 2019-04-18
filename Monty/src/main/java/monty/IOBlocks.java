@@ -61,7 +61,6 @@ public class IOBlocks {
 		filter = new Filter();
 	}
 
-	
 	public static void autoImport(Block block) {
 		var functions = block.getFunctions();
 		block.getVariables().put("Nothing", nothing);
@@ -80,7 +79,8 @@ public class IOBlocks {
 	}
 
 	public static Block readBlockFromFile(String path, String fileName, int line) {
-		var block = Parser.parse(Lexer.lex(FileIO.readFile(path, fileName, line), path, 1, new OptimizedTokensArray(), 0));
+		var block = Parser
+				.parse(Lexer.lex(FileIO.readFile(path, fileName, line), path, 1, new OptimizedTokensArray(), 0));
 		autoImport(block);
 		return block;
 	}

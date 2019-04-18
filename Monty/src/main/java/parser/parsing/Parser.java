@@ -33,7 +33,7 @@ public final class Parser {
 	public final static Block parse(OptimizedTokensArray tokens) {
 		var tokensBeforeSemicolon = new OptimizedTokensArray();
 		var block = new Block(null);
-		
+
 		for (Token token : tokens) {
 			if (token.getType().equals(TokenTypes.SEMICOLON)) {
 				if (tokensBeforeSemicolon.length() == 0)
