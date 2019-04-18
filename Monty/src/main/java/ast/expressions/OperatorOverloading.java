@@ -27,7 +27,7 @@ import parser.DataTypes;
 import parser.LogError;
 import sml.data.list.List;
 import sml.data.string.StringStruct;
-import sml.iterations.range.Range;
+//import sml.iterations.range.Range;
 import sml.math.MathStruct;
 
 public final class OperatorOverloading {
@@ -38,7 +38,7 @@ public final class OperatorOverloading {
 		arguments.add(new OperationNode(null, null));
 		arguments.add(new OperationNode(null, null));
 		builtInTypes.put("List", List.class);
-		builtInTypes.put("Range", Range.class);
+		//builtInTypes.put("Range", Range.class);
 		builtInTypes.put("Iterable", sml.functional.iterable.Iterable.class);
 
 	}

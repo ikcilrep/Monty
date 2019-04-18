@@ -21,6 +21,7 @@ import ast.declarations.VariableDeclarationNode;
 import lexer.Lexer;
 import lexer.OptimizedTokensArray;
 import parser.parsing.Parser;
+import sml.Sml;
 import sml.functional.function.FunctionByName;
 import sml.functional.function.Lambda;
 import sml.functional.iterable.Filter;
@@ -37,7 +38,7 @@ public class IOBlocks {
 	public static FunctionDeclarationNode logError;
 	public static FunctionDeclarationNode f;
 	public static FunctionDeclarationNode lambda;
-	public static FunctionDeclarationNode range;
+	public static Block range;
 	public static FunctionDeclarationNode print;
 	public static FunctionDeclarationNode println;
 	public static FunctionDeclarationNode input;
@@ -52,7 +53,7 @@ public class IOBlocks {
 		nothing = new sml.data.returning.Nothing();
 		f = new FunctionByName();
 		lambda = new Lambda();
-		range = new sml.iterations.range.NewRange();
+		range = Parser.parse(Lexer.lex(Sml.RANGE_CODE, "range.mt"));
 		print = new Print();
 		println = new Println();
 		input = new Input();
@@ -64,10 +65,10 @@ public class IOBlocks {
 	public static void autoImport(Block block) {
 		var functions = block.getFunctions();
 		block.getVariables().put("Nothing", nothing);
+		block.concat(range);
 		functions.put("List", list);
 		functions.put("f", f);
 		functions.put("lambda", lambda);
-		functions.put("Range", range);
 		functions.put("Iterable", iterable);
 		functions.put("map", map);
 		functions.put("filter", filter);

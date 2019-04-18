@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import ast.expressions.OperationNode;
+import monty.FileIO;
 import monty.IOBlocks;
 import monty.Library;
 import sml.casts.Ord;
@@ -39,7 +40,7 @@ import sml.time.Seconds;
 
 public final class Sml extends Library {
 	public static final ArrayList<OperationNode> emptyArgumentList = new ArrayList<>();
-
+	public static final String RANGE_CODE = FileIO.readFile(Sml.class.getResourceAsStream("iterations/range/range.mt"), "range.mt", "", -1);
 	public Sml() {
 		super("sml");
 	}

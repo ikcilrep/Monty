@@ -114,7 +114,8 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 			return parent.getVariable(((VariableNode) expression).getName(), fileName, line);
 		else if (expression instanceof FunctionCallNode) {
 			var functionToCall = ((FunctionCallNode) expression);
-			return parent.getFunction(functionToCall.getName(), fileName, line).call(functionToCall.getArguments(),
+			return parent.getFunction(functionToCall.getName(), fileName, line)
+					.call(functionToCall.getArguments(),
 					fileName, line);
 		} else if (expression instanceof ConstantNode)
 			return ((ConstantNode) expression).getValue();

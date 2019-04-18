@@ -21,39 +21,49 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import parser.LogError;
 
 public abstract class FileIO {
 	public static String readFile(String path, String callFileName, int callLine) {
 		BufferedReader br = null;
+		FileReader fr = null;
+		try {
+			fr = new FileReader(path);
+		} catch (FileNotFoundException e) {
+			new LogError("This file doesn't exist:\t" + path, callFileName, callLine);
+		}
+		
+		br = new BufferedReader(fr);
+
+		return readFile(br, path, callFileName, callLine);
+	}
+
+	public static String readFile(BufferedReader br, String path, String callFileName, int callLine) {
 		var text = new StringBuilder();
 		try {
-			FileReader fr = null;
-			try {
-				fr = new FileReader(path);
-			} catch (FileNotFoundException e) {
-				new LogError("This file doesn't exist:\t" + path, callFileName, callLine);
-			}
-			br = new BufferedReader(fr);
 			String line;
-			while ((line = br.readLine()) != null) {
+			while ((line = br.readLine()) != null)
 				text.append(line + "\n");
-			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				if (br != null) {
+				if (br != null)
 					br.close();
-				}
 			} catch (IOException ex) {
 				new LogError("Failed to read file:\t" + path, callFileName, callLine);
 			}
 		}
 		return text.toString();
 	}
-
+	
+	public static String readFile(InputStream in, String path, String callFileName, int callLine) {
+		return readFile(new BufferedReader(new InputStreamReader(in)), path, callFileName, callLine);
+	}
+	
 	public static void writeFile(String path, String text, boolean isAppend, String callFileName, int callLine) {
 		try {
 			File file = new File(path);
