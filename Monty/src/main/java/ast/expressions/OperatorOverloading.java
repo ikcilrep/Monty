@@ -39,8 +39,6 @@ public final class OperatorOverloading {
 		arguments.add(new OperationNode(null, null));
 		builtInTypes.put("List", List.class);
 		//builtInTypes.put("Range", Range.class);
-		builtInTypes.put("Iterable", sml.functional.iterable.Iterable.class);
-
 	}
 
 	private static int temporaryLine;

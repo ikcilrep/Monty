@@ -24,55 +24,45 @@ import parser.parsing.Parser;
 import sml.Sml;
 import sml.functional.function.FunctionByName;
 import sml.functional.function.Lambda;
-import sml.functional.iterable.Filter;
-import sml.functional.iterable.Map;
-import sml.functional.iterable.NewIterable;
 import sml.io.Input;
 import sml.io.Print;
 import sml.io.Println;
 
 public class IOBlocks {
 	public static FunctionDeclarationNode list;
-	public static FunctionDeclarationNode iterable;
-	public static FunctionDeclarationNode length;
 	public static FunctionDeclarationNode logError;
 	public static FunctionDeclarationNode f;
 	public static FunctionDeclarationNode lambda;
 	public static FunctionDeclarationNode print;
 	public static FunctionDeclarationNode println;
 	public static FunctionDeclarationNode input;
-	public static FunctionDeclarationNode map;
-	public static FunctionDeclarationNode filter;
 	public static VariableDeclarationNode nothing;
-	public static Block range;
+	public static Block[] writtenInMonty;
 
 	static {
 		list = new sml.data.list.NewList();
-		iterable = new NewIterable();
 		logError = new sml.errors.LogError();
 		nothing = new sml.data.returning.Nothing();
 		f = new FunctionByName();
 		lambda = new Lambda();
-		range = Parser.parse(Lexer.lex(Sml.RANGE_CODE, "range.mt"));
+		writtenInMonty = new Block[Sml.numberOfFiles];
+		int i = 0;
+		for (var code : Sml.code)
+			writtenInMonty[i] = Parser.parse(Lexer.lex(code, Sml.paths[i++]));
+		
 		print = new Print();
 		println = new Println();
 		input = new Input();
-		length = new sml.data.Length();
-		map = new Map();
-		filter = new Filter();
 	}
 
 	public static void autoImport(Block block) {
 		var functions = block.getFunctions();
 		block.getVariables().put("Nothing", nothing);
-		block.concat(range);
+		for (var parsed : writtenInMonty)
+			block.concat(parsed);
 		functions.put("List", list);
 		functions.put("f", f);
 		functions.put("lambda", lambda);
-		functions.put("Iterable", iterable);
-		functions.put("map", map);
-		functions.put("filter", filter);
-		functions.put("length", length);
 		functions.put("print", print);
 		functions.put("println", println);
 		functions.put("input", input);

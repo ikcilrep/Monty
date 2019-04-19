@@ -16,9 +16,7 @@ limitations under the License.
 
 package sml.math;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 
 import ast.Block;
@@ -27,26 +25,11 @@ import ast.expressions.OperationNode;
 import sml.data.StaticStruct;
 
 public final class Exp extends FunctionDeclarationNode {
-	private final static int SCALE = 100;
-	private final static BigDecimal PRECISION = BigDecimal.valueOf(100);
-
 	public Exp(StaticStruct struct) {
 		super("exp");
 		setBody(new Block(null));
 		addParameter("x");
 		struct.addFunction(this);
-	}
-
-	public final static BigDecimal exp(BigDecimal x) {
-		var result = x.add(BigDecimal.ONE);
-		var a = x;
-		var b = BigDecimal.ONE;
-		for (BigDecimal i = BigDecimal.valueOf(2); i.compareTo(PRECISION) <= 0; i = i.add(BigDecimal.ONE)) {
-			b = b.multiply(i);
-			a = a.multiply(x);
-			result = result.add(a.divide(b, SCALE, RoundingMode.HALF_UP));
-		}
-		return result;
 	}
 
 	@Override

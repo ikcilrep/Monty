@@ -21,8 +21,8 @@ import java.math.BigInteger;
 
 public final class FloatToInt {
 
-	public static BigInteger floatToInt(BigDecimal floating) {
-		return floating.toBigInteger();
+	public static BigInteger floatToInt(Double floating) {
+		return new BigDecimal(floating).toBigInteger();
 	}
 
 }

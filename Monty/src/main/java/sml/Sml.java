@@ -29,7 +29,6 @@ import sml.casts.ToChar;
 import sml.casts.ToInt;
 import sml.casts.ToFloat;
 import sml.casts.ToString;
-import sml.data.Length;
 import sml.language.Run;
 import sml.math.E;
 import sml.math.Pi;
@@ -40,7 +39,22 @@ import sml.time.Seconds;
 
 public final class Sml extends Library {
 	public static final ArrayList<OperationNode> emptyArgumentList = new ArrayList<>();
-	public static final String RANGE_CODE = FileIO.readFile(Sml.class.getResourceAsStream("iterations/range/range.mt"), "range.mt");
+	public static String[] paths;
+	public static String[] code;
+	public static short numberOfFiles;
+	static {
+		String[] paths_ = { "iterations/range/range.mt", "functional/iterable/iterable.mt",
+				"functional/iterable/map.mt", "functional/iterable/filter.mt", "functional/iterable/length.mt" };
+		numberOfFiles = (short) paths_.length;
+		paths = new String[numberOfFiles];
+		code = new String[numberOfFiles];
+		paths = paths_;
+		int i = 0;
+		for (var path : paths)
+			code[i++] = FileIO.readFile(Sml.class.getResourceAsStream(path), path);
+
+	}
+
 	public Sml() {
 		super("sml");
 	}
@@ -78,7 +92,6 @@ public final class Sml extends Library {
 		casts.put("ord", new Ord());
 
 		data.put("string", string);
-		data.put("length", new Length());
 
 		system.put("Argv", new Argv());
 

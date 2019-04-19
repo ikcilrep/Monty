@@ -32,6 +32,8 @@ public final class ToFloat extends FunctionDeclarationNode {
 			new LogError("Can't cast void to real", callFileName, callLine);
 		if (a instanceof BigInteger)
 			return IntToFloat.intToFloat((BigInteger) a);
+		if (a instanceof Integer)
+			return IntToFloat.intToFloat((int) a);
 		if (a instanceof Boolean)
 			return BooleanToFloat.booleanToFloat((Boolean) a);
 		if (a instanceof Double)

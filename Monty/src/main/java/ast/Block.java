@@ -138,17 +138,22 @@ public class Block extends NodeWithParent implements Cloneable {
 	public void concat(Block block) {
 		block.run();
 		var variablesSet = block.getVariables().entrySet();
-		for (Map.Entry<String, VariableDeclarationNode> entry : variablesSet) {
+		for (Map.Entry<String, VariableDeclarationNode> entry : variablesSet)
 			addVariable(entry.getValue());
-		}
+		
 		var functionsSet = block.getFunctions().entrySet();
 		for (Map.Entry<String, FunctionDeclarationNode> entry : functionsSet) {
-			addFunction(entry.getValue());
+			var function = entry.getValue();
+			function.getBody().setParent(this);
+			addFunction(function);
 		}
 		var structSet = block.getStructures().entrySet();
 		for (Map.Entry<String, StructDeclarationNode> entry : structSet) {
-			addStructure(entry.getValue());
+			var struct = entry.getValue();
+			struct.setParent(this);
+			addStructure(struct);
 		}
+		
 	}
 
 	public Block copy() {

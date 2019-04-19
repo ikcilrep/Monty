@@ -15,9 +15,6 @@ limitations under the License.
 */
 
 package sml.time;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 
 import ast.Block;
@@ -25,7 +22,6 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 
 public final class Seconds extends FunctionDeclarationNode {
-	private final static BigDecimal THOUSAND = BigDecimal.valueOf(1000);
 
 	public Seconds() {
 		super("seconds");
@@ -33,9 +29,9 @@ public final class Seconds extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public BigDecimal call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public Double call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return BigDecimal.valueOf(System.currentTimeMillis()).divide(THOUSAND, 3, RoundingMode.HALF_UP);
+		return System.currentTimeMillis() / 1000d;
 	}
 
 }

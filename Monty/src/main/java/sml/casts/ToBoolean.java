@@ -16,7 +16,6 @@ limitations under the License.
 
 package sml.casts;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
@@ -33,8 +32,10 @@ public final class ToBoolean extends FunctionDeclarationNode {
 			new LogError("Can't cast void to boolean", callFileName, callLine);
 		if (a instanceof BigInteger)
 			return IntToBoolean.intToBoolean((BigInteger) a);
-		if (a instanceof BigDecimal)
-			return FloatToBoolean.floatToBoolean((BigDecimal) a);
+		if (a instanceof Integer)
+			return IntToBoolean.intToBoolean((int) a);
+		if (a instanceof Double)
+			return FloatToBoolean.floatToBoolean((double) a);
 		if (a instanceof Boolean)
 			return (boolean) a;
 		if (a instanceof String)

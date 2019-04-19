@@ -16,14 +16,13 @@ limitations under the License.
 
 package sml.casts;
 
-import java.math.BigInteger;
 
 final class BooleanToInt {
 
-	public static BigInteger booleanToInt(Boolean bool) {
+	public static Integer booleanToInt(Boolean bool) {
 		if (bool == true)
-			return BigInteger.valueOf(1);
-		return BigInteger.valueOf(0);
+			return 1;
+		return 0;
 	}
 
 }

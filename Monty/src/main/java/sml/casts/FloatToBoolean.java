@@ -15,12 +15,11 @@ limitations under the License.
 */
 package sml.casts;
 
-import java.math.BigDecimal;
 
 final class FloatToBoolean {
 
-	public static Boolean floatToBoolean(BigDecimal floating) {
-		return floating.compareTo(BigDecimal.ZERO) > 0;
+	public static Boolean floatToBoolean(double floating) {
+		return floating > 0;
 	}
 
 }

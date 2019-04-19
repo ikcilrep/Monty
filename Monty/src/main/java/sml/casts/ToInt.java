@@ -16,7 +16,6 @@ limitations under the License.
 
 package sml.casts;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
@@ -28,13 +27,13 @@ import sml.data.returning.VoidType;
 
 public final class ToInt extends FunctionDeclarationNode {
 
-	public static BigInteger toInt(Object a, String callFileName, int callLine) {
+	public static Object toInt(Object a, String callFileName, int callLine) {
 		if (a instanceof VoidType)
 			new LogError("Can't cast void to integer", callFileName, callLine);
-		if (a instanceof BigInteger)
-			return (BigInteger) a;
-		if (a instanceof BigDecimal)
-			return ((BigDecimal) a).toBigInteger();
+		if (a instanceof BigInteger || a instanceof Integer)
+			return  a;
+		if (a instanceof Double)
+			return (int)(double) a;
 		if (a instanceof Boolean)
 			return BooleanToInt.booleanToInt((Boolean) a);
 		if (a instanceof String)
@@ -51,7 +50,7 @@ public final class ToInt extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public BigInteger call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var a = getBody().getVariableValue("a");
 		return toInt(a, callFileName, callLine);

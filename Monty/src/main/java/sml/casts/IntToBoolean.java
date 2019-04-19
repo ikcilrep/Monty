@@ -23,5 +23,7 @@ final class IntToBoolean {
 	public static Boolean intToBoolean(BigInteger integer) {
 		return integer.compareTo(BigInteger.valueOf(0)) > 0;
 	}
-
+	public static Boolean intToBoolean(int integer) {
+		return integer > 0;
+	}
 }
