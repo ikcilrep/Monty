@@ -159,13 +159,14 @@ public class Block extends NodeWithParent implements Cloneable {
 	public Block copy() {
 		try {
 			var body = (Block) clone();
-			var children = getChildren();
-			for (int i = 0; i < children.size(); i++) {
-				if (children.get(i) instanceof NodeWithParent) {
-					var castedChildCopy = ((NodeWithParent) children.get(i)).copy();
-					children.set(i, castedChildCopy);
+			var children = new ArrayList<RunnableNode>(getChildren().size());
+			for (var child : getChildren()) {
+				if (child instanceof NodeWithParent) {
+					var castedChildCopy = ((NodeWithParent) child).copy();
 					castedChildCopy.setParent(body);
-				}
+					children.add(castedChildCopy);
+				} else
+					children.add(child);
 			}
 			body.setChildren(children);
 			return body;
@@ -173,6 +174,11 @@ public class Block extends NodeWithParent implements Cloneable {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	protected void setFunctions(HashMap<String, FunctionDeclarationNode> functions) {
+		this.functions = functions;
+		
 	}
 
 	public boolean hasFunction(String name) {
@@ -304,7 +310,6 @@ public class Block extends NodeWithParent implements Cloneable {
 					|| child instanceof ContinueStatementNode
 					|| ((child instanceof ConditionalNode || child instanceof ForStatementNode) && result != null))
 				return result;
-
 		}
 		return null;
 	}

@@ -62,27 +62,21 @@ public class StructDeclarationNode extends Block implements Cloneable {
 			copied = (StructDeclarationNode) clone();
 			copied.getConstructor().setStruct(copied);
 			var structs = new HashMap<String, StructDeclarationNode>();
-			for (Map.Entry<String, StructDeclarationNode> entry : getStructures().entrySet()) {
-				var key = entry.getKey();
-				var value = entry.getValue().copy();
-				value.setParent(copied);
-				structs.put(key, value);
-			}
+			for (Map.Entry<String, StructDeclarationNode> entry : getStructures().entrySet())
+				structs.put(entry.getKey(), entry.getValue().copy());
 			copied.setStructures(structs);
 
 			var variables = new HashMap<String, VariableDeclarationNode>();
-			for (Map.Entry<String, VariableDeclarationNode> entry : getVariables().entrySet()) {
-				var key = entry.getKey();
-				variables.put(key, entry.getValue().copy());
-			}
+			for (Map.Entry<String, VariableDeclarationNode> entry : getVariables().entrySet())
+				variables.put(entry.getKey(), entry.getValue().copy());
+			
 			copied.setVariables(variables);
 
 			var functions = new HashMap<String, FunctionDeclarationNode>();
 			for (Map.Entry<String, FunctionDeclarationNode> entry : getFunctions().entrySet()) {
-				var key = entry.getKey();
 				var value = entry.getValue().copy();
 				value.getBody().setParent(copied);
-				functions.put(key, value);
+				functions.put(entry.getKey(), value);
 			}
 			copied.setFunctions(functions);
 
@@ -97,11 +91,14 @@ public class StructDeclarationNode extends Block implements Cloneable {
 					children.add(child);
 			}
 			copied.setChildren(children);
-
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
 		return copied;
+	}
+
+	public void setConstructor(Constructor constructor) {
+		this.constructor = constructor;
 	}
 
 	public int getInstanceNumber() {
@@ -126,18 +123,13 @@ public class StructDeclarationNode extends Block implements Cloneable {
 		return s.getStructNumber() == structNumber;
 	}
 
-	public void setFunctions(HashMap<String, FunctionDeclarationNode> functions) {
-		this.functions = functions;
-	}
 
-	@Override
-	public String toString() {
-		if (hasFunction("toString")) {
-			var function = getFunction("toString");
-			return function.call(new ArrayList<>(), function.getFileName(), function.getLine()).toString();
-		}
-		return name + "#" + getInstanceNumber();
-	}
+	/*
+	 * @Override public String toString() { if (hasFunction("toString")) { var
+	 * function = getFunction("toString"); return function.call(new ArrayList<>(),
+	 * function.getFileName(), function.getLine()).toString(); } return name + "#" +
+	 * getInstanceNumber(); }
+	 */
 
 	@Override
 	public boolean equals(Object other) {

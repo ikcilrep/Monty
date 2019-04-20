@@ -18,7 +18,7 @@ package ast.expressions;
 
 import java.util.ArrayList;
 
-public final class FunctionCallNode extends NamedExpression {
+public final class FunctionCallNode extends NamedExpression implements Cloneable {
 
 	private String name;
 	private ArrayList<OperationNode> arguments = new ArrayList<>();
@@ -42,6 +42,21 @@ public final class FunctionCallNode extends NamedExpression {
 	@Override
 	public final String getName() {
 		return name;
+	}
+
+	public FunctionCallNode copy() {
+		try {
+			var copied = (FunctionCallNode) clone();
+			var copyOfArguments = new ArrayList<OperationNode>(arguments.size());
+			for (var argument: arguments)
+				copyOfArguments.add(argument.copy());
+			copied.setArguments(copyOfArguments);
+			return copied;
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return null;
+		
 	}
 
 }

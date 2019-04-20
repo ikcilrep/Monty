@@ -35,12 +35,8 @@ public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode
 	@Override
 	public final Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		var variables = new HashMap<String, VariableDeclarationNode>();
-		var variablesSet = body.getVariables().entrySet();
-		for (Map.Entry<String, VariableDeclarationNode> entry : variablesSet) {
-			String key = entry.getKey();
-			VariableDeclarationNode value = (entry.getValue());
-			variables.put(key, value.copy());
-		}
+		for (Map.Entry<String, VariableDeclarationNode> entry : body.getVariables().entrySet())
+			variables.put(entry.getKey(), entry.getValue().copy());
 		setArguments(arguments, callFileName, callLine);
 		String[] fileNames = { callFileName, getFileName() };
 		int[] lines = { callLine, getLine() };

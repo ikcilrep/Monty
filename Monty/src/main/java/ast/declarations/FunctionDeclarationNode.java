@@ -17,7 +17,6 @@ limitations under the License.
 package ast.declarations;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import ast.Block;
 import ast.expressions.OperationNode;
@@ -42,7 +41,7 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 	public FunctionDeclarationNode copy() {
 		try {
 			var copied = (FunctionDeclarationNode) clone();
-			copied.setBody(body.copy());
+			copied.setBody(getBody().copy());
 			return copied;
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
@@ -64,14 +63,8 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 			new LogError("Too many arguments in " + name + " function call.", callFileName, callLine);
 		else if (argumentsSize < parametersSize)
 			new LogError("Too few arguments in " + name + " function call.", callFileName, callLine);
-		if (argumentsSize == 0)
-			return;
-		var runnedArguments = new ArrayList<Object>(Arrays.asList(new Object[arguments.size()]));
 
-		for (int i = 0; i < arguments.size(); i++)
-			runnedArguments.set(i, arguments.get(i).run());
-
-		for (int i = 0; i < runnedArguments.size(); i++) {
+		for (int i = 0; i < arguments.size(); i++) {
 			var name = parameters.get(i).getName();
 			VariableDeclarationNode variable = null;
 			if (!body.hasVariable(name)) {
@@ -79,7 +72,7 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 				body.addVariable(variable, fileName, line);
 			} else
 				variable = body.getVariable(name, getFileName(), getLine());
-			variable.setValue(runnedArguments.get(i));
+			variable.setValue(arguments.get(i).run());
 			variable.setConst(Character.isUpperCase(name.charAt(0)));
 		}
 	}

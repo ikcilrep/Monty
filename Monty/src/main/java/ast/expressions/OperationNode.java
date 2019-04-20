@@ -114,8 +114,7 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 			return parent.getVariable(((VariableNode) expression).getName(), fileName, line);
 		else if (expression instanceof FunctionCallNode) {
 			var functionToCall = ((FunctionCallNode) expression);
-			return parent.getFunction(functionToCall.getName(), fileName, line)
-					.call(functionToCall.getArguments(),
+			return parent.getFunction(functionToCall.getName(), fileName, line).call(functionToCall.getArguments(),
 					fileName, line);
 		} else if (expression instanceof ConstantNode)
 			return ((ConstantNode) expression).getValue();
@@ -156,7 +155,7 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 		if (operand instanceof FunctionCallNode) {
 			var function = ((FunctionCallNode) operand);
 			var arguments = function.getArguments();
-			for (OperationNode argument : arguments)
+			for (var argument : arguments)
 				argument.setParent(parent);
 		}
 	}
@@ -175,15 +174,20 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 				|| operator.equals(">=") || operator.equals(">") || operator.equals("<");
 
 		var isNotAssignment = !operator.contains("=") || isComparison;
-		var b = right.solve();
-
 		var a = left.solve();
+
 		var leftValue = getLiteral(a, left.fileName, left.line);
-		if (isNotAssignment)
-			if (leftValue instanceof VariableDeclarationNode)
-				leftValue = ((VariableDeclarationNode) leftValue).getValue();
+		if (isNotAssignment && leftValue instanceof VariableDeclarationNode)
+			leftValue = ((VariableDeclarationNode) leftValue).getValue();
 
 		var leftType = DataTypes.getDataType(leftValue);
+		if (leftType != null && leftType.equals(DataTypes.BOOLEAN)) {
+			if (operator.equals("&"))
+				return OperatorOverloading.andOperator(leftValue, right, leftType);
+			else if (operator.equals("|"))
+				return OperatorOverloading.orOperator(leftValue, right, leftType);
+		}
+		var b = right.solve();
 
 		if (operator.equals(".")) {
 			if (!(b instanceof NamedExpression))
@@ -280,10 +284,13 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 							+ rightType.toString().toLowerCase(), fileName, line);
 			}
 		} else if (!leftType.equals(rightType))
-			if (leftType.equals(DataTypes.INTEGER) && rightType.equals(DataTypes.BIG_INTEGER))
+			if (leftType.equals(DataTypes.INTEGER) && rightType.equals(DataTypes.BIG_INTEGER)) {
 				leftValue = BigInteger.valueOf((int) leftValue);
-			else if (rightType.equals(DataTypes.INTEGER) && leftType.equals(DataTypes.BIG_INTEGER))
+				leftType = DataTypes.BIG_INTEGER;
+			} else if (rightType.equals(DataTypes.INTEGER) && leftType.equals(DataTypes.BIG_INTEGER)) {
 				rightValue = BigInteger.valueOf((int) rightValue);
+				rightType = DataTypes.BIG_INTEGER;
+			}
 
 		return calculate(leftValue, rightValue, operator, leftType);
 
@@ -296,10 +303,37 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 	@Override
 	public final OperationNode copy() {
 		try {
-			return (OperationNode) clone();
+			var copied = (OperationNode) clone();
+			var operand = getOperand();
+			if (operand instanceof FunctionCallNode)
+				copied.setOperand(((FunctionCallNode) operand).copy());
+			var right = getRight();
+			if (right != null)
+				copied.setRight(right.copy());
+			var left = getLeft();
+			if (left != null)
+				copied.setLeft(left.copy());
+
+			return copied;
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public OperationNode getLeft() {
+		return left;
+	}
+
+	public void setLeft(OperationNode left) {
+		this.left = left;
+	}
+
+	public OperationNode getRight() {
+		return right;
+	}
+
+	public void setRight(OperationNode right) {
+		this.right = right;
 	}
 }

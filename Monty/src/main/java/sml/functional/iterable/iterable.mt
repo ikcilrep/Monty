@@ -1,6 +1,6 @@
 struct Iterable;
 	var iterable;
-	
+	var begin = 0;
 	func init iterable;
 		This.iterable = iterable;
 	end;
@@ -28,6 +28,15 @@ struct Iterable;
 	
 	struct Iterator;
 		var iterator = iterable.Iterator();
+		
+		func init;
+			var i = 0;
+			while i != begin & iterator.hasNext();
+				iterator.next();
+				i += 1;
+			end;
+		end;
+		
 		func next;
 			return iterator.next();
 		end;

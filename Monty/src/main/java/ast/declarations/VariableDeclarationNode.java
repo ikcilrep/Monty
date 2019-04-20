@@ -67,6 +67,7 @@ public class VariableDeclarationNode extends DeclarationNode implements Cloneabl
 
 	public final void setValue(Object value) {
 		this.value = value;
+		wasValueChanged = true;
 	}
 
 }

@@ -44,7 +44,7 @@ public final class Sml extends Library {
 	public static short numberOfFiles;
 	static {
 		String[] paths_ = { "iterations/range/range.mt", "functional/iterable/iterable.mt",
-				"functional/iterable/map.mt", "functional/iterable/filter.mt", "functional/iterable/length.mt" };
+				"functional/iterable/iterableFunctions.mt" };
 		numberOfFiles = (short) paths_.length;
 		paths = new String[numberOfFiles];
 		code = new String[numberOfFiles];

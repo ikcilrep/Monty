@@ -20,11 +20,11 @@ import ast.Block;
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
+import parser.LogError;
 import sml.Sml;
 import sml.data.checking.IsIterable;
 import sml.data.returning.BreakType;
 import sml.data.returning.ContinueType;
-import sml.data.returning.Nothing;
 import sml.functional.iterable.string.IterableString;
 
 public final class ForStatementNode extends Block {
@@ -62,21 +62,8 @@ public final class ForStatementNode extends Block {
 		var toIter = getIterable().run();
 		if (toIter instanceof String)
 			toIter = new IterableString((String) toIter);
-		else if (!IsIterable.isIterable(toIter, fileName, line)) {
-			VariableDeclarationNode variable = null;
-			if (isNotNameUnderscore)
-				if (hasVariable(name))
-					variable = getVariable(name, getFileName(), getLine());
-				else
-					addVariable(variable = new VariableDeclarationNode(name));
-			variable.setConst(false);
-			variable.setValue(toIter);
-			variable.setConst(isConst);
-			result = super.run();
-			if (result instanceof BreakType || result instanceof ContinueType)
-				return Nothing.nothing;
-			return result;
-		}
+		else if (!IsIterable.isIterable(toIter, fileName, line))
+			new LogError("Can't iter over not iterable object.", fileName, line);
 		var iterator = (StructDeclarationNode) ((StructDeclarationNode) toIter).getFunction("Iterator")
 				.call(Sml.emptyArgumentList, fileName, line);
 		var hasNext = iterator.getFunction("hasNext");

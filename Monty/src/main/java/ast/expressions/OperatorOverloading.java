@@ -126,8 +126,8 @@ public final class OperatorOverloading {
 			return (int) leftValue & (int) rightValue;
 		case BIG_INTEGER:
 			return ((BigInteger) leftValue).and((BigInteger) rightValue);
-		case BOOLEAN:
-			return ((Boolean) leftValue) && ((Boolean) rightValue);
+		case BOOLEAN:			
+			return ((Boolean) leftValue) && ((Boolean) ((OperationNode) rightValue).run());
 		case FLOAT:
 		case STRING:
 			new LogError("Can't do and operation with " + type.toString().toLowerCase() + "s", temporaryFileName,
