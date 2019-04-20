@@ -34,9 +34,10 @@ public class Constructor extends FunctionDeclarationNode {
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		/*var copyOfArguments = new ArrayList<OperationNode>(arguments.size());
-		for (var argument: arguments)
-			copyOfArguments.add(argument.copy());*/
+		/*
+		 * var copyOfArguments = new ArrayList<OperationNode>(arguments.size()); for
+		 * (var argument: arguments) copyOfArguments.add(argument.copy());
+		 */
 		var newStruct = struct.getParent().getStructure(name, callFileName, callLine).copy();
 		var thisVariable = new VariableDeclarationNode("This");
 		thisVariable.setValue(newStruct);

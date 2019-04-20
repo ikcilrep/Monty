@@ -26,6 +26,12 @@ struct Iterable;
 		return list;
 	end;
 	
+	func tail;
+		var result = Iterable(iterable);
+		result.begin = begin + 1;
+		return result;
+	end;
+	
 	struct Iterator;
 		var iterator = iterable.Iterator();
 		

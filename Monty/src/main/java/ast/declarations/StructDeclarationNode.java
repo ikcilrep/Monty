@@ -33,7 +33,6 @@ public class StructDeclarationNode extends Block implements Cloneable {
 	private int structNumber;
 	private int instanceNumber;
 	private String name;
-	private Constructor constructor;
 
 	public StructDeclarationNode(Block parent, String name) {
 		super(parent);
@@ -46,13 +45,9 @@ public class StructDeclarationNode extends Block implements Cloneable {
 		addNewStruct(block, token.getFileName(), token.getLine());
 	}
 
-	public Constructor getConstructor() {
-		return constructor;
-	}
-
 	public void addNewStruct(Block block, String fileName, int line) {
 		block.addStructure(this, fileName, line);
-		block.addFunction(constructor = new Constructor(this), fileName, line);
+		block.addFunction(new Constructor(this), fileName, line);
 	}
 
 	@Override
@@ -60,16 +55,19 @@ public class StructDeclarationNode extends Block implements Cloneable {
 		StructDeclarationNode copied = null;
 		try {
 			copied = (StructDeclarationNode) clone();
-			copied.getConstructor().setStruct(copied);
 			var structs = new HashMap<String, StructDeclarationNode>();
-			for (Map.Entry<String, StructDeclarationNode> entry : getStructures().entrySet())
-				structs.put(entry.getKey(), entry.getValue().copy());
+			for (Map.Entry<String, StructDeclarationNode> entry : getStructures().entrySet()) {
+				var value = entry.getValue().copy();
+				value.setParent(copied);
+				structs.put(entry.getKey(), value);
+				copied.getFunctions().put(value.getName(), new Constructor(value));
+			}
 			copied.setStructures(structs);
 
 			var variables = new HashMap<String, VariableDeclarationNode>();
 			for (Map.Entry<String, VariableDeclarationNode> entry : getVariables().entrySet())
 				variables.put(entry.getKey(), entry.getValue().copy());
-			
+
 			copied.setVariables(variables);
 
 			var functions = new HashMap<String, FunctionDeclarationNode>();
@@ -97,10 +95,6 @@ public class StructDeclarationNode extends Block implements Cloneable {
 		return copied;
 	}
 
-	public void setConstructor(Constructor constructor) {
-		this.constructor = constructor;
-	}
-
 	public int getInstanceNumber() {
 		return instanceNumber;
 	}
@@ -122,7 +116,6 @@ public class StructDeclarationNode extends Block implements Cloneable {
 	public boolean instanceOfMe(StructDeclarationNode s) {
 		return s.getStructNumber() == structNumber;
 	}
-
 
 	/*
 	 * @Override public String toString() { if (hasFunction("toString")) { var

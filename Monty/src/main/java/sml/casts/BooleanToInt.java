@@ -16,7 +16,6 @@ limitations under the License.
 
 package sml.casts;
 
-
 final class BooleanToInt {
 
 	public static Integer booleanToInt(Boolean bool) {

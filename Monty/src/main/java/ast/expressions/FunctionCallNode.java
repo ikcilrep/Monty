@@ -48,7 +48,7 @@ public final class FunctionCallNode extends NamedExpression implements Cloneable
 		try {
 			var copied = (FunctionCallNode) clone();
 			var copyOfArguments = new ArrayList<OperationNode>(arguments.size());
-			for (var argument: arguments)
+			for (var argument : arguments)
 				copyOfArguments.add(argument.copy());
 			copied.setArguments(copyOfArguments);
 			return copied;
@@ -56,7 +56,7 @@ public final class FunctionCallNode extends NamedExpression implements Cloneable
 			e.printStackTrace();
 		}
 		return null;
-		
+
 	}
 
 }

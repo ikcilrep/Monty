@@ -9,7 +9,7 @@ import sml.Sml;
 import sml.data.StaticStruct;
 import sml.functional.iterable.string.IterableString;
 
-public class Iterator extends FunctionDeclarationNode{
+public class Iterator extends FunctionDeclarationNode {
 
 	public Iterator(StaticStruct struct) {
 		super("Iterator");
@@ -21,7 +21,8 @@ public class Iterator extends FunctionDeclarationNode{
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return new IterableString(getBody().getStringVariableValue("str")).getFunction("Iterator").call(Sml.emptyArgumentList, callFileName, callLine);
+		return new IterableString(getBody().getStringVariableValue("str")).getFunction("Iterator")
+				.call(Sml.emptyArgumentList, callFileName, callLine);
 	}
 
 }

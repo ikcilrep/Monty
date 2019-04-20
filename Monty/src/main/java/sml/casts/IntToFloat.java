@@ -23,7 +23,8 @@ public final class IntToFloat {
 	public static double intToFloat(BigInteger integer) {
 		return integer.doubleValue();
 	}
+
 	public static double intToFloat(int integer) {
-		return (double)integer;
+		return (double) integer;
 	}
 }

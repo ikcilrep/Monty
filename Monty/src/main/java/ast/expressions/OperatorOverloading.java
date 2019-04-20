@@ -38,7 +38,7 @@ public final class OperatorOverloading {
 		arguments.add(new OperationNode(null, null));
 		arguments.add(new OperationNode(null, null));
 		builtInTypes.put("List", List.class);
-		//builtInTypes.put("Range", Range.class);
+		// builtInTypes.put("Range", Range.class);
 	}
 
 	private static int temporaryLine;
@@ -126,7 +126,7 @@ public final class OperatorOverloading {
 			return (int) leftValue & (int) rightValue;
 		case BIG_INTEGER:
 			return ((BigInteger) leftValue).and((BigInteger) rightValue);
-		case BOOLEAN:			
+		case BOOLEAN:
 			return ((Boolean) leftValue) && ((Boolean) ((OperationNode) rightValue).run());
 		case FLOAT:
 		case STRING:

@@ -140,7 +140,7 @@ public class Block extends NodeWithParent implements Cloneable {
 		var variablesSet = block.getVariables().entrySet();
 		for (Map.Entry<String, VariableDeclarationNode> entry : variablesSet)
 			addVariable(entry.getValue());
-		
+
 		var functionsSet = block.getFunctions().entrySet();
 		for (Map.Entry<String, FunctionDeclarationNode> entry : functionsSet) {
 			var function = entry.getValue();
@@ -153,7 +153,7 @@ public class Block extends NodeWithParent implements Cloneable {
 			struct.setParent(this);
 			addStructure(struct);
 		}
-		
+
 	}
 
 	public Block copy() {
@@ -178,7 +178,7 @@ public class Block extends NodeWithParent implements Cloneable {
 
 	protected void setFunctions(HashMap<String, FunctionDeclarationNode> functions) {
 		this.functions = functions;
-		
+
 	}
 
 	public boolean hasFunction(String name) {
