@@ -39,8 +39,12 @@ public final class ForStatementNode extends Block {
 		setVariableName(variableName);
 	}
 
-	public void setVariableName(String variableName) {
-		this.variableName = variableName;
+	@Override
+	public ForStatementNode copy() {
+		var copied = (ForStatementNode) super.copy();
+		copied.setIterable(getIterable().copy());
+		return copied;
+
 	}
 
 	public OperationNode getIterable() {
@@ -52,24 +56,6 @@ public final class ForStatementNode extends Block {
 	}
 
 	@Override
-	public void setParent(Block parent) {
-		super.setParent(parent);
-		iterable.setParent(parent);
-	}
-
-	@Override
-	public ForStatementNode copy() {
-		var copied = (ForStatementNode) super.copy();
-		copied.setIterable(getIterable().copy());
-		return copied;
-
-	}
-
-	public void setIterable(OperationNode iterable) {
-		this.iterable = iterable;
-	}
-
-	@Override
 	public Object run() {
 		Object result = null;
 		var name = getVariableName();
@@ -78,10 +64,10 @@ public final class ForStatementNode extends Block {
 		var toIter = getIterable().run();
 		if (toIter instanceof String)
 			toIter = new IterableString((String) toIter);
-		else if (!IsIterable.isIterable(toIter, fileName, line))
-			new LogError("Can't iter over not iterable object.", fileName, line);
+		else if (!IsIterable.isIterable(toIter, getFileName(), getLine()))
+			new LogError("Can't iter over not iterable object.", getFileName(), getLine());
 		var iterator = (StructDeclarationNode) ((StructDeclarationNode) toIter).getFunction("Iterator")
-				.call(Sml.emptyArgumentList, fileName, line);
+				.call(Sml.emptyArgumentList, getFileName(), getLine());
 		var hasNext = iterator.getFunction("hasNext");
 		var next = iterator.getFunction("next");
 		VariableDeclarationNode variable = null;
@@ -92,9 +78,9 @@ public final class ForStatementNode extends Block {
 				addVariable(variable = new VariableDeclarationNode(name));
 
 		if (isNotNameUnderscore)
-			while ((boolean) hasNext.call(Sml.emptyArgumentList, fileName, line)) {
+			while ((boolean) hasNext.call(Sml.emptyArgumentList, getFileName(), getLine())) {
 				variable.setConst(false);
-				variable.setValue(next.call(Sml.emptyArgumentList, fileName, line));
+				variable.setValue(next.call(Sml.emptyArgumentList, getFileName(), getLine()));
 				variable.setConst(isConst);
 				result = super.run();
 				if (result instanceof BreakType)
@@ -105,8 +91,8 @@ public final class ForStatementNode extends Block {
 					return result;
 			}
 		else
-			while ((boolean) hasNext.call(Sml.emptyArgumentList, fileName, line)) {
-				next.call(Sml.emptyArgumentList, fileName, line);
+			while ((boolean) hasNext.call(Sml.emptyArgumentList, getFileName(), getLine())) {
+				next.call(Sml.emptyArgumentList, getFileName(), getLine());
 				result = super.run();
 				if (result instanceof BreakType)
 					break;
@@ -116,5 +102,19 @@ public final class ForStatementNode extends Block {
 					return result;
 			}
 		return null;
+	}
+
+	public void setIterable(OperationNode iterable) {
+		this.iterable = iterable;
+	}
+
+	@Override
+	public void setParent(Block parent) {
+		super.setParent(parent);
+		getIterable().setParent(parent);
+	}
+
+	public void setVariableName(String variableName) {
+		this.variableName = variableName;
 	}
 }

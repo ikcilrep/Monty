@@ -33,7 +33,7 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 
 	public void addParameter(String name) {
 		parameters.add(new VariableDeclarationNode(name));
-		parametersSize++;
+		incrementParameterSize();
 	}
 
 	public abstract Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine);
@@ -57,6 +57,10 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 		return parameters;
 	}
 
+	private void incrementParameterSize() {
+		parametersSize++;
+	}
+
 	public void setArguments(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		var argumentsSize = arguments.size();
 		if (argumentsSize > parametersSize)
@@ -69,7 +73,7 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 			VariableDeclarationNode variable = null;
 			if (!body.hasVariable(name)) {
 				variable = new VariableDeclarationNode(name);
-				body.addVariable(variable, fileName, line);
+				body.addVariable(variable, getFileName(), getLine());
 			} else
 				variable = body.getVariable(name, getFileName(), getLine());
 			variable.setValue(arguments.get(i).run());

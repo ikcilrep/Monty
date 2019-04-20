@@ -29,11 +29,11 @@ public final class IfStatementNode extends ConditionalNode {
 	public IfStatementNode(Block parent, OperationNode condition, String fileName, int line, boolean isInElse) {
 		super(condition, parent);
 		if (isInElse)
-			this.parent = parent.getParent();
-		this.isInElse = isInElse;
-		this.condition = condition;
-		this.fileName = fileName;
-		this.line = line;
+			setParent(parent.getParent());
+		setInElse(isInElse);
+		setCondition(condition);
+		setFileName(fileName);
+		setLine(line);
 	}
 
 	public Block getElseBody() {
@@ -44,21 +44,21 @@ public final class IfStatementNode extends ConditionalNode {
 		return isInElse;
 	}
 
+	@Override
+	public Object run() {
+		if (runnedCondition())
+			return super.run();
+		else if (getElseBody() != null)
+			return getElseBody().run();
+
+		return null;
+	}
+
 	public void setElseBody(Block elseBody) {
 		this.elseBody = elseBody;
 	}
 
 	public void setInElse(boolean isInElse) {
 		this.isInElse = isInElse;
-	}
-
-	@Override
-	public Object run() {
-		if (runnedCondition()) {
-			return super.run();
-		} else if (elseBody != null) {
-			return elseBody.run();
-		}
-		return null;
 	}
 }

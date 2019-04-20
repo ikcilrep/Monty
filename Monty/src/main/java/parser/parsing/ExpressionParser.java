@@ -39,21 +39,9 @@ public class ExpressionParser {
 	private static LinkedList<FunctionCallNode> functions;
 	private static LinkedList<FunctionCallNode> lists;
 
-	public static void setLists(LinkedList<FunctionCallNode> lists) {
-		ExpressionParser.lists = lists;
-	}
-
 	private final static HashMap<String, ConstantNode> LITERALS = new HashMap<>();
+
 	private final static HashMap<String, ConstantNode> STRING_LITERALS = new HashMap<>();
-
-	public final static OperationNode parseInfix(Block parent, OptimizedTokensArray tokens) {
-		return parse(parent, Converter.infixToSuffix(tokens, parent));
-	}
-
-	public final static OperationNode parseInfix(Block parent, OptimizedTokensArray tokens, int start) {
-		return parse(parent, Converter.infixToSuffix(tokens, parent), new Stack<>(), new IntegerHolder(start));
-	}
-
 	private final static OperationNode parse(Block parent, OptimizedTokensArray tokens) {
 		return parse(parent, tokens, new Stack<>(), new IntegerHolder(0));
 	}
@@ -98,10 +86,6 @@ public class ExpressionParser {
 		return stack.pop();
 	}
 
-	public static void setFunctions(LinkedList<FunctionCallNode> functions) {
-		ExpressionParser.functions = functions;
-	}
-
 	private final static OperationNode parseFunction(Block parent, OptimizedTokensArray tokens, IntegerHolder i) {
 		var token = tokens.get(i.i);
 		var function = functions.poll();
@@ -111,17 +95,18 @@ public class ExpressionParser {
 		return node;
 	}
 
-	private final static OperationNode recParseList(Block parent, OptimizedTokensArray tokens,
-			Stack<OperationNode> stack, IntegerHolder i) {
-		stack.push(new OperationNode(lists.poll(), parent));
-		i.i++;
-		return parse(parent, tokens, stack, i);
-	}
-
 	private final static OperationNode parseIdentifier(Block parent, OptimizedTokensArray array, IntegerHolder i) {
 		if (array.get(i.i).isFunction())
 			return parseFunction(parent, array, i);
 		return parseVariable(parent, array, i);
+	}
+
+	public final static OperationNode parseInfix(Block parent, OptimizedTokensArray tokens) {
+		return parse(parent, Converter.infixToSuffix(tokens, parent));
+	}
+
+	public final static OperationNode parseInfix(Block parent, OptimizedTokensArray tokens, int start) {
+		return parse(parent, Converter.infixToSuffix(tokens, parent), new Stack<>(), new IntegerHolder(start));
 	}
 
 	private final static OperationNode parseVariable(Block parent, OptimizedTokensArray array, IntegerHolder i) {
@@ -138,6 +123,21 @@ public class ExpressionParser {
 		stack.push(parseIdentifier(parent, tokens, i));
 		i.i++;
 		return parse(parent, tokens, stack, i);
+	}
+
+	private final static OperationNode recParseList(Block parent, OptimizedTokensArray tokens,
+			Stack<OperationNode> stack, IntegerHolder i) {
+		stack.push(new OperationNode(lists.poll(), parent));
+		i.i++;
+		return parse(parent, tokens, stack, i);
+	}
+
+	public static void setFunctions(LinkedList<FunctionCallNode> functions) {
+		ExpressionParser.functions = functions;
+	}
+
+	public static void setLists(LinkedList<FunctionCallNode> lists) {
+		ExpressionParser.lists = lists;
 	}
 
 	private final static ConstantNode toDataType(Token token, DataTypes dataType) {

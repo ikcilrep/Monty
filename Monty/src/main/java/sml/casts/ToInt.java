@@ -31,9 +31,9 @@ public final class ToInt extends FunctionDeclarationNode {
 		if (a instanceof VoidType)
 			new LogError("Can't cast void to integer", callFileName, callLine);
 		if (a instanceof BigInteger || a instanceof Integer)
-			return  a;
+			return a;
 		if (a instanceof Double)
-			return (int)(double) a;
+			return (int) (double) a;
 		if (a instanceof Boolean)
 			return BooleanToInt.booleanToInt((Boolean) a);
 		if (a instanceof String)

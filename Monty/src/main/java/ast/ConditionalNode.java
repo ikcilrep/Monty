@@ -20,35 +20,35 @@ import ast.expressions.OperationNode;
 import sml.casts.ToBoolean;
 
 public class ConditionalNode extends Block {
-	protected OperationNode condition;
+	private OperationNode condition;
 
 	public ConditionalNode(OperationNode condition, Block parent) {
 		super(parent);
-		this.condition = condition;
+		setCondition(condition);
+	}
+
+	@Override
+	public ConditionalNode copy() {
+		var copied = (ConditionalNode) super.copy();
+		copied.setCondition(getCondition().copy());
+		return copied;
 	}
 
 	public OperationNode getCondition() {
 		return condition;
 	}
 
-	public void setCondition(OperationNode condition) {
-		this.condition = condition;
-	}
-
 	public boolean runnedCondition() {
 		return ToBoolean.toBoolean(getCondition().run(), getFileName(), getLine());
+	}
+
+	public void setCondition(OperationNode condition) {
+		this.condition = condition;
 	}
 
 	@Override
 	public void setParent(Block parent) {
 		super.setParent(parent);
 		getCondition().setParent(parent);
-	}
-	
-	@Override
-	public ConditionalNode copy() {
-		var copied = (ConditionalNode) super.copy();
-		copied.setCondition(getCondition().copy());
-		return copied;
 	}
 }

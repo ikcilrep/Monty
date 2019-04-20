@@ -27,20 +27,29 @@ import sml.casts.ToFloat;
 
 public final class OperationNode extends NodeWithParent implements Cloneable {
 
-	private OperationNode left = null;
-	private Object operand;
-
-	public Object getOperand() {
-		return operand;
+	final static Object getLiteral(Object expression, Block parent, String fileName, int line) {
+		// Returns value of expression.
+		if (expression instanceof VariableNode)
+			return parent.getVariable(((VariableNode) expression).getName(), fileName, line);
+		else if (expression instanceof FunctionCallNode) {
+			var functionToCall = ((FunctionCallNode) expression);
+			return parent.getFunction(functionToCall.getName(), fileName, line).call(functionToCall.getArguments(),
+					fileName, line);
+		} else if (expression instanceof ConstantNode)
+			return ((ConstantNode) expression).getValue();
+		return expression;
 	}
+	private OperationNode left = null;
+
+	private Object operand;
 
 	private Block parent = null;
 
 	private OperationNode right = null;
 
 	public OperationNode(Object operand, Block parent) {
-		this.operand = operand;
-		this.parent = parent;
+		setOperand(operand);
+		setParent(parent);
 	}
 
 	private final Object calculate(Object leftValue, Object rightValue, String operator, DataTypes type) {
@@ -104,32 +113,52 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 		return null;
 	}
 
+	@Override
+	public final OperationNode copy() {
+		try {
+			var copied = (OperationNode) clone();
+			var operand = getOperand();
+			if (operand instanceof FunctionCallNode)
+				copied.setOperand(((FunctionCallNode) operand).copy());
+			var right = getRight();
+			if (right != null)
+				copied.setRight(right.copy());
+			var left = getLeft();
+			if (left != null)
+				copied.setLeft(left.copy());
+
+			return copied;
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public OperationNode getLeft() {
+		return left;
+	}
+
 	private final Object getLiteral(Object expression, String fileName, int line) {
 		return getLiteral(expression, parent, fileName, line);
 	}
 
-	final static Object getLiteral(Object expression, Block parent, String fileName, int line) {
-		// Returns value of expression.
-		if (expression instanceof VariableNode)
-			return parent.getVariable(((VariableNode) expression).getName(), fileName, line);
-		else if (expression instanceof FunctionCallNode) {
-			var functionToCall = ((FunctionCallNode) expression);
-			return parent.getFunction(functionToCall.getName(), fileName, line).call(functionToCall.getArguments(),
-					fileName, line);
-		} else if (expression instanceof ConstantNode)
-			return ((ConstantNode) expression).getValue();
-		return expression;
+	public Object getOperand() {
+		return operand;
 	}
 
 	public final Block getParent() {
 		return parent;
 	}
 
+	public OperationNode getRight() {
+		return right;
+	}
+
 	@Override
 	public final Object run() {
 		// Returns calculated value.
 		if (!(operand instanceof String)) {
-			var literal = getLiteral(operand, fileName, line);
+			var literal = getLiteral(operand, getFileName(), getLine());
 			if (literal instanceof VariableDeclarationNode)
 				return ((VariableDeclarationNode) literal).getValue();
 			else
@@ -141,8 +170,16 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 		return value;
 	}
 
+	public void setLeft(OperationNode left) {
+		this.left = left;
+	}
+
 	public final void setLeftOperand(OperationNode left) {
 		this.left = left;
+	}
+
+	public void setOperand(Object operand) {
+		this.operand = operand;
 	}
 
 	@Override
@@ -160,14 +197,19 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 		}
 	}
 
+	public void setRight(OperationNode right) {
+		this.right = right;
+	}
+
 	public final void setRightOperand(OperationNode right) {
 		this.right = right;
 	}
 
 	private final Object solve() {
+		var operand = getOperand();
 		if (!(operand instanceof String))
 			return operand;
-		OperatorOverloading.setTemporary(fileName, line);
+		OperatorOverloading.setTemporary(getFileName(), getLine());
 
 		var operator = (String) operand;
 		var isComparison = operator.equals("==") || operator.equals("!=") || operator.equals("<=")
@@ -176,7 +218,7 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 		var isNotAssignment = !operator.contains("=") || isComparison;
 		var a = getLeft().solve();
 
-		var leftValue = getLiteral(a, left.fileName, left.line);
+		var leftValue = getLiteral(a, left.getFileName(), left.getLine());
 		if (isNotAssignment && leftValue instanceof VariableDeclarationNode)
 			leftValue = ((VariableDeclarationNode) leftValue).getValue();
 
@@ -191,15 +233,15 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 
 		if (operator.equals(".")) {
 			if (!(b instanceof NamedExpression))
-				new LogError("Variable or function can only be getted from struct.", fileName, line);
+				new LogError("Variable or function can only be getted from struct.", getFileName(), getLine());
 			return OperatorOverloading.dotOperator(leftValue, b, leftType, parent);
 		} else if (operator.equals("instanceof")) {
 			if (!(b instanceof NamedExpression))
-				new LogError("Right value have to be type name.", fileName, line);
+				new LogError("Right value have to be type name.", getFileName(), getLine());
 			return OperatorOverloading.instanceOfOperator(leftValue, b, leftType, parent);
 		}
 
-		var rightValue = getLiteral(b, right.fileName, right.line);
+		var rightValue = getLiteral(b, right.getFileName(), right.getLine());
 
 		if (rightValue instanceof VariableDeclarationNode)
 			rightValue = ((VariableDeclarationNode) rightValue).getValue();
@@ -221,7 +263,7 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 							leftValue = BigInteger.valueOf((int) leftValue);
 						else {
 							var variable = (VariableDeclarationNode) leftValue;
-							variable.setValue(BigInteger.valueOf((int) variable.getValue()), fileName, line);
+							variable.setValue(BigInteger.valueOf((int) variable.getValue()), getFileName(), getLine());
 						}
 						break;
 					default:
@@ -232,10 +274,10 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 					case FLOAT:
 						leftType = DataTypes.FLOAT;
 						if (isNotAssignment) {
-							leftValue = ToFloat.toReal(leftValue, fileName, line);
+							leftValue = ToFloat.toReal(leftValue, getFileName(), getLine());
 						} else {
 							var variable = (VariableDeclarationNode) leftValue;
-							variable.setValue(ToFloat.toReal(variable.getValue(), fileName, line));
+							variable.setValue(ToFloat.toReal(variable.getValue(), getFileName(), getLine()));
 						}
 						break;
 					case INTEGER:
@@ -279,12 +321,10 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 				else if (isNotAssignment && operator.equals("+") && rightType.equals(DataTypes.STRING)) {
 					leftType = DataTypes.STRING;
 					leftValue = leftValue.toString();
-				} else {
-					System.out.println(operator);
-					System.out.println(leftValue);
-					System.out.println(rightValue);
+				} else
 					new LogError("Type mismatch:\t" + leftType.toString().toLowerCase() + " and "
-							+ rightType.toString().toLowerCase(), fileName, line);}
+							+ rightType.toString().toLowerCase(), getFileName(), getLine());
+
 			}
 		} else if (!leftType.equals(rightType))
 			if (leftType.equals(DataTypes.INTEGER) && rightType.equals(DataTypes.BIG_INTEGER)) {
@@ -297,46 +337,5 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 
 		return calculate(leftValue, rightValue, operator, leftType);
 
-	}
-
-	public void setOperand(Object operand) {
-		this.operand = operand;
-	}
-
-	@Override
-	public final OperationNode copy() {
-		try {
-			var copied = (OperationNode) clone();
-			var operand = getOperand();
-			if (operand instanceof FunctionCallNode)
-				copied.setOperand(((FunctionCallNode) operand).copy());
-			var right = getRight();
-			if (right != null)
-				copied.setRight(right.copy());
-			var left = getLeft();
-			if (left != null)
-				copied.setLeft(left.copy());
-
-			return copied;
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public OperationNode getLeft() {
-		return left;
-	}
-
-	public void setLeft(OperationNode left) {
-		this.left = left;
-	}
-
-	public OperationNode getRight() {
-		return right;
-	}
-
-	public void setRight(OperationNode right) {
-		this.right = right;
 	}
 }

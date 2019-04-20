@@ -36,27 +36,16 @@ public final class Pow extends FunctionDeclarationNode {
 		struct.addFunction(this);
 	}
 
-	private Object pow(int basis, int index) {
-		var result = basis;
-		for (int i = 1; i < index; i++)
-			try {
-				result = Math.multiplyExact(result, basis);
-			} catch (ArithmeticException e) {
-				return bigMultiply(BigInteger.valueOf(result), bigPow(BigInteger.valueOf(basis), index - i));
-			}
-		return result;
+	private Object bigMultiply(BigInteger a, Object b) {
+		if (b instanceof Double)
+			return BigDecimal.valueOf((double) b).multiply(new BigDecimal(a)).doubleValue();
+		return a.multiply((BigInteger) b);
 	}
 
 	private Object bigPow(BigInteger basis, int index) {
 		if (index < 0)
 			return BigDecimal.ONE.divide(new BigDecimal(((BigInteger) basis).pow(-index))).doubleValue();
 		return ((BigInteger) basis).pow(index);
-	}
-
-	private Object bigMultiply(BigInteger a, Object b) {
-		if (b instanceof Double)
-			return BigDecimal.valueOf((double) b).multiply(new BigDecimal(a)).doubleValue();
-		return a.multiply((BigInteger) b);
 	}
 
 	@Override
@@ -93,6 +82,17 @@ public final class Pow extends FunctionDeclarationNode {
 			return Math.pow((double) basis, index);
 
 		return null;
+	}
+
+	private Object pow(int basis, int index) {
+		var result = basis;
+		for (int i = 1; i < index; i++)
+			try {
+				result = Math.multiplyExact(result, basis);
+			} catch (ArithmeticException e) {
+				return bigMultiply(BigInteger.valueOf(result), bigPow(BigInteger.valueOf(basis), index - i));
+			}
+		return result;
 	}
 
 }

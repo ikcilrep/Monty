@@ -127,21 +127,6 @@ public class Converter {
 		return !(rightAssociative.contains(operator) || notAssociative.contains(operator));
 	}
 
-	private final static FunctionCallNode parseFunction(String name, OptimizedTokensArray tokens, Block parent,
-			IntegerHolder i) {
-		i.i++;
-		var function = new FunctionCallNode(name);
-		function.setArguments(parseExpressionsSeparatedByComma(tokens, parent, i, false));
-		return function;
-	}
-
-	private final static FunctionCallNode parseList(OptimizedTokensArray tokens, Block parent, IntegerHolder i) {
-		var function = new FunctionCallNode("List");
-		i.i++;
-		function.setArguments(parseExpressionsSeparatedByComma(tokens, parent, i, true));
-		return function;
-	}
-
 	private final static ArrayList<OperationNode> parseExpressionsSeparatedByComma(OptimizedTokensArray tokens,
 			Block parent, IntegerHolder i, boolean isList) {
 		var result = new ArrayList<OperationNode>();
@@ -191,5 +176,20 @@ public class Converter {
 		}
 		i.i--;
 		return result;
+	}
+
+	private final static FunctionCallNode parseFunction(String name, OptimizedTokensArray tokens, Block parent,
+			IntegerHolder i) {
+		i.i++;
+		var function = new FunctionCallNode(name);
+		function.setArguments(parseExpressionsSeparatedByComma(tokens, parent, i, false));
+		return function;
+	}
+
+	private final static FunctionCallNode parseList(OptimizedTokensArray tokens, Block parent, IntegerHolder i) {
+		var function = new FunctionCallNode("List");
+		i.i++;
+		function.setArguments(parseExpressionsSeparatedByComma(tokens, parent, i, true));
+		return function;
 	}
 }

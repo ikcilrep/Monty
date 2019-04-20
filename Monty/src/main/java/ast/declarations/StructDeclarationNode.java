@@ -39,21 +39,13 @@ public class StructDeclarationNode extends Block implements Cloneable {
 		numbers.put(structNumber, -1);
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void incrementStructNumber() {
-		this.structNumber = ++actualStructNumber;
+	public void addNewStruct(Block block, String fileName, int line) {
+		block.addStructure(this, fileName, line);
+		block.addFunction(new Constructor(this), fileName, line);
 	}
 
 	public void addNewStruct(Block block, Token token) {
 		addNewStruct(block, token.getFileName(), token.getLine());
-	}
-
-	public void addNewStruct(Block block, String fileName, int line) {
-		block.addStructure(this, fileName, line);
-		block.addFunction(new Constructor(this), fileName, line);
 	}
 
 	@Override
@@ -84,6 +76,12 @@ public class StructDeclarationNode extends Block implements Cloneable {
 		return copied;
 	}
 
+	@Override
+	public boolean equals(Object other) {
+		return ToBoolean.toBoolean(OperatorOverloading.overloadOperator(this, other, "$eq", 2, false),
+				OperatorOverloading.getTemporaryFileName(), OperatorOverloading.getTemporaryLine());
+	}
+
 	public int getInstanceNumber() {
 		return instanceNumber;
 	}
@@ -102,8 +100,16 @@ public class StructDeclarationNode extends Block implements Cloneable {
 		instanceNumber = number + 1;
 	}
 
+	public void incrementStructNumber() {
+		this.structNumber = ++actualStructNumber;
+	}
+
 	public boolean instanceOfMe(StructDeclarationNode s) {
 		return s.getStructNumber() == structNumber;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@Override
@@ -113,11 +119,5 @@ public class StructDeclarationNode extends Block implements Cloneable {
 			return function.call(Sml.emptyArgumentList, function.getFileName(), function.getLine()).toString();
 		}
 		return name + "#" + getInstanceNumber();
-	}
-
-	@Override
-	public boolean equals(Object other) {
-		return ToBoolean.toBoolean(OperatorOverloading.overloadOperator(this, other, "$eq", 2, false),
-				OperatorOverloading.getTemporaryFileName(), OperatorOverloading.getTemporaryLine());
 	}
 }

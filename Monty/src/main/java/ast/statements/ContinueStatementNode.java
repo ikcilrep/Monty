@@ -22,8 +22,8 @@ import sml.data.returning.Nothing;
 public final class ContinueStatementNode extends RunnableNode {
 
 	public ContinueStatementNode(String fileName, int line) {
-		this.fileName = fileName;
-		this.line = line;
+		setFileName(fileName);
+		setLine(line);
 	}
 
 	@Override

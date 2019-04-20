@@ -45,33 +45,6 @@ public class Importing {
 			+ (mainPath.endsWith(File.separator) || mainPath.isEmpty() ? "" : File.separator)
 			+ (fileAbsolutePath == null ? "" : fileAbsolutePath) + File.separator;
 
-	@SuppressWarnings("unchecked")
-	private static void importAllElementsFromJarSublibrary(Block block, HashMap<String, Object> addFrom, Token token) {
-		for (Object value : addFrom.values())
-			if (value instanceof FunctionDeclarationNode)
-				block.addFunction((FunctionDeclarationNode) value, token);
-			else
-				importAllElementsFromJarSublibrary(block, (HashMap<String, Object>) value, token);
-	}
-
-	private static void importWholeFile(Block block, String path, String fileName, int line) {
-		var file = new File(path);
-		block.concat(Parser.parse(Lexer.lex(FileIO.readFile(file.getAbsolutePath(), fileName, line), path, 1,
-				new OptimizedTokensArray(), 0)));
-	}
-
-	private static void importFilesFromDirectory(Block block, File directory, String fileName, int line) {
-		for (File fileEntry : directory.listFiles()) {
-			if (fileEntry.isDirectory())
-				importFilesFromDirectory(block, fileEntry, fileName, line);
-			else if (fileEntry.getName().endsWith(".mt"))
-				importWholeFile(block, fileEntry.getAbsolutePath(), fileName, line);
-			else
-				new LogError(
-						"File with wrong extension: " + directory.getPath() + File.separator + fileEntry.getName());
-		}
-	}
-
 	public static void addJarLibrary(OptimizedTokensArray tokens) {
 		var partOfPath = Tokens.getText(tokens.subarray(1, tokens.length()));
 		var path = mainFileLocation + partOfPath.replace('.', File.separatorChar) + ".jar";
@@ -112,27 +85,13 @@ public class Importing {
 		}
 	}
 
-	private static void importSpecifiedElementFromBlock(Block block, Block importedBlock, String path, String name) {
-		var doesContainVariable = importedBlock.hasVariable(name);
-		var doesContainFunction = importedBlock.hasFunction(name);
-		if (doesContainVariable || doesContainFunction) {
-			importedBlock.run();
-			if (doesContainVariable) {
-				var variable = importedBlock.getVariable(name);
-				block.addVariable(variable, variable.getFileName(), variable.getLine());
-			}
-			if (doesContainFunction) {
-				var function = importedBlock.getFunction(name);
-				block.addFunction(function, function.getFileName(), function.getLine());
-				if (Character.isUpperCase(name.charAt(0))) {
-					var struct = importedBlock.getStructure(name);
-					block.addStructure(struct, struct.getFileName(), struct.getLine());
-				}
-			}
-		} else {
-			new LogError("There aren't any function or variable with this name to import:\t" + name
-					+ ". Look at this file:\t" + path);
-		}
+	@SuppressWarnings("unchecked")
+	private static void importAllElementsFromJarSublibrary(Block block, HashMap<String, Object> addFrom, Token token) {
+		for (Object value : addFrom.values())
+			if (value instanceof FunctionDeclarationNode)
+				block.addFunction((FunctionDeclarationNode) value, token);
+			else
+				importAllElementsFromJarSublibrary(block, (HashMap<String, Object>) value, token);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -184,6 +143,47 @@ public class Importing {
 			importElementFromJarLibrary(block, subArray(splited, 1), path, Parser.libraries.get(splited[0]),
 					tokensBeforeSemicolon.get(1));
 		}
+	}
+
+	private static void importFilesFromDirectory(Block block, File directory, String fileName, int line) {
+		for (File fileEntry : directory.listFiles()) {
+			if (fileEntry.isDirectory())
+				importFilesFromDirectory(block, fileEntry, fileName, line);
+			else if (fileEntry.getName().endsWith(".mt"))
+				importWholeFile(block, fileEntry.getAbsolutePath(), fileName, line);
+			else
+				new LogError(
+						"File with wrong extension: " + directory.getPath() + File.separator + fileEntry.getName());
+		}
+	}
+
+	private static void importSpecifiedElementFromBlock(Block block, Block importedBlock, String path, String name) {
+		var doesContainVariable = importedBlock.hasVariable(name);
+		var doesContainFunction = importedBlock.hasFunction(name);
+		if (doesContainVariable || doesContainFunction) {
+			importedBlock.run();
+			if (doesContainVariable) {
+				var variable = importedBlock.getVariable(name);
+				block.addVariable(variable, variable.getFileName(), variable.getLine());
+			}
+			if (doesContainFunction) {
+				var function = importedBlock.getFunction(name);
+				block.addFunction(function, function.getFileName(), function.getLine());
+				if (Character.isUpperCase(name.charAt(0))) {
+					var struct = importedBlock.getStructure(name);
+					block.addStructure(struct, struct.getFileName(), struct.getLine());
+				}
+			}
+		} else {
+			new LogError("There aren't any function or variable with this name to import:\t" + name
+					+ ". Look at this file:\t" + path);
+		}
+	}
+
+	private static void importWholeFile(Block block, String path, String fileName, int line) {
+		var file = new File(path);
+		block.concat(Parser.parse(Lexer.lex(FileIO.readFile(file.getAbsolutePath(), fileName, line), path, 1,
+				new OptimizedTokensArray(), 0)));
 	}
 
 	private static String[] subArray(String[] array, int begin) {

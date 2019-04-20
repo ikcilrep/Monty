@@ -19,15 +19,15 @@ package parser;
 import lexer.Token;
 
 public class LogError {
-	public LogError(String message) {
-		System.out.println(message);
-		System.exit(0);
-	}
-
 	public static String getMessage(String message) {
 		if (Character.isAlphabetic(message.charAt(message.length() - 1)))
 			return message + ".";
 		return message;
+	}
+
+	public LogError(String message) {
+		System.out.println(message);
+		System.exit(0);
 	}
 
 	public LogError(String message, String fileName, int line) {

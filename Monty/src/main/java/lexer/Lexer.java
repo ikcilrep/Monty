@@ -32,22 +32,6 @@ public final class Lexer {
 			TokenTypes.STRING_LITERAL, TokenTypes.REAL_LITERAL, TokenTypes.IDENTIFIER, TokenTypes.CLOSING_BRACKET,
 			TokenTypes.CLOSING_SQUARE_BRACKET);
 
-	private final static TokenTypes operatorToTokenType(String tokenText, String fileName, int line) {
-		if (OPERATORS.contains(tokenText))
-			return TokenTypes.OPERATOR;
-		new LogError("Unknown operator:\t" + tokenText, fileName, line);
-		return null;
-	}
-
-	private final static OptimizedTokensArray realLiteral(String code, String integer, String fileName, int line,
-			OptimizedTokensArray tokens, int i) {
-		var tokenText = integer;
-		while (++i < code.length() && Character.isDigit(code.charAt(i)))
-			tokenText += code.charAt(i);
-		tokens.append(new Token(TokenTypes.REAL_LITERAL, tokenText, fileName, line));
-		return lex(code, fileName, line, tokens, i);
-	}
-
 	private final static OptimizedTokensArray identifierOrKeyword(String code, String fileName, int line,
 			OptimizedTokensArray tokens, int i) {
 		var tokenText = "" + code.charAt(i);
@@ -124,6 +108,14 @@ public final class Lexer {
 		}
 	}
 
+	public final static OptimizedTokensArray lex(String code, String path) {
+		return lex(code, path, 1, new OptimizedTokensArray(), 0);
+	}
+
+	public final static OptimizedTokensArray lex(String code, String path, int line) {
+		return lex(code, path, 1, new OptimizedTokensArray(), line);
+	}
+
 	public final static OptimizedTokensArray lex(String code, String fileName, int line, OptimizedTokensArray tokens,
 			int i) {
 		var isInComment = false;
@@ -154,14 +146,6 @@ public final class Lexer {
 		return tokens;
 	}
 
-	public final static OptimizedTokensArray lex(String code, String path) {
-		return lex(code, path, 1, new OptimizedTokensArray(), 0);
-	}
-
-	public final static OptimizedTokensArray lex(String code, String path, int line) {
-		return lex(code, path, 1, new OptimizedTokensArray(), line);
-	}
-
 	private final static OptimizedTokensArray number(String code, String fileName, int line,
 			OptimizedTokensArray tokens, int i) {
 		var tokenText = "" + code.charAt(i);
@@ -180,6 +164,22 @@ public final class Lexer {
 			tokenText += code.charAt(i);
 		Token token = new Token(operatorToTokenType(tokenText, fileName, line), tokenText, fileName, line);
 		tokens.append(token);
+		return lex(code, fileName, line, tokens, i);
+	}
+
+	private final static TokenTypes operatorToTokenType(String tokenText, String fileName, int line) {
+		if (OPERATORS.contains(tokenText))
+			return TokenTypes.OPERATOR;
+		new LogError("Unknown operator:\t" + tokenText, fileName, line);
+		return null;
+	}
+
+	private final static OptimizedTokensArray realLiteral(String code, String integer, String fileName, int line,
+			OptimizedTokensArray tokens, int i) {
+		var tokenText = integer;
+		while (++i < code.length() && Character.isDigit(code.charAt(i)))
+			tokenText += code.charAt(i);
+		tokens.append(new Token(TokenTypes.REAL_LITERAL, tokenText, fileName, line));
 		return lex(code, fileName, line, tokens, i);
 	}
 

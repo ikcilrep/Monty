@@ -11,6 +11,52 @@ public class List extends StructDeclarationNode {
 	private Object[] array;
 	private int length = 0;
 
+	public List() {
+		super(null, "List");
+	}
+
+	public List(ArrayList<OperationNode> arguments) {
+		super(null, "List");
+		addFunctions();
+		increaseCapacity((arguments.size() << 1) + 1);
+		length = arguments.size();
+		for (int i = 0; i < length(); i++)
+			set(i, arguments.get(i).run());
+	}
+
+	public List(int length) {
+		super(null, "List");
+		addFunctions();
+		increaseCapacity(length << 1);
+		this.length = length;
+	}
+
+	public List(List array) {
+		super(null, "List");
+		addFunctions();
+		this.array = new Object[array.length()];
+		length = array.length();
+		for (int i = 0; i < length(); i++)
+			set(i, array.get(i));
+
+	}
+
+	public List(Object[] array) {
+		super(null, "List");
+		addFunctions();
+		increaseCapacity((array.length << 1) + 1);
+		length = array.length;
+		for (int i = 0; i < length(); i++)
+			set(i, array[i]);
+	}
+
+	public List add(Object value) {
+		if (length() + 1 > array.length)
+			increaseCapacity(array.length << 1);
+		set(length++, value);
+		return this;
+	}
+
 	private void addFunctions() {
 		new Add(this);
 		new Count(this);
@@ -30,88 +76,40 @@ public class List extends StructDeclarationNode {
 
 	}
 
-	public List(ArrayList<OperationNode> arguments) {
-		super(null, "List");
-		addFunctions();
-		increaseCapacity((arguments.size() << 1) + 1);
-		length = arguments.size();
-		for (int i = 0; i < length(); i++)
-			set(i, arguments.get(i).run());
-	}
-
-	public List(Object[] array) {
-		super(null, "List");
-		addFunctions();
-		increaseCapacity((array.length << 1) + 1);
-		length = array.length;
-		for (int i = 0; i < length(); i++)
-			set(i, array[i]);
-	}
-
-	public List(List array) {
-		super(null, "List");
-		addFunctions();
-		this.array = new Object[array.length()];
-		length = array.length();
-		for (int i = 0; i < length(); i++)
-			set(i, array.get(i));
-
-	}
-
-	public List(int length) {
-		super(null, "List");
-		addFunctions();
-		increaseCapacity(length << 1);
-		this.length = length;
-	}
-
-	public List() {
-		super(null, "List");
-	}
-
-	public Object[] getArray() {
-		return array;
-	}
-
-	public void increaseCapacity(int capacity) {
-		var newArray = new Object[capacity];
-		for (int i = 0; i < length(); i++)
-			newArray[i] = get(i);
-		for (int i = length(); i < capacity; i++)
-			newArray[i] = Nothing.nothing;
-		setArray(newArray);
-	}
-
-	public void setLength(int length) {
-		this.length = length;
-	}
-
-	public void setArray(Object[] array) {
-		this.array = array;
-	}
-
-	public int length() {
-		return length;
-	}
-
 	public int capacity() {
 		return array.length;
 	}
 
-	public List set(int index, Object value) {
-		array[index] = value;
-		return this;
+	public int count(Object value) {
+		int counter = 0;
+		for (int i = 0; i < length(); i++)
+			if (get(i).equals(value))
+				counter++;
+		return counter;
 	}
 
-	public Object get(int index) {
-		return array[index];
+	public void doesCanBeExtendedWith(Object object, String fileName, int line) {
+		if (!(object instanceof List))
+			new LogError("Can't extend list with something that isn't list.", fileName, line);
 	}
 
-	public List add(Object value) {
-		if (length() + 1 > array.length)
-			increaseCapacity(array.length << 1);
-		set(length++, value);
-		return this;
+	public void doesHaveElement(int index, String fileName, int line) {
+		if (index >= length())
+			new LogError("This list doesn't have " + index + " element.", fileName, line);
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (!(other instanceof List))
+			return false;
+		var otherList = (List) other;
+		if (otherList.length() != length())
+			return false;
+		for (int i = 0; i < length(); i++)
+			if (!get(i).equals(otherList.get(i)))
+				return false;
+		return true;
+
 	}
 
 	public List extend(List array) {
@@ -128,11 +126,32 @@ public class List extends StructDeclarationNode {
 		return new List(this).extend(array);
 	}
 
-	public List replace(Object toBeReplaced, Object replacement) {
+	public int find(Object value) {
 		for (int i = 0; i < length(); i++)
-			if (get(i).equals(toBeReplaced))
-				set(i, replacement);
-		return this;
+			if (get(i).equals(value))
+				return i;
+		return -1;
+	}
+
+	public Object get(int index) {
+		return array[index];
+	}
+
+	public Object[] getArray() {
+		return array;
+	}
+
+	public void increaseCapacity(int capacity) {
+		var newArray = new Object[capacity];
+		for (int i = 0; i < length(); i++)
+			newArray[i] = get(i);
+		for (int i = length(); i < capacity; i++)
+			newArray[i] = Nothing.nothing;
+		setArray(newArray);
+	}
+
+	public int length() {
+		return length;
 	}
 
 	public List multiplied(int times) {
@@ -153,20 +172,6 @@ public class List extends StructDeclarationNode {
 		return this;
 	}
 
-	public int find(Object value) {
-		for (int i = 0; i < length(); i++)
-			if (get(i).equals(value))
-				return i;
-		return -1;
-	}
-
-	public List sublist(int begin, int end) {
-		var sublist = new List(end - begin + 1);
-		for (int i = begin, j = 0; i < end; i++, j++)
-			sublist.set(j, get(i));
-		return sublist;
-	}
-
 	public Object pop(int index) {
 		var element = get(index);
 		length--;
@@ -175,41 +180,36 @@ public class List extends StructDeclarationNode {
 		return element;
 	}
 
-	public int count(Object value) {
-		int counter = 0;
-		for (int i = 0; i < length(); i++)
-			if (get(i).equals(value))
-				counter++;
-		return counter;
-	}
-
 	public List remove(Object value) {
 		pop(find(value));
 		return this;
 	}
 
-	public void doesHaveElement(int index, String fileName, int line) {
-		if (index >= length())
-			new LogError("This list doesn't have " + index + " element.", fileName, line);
-	}
-
-	public void doesCanBeExtendedWith(Object object, String fileName, int line) {
-		if (!(object instanceof List))
-			new LogError("Can't extend list with something that isn't list.", fileName, line);
-	}
-
-	@Override
-	public boolean equals(Object other) {
-		if (!(other instanceof List))
-			return false;
-		var otherList = (List) other;
-		if (otherList.length() != length())
-			return false;
+	public List replace(Object toBeReplaced, Object replacement) {
 		for (int i = 0; i < length(); i++)
-			if (!get(i).equals(otherList.get(i)))
-				return false;
-		return true;
+			if (get(i).equals(toBeReplaced))
+				set(i, replacement);
+		return this;
+	}
 
+	public List set(int index, Object value) {
+		array[index] = value;
+		return this;
+	}
+
+	public void setArray(Object[] array) {
+		this.array = array;
+	}
+
+	public void setLength(int length) {
+		this.length = length;
+	}
+
+	public List sublist(int begin, int end) {
+		var sublist = new List(end - begin + 1);
+		for (int i = begin, j = 0; i < end; i++, j++)
+			sublist.set(j, get(i));
+		return sublist;
 	}
 
 	@Override

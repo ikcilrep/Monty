@@ -23,14 +23,6 @@ public final class Token implements Cloneable {
 	private int line;
 	private boolean isFunction;
 
-	public boolean isFunction() {
-		return isFunction;
-	}
-
-	public void setFunction(boolean isFunction) {
-		this.isFunction = isFunction;
-	}
-
 	public Token(TokenTypes type) {
 		this.type = type;
 	}
@@ -62,8 +54,16 @@ public final class Token implements Cloneable {
 		return type;
 	}
 
+	public boolean isFunction() {
+		return isFunction;
+	}
+
 	public final void setFileName(String fileName) {
 		this.fileName = fileName;
+	}
+
+	public void setFunction(boolean isFunction) {
+		this.isFunction = isFunction;
 	}
 
 	public final void setLine(int line) {

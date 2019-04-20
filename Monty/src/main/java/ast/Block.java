@@ -48,91 +48,73 @@ public class Block extends NodeWithParent implements Cloneable {
 
 	public void addFunction(FunctionDeclarationNode function) {
 		String name = function.getName();
-		if (functions.containsKey(name))
+		if (getFunctions().containsKey(name))
 			new LogError("Function " + name + " already exists");
-		functions.put(name, function);
+		getFunctions().put(name, function);
 	}
 
 	public void addFunction(FunctionDeclarationNode function, String fileName, int line) {
 		String name = function.getName();
 		function.setFileName(fileName);
 		function.setLine(line);
-		if (functions.containsKey(name)) {
-			var existing_function = functions.get(name);
+		if (getFunctions().containsKey(name)) {
+			var existing_function = getFunctions().get(name);
 			int[] lines = { existing_function.getLine(), function.getLine() };
 			String[] fileNames = { existing_function.getFileName(), function.getFileName() };
 			new LogError("Function " + name + " already exists", fileNames, lines);
 		}
-		functions.put(name, function);
+		getFunctions().put(name, function);
 	}
 
 	public void addFunction(FunctionDeclarationNode function, Token token) {
-		String name = function.getName();
-		function.setFileName(token.getFileName());
-		function.setLine(token.getLine());
-		if (functions.containsKey(name)) {
-			var existing_function = functions.get(name);
-			int[] lines = { existing_function.getLine(), function.getLine() };
-			String[] fileNames = { existing_function.getFileName(), function.getFileName() };
-			new LogError("Function " + name + " already exists", fileNames, lines);
-		}
-		functions.put(name, function);
+		addFunction(function, token.getFileName(), token.getLine());
 	}
 
-	public void addVariable(VariableDeclarationNode variable) {
-		String name = variable.getName();
-		if (variables.containsKey(name))
-			new LogError("Variable " + name + " already exists");
-		variables.put(name, variable);
-	}
-
-	public void addVariable(VariableDeclarationNode variable, String fileName, int line) {
-		String name = variable.getName();
-		variable.setFileName(fileName);
-		variable.setLine(line);
-		if (variables.containsKey(name)) {
-			var existing_variable = variables.get(name);
-			int[] lines = { existing_variable.getLine(), variable.getLine() };
-			String[] fileNames = { existing_variable.getFileName(), variable.getFileName() };
-			new LogError("Variable " + name + " already exists", fileNames, lines);
+	public void addStructure(StructDeclarationNode structure) {
+		String name = structure.getName();
+		if (getStructures().containsKey(name)) {
+			var existing_structure = getStructures().get(name);
+			new LogError("Struct " + name + " already exists", existing_structure.getFileName(),
+					existing_structure.getLine());
 		}
-		variables.put(name, variable);
+		getStructures().put(name, structure);
 	}
 
 	public void addStructure(StructDeclarationNode structure, String fileName, int line) {
 		String name = structure.getName();
 		structure.setFileName(fileName);
 		structure.setLine(line);
-		if (structures.containsKey(name)) {
-			var existing_structure = structures.get(name);
+		if (getStructures().containsKey(name)) {
+			var existing_structure = getStructures().get(name);
 			int[] lines = { existing_structure.getLine(), structure.getLine() };
 			String[] fileNames = { existing_structure.getFileName(), structure.getFileName() };
 			new LogError("Struct " + name + " already exists", fileNames, lines);
 		}
-		structures.put(name, structure);
+		getStructures().put(name, structure);
 	}
 
-	public void addStructure(StructDeclarationNode structure) {
-		String name = structure.getName();
-		if (structures.containsKey(name)) {
-			var existing_structure = structures.get(name);
-			new LogError("Struct " + name + " already exists", existing_structure.getFileName(),
-					existing_structure.getLine());
-		}
-		structures.put(name, structure);
-	}
-
-	public void addVariable(VariableDeclarationNode variable, Token token) {
+	public void addVariable(VariableDeclarationNode variable) {
 		String name = variable.getName();
-		variable.setFileName(token.getFileName());
-		variable.setLine(token.getLine());
-		if (variables.containsKey(name)) {
+		if (getVariables().containsKey(name))
+			new LogError("Variable " + name + " already exists");
+		getVariables().put(name, variable);
+	}
+
+	public void addVariable(VariableDeclarationNode variable, String fileName, int line) {
+		String name = variable.getName();
+		variable.setFileName(fileName);
+		variable.setLine(line);
+		if (getVariables().containsKey(name)) {
 			var existing_variable = variables.get(name);
 			int[] lines = { existing_variable.getLine(), variable.getLine() };
 			String[] fileNames = { existing_variable.getFileName(), variable.getFileName() };
 			new LogError("Variable " + name + " already exists", fileNames, lines);
 		}
-		variables.put(name, variable);
+		getVariables().put(name, variable);
+	}
+
+	public void addVariable(VariableDeclarationNode variable, Token token) {
+		addVariable(variable, token.getFileName(), token.getLine());
 	}
 
 	public void concat(Block block) {
@@ -140,7 +122,7 @@ public class Block extends NodeWithParent implements Cloneable {
 		var variablesSet = block.getVariables().entrySet();
 		for (Map.Entry<String, VariableDeclarationNode> entry : variablesSet)
 			addVariable(entry.getValue());
-		
+
 		var functionsSet = block.getFunctions().entrySet();
 		for (Map.Entry<String, FunctionDeclarationNode> entry : functionsSet) {
 			var function = entry.getValue();
@@ -153,8 +135,20 @@ public class Block extends NodeWithParent implements Cloneable {
 			struct.setParent(this);
 			addStructure(struct);
 		}
-		
+
 	}
+
+	public Block copy() {
+		try {
+			var copied = (Block) clone();
+			copied.copyChildren();
+			return copied;
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public void copyChildren() {
 		var children = new ArrayList<RunnableNode>(getChildren().size());
 		for (var child : getChildren()) {
@@ -167,29 +161,9 @@ public class Block extends NodeWithParent implements Cloneable {
 		}
 		setChildren(children);
 	}
-	
-	public Block copy() {
-		try {
-			var copied = (Block) clone();
-			copied.copyChildren();
-			return copied;
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 
-	protected void setFunctions(HashMap<String, FunctionDeclarationNode> functions) {
-		this.functions = functions;
-		
-	}
-
-	public boolean hasFunction(String name) {
-		return functions.containsKey(name);
-	}
-
-	public boolean hasVariable(String name) {
-		return variables.containsKey(name);
+	public Boolean getBooleanVariableValue(String name) {
+		return (Boolean) getVariable(name).getValue();
 	}
 
 	public ArrayList<RunnableNode> getChildren() {
@@ -198,25 +172,25 @@ public class Block extends NodeWithParent implements Cloneable {
 
 	public FunctionDeclarationNode getFunction(String name) {
 		Block block = this;
-		while (!block.functions.containsKey(name)) {
+		while (!block.getFunctions().containsKey(name)) {
 			var parent = block.getParent();
 			if (parent == null)
 				new LogError("There isn't any function with name:\t" + name);
 			block = parent;
 		}
-		return block.functions.get(name);
+		return block.getFunctions().get(name);
 
 	}
 
 	public FunctionDeclarationNode getFunction(String name, String fileName, int line) {
 		Block block = this;
-		while (!block.functions.containsKey(name)) {
+		while (!block.getFunctions().containsKey(name)) {
 			var parent = block.getParent();
 			if (parent == null)
 				new LogError("There isn't any function with name:\t" + name, fileName, line);
 			block = parent;
 		}
-		return block.functions.get(name);
+		return block.getFunctions().get(name);
 
 	}
 
@@ -224,72 +198,64 @@ public class Block extends NodeWithParent implements Cloneable {
 		return functions;
 	}
 
-	public void setChildren(ArrayList<RunnableNode> children) {
-		this.children = children;
-	}
-
 	public Block getParent() {
 		return parent;
 	}
 
-	public VariableDeclarationNode getVariable(String name) {
-		Block block = this;
-		while (!block.variables.containsKey(name)) {
-			var parent = block.getParent();
-			if (parent == null)
-				new LogError("There isn't any variable with name:\t" + name);
-			block = parent;
-		}
-		return block.variables.get(name);
+	public String getStringVariableValue(String name) {
+		return getVariable(name).getValue().toString();
 	}
 
-	public VariableDeclarationNode getVariable(String name, String fileName, int line) {
+	public StructDeclarationNode getStructure(String name) {
 		Block block = this;
-		while (!block.variables.containsKey(name)) {
+		while (!block.getStructures().containsKey(name)) {
 			var parent = block.getParent();
 			if (parent == null)
-				new LogError("There isn't any variable with name:\t" + name, fileName, line);
+				new LogError("There isn't any struct with name:\t" + name);
 			block = parent;
 		}
-		return block.variables.get(name);
+		return block.getStructures().get(name);
+	}
+
+	public StructDeclarationNode getStructure(String name, String fileName, int line) {
+		Block block = this;
+		while (!block.getStructures().containsKey(name)) {
+			var parent = block.getParent();
+			if (parent == null)
+				new LogError("There isn't any struct with name:\t" + name, fileName, line);
+			block = parent;
+		}
+		return block.getStructures().get(name);
 	}
 
 	public HashMap<String, StructDeclarationNode> getStructures() {
 		return structures;
 	}
 
-	public void setStructures(HashMap<String, StructDeclarationNode> structures) {
-		this.structures = structures;
-	}
-
-	public StructDeclarationNode getStructure(String name, String fileName, int line) {
+	public VariableDeclarationNode getVariable(String name) {
 		Block block = this;
-		while (!block.structures.containsKey(name)) {
+		while (!block.getVariables().containsKey(name)) {
 			var parent = block.getParent();
 			if (parent == null)
-				new LogError("There isn't any struct with name:\t" + name, fileName, line);
+				new LogError("There isn't any variable with name:\t" + name);
 			block = parent;
 		}
-		return block.structures.get(name);
+		return block.getVariables().get(name);
 	}
 
-	public StructDeclarationNode getStructure(String name) {
+	public VariableDeclarationNode getVariable(String name, String fileName, int line) {
 		Block block = this;
-		while (!block.structures.containsKey(name)) {
+		while (!block.getVariables().containsKey(name)) {
 			var parent = block.getParent();
 			if (parent == null)
-				new LogError("There isn't any struct with name:\t" + name);
+				new LogError("There isn't any variable with name:\t" + name, fileName, line);
 			block = parent;
 		}
-		return block.structures.get(name);
+		return block.getVariables().get(name);
 	}
 
-	public Boolean getBooleanVariableValue(String name) {
-		return (Boolean) getVariable(name).getValue();
-	}
-
-	public String getStringVariableValue(String name) {
-		return getVariable(name).getValue().toString();
+	public HashMap<String, VariableDeclarationNode> getVariables() {
+		return variables;
 	}
 
 	public Object getVariableValue(String name) {
@@ -300,8 +266,12 @@ public class Block extends NodeWithParent implements Cloneable {
 		return getVariable(name, fileName, line).getValue();
 	}
 
-	public HashMap<String, VariableDeclarationNode> getVariables() {
-		return variables;
+	public boolean hasFunction(String name) {
+		return functions.containsKey(name);
+	}
+
+	public boolean hasVariable(String name) {
+		return variables.containsKey(name);
 	}
 
 	@Override
@@ -317,9 +287,22 @@ public class Block extends NodeWithParent implements Cloneable {
 		return null;
 	}
 
+	public void setChildren(ArrayList<RunnableNode> children) {
+		this.children = children;
+	}
+
+	protected void setFunctions(HashMap<String, FunctionDeclarationNode> functions) {
+		this.functions = functions;
+
+	}
+
 	@Override
 	public void setParent(Block parent) {
 		this.parent = parent;
+	}
+
+	public void setStructures(HashMap<String, StructDeclarationNode> structures) {
+		this.structures = structures;
 	}
 
 	public void setVariables(HashMap<String, VariableDeclarationNode> variables) {

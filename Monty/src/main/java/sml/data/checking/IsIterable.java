@@ -10,12 +10,6 @@ import sml.Sml;
 
 public class IsIterable extends FunctionDeclarationNode {
 
-	public IsIterable() {
-		super("isIterable");
-		setBody(new Block(null));
-		addParameter("toCheck");
-	}
-
 	public static boolean isIterable(Object toCheck, String callFileName, int callLine) {
 		if (toCheck instanceof String)
 			return true;
@@ -35,6 +29,12 @@ public class IsIterable extends FunctionDeclarationNode {
 		if (!(iteratorStruct.hasFunction("hasNext") && iteratorStruct.hasFunction("next")))
 			return false;
 		return true;
+	}
+
+	public IsIterable() {
+		super("isIterable");
+		setBody(new Block(null));
+		addParameter("toCheck");
 	}
 
 	@Override

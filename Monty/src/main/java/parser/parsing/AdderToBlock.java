@@ -78,19 +78,6 @@ public abstract class AdderToBlock {
 		return forStatement;
 	}
 
-	public final static void parseFunctionsParameters(int start, OptimizedTokensArray tokens,
-			FunctionDeclarationNode function) {
-		String name = null;
-		for (int i = start; i < tokens.length(); i++) {
-			var tokenType = tokens.get(i).getType();
-			var isTokenTypeEqualsComma = tokens.get(i).getType().equals(TokenTypes.COMMA);
-			if (tokenType.equals(TokenTypes.IDENTIFIER))
-				name = tokens.get(i).getText();
-			if (isTokenTypeEqualsComma || i + 1 >= tokens.length())
-				function.addParameter(name);
-		}
-	}
-
 	public final static Block addFunctionDeclaration(Block block, OptimizedTokensArray tokens) {
 		var functionName = tokens.get(1).getText();
 		var function = new CustomFunctionDeclarationNode(functionName);
@@ -147,5 +134,18 @@ public abstract class AdderToBlock {
 		block.addChild(whileStatement);
 		return whileStatement;
 
+	}
+
+	public final static void parseFunctionsParameters(int start, OptimizedTokensArray tokens,
+			FunctionDeclarationNode function) {
+		String name = null;
+		for (int i = start; i < tokens.length(); i++) {
+			var tokenType = tokens.get(i).getType();
+			var isTokenTypeEqualsComma = tokens.get(i).getType().equals(TokenTypes.COMMA);
+			if (tokenType.equals(TokenTypes.IDENTIFIER))
+				name = tokens.get(i).getText();
+			if (isTokenTypeEqualsComma || i + 1 >= tokens.length())
+				function.addParameter(name);
+		}
 	}
 }

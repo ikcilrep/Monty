@@ -31,24 +31,11 @@ public final class FunctionCallNode extends NamedExpression implements Cloneable
 		arguments.add(argument);
 	}
 
-	public final ArrayList<OperationNode> getArguments() {
-		return arguments;
-	}
-
-	public void setArguments(ArrayList<OperationNode> arguments) {
-		this.arguments = arguments;
-	}
-
-	@Override
-	public final String getName() {
-		return name;
-	}
-
 	public FunctionCallNode copy() {
 		try {
 			var copied = (FunctionCallNode) clone();
 			var copyOfArguments = new ArrayList<OperationNode>(arguments.size());
-			for (var argument: arguments)
+			for (var argument : arguments)
 				copyOfArguments.add(argument.copy());
 			copied.setArguments(copyOfArguments);
 			return copied;
@@ -56,7 +43,20 @@ public final class FunctionCallNode extends NamedExpression implements Cloneable
 			e.printStackTrace();
 		}
 		return null;
-		
+
+	}
+
+	public final ArrayList<OperationNode> getArguments() {
+		return arguments;
+	}
+
+	@Override
+	public final String getName() {
+		return name;
+	}
+
+	public void setArguments(ArrayList<OperationNode> arguments) {
+		this.arguments = arguments;
 	}
 
 }

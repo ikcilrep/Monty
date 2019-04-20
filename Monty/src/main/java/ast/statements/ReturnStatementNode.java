@@ -24,23 +24,10 @@ public final class ReturnStatementNode extends NodeWithParent implements Cloneab
 
 	private OperationNode expression;
 
-	public void setExpression(OperationNode expression) {
-		this.expression = expression;
-	}
-
 	public ReturnStatementNode(OperationNode expression, String fileName, int line) {
-		this.expression = expression;
-		this.fileName = fileName;
-		this.line = line;
-	}
-
-	@Override
-	public void setParent(Block parent) {
-		expression.setParent(parent);
-	}
-
-	public OperationNode getExpression() {
-		return expression;
+		setExpression(expression);
+		setFileName(fileName);
+		setLine(line);
 	}
 
 	@Override
@@ -56,8 +43,21 @@ public final class ReturnStatementNode extends NodeWithParent implements Cloneab
 		return null;
 	}
 
+	public OperationNode getExpression() {
+		return expression;
+	}
+
 	@Override
 	public Object run() {
 		return getExpression().run();
+	}
+
+	public void setExpression(OperationNode expression) {
+		this.expression = expression;
+	}
+
+	@Override
+	public void setParent(Block parent) {
+		expression.setParent(parent);
 	}
 }

@@ -16,12 +16,14 @@ public class Function extends StructDeclarationNode {
 		incrementNumber();
 		new Call(this);
 	}
+
+	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+		return function.call(arguments, callFileName, callLine);
+	}
+
 	@Override
 	public void setParent(Block parent) {
 		super.setParent(parent);
 		function.getBody().setParent(parent);
-	}
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		return function.call(arguments, callFileName, callLine);
 	}
 }

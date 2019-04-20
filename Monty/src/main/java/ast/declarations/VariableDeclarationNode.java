@@ -21,23 +21,15 @@ import sml.data.returning.Nothing;
 
 public class VariableDeclarationNode extends DeclarationNode implements Cloneable {
 
-	private boolean isConst = false;
-	private boolean wasValueChanged = false;
-
 	public static VariableDeclarationNode toMe(Object object, String fileName, int line) {
 		if (object instanceof VariableDeclarationNode)
 			return (VariableDeclarationNode) object;
 		new LogError("Can't cast any value to variable.", fileName, line);
 		return null;
 	}
+	private boolean isConst = false;
 
-	public boolean isConst() {
-		return isConst;
-	}
-
-	public void setConst(boolean isConst) {
-		this.isConst = isConst;
-	}
+	private boolean wasValueChanged = false;
 
 	private Object value = Nothing.nothing;
 
@@ -58,14 +50,22 @@ public class VariableDeclarationNode extends DeclarationNode implements Cloneabl
 		return value;
 	}
 
-	public final void setValue(Object value, String fileName, int line) {
-		if (isConst && wasValueChanged)
-			new LogError("Can't change value of const.", fileName, line);
+	public boolean isConst() {
+		return isConst;
+	}
+
+	public void setConst(boolean isConst) {
+		this.isConst = isConst;
+	}
+
+	public final void setValue(Object value) {
 		this.value = value;
 		wasValueChanged = true;
 	}
 
-	public final void setValue(Object value) {
+	public final void setValue(Object value, String fileName, int line) {
+		if (isConst && wasValueChanged)
+			new LogError("Can't change value of const.", fileName, line);
 		this.value = value;
 		wasValueChanged = true;
 	}

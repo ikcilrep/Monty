@@ -27,20 +27,6 @@ import java.io.InputStreamReader;
 import parser.LogError;
 
 public abstract class FileIO {
-	public static String readFile(String path, String callFileName, int callLine) {
-		BufferedReader br = null;
-		FileReader fr = null;
-		try {
-			fr = new FileReader(path);
-		} catch (FileNotFoundException e) {
-			new LogError("This file doesn't exist:\t" + path, callFileName, callLine);
-		}
-		
-		br = new BufferedReader(fr);
-
-		return readFile(br, path, callFileName, callLine);
-	}
-
 	public static String readFile(BufferedReader br, String path, String callFileName, int callLine) {
 		var text = new StringBuilder();
 		try {
@@ -59,14 +45,29 @@ public abstract class FileIO {
 		}
 		return text.toString();
 	}
-	
-	public static String readFile(InputStream in, String path, String callFileName, int callLine) {
-		return readFile(new BufferedReader(new InputStreamReader(in)), path, callFileName, callLine);
-	}
-	
+
 	public static String readFile(InputStream in, String path) {
 		return readFile(new BufferedReader(new InputStreamReader(in)), path, "Sml.java", -1);
 	}
+
+	public static String readFile(InputStream in, String path, String callFileName, int callLine) {
+		return readFile(new BufferedReader(new InputStreamReader(in)), path, callFileName, callLine);
+	}
+
+	public static String readFile(String path, String callFileName, int callLine) {
+		BufferedReader br = null;
+		FileReader fr = null;
+		try {
+			fr = new FileReader(path);
+		} catch (FileNotFoundException e) {
+			new LogError("This file doesn't exist:\t" + path, callFileName, callLine);
+		}
+
+		br = new BufferedReader(fr);
+
+		return readFile(br, path, callFileName, callLine);
+	}
+
 	public static void writeFile(String path, String text, boolean isAppend, String callFileName, int callLine) {
 		try {
 			File file = new File(path);

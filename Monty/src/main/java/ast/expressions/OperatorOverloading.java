@@ -20,7 +20,6 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
 import ast.Block;
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
@@ -44,55 +43,6 @@ public final class OperatorOverloading {
 	private static int temporaryLine;
 	private static String temporaryFileName;
 
-	public static void setTemporary(String fileName, int line) {
-		temporaryFileName = fileName;
-		temporaryLine = line;
-	}
-
-	public static int getTemporaryLine() {
-		return temporaryLine;
-	}
-
-	public static String getTemporaryFileName() {
-		return temporaryFileName;
-	}
-
-	public final static Object overloadOperator(Object leftValue, Object rightValue, String nameOfFunction,
-			int numberOfParameters, boolean isAssignment) {
-		arguments.get(0).setOperand(new ConstantNode(leftValue));
-		arguments.get(1).setOperand(new ConstantNode(rightValue));
-		if (leftValue instanceof StructDeclarationNode) {
-			var struct = (StructDeclarationNode) leftValue;
-			if (struct.hasFunction(nameOfFunction)) {
-				var operator = struct.getFunction(nameOfFunction);
-				if (operator.getParameters().size() == numberOfParameters)
-					return operator.call(arguments, temporaryFileName, temporaryLine);
-			}
-		} else if (!isAssignment && rightValue instanceof StructDeclarationNode) {
-			var t = arguments.get(0);
-			arguments.set(0, arguments.get(1));
-			arguments.set(1, t);
-			var struct = (StructDeclarationNode) rightValue;
-			if (struct.hasFunction(nameOfFunction)) {
-				var operator = struct.getFunction(nameOfFunction);
-				if (operator.getParameters().size() == numberOfParameters)
-					return operator.call(arguments, temporaryFileName, temporaryLine);
-			}
-		}
-		new LogError(
-				"Can't do any operations besides assignment and comparison with \"any\" data type if there isn't any overload.",
-				temporaryFileName, temporaryLine);
-		return null;
-	}
-
-	private static String reverse(String str) {
-		var result = new StringBuilder(str.length());
-		var string = str;
-		for (int j = string.length() - 1; j >= 0; j--)
-			result.append(string.charAt(j));
-		return result.toString();
-	}
-
 	public final static Object additionOperator(Object leftValue, Object rightValue, DataTypes type) {
 		switch (type) {
 		case INTEGER:
@@ -115,6 +65,212 @@ public final class OperatorOverloading {
 			return overloadOperator(leftValue, rightValue, "$add", 2, false);
 		case VOID:
 			new LogError("Can't add Nothing.", temporaryFileName, temporaryLine);
+		default:
+			return null;
+		}
+	}
+
+	public final static Object andOperator(Object leftValue, Object rightValue, DataTypes type) {
+		switch (type) {
+		case INTEGER:
+			return (int) leftValue & (int) rightValue;
+		case BIG_INTEGER:
+			return ((BigInteger) leftValue).and((BigInteger) rightValue);
+		case FLOAT:
+		case STRING:
+			new LogError("Can't do and operation with " + type.toString().toLowerCase() + "s", temporaryFileName,
+					temporaryLine);
+		case ANY:
+			return overloadOperator(leftValue, rightValue, "$and", 2, false);
+		case VOID:
+			new LogError("Can't do and operation with Nothing.", temporaryFileName, temporaryLine);
+		default:
+			return null;
+		}
+	}
+
+	public final static Object assignmentAdditionOperator(Object leftValue, Object rightValue, DataTypes type) {
+		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
+		switch (type) {
+		case INTEGER:
+		case BIG_INTEGER:
+		case FLOAT:
+		case STRING:
+			variable.setValue(additionOperator(variable.getValue(), rightValue, type), temporaryFileName,
+					temporaryLine);
+			return variable.getValue();
+		case BOOLEAN:
+			new LogError("Can't add booleans.", temporaryFileName, temporaryLine);
+		case ANY:
+			return overloadOperator(variable.getValue(), rightValue, "$a_add", 2, true);
+		case VOID:
+			new LogError("Can't add Nothing.", temporaryFileName, temporaryLine);
+		default:
+			return null;
+		}
+	}
+
+	public final static Object assignmentAndOperator(Object leftValue, Object rightValue, DataTypes type) {
+		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
+		switch (type) {
+		case INTEGER:
+		case BIG_INTEGER:
+		case FLOAT:
+		case STRING:
+			variable.setValue(andOperator(variable.getValue(), rightValue, type), temporaryFileName, temporaryLine);
+			return variable.getValue();
+		case ANY:
+			return overloadOperator(variable.getValue(), rightValue, "$a_and", 2, true);
+		case VOID:
+			new LogError("Can't do and operation with Nothing.", temporaryFileName, temporaryLine);
+		default:
+			return null;
+		}
+	}
+
+	public final static Object assignmentDivisionOperator(Object leftValue, Object rightValue, DataTypes type) {
+		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
+		switch (type) {
+		case INTEGER:
+		case BIG_INTEGER:
+		case FLOAT:
+		case STRING:
+			variable.setValue(divisionOperator(variable.getValue(), rightValue, type), temporaryFileName,
+					temporaryLine);
+			return variable.getValue();
+		case ANY:
+			return overloadOperator(variable.getValue(), rightValue, "$a_div", 2, true);
+		case VOID:
+			new LogError("Can't divide Nothing.", temporaryFileName, temporaryLine);
+		default:
+			return null;
+		}
+	}
+
+	public final static Object assignmentMultiplicationOperator(Object leftValue, Object rightValue, DataTypes type) {
+		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
+		switch (type) {
+		case INTEGER:
+		case BIG_INTEGER:
+		case FLOAT:
+		case STRING:
+			variable.setValue(multiplicationOperator(variable.getValue(), rightValue, type), temporaryFileName,
+					temporaryLine);
+			return variable.getValue();
+		case ANY:
+			return overloadOperator(variable.getValue(), rightValue, "$a_mul", 2, true);
+		case VOID:
+			new LogError("Can't multiply Nothing.", temporaryFileName, temporaryLine);
+		default:
+			return null;
+		}
+	}
+
+	public final static Object assignmentOperator(Object leftValue, Object rightValue, DataTypes type) {
+		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
+		switch (type) {
+		case INTEGER:
+		case BIG_INTEGER:
+		case FLOAT:
+		case STRING:
+		case BOOLEAN:
+		case ANY:
+		case VOID:
+			variable.setValue(rightValue, temporaryFileName, temporaryLine);
+			return variable.getValue();
+		default:
+			return null;
+		}
+	}
+
+	public final static Object assignmentOrOperator(Object leftValue, Object rightValue, DataTypes type) {
+		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
+		switch (type) {
+		case INTEGER:
+		case BIG_INTEGER:
+		case FLOAT:
+		case STRING:
+			variable.setValue(orOperator(variable.getValue(), rightValue, type), temporaryFileName, temporaryLine);
+			return variable.getValue();
+		case ANY:
+			return overloadOperator(variable.getValue(), rightValue, "$a_or", 2, true);
+		case VOID:
+			new LogError("Can't do or operation with Nothing.", temporaryFileName, temporaryLine);
+		default:
+			return null;
+		}
+	}
+
+	public final static Object assignmentShiftLeftOperator(Object leftValue, Object rightValue, DataTypes type) {
+		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
+		switch (type) {
+		case INTEGER:
+		case BIG_INTEGER:
+		case FLOAT:
+		case STRING:
+			variable.setValue(shiftLeftOperator(variable.getValue(), rightValue, type), temporaryFileName,
+					temporaryLine);
+			return variable.getValue();
+		case ANY:
+			return overloadOperator(variable.getValue(), rightValue, "$a_shl", 2, true);
+		case VOID:
+			new LogError("Can't shift left Nothing.", temporaryFileName, temporaryLine);
+		default:
+			return null;
+		}
+	}
+
+	public final static Object assignmentShiftRightOperator(Object leftValue, Object rightValue, DataTypes type) {
+		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
+		switch (type) {
+		case INTEGER:
+		case BIG_INTEGER:
+		case FLOAT:
+		case STRING:
+			variable.setValue(shiftRightOperator(variable.getValue(), rightValue, type), temporaryFileName,
+					temporaryLine);
+			return variable.getValue();
+		case ANY:
+			return overloadOperator(variable.getValue(), rightValue, "$a_shr", 2, true);
+		case VOID:
+			new LogError("Can't shift right Nothing.", temporaryFileName, temporaryLine);
+		default:
+			return null;
+		}
+	}
+
+	public final static Object assignmentSubtractionOperator(Object leftValue, Object rightValue, DataTypes type) {
+		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
+		switch (type) {
+		case INTEGER:
+		case BIG_INTEGER:
+		case FLOAT:
+		case STRING:
+			variable.setValue(subtractionOperator(variable.getValue(), rightValue, type), temporaryFileName,
+					temporaryLine);
+			return variable.getValue();
+		case ANY:
+			return overloadOperator(variable.getValue(), rightValue, "$a_sub", 2, true);
+		case VOID:
+			new LogError("Can't subtract Nothing.", temporaryFileName, temporaryLine);
+		default:
+			return null;
+		}
+	}
+
+	public final static Object assignmentXorOperator(Object leftValue, Object rightValue, DataTypes type) {
+		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
+		switch (type) {
+		case INTEGER:
+		case BIG_INTEGER:
+		case FLOAT:
+		case STRING:
+			variable.setValue(xorOperator(variable.getValue(), rightValue, type), temporaryFileName, temporaryLine);
+			return variable.getValue();
+		case ANY:
+			return overloadOperator(variable.getValue(), rightValue, "$a_xor", 2, true);
+		case VOID:
+			new LogError("Can't xor Nothing.", temporaryFileName, temporaryLine);
 		default:
 			return null;
 		}
@@ -146,25 +302,6 @@ public final class OperatorOverloading {
 						"Type mismatch:\tboolean and " + DataTypes.getDataType(rightValue).toString().toLowerCase(),
 						temporaryFileName, temporaryLine);
 		return ((Boolean) rightValue);
-	}
-
-	public final static Object andOperator(Object leftValue, Object rightValue, DataTypes type) {
-		switch (type) {
-		case INTEGER:
-			return (int) leftValue & (int) rightValue;
-		case BIG_INTEGER:
-			return ((BigInteger) leftValue).and((BigInteger) rightValue);
-		case FLOAT:
-		case STRING:
-			new LogError("Can't do and operation with " + type.toString().toLowerCase() + "s", temporaryFileName,
-					temporaryLine);
-		case ANY:
-			return overloadOperator(leftValue, rightValue, "$and", 2, false);
-		case VOID:
-			new LogError("Can't do and operation with Nothing.", temporaryFileName, temporaryLine);
-		default:
-			return null;
-		}
 	}
 
 	public final static Object divisionOperator(Object leftValue, Object rightValue, DataTypes type) {
@@ -223,6 +360,14 @@ public final class OperatorOverloading {
 
 	public final static Object equalsOperator(Object leftValue, Object rightValue) {
 		return leftValue.equals(rightValue);
+	}
+
+	public static String getTemporaryFileName() {
+		return temporaryFileName;
+	}
+
+	public static int getTemporaryLine() {
+		return temporaryLine;
 	}
 
 	public final static Object greaterEqualsOperator(Object leftValue, Object rightValue, DataTypes type) {
@@ -436,6 +581,47 @@ public final class OperatorOverloading {
 		}
 	}
 
+	public final static Object overloadOperator(Object leftValue, Object rightValue, String nameOfFunction,
+			int numberOfParameters, boolean isAssignment) {
+		arguments.get(0).setOperand(new ConstantNode(leftValue));
+		arguments.get(1).setOperand(new ConstantNode(rightValue));
+		if (leftValue instanceof StructDeclarationNode) {
+			var struct = (StructDeclarationNode) leftValue;
+			if (struct.hasFunction(nameOfFunction)) {
+				var operator = struct.getFunction(nameOfFunction);
+				if (operator.getParameters().size() == numberOfParameters)
+					return operator.call(arguments, temporaryFileName, temporaryLine);
+			}
+		} else if (!isAssignment && rightValue instanceof StructDeclarationNode) {
+			var t = arguments.get(0);
+			arguments.set(0, arguments.get(1));
+			arguments.set(1, t);
+			var struct = (StructDeclarationNode) rightValue;
+			if (struct.hasFunction(nameOfFunction)) {
+				var operator = struct.getFunction(nameOfFunction);
+				if (operator.getParameters().size() == numberOfParameters)
+					return operator.call(arguments, temporaryFileName, temporaryLine);
+			}
+		}
+		new LogError(
+				"Can't do any operations besides assignment and comparison with \"any\" data type if there isn't any overload.",
+				temporaryFileName, temporaryLine);
+		return null;
+	}
+
+	private static String reverse(String str) {
+		var result = new StringBuilder(str.length());
+		var string = str;
+		for (int j = string.length() - 1; j >= 0; j--)
+			result.append(string.charAt(j));
+		return result.toString();
+	}
+
+	public static void setTemporary(String fileName, int line) {
+		temporaryFileName = fileName;
+		temporaryLine = line;
+	}
+
 	public final static Object shiftLeftOperator(Object leftValue, Object rightValue, DataTypes type) {
 		switch (type) {
 		case INTEGER:
@@ -517,193 +703,6 @@ public final class OperatorOverloading {
 			return overloadOperator(leftValue, rightValue, "$xor", 2, false);
 		case VOID:
 			new LogError("Can't do xor operation with Nothing.", temporaryFileName, temporaryLine);
-		default:
-			return null;
-		}
-	}
-
-	public final static Object assignmentAdditionOperator(Object leftValue, Object rightValue, DataTypes type) {
-		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
-		switch (type) {
-		case INTEGER:
-		case BIG_INTEGER:
-		case FLOAT:
-		case STRING:
-			variable.setValue(additionOperator(variable.getValue(), rightValue, type), temporaryFileName,
-					temporaryLine);
-			return variable.getValue();
-		case BOOLEAN:
-			new LogError("Can't add booleans.", temporaryFileName, temporaryLine);
-		case ANY:
-			return overloadOperator(variable.getValue(), rightValue, "$a_add", 2, true);
-		case VOID:
-			new LogError("Can't add Nothing.", temporaryFileName, temporaryLine);
-		default:
-			return null;
-		}
-	}
-
-	public final static Object assignmentAndOperator(Object leftValue, Object rightValue, DataTypes type) {
-		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
-		switch (type) {
-		case INTEGER:
-		case BIG_INTEGER:
-		case FLOAT:
-		case STRING:
-			variable.setValue(andOperator(variable.getValue(), rightValue, type), temporaryFileName, temporaryLine);
-			return variable.getValue();
-		case ANY:
-			return overloadOperator(variable.getValue(), rightValue, "$a_and", 2, true);
-		case VOID:
-			new LogError("Can't do and operation with Nothing.", temporaryFileName, temporaryLine);
-		default:
-			return null;
-		}
-	}
-
-	public final static Object assignmentDivisionOperator(Object leftValue, Object rightValue, DataTypes type) {
-		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
-		switch (type) {
-		case INTEGER:
-		case BIG_INTEGER:
-		case FLOAT:
-		case STRING:
-			variable.setValue(divisionOperator(variable.getValue(), rightValue, type), temporaryFileName,
-					temporaryLine);
-			return variable.getValue();
-		case ANY:
-			return overloadOperator(variable.getValue(), rightValue, "$a_div", 2, true);
-		case VOID:
-			new LogError("Can't divide Nothing.", temporaryFileName, temporaryLine);
-		default:
-			return null;
-		}
-	}
-
-	public final static Object assignmentMultiplicationOperator(Object leftValue, Object rightValue, DataTypes type) {
-		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
-		switch (type) {
-		case INTEGER:
-		case BIG_INTEGER:
-		case FLOAT:
-		case STRING:
-			variable.setValue(multiplicationOperator(variable.getValue(), rightValue, type), temporaryFileName,
-					temporaryLine);
-			return variable.getValue();
-		case ANY:
-			return overloadOperator(variable.getValue(), rightValue, "$a_mul", 2, true);
-		case VOID:
-			new LogError("Can't multiply Nothing.", temporaryFileName, temporaryLine);
-		default:
-			return null;
-		}
-	}
-
-	public final static Object assignmentOperator(Object leftValue, Object rightValue, DataTypes type) {
-		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
-		switch (type) {
-		case INTEGER:
-		case BIG_INTEGER:
-		case FLOAT:
-		case STRING:
-		case BOOLEAN:
-		case ANY:
-		case VOID:
-			variable.setValue(rightValue, temporaryFileName, temporaryLine);
-			return variable.getValue();
-		default:
-			return null;
-		}
-	}
-
-	public final static Object assignmentOrOperator(Object leftValue, Object rightValue, DataTypes type) {
-		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
-		switch (type) {
-		case INTEGER:
-		case BIG_INTEGER:
-		case FLOAT:
-		case STRING:
-			variable.setValue(orOperator(variable.getValue(), rightValue, type), temporaryFileName, temporaryLine);
-			return variable.getValue();
-		case ANY:
-			return overloadOperator(variable.getValue(), rightValue, "$a_or", 2, true);
-		case VOID:
-			new LogError("Can't do or operation with Nothing.", temporaryFileName, temporaryLine);
-		default:
-			return null;
-		}
-	}
-
-	public final static Object assignmentShiftLeftOperator(Object leftValue, Object rightValue, DataTypes type) {
-		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
-		switch (type) {
-		case INTEGER:
-		case BIG_INTEGER:
-		case FLOAT:
-		case STRING:
-			variable.setValue(shiftLeftOperator(variable.getValue(), rightValue, type), temporaryFileName,
-					temporaryLine);
-			return variable.getValue();
-		case ANY:
-			return overloadOperator(variable.getValue(), rightValue, "$a_shl", 2, true);
-		case VOID:
-			new LogError("Can't shift left Nothing.", temporaryFileName, temporaryLine);
-		default:
-			return null;
-		}
-	}
-
-	public final static Object assignmentShiftRightOperator(Object leftValue, Object rightValue, DataTypes type) {
-		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
-		switch (type) {
-		case INTEGER:
-		case BIG_INTEGER:
-		case FLOAT:
-		case STRING:
-			variable.setValue(shiftRightOperator(variable.getValue(), rightValue, type), temporaryFileName,
-					temporaryLine);
-			return variable.getValue();
-		case ANY:
-			return overloadOperator(variable.getValue(), rightValue, "$a_shr", 2, true);
-		case VOID:
-			new LogError("Can't shift right Nothing.", temporaryFileName, temporaryLine);
-		default:
-			return null;
-		}
-	}
-
-	public final static Object assignmentSubtractionOperator(Object leftValue, Object rightValue, DataTypes type) {
-		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
-		switch (type) {
-		case INTEGER:
-		case BIG_INTEGER:
-		case FLOAT:
-		case STRING:
-			variable.setValue(subtractionOperator(variable.getValue(), rightValue, type), temporaryFileName,
-					temporaryLine);
-			return variable.getValue();
-		case ANY:
-			return overloadOperator(variable.getValue(), rightValue, "$a_sub", 2, true);
-		case VOID:
-			new LogError("Can't subtract Nothing.", temporaryFileName, temporaryLine);
-		default:
-			return null;
-		}
-	}
-
-	public final static Object assignmentXorOperator(Object leftValue, Object rightValue, DataTypes type) {
-		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
-		switch (type) {
-		case INTEGER:
-		case BIG_INTEGER:
-		case FLOAT:
-		case STRING:
-			variable.setValue(xorOperator(variable.getValue(), rightValue, type), temporaryFileName, temporaryLine);
-			return variable.getValue();
-		case ANY:
-			return overloadOperator(variable.getValue(), rightValue, "$a_xor", 2, true);
-		case VOID:
-			new LogError("Can't xor Nothing.", temporaryFileName, temporaryLine);
 		default:
 			return null;
 		}

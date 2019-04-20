@@ -17,8 +17,8 @@ limitations under the License.
 package ast;
 
 public class Node {
-	protected int line;
-	protected String fileName;
+	private int line;
+	private String fileName;
 
 	public String getFileName() {
 		return fileName;
