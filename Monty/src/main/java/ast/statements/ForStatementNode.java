@@ -33,10 +33,14 @@ public final class ForStatementNode extends Block {
 
 	public ForStatementNode(String variableName, OperationNode array, String fileName, int line, Block parent) {
 		super(parent);
+		setIterable(array);
+		setFileName(fileName);
+		setLine(line);
+		setVariableName(variableName);
+	}
+
+	public void setVariableName(String variableName) {
 		this.variableName = variableName;
-		this.iterable = array;
-		this.fileName = fileName;
-		this.line = line;
 	}
 
 	public OperationNode getIterable() {
@@ -51,6 +55,18 @@ public final class ForStatementNode extends Block {
 	public void setParent(Block parent) {
 		super.setParent(parent);
 		iterable.setParent(parent);
+	}
+
+	@Override
+	public ForStatementNode copy() {
+		var copied = (ForStatementNode) super.copy();
+		copied.setIterable(getIterable().copy());
+		return copied;
+
+	}
+
+	public void setIterable(OperationNode iterable) {
+		this.iterable = iterable;
 	}
 
 	@Override

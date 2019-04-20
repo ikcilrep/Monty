@@ -35,7 +35,7 @@ public abstract class FileIO {
 		} catch (FileNotFoundException e) {
 			new LogError("This file doesn't exist:\t" + path, callFileName, callLine);
 		}
-
+		
 		br = new BufferedReader(fr);
 
 		return readFile(br, path, callFileName, callLine);
@@ -59,15 +59,14 @@ public abstract class FileIO {
 		}
 		return text.toString();
 	}
-
+	
 	public static String readFile(InputStream in, String path, String callFileName, int callLine) {
 		return readFile(new BufferedReader(new InputStreamReader(in)), path, callFileName, callLine);
 	}
-
+	
 	public static String readFile(InputStream in, String path) {
 		return readFile(new BufferedReader(new InputStreamReader(in)), path, "Sml.java", -1);
 	}
-
 	public static void writeFile(String path, String text, boolean isAppend, String callFileName, int callLine) {
 		try {
 			File file = new File(path);

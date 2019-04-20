@@ -27,13 +27,28 @@ public class ConditionalNode extends Block {
 		this.condition = condition;
 	}
 
+	public OperationNode getCondition() {
+		return condition;
+	}
+
+	public void setCondition(OperationNode condition) {
+		this.condition = condition;
+	}
+
 	public boolean runnedCondition() {
-		return ToBoolean.toBoolean(condition.run(), getFileName(), getLine());
+		return ToBoolean.toBoolean(getCondition().run(), getFileName(), getLine());
 	}
 
 	@Override
 	public void setParent(Block parent) {
 		super.setParent(parent);
-		condition.setParent(parent);
+		getCondition().setParent(parent);
+	}
+	
+	@Override
+	public ConditionalNode copy() {
+		var copied = (ConditionalNode) super.copy();
+		copied.setCondition(getCondition().copy());
+		return copied;
 	}
 }

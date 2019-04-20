@@ -140,7 +140,7 @@ public class Block extends NodeWithParent implements Cloneable {
 		var variablesSet = block.getVariables().entrySet();
 		for (Map.Entry<String, VariableDeclarationNode> entry : variablesSet)
 			addVariable(entry.getValue());
-
+		
 		var functionsSet = block.getFunctions().entrySet();
 		for (Map.Entry<String, FunctionDeclarationNode> entry : functionsSet) {
 			var function = entry.getValue();
@@ -153,23 +153,26 @@ public class Block extends NodeWithParent implements Cloneable {
 			struct.setParent(this);
 			addStructure(struct);
 		}
-
+		
 	}
-
+	public void copyChildren() {
+		var children = new ArrayList<RunnableNode>(getChildren().size());
+		for (var child : getChildren()) {
+			if (child instanceof NodeWithParent) {
+				var castedChildCopy = ((NodeWithParent) child).copy();
+				castedChildCopy.setParent(this);
+				children.add(castedChildCopy);
+			} else
+				children.add(child);
+		}
+		setChildren(children);
+	}
+	
 	public Block copy() {
 		try {
-			var body = (Block) clone();
-			var children = new ArrayList<RunnableNode>(getChildren().size());
-			for (var child : getChildren()) {
-				if (child instanceof NodeWithParent) {
-					var castedChildCopy = ((NodeWithParent) child).copy();
-					castedChildCopy.setParent(body);
-					children.add(castedChildCopy);
-				} else
-					children.add(child);
-			}
-			body.setChildren(children);
-			return body;
+			var copied = (Block) clone();
+			copied.copyChildren();
+			return copied;
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
@@ -178,7 +181,7 @@ public class Block extends NodeWithParent implements Cloneable {
 
 	protected void setFunctions(HashMap<String, FunctionDeclarationNode> functions) {
 		this.functions = functions;
-
+		
 	}
 
 	public boolean hasFunction(String name) {

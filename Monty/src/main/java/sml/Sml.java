@@ -21,7 +21,6 @@ import java.util.HashMap;
 
 import ast.expressions.OperationNode;
 import monty.FileIO;
-import monty.IOBlocks;
 import monty.Library;
 import sml.casts.Ord;
 import sml.casts.ToBoolean;
@@ -69,7 +68,6 @@ public final class Sml extends Library {
 		var threading = new HashMap<String, Object>();
 		var time = new HashMap<String, Object>();
 		var string = new HashMap<String, Object>();
-		var errors = new HashMap<String, Object>();
 		var files = new HashMap<String, Object>();
 		var language = new HashMap<String, Object>();
 
@@ -80,7 +78,6 @@ public final class Sml extends Library {
 		sml.put("threading", threading);
 		sml.put("time", time);
 		sml.put("math", math);
-		sml.put("errors", errors);
 		sml.put("files", files);
 		sml.put("language", language);
 
@@ -102,8 +99,6 @@ public final class Sml extends Library {
 
 		math.put("Pi", new Pi());
 		math.put("E", new E());
-
-		errors.put("logError", IOBlocks.logError);
 
 		language.put("run", new Run());
 	}

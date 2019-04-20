@@ -49,7 +49,7 @@ public class IOBlocks {
 		int i = 0;
 		for (var code : Sml.code)
 			writtenInMonty[i] = Parser.parse(Lexer.lex(code, Sml.paths[i++]));
-
+		
 		print = new Print();
 		println = new Println();
 		input = new Input();
@@ -66,6 +66,7 @@ public class IOBlocks {
 		functions.put("print", print);
 		functions.put("println", println);
 		functions.put("input", input);
+		functions.put("logError", logError);
 
 	}
 

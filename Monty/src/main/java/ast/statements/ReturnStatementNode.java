@@ -48,7 +48,7 @@ public final class ReturnStatementNode extends NodeWithParent implements Cloneab
 		ReturnStatementNode copy = null;
 		try {
 			copy = (ReturnStatementNode) clone();
-			copy.expression = copy.expression.copy();
+			copy.setExpression(getExpression().copy());
 			return copy;
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();

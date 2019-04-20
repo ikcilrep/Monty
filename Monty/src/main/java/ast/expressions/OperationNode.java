@@ -174,7 +174,7 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 				|| operator.equals(">=") || operator.equals(">") || operator.equals("<");
 
 		var isNotAssignment = !operator.contains("=") || isComparison;
-		var a = left.solve();
+		var a = getLeft().solve();
 
 		var leftValue = getLiteral(a, left.fileName, left.line);
 		if (isNotAssignment && leftValue instanceof VariableDeclarationNode)
@@ -183,11 +183,11 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 		var leftType = DataTypes.getDataType(leftValue);
 		if (leftType != null && leftType.equals(DataTypes.BOOLEAN)) {
 			if (operator.equals("&"))
-				return OperatorOverloading.andOperator(leftValue, right, leftType);
+				return OperatorOverloading.booleanAndOperator((boolean) leftValue, right);
 			else if (operator.equals("|"))
-				return OperatorOverloading.orOperator(leftValue, right, leftType);
+				return OperatorOverloading.booleanOrOperator((boolean) leftValue, right);
 		}
-		var b = right.solve();
+		var b = getRight().solve();
 
 		if (operator.equals(".")) {
 			if (!(b instanceof NamedExpression))
@@ -279,9 +279,12 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 				else if (isNotAssignment && operator.equals("+") && rightType.equals(DataTypes.STRING)) {
 					leftType = DataTypes.STRING;
 					leftValue = leftValue.toString();
-				} else
+				} else {
+					System.out.println(operator);
+					System.out.println(leftValue);
+					System.out.println(rightValue);
 					new LogError("Type mismatch:\t" + leftType.toString().toLowerCase() + " and "
-							+ rightType.toString().toLowerCase(), fileName, line);
+							+ rightType.toString().toLowerCase(), fileName, line);}
 			}
 		} else if (!leftType.equals(rightType))
 			if (leftType.equals(DataTypes.INTEGER) && rightType.equals(DataTypes.BIG_INTEGER)) {

@@ -1,5 +1,5 @@
 /*
-Copyright 2018-2019 Szymon Perlicki
+	Copyright 2018-2019 Szymon Perlicki
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -16,15 +16,13 @@ limitations under the License.
 
 package ast.declarations;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import ast.Block;
-import ast.NodeWithParent;
-import ast.RunnableNode;
 import ast.expressions.OperatorOverloading;
 import lexer.Token;
+import sml.Sml;
 import sml.casts.ToBoolean;
 
 public class StructDeclarationNode extends Block implements Cloneable {
@@ -36,9 +34,17 @@ public class StructDeclarationNode extends Block implements Cloneable {
 
 	public StructDeclarationNode(Block parent, String name) {
 		super(parent);
-		this.name = name;
-		structNumber = ++actualStructNumber;
+		setName(name);
+		incrementStructNumber();
 		numbers.put(structNumber, -1);
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void incrementStructNumber() {
+		this.structNumber = ++actualStructNumber;
 	}
 
 	public void addNewStruct(Block block, Token token) {
@@ -53,45 +59,28 @@ public class StructDeclarationNode extends Block implements Cloneable {
 	@Override
 	public StructDeclarationNode copy() {
 		StructDeclarationNode copied = null;
-		try {
-			copied = (StructDeclarationNode) clone();
-			var structs = new HashMap<String, StructDeclarationNode>();
-			for (Map.Entry<String, StructDeclarationNode> entry : getStructures().entrySet()) {
-				var value = entry.getValue().copy();
-				value.setParent(copied);
-				structs.put(entry.getKey(), value);
-				copied.getFunctions().put(value.getName(), new Constructor(value));
-			}
-			copied.setStructures(structs);
-
-			var variables = new HashMap<String, VariableDeclarationNode>();
-			for (Map.Entry<String, VariableDeclarationNode> entry : getVariables().entrySet())
-				variables.put(entry.getKey(), entry.getValue().copy());
-
-			copied.setVariables(variables);
-
-			var functions = new HashMap<String, FunctionDeclarationNode>();
-			for (Map.Entry<String, FunctionDeclarationNode> entry : getFunctions().entrySet()) {
-				var value = entry.getValue().copy();
-				value.getBody().setParent(copied);
-				functions.put(entry.getKey(), value);
-			}
-			copied.setFunctions(functions);
-
-			var myChildren = getChildren();
-			var children = new ArrayList<RunnableNode>(myChildren.size());
-			for (var child : myChildren) {
-				if (child instanceof NodeWithParent) {
-					var castedChildCopy = ((NodeWithParent) child).copy();
-					castedChildCopy.setParent(copied);
-					children.add(castedChildCopy);
-				} else
-					children.add(child);
-			}
-			copied.setChildren(children);
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
+		copied = (StructDeclarationNode) super.copy();
+		var structs = new HashMap<String, StructDeclarationNode>();
+		for (Map.Entry<String, StructDeclarationNode> entry : getStructures().entrySet()) {
+			var value = entry.getValue().copy();
+			value.setParent(copied);
+			structs.put(entry.getKey(), value);
+			copied.getFunctions().put(value.getName(), new Constructor(value));
 		}
+		copied.setStructures(structs);
+
+		var variables = new HashMap<String, VariableDeclarationNode>();
+		for (Map.Entry<String, VariableDeclarationNode> entry : getVariables().entrySet())
+			variables.put(entry.getKey(), entry.getValue().copy());
+		copied.setVariables(variables);
+
+		var functions = new HashMap<String, FunctionDeclarationNode>();
+		for (Map.Entry<String, FunctionDeclarationNode> entry : getFunctions().entrySet()) {
+			var value = entry.getValue().copy();
+			value.getBody().setParent(copied);
+			functions.put(entry.getKey(), value);
+		}
+		copied.setFunctions(functions);
 		return copied;
 	}
 
@@ -117,12 +106,14 @@ public class StructDeclarationNode extends Block implements Cloneable {
 		return s.getStructNumber() == structNumber;
 	}
 
-	/*
-	 * @Override public String toString() { if (hasFunction("toString")) { var
-	 * function = getFunction("toString"); return function.call(new ArrayList<>(),
-	 * function.getFileName(), function.getLine()).toString(); } return name + "#" +
-	 * getInstanceNumber(); }
-	 */
+	@Override
+	public String toString() {
+		if (hasFunction("toString")) {
+			var function = getFunction("toString");
+			return function.call(Sml.emptyArgumentList, function.getFileName(), function.getLine()).toString();
+		}
+		return name + "#" + getInstanceNumber();
+	}
 
 	@Override
 	public boolean equals(Object other) {

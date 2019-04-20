@@ -1,6 +1,7 @@
 struct Iterable;
 	var iterable;
 	var begin = 0;
+	var t = This;
 	func init iterable;
 		This.iterable = iterable;
 	end;

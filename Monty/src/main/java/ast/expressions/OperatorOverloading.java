@@ -20,6 +20,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
 import ast.Block;
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
@@ -38,7 +39,6 @@ public final class OperatorOverloading {
 		arguments.add(new OperationNode(null, null));
 		arguments.add(new OperationNode(null, null));
 		builtInTypes.put("List", List.class);
-		// builtInTypes.put("Range", Range.class);
 	}
 
 	private static int temporaryLine;
@@ -120,14 +120,40 @@ public final class OperatorOverloading {
 		}
 	}
 
+	public final static Object booleanAndOperator(boolean leftValue, OperationNode right) {
+		if (!leftValue)
+			return false;
+		var rightValue = ((OperationNode) right).run();
+		if (!(rightValue instanceof Boolean))
+			if (rightValue instanceof StructDeclarationNode)
+				return andOperator(leftValue, rightValue, DataTypes.ANY);
+			else
+				new LogError(
+						"Type mismatch:\tboolean and " + DataTypes.getDataType(rightValue).toString().toLowerCase(),
+						temporaryFileName, temporaryLine);
+		return ((Boolean) rightValue);
+	}
+
+	public final static Object booleanOrOperator(boolean leftValue, OperationNode right) {
+		if (leftValue)
+			return true;
+		var rightValue = ((OperationNode) right).run();
+		if (!(rightValue instanceof Boolean))
+			if (rightValue instanceof StructDeclarationNode)
+				return andOperator(leftValue, rightValue, DataTypes.ANY);
+			else
+				new LogError(
+						"Type mismatch:\tboolean and " + DataTypes.getDataType(rightValue).toString().toLowerCase(),
+						temporaryFileName, temporaryLine);
+		return ((Boolean) rightValue);
+	}
+
 	public final static Object andOperator(Object leftValue, Object rightValue, DataTypes type) {
 		switch (type) {
 		case INTEGER:
 			return (int) leftValue & (int) rightValue;
 		case BIG_INTEGER:
 			return ((BigInteger) leftValue).and((BigInteger) rightValue);
-		case BOOLEAN:
-			return ((Boolean) leftValue) && ((Boolean) ((OperationNode) rightValue).run());
 		case FLOAT:
 		case STRING:
 			new LogError("Can't do and operation with " + type.toString().toLowerCase() + "s", temporaryFileName,
