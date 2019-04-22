@@ -270,6 +270,13 @@ public class Block extends NodeWithParent implements Cloneable {
 	public boolean hasVariable(String name) {
 		return variables.containsKey(name);
 	}
+	
+	public void copyVariables() {
+		var variables = new HashMap<String, VariableDeclarationNode>();
+		for (Map.Entry<String, VariableDeclarationNode> entry : getVariables().entrySet())
+			variables.put(entry.getKey(), entry.getValue().copy());
+		setVariables(variables);
+	}
 
 	@Override
 	public Object run() {

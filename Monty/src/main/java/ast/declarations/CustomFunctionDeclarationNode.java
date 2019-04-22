@@ -17,8 +17,6 @@ limitations under the License.
 package ast.declarations;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import ast.expressions.OperationNode;
 import ast.statements.ContinueStatementNode;
@@ -34,10 +32,7 @@ public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode
 
 	public CustomFunctionDeclarationNode workingCopy() {
 		var copy = (CustomFunctionDeclarationNode) copy();
-		var variables = new HashMap<String, VariableDeclarationNode>();
-		for (Map.Entry<String, VariableDeclarationNode> entry : getBody().getVariables().entrySet())
-			variables.put(entry.getKey(), entry.getValue().copy());
-		copy.getBody().setVariables(variables);
+		copy.getBody().copyVariables();
 		return copy;
 	}
 

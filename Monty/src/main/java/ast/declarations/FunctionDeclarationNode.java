@@ -67,6 +67,8 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 			new LogError("Too many arguments in " + name + " function call.", callFileName, callLine);
 		else if (argumentsSize < parametersSize)
 			new LogError("Too few arguments in " + name + " function call.", callFileName, callLine);
+		var parameters = getParameters();
+		var body = getBody();
 
 		for (int i = 0; i < arguments.size(); i++) {
 			var name = parameters.get(i).getName();

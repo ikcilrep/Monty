@@ -61,10 +61,7 @@ public class StructDeclarationNode extends Block implements Cloneable {
 		}
 		copied.setStructures(structs);
 
-		var variables = new HashMap<String, VariableDeclarationNode>();
-		for (Map.Entry<String, VariableDeclarationNode> entry : getVariables().entrySet())
-			variables.put(entry.getKey(), entry.getValue().copy());
-		copied.setVariables(variables);
+		copied.copyVariables();
 
 		var functions = new HashMap<String, FunctionDeclarationNode>();
 		for (Map.Entry<String, FunctionDeclarationNode> entry : getFunctions().entrySet()) {
