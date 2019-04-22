@@ -33,11 +33,11 @@ struct Iterable;
 		return result;
 	end;
 	
-	func foldr function, start;
+	func foldl function, start;
 		if isEmpty(This);
 			return start;
 		end;
-		return function.call(get(0), tail().foldr(function, start));
+		return tail().foldl(function,function.call(start,get(0)));
 	end;
 	
 	struct Iterator;

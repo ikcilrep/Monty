@@ -32,3 +32,27 @@ func isEmpty iterable;
 	end;
 	return true;
 end;
+
+func foldl function, start, iterable;
+	var iterator = iterable.Iterator();
+	var result;
+	if iterator.hasNext();
+		result = function.call(start,iterator.next());
+	end;
+	while iterator.hasNext();
+		result = function.call(result,iterator.next());
+	end;
+	return result;
+end;
+
+func foldr function, start, iterable;
+	var iterator = iterable.Iterator();
+	var result;
+	if iterator.hasNext();
+		result = iterator.next();
+	end;
+	while iterator.hasNext();
+		result = function.call(iterator.next(), result);
+	end;
+	return function.call(result, start);
+end;
