@@ -23,10 +23,7 @@ import java.util.Map;
 import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
-import ast.statements.BreakStatementNode;
-import ast.statements.ContinueStatementNode;
-import ast.statements.ForStatementNode;
-import ast.statements.ReturnStatementNode;
+import ast.expressions.OperationNode;
 import lexer.Token;
 import parser.LogError;
 
@@ -279,9 +276,7 @@ public class Block extends NodeWithParent implements Cloneable {
 		Object result = null;
 		for (RunnableNode child : children) {
 			result = child.run();
-			if (child instanceof ReturnStatementNode || child instanceof BreakStatementNode
-					|| child instanceof ContinueStatementNode
-					|| ((child instanceof ConditionalNode || child instanceof ForStatementNode) && result != null))
+			if (!(child instanceof OperationNode || result == null))
 				return result;
 		}
 		return null;

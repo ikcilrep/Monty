@@ -32,17 +32,24 @@ public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode
 		super(name);
 	}
 
+	public CustomFunctionDeclarationNode workingCopy() {
+		var copy = (CustomFunctionDeclarationNode) copy();
+		var variables = new HashMap<String, VariableDeclarationNode>();
+		for (Map.Entry<String, VariableDeclarationNode> entry : getBody().getVariables().entrySet())
+			variables.put(entry.getKey(), entry.getValue().copy());
+		copy.getBody().setVariables(variables);
+		return copy;
+	}
+
 	@Override
 	public final Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		var variables = new HashMap<String, VariableDeclarationNode>();
-		for (Map.Entry<String, VariableDeclarationNode> entry : body.getVariables().entrySet())
-			variables.put(entry.getKey(), entry.getValue().copy());
-		setArguments(arguments, callFileName, callLine);
+		var workingCopy = workingCopy();
+		workingCopy.setArguments(arguments, callFileName, callLine);
 		String[] fileNames = { callFileName, getFileName() };
 		int[] lines = { callLine, getLine() };
 		Object result = null;
 		try {
-			result = body.run();
+			result = workingCopy.getBody().run();
 		} catch (StackOverflowError e) {
 			new LogError("Stack overflow at " + name + " function call", fileNames, lines);
 		}
@@ -55,7 +62,6 @@ public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode
 			if (result instanceof ContinueStatementNode)
 				new LogError("Trying to continue function " + getName(), fileNames, lines);
 		}
-		body.setVariables(variables);
 		return result;
 	}
 }

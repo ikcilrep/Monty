@@ -1,7 +1,7 @@
 struct Iterable;
 	var iterable;
 	var begin = 0;
-	var t = This;
+
 	func init iterable;
 		This.iterable = iterable;
 	end;
@@ -9,10 +9,10 @@ struct Iterable;
 	func get index;
 		var counter = 0;
 		for x in This;
-			if counter index ==;
+			if counter == index;
 				return x;
 			end;
-			counter 1 +=;
+			counter += 1;
 		end;
 		logError("Iterable doesn't have " +  index + " element");
 	end;
@@ -31,6 +31,13 @@ struct Iterable;
 		var result = Iterable(iterable);
 		result.begin = begin + 1;
 		return result;
+	end;
+	
+	func foldr function, start;
+		if isEmpty(This);
+			return start;
+		end;
+		return function.call(get(0), tail().foldr(function, start));
 	end;
 	
 	struct Iterator;
