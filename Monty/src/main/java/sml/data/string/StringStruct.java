@@ -1,29 +1,55 @@
 package sml.data.string;
 
-import java.util.HashMap;
+import ast.declarations.StructDeclarationNode;
 
-import sml.data.StaticStruct;
+public class StringStruct extends StructDeclarationNode {
+	private String string;
 
-public final class StringStruct {
-	private static StaticStruct struct = new StaticStruct();
-
-	static {
-		struct.setFunctions(new HashMap<>());
-		new CharAt(struct);
-		new EndsWith(struct);
-		new EqualsIgnoreCase(struct);
-		new Length(struct);
-		new LowerCase(struct);
-		new Replace(struct);
-		new ReplaceFirst(struct);
-		new Split(struct);
-		new StartsWith(struct);
-		new Substring(struct);
-		new UpperCase(struct);
-		new Iterator(struct);
+	public StringStruct(String string) {
+		super(null, "String");
+		this.setString(string);
+		new CharAt(this);
+		new ConcatLeft(this);
+		new ConcatRight(this);
+		new EndsWith(this);
+		new EqualsIgnoreCase(this);
+		new Length(this);
+		new LowerCase(this);
+		new MultiplyLeft(this);
+		new MultiplyRight(this);
+		new NewIterator(this);
+		new Replace(this);
+		new ReplaceFirst(this);
+		new Split(this);
+		new StartsWith(this);
+		new Substring(this);
+		new UpperCase(this);
 	}
 
-	public static StaticStruct getStruct() {
-		return struct;
+	public StringStruct mulitply(int times) {
+		int length = getString().length();
+		int newLength= length * times;
+		char[] result = new char[newLength];
+		for (int i = 0; i < newLength; i++)
+			result[i] = getString().charAt(i % length);
+		return new StringStruct(new String(result));
+	}
+	
+	public StringStruct mulitplied(int times) {
+		setString(mulitplied(times).getString());
+		return this;
+	}
+	
+	@Override
+	public String toString() {
+		return getString();
+	}
+
+	public String getString() {
+		return string;
+	}
+
+	public void setString(String string) {
+		this.string = string;
 	}
 }

@@ -18,20 +18,15 @@ package sml.data.string;
 
 import java.util.ArrayList;
 
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import sml.data.StaticStruct;
+import sml.data.Method;
 
-final class Replace extends FunctionDeclarationNode {
+final class Replace extends Method<StringStruct> {
 
-	public Replace(StaticStruct struct) {
-		super("replace");
-		setBody(new Block(null));
-		addParameter("str");
+	public Replace(StringStruct parent) {
+		super(parent, "replace");
 		addParameter("regex");
 		addParameter("replacement");
-		struct.addFunction(this);
 
 	}
 
@@ -39,7 +34,7 @@ final class Replace extends FunctionDeclarationNode {
 	public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		return body.getStringVariableValue("str").replaceAll(body.getStringVariableValue("regex"),
+		return parent.getString().replaceAll(body.getStringVariableValue("regex"),
 				body.getStringVariableValue("replacement"));
 	}
 

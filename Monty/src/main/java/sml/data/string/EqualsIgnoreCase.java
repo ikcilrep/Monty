@@ -18,26 +18,20 @@ package sml.data.string;
 
 import java.util.ArrayList;
 
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import sml.data.StaticStruct;
+import sml.data.Method;
 
-final class EqualsIgnoreCase extends FunctionDeclarationNode {
+final class EqualsIgnoreCase extends Method<StringStruct> {
 
-	public EqualsIgnoreCase(StaticStruct struct) {
-		super("equalsIgnoreCase");
-		setBody(new Block(null));
-		addParameter("str");
+	public EqualsIgnoreCase(StringStruct parent) {
+		super(parent,"equalsIgnoreCase");
 		addParameter("toCompare");
-		struct.addFunction(this);
 	}
 
 	@Override
 	public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var body = getBody();
-		return body.getStringVariableValue("str").equalsIgnoreCase(body.getStringVariableValue("toCompare"));
+		return parent.getString().equalsIgnoreCase(getBody().getStringVariableValue("toCompare"));
 	}
 
 }

@@ -17,24 +17,19 @@ limitations under the License.
 
 import java.util.ArrayList;
 
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import sml.data.StaticStruct;
+import sml.data.Method;
 
-final class UpperCase extends FunctionDeclarationNode {
+final class UpperCase extends Method<StringStruct> {
 
-	public UpperCase(StaticStruct struct) {
-		super("upperCase");
-		setBody(new Block(null));
-		addParameter("str");
-		struct.addFunction(this);
+	public UpperCase(StringStruct parent) {
+		super(parent,"upperCase");
 	}
 
 	@Override
 	public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return getBody().getStringVariableValue("str").toUpperCase();
+		return parent.getString().toUpperCase();
 	}
 
 }

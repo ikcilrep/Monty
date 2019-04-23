@@ -18,20 +18,15 @@ package sml.data.string;
 
 import java.util.ArrayList;
 
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import sml.data.StaticStruct;
+import sml.data.Method;
 
-final class ReplaceFirst extends FunctionDeclarationNode {
+final class ReplaceFirst extends Method<StringStruct> {
 
-	public ReplaceFirst(StaticStruct struct) {
-		super("replaceFirst");
-		setBody(new Block(null));
-		addParameter("str");
+	public ReplaceFirst(StringStruct parent) {
+		super(parent,"replaceFirst");
 		addParameter("regex");
 		addParameter("replacement");
-		struct.addFunction(this);
 
 	}
 
@@ -39,7 +34,7 @@ final class ReplaceFirst extends FunctionDeclarationNode {
 	public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		return body.getStringVariableValue("str").replaceFirst(body.getStringVariableValue("regex"),
+		return parent.getString().replaceFirst(body.getStringVariableValue("regex"),
 				body.getStringVariableValue("replacement"));
 	}
 

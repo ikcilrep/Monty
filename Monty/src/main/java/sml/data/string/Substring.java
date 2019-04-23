@@ -19,29 +19,24 @@ package sml.data.string;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
+
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
-import sml.data.StaticStruct;
+import sml.data.Method;
 
-final class Substring extends FunctionDeclarationNode {
+final class Substring extends Method<StringStruct> {
 
-	public Substring(StaticStruct struct) {
-		super("substring");
-		setBody(new Block(null));
-		addParameter("str");
+	public Substring(StringStruct parent) {
+		super(parent,"substring");
 		addParameter("begin");
 		addParameter("end");
-		struct.addFunction(this);
 	}
 
 	@Override
 	public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var str = body.getStringVariableValue("str");
 		var _begin = body.getVariableValue("begin");
 		var _end = body.getVariableValue("end");
 
@@ -72,11 +67,11 @@ final class Substring extends FunctionDeclarationNode {
 
 		if (begin < 0)
 			new LogError("Begin can't be negative.", callFileName, callLine);
-		if (end > str.length())
+		if (end > parent.getString().length())
 			new LogError("End can't be greater than length of list.", callFileName, callLine);
 		if (begin > end)
 			new LogError("Begin can't be greater or equals to end.", callFileName, callLine);
-		return str.substring(begin, end);
+		return parent.getString().substring(begin, end);
 	}
 
 }

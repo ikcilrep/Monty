@@ -37,7 +37,7 @@ public final class ToChar extends FunctionDeclarationNode {
 		setArguments(arguments, callFileName, callLine);
 		var integer = getBody().getVariableValue("integer");
 		if (integer instanceof Integer)
-			return String.valueOf(Character.valueOf((char) integer));
+			return String.valueOf(Character.valueOf((char) (int) integer));
 		else if (integer instanceof BigInteger) {
 			var bigInteger = (BigInteger) integer;
 			if (bigInteger.compareTo(DataTypes.INT_MAX) > 0)
@@ -45,7 +45,7 @@ public final class ToChar extends FunctionDeclarationNode {
 			else if (bigInteger.compareTo(DataTypes.INT_MIN) < 0)
 				new LogError("Char number have to be greater or equals -2^31.", callFileName, callLine);
 
-			return String.valueOf(Character.valueOf((char) bigInteger.intValue()));
+			return String.valueOf(Character.valueOf((char) (int) bigInteger.intValue()));
 		}
 		new LogError("Can't change not a number to char.", callFileName, callLine);
 		return null;

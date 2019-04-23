@@ -8,11 +8,11 @@ import parser.DataTypes;
 import parser.LogError;
 import sml.data.Method;
 
-final class Multiplied extends Method<List> {
-	public Multiplied(List parent) {
-		super(parent, "$mul");
-		addParameter("this");
+final class MultipliedRight extends Method<List> {
+	MultipliedRight(List parent) {
+		super(parent, "$r_mul");
 		addParameter("times");
+		addParameter("this");
 	}
 
 	@Override

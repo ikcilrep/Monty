@@ -27,17 +27,29 @@ import parser.DataTypes;
 import parser.LogError;
 import sml.data.list.List;
 import sml.data.string.StringStruct;
-//import sml.iterations.range.Range;
+import sml.functional.function.Function;
 import sml.math.MathStruct;
 
 public final class OperatorOverloading {
 	public static ArrayList<OperationNode> arguments;
-	private static HashMap<String, Class<? extends StructDeclarationNode>> builtInTypes = new HashMap<>();
+	private static HashMap<String, Class<?>> builtInTypes = new HashMap<>();
 	static {
 		arguments = new ArrayList<>();
 		arguments.add(new OperationNode(null, null));
 		arguments.add(new OperationNode(null, null));
 		builtInTypes.put("List", List.class);
+		builtInTypes.put("Function", Function.class);
+		builtInTypes.put("Integer", null);
+		builtInTypes.put("String", StringStruct.class);
+		builtInTypes.put("Boolean", Boolean.class);
+		builtInTypes.put("Float", Double.class);
+
+	}
+
+	private static boolean isInstance(Object value, String name) {
+		if (name.equals("Integer"))
+			return value instanceof Integer || value instanceof BigInteger;
+		return builtInTypes.get(name).isInstance(value);
 	}
 
 	private static int temporaryLine;
@@ -57,8 +69,6 @@ public final class OperatorOverloading {
 			return ((BigInteger) leftValue).add(((BigInteger) rightValue));
 		case FLOAT:
 			return (double) leftValue + (double) rightValue;
-		case STRING:
-			return (String) leftValue + (String) rightValue;
 		case BOOLEAN:
 			new LogError("Can't add booleans.", temporaryFileName, temporaryLine);
 		case ANY:
@@ -77,7 +87,6 @@ public final class OperatorOverloading {
 		case BIG_INTEGER:
 			return ((BigInteger) leftValue).and((BigInteger) rightValue);
 		case FLOAT:
-		case STRING:
 			new LogError("Can't do and operation with " + type.toString().toLowerCase() + "s", temporaryFileName,
 					temporaryLine);
 		case ANY:
@@ -95,7 +104,6 @@ public final class OperatorOverloading {
 		case INTEGER:
 		case BIG_INTEGER:
 		case FLOAT:
-		case STRING:
 			variable.setValue(additionOperator(variable.getValue(), rightValue, type), temporaryFileName,
 					temporaryLine);
 			return variable.getValue();
@@ -116,7 +124,6 @@ public final class OperatorOverloading {
 		case INTEGER:
 		case BIG_INTEGER:
 		case FLOAT:
-		case STRING:
 			variable.setValue(andOperator(variable.getValue(), rightValue, type), temporaryFileName, temporaryLine);
 			return variable.getValue();
 		case ANY:
@@ -134,7 +141,6 @@ public final class OperatorOverloading {
 		case INTEGER:
 		case BIG_INTEGER:
 		case FLOAT:
-		case STRING:
 			variable.setValue(divisionOperator(variable.getValue(), rightValue, type), temporaryFileName,
 					temporaryLine);
 			return variable.getValue();
@@ -153,7 +159,6 @@ public final class OperatorOverloading {
 		case INTEGER:
 		case BIG_INTEGER:
 		case FLOAT:
-		case STRING:
 			variable.setValue(multiplicationOperator(variable.getValue(), rightValue, type), temporaryFileName,
 					temporaryLine);
 			return variable.getValue();
@@ -172,7 +177,6 @@ public final class OperatorOverloading {
 		case INTEGER:
 		case BIG_INTEGER:
 		case FLOAT:
-		case STRING:
 		case BOOLEAN:
 		case ANY:
 		case VOID:
@@ -189,7 +193,6 @@ public final class OperatorOverloading {
 		case INTEGER:
 		case BIG_INTEGER:
 		case FLOAT:
-		case STRING:
 			variable.setValue(orOperator(variable.getValue(), rightValue, type), temporaryFileName, temporaryLine);
 			return variable.getValue();
 		case ANY:
@@ -207,7 +210,6 @@ public final class OperatorOverloading {
 		case INTEGER:
 		case BIG_INTEGER:
 		case FLOAT:
-		case STRING:
 			variable.setValue(shiftLeftOperator(variable.getValue(), rightValue, type), temporaryFileName,
 					temporaryLine);
 			return variable.getValue();
@@ -226,7 +228,6 @@ public final class OperatorOverloading {
 		case INTEGER:
 		case BIG_INTEGER:
 		case FLOAT:
-		case STRING:
 			variable.setValue(shiftRightOperator(variable.getValue(), rightValue, type), temporaryFileName,
 					temporaryLine);
 			return variable.getValue();
@@ -245,7 +246,6 @@ public final class OperatorOverloading {
 		case INTEGER:
 		case BIG_INTEGER:
 		case FLOAT:
-		case STRING:
 			variable.setValue(subtractionOperator(variable.getValue(), rightValue, type), temporaryFileName,
 					temporaryLine);
 			return variable.getValue();
@@ -264,7 +264,6 @@ public final class OperatorOverloading {
 		case INTEGER:
 		case BIG_INTEGER:
 		case FLOAT:
-		case STRING:
 			variable.setValue(xorOperator(variable.getValue(), rightValue, type), temporaryFileName, temporaryLine);
 			return variable.getValue();
 		case ANY:
@@ -314,7 +313,6 @@ public final class OperatorOverloading {
 			return ((BigInteger) leftValue).divide(((BigInteger) rightValue));
 		case FLOAT:
 			return (double) leftValue / (double) rightValue;
-		case STRING:
 		case BOOLEAN:
 			new LogError("Can't divide " + type.toString().toLowerCase() + "s", temporaryFileName, temporaryLine);
 		case ANY:
@@ -340,9 +338,6 @@ public final class OperatorOverloading {
 			case BIG_INTEGER:
 			case FLOAT:
 				return MathStruct.getStruct().getFunction(function.getName(), temporaryFileName, temporaryLine)
-						.call(arguments, temporaryFileName, temporaryLine);
-			case STRING:
-				return StringStruct.getStruct().getFunction(function.getName(), temporaryFileName, temporaryLine)
 						.call(arguments, temporaryFileName, temporaryLine);
 			case VOID:
 				new LogError("Can't get attributes or methods from Nothing.", temporaryFileName, temporaryLine);
@@ -378,9 +373,8 @@ public final class OperatorOverloading {
 			return ((BigInteger) leftValue).compareTo((BigInteger) rightValue) >= 0;
 		case FLOAT:
 			return (double) leftValue >= (double) rightValue;
-		case STRING:
 		case BOOLEAN:
-			new LogError("Can't compare" + type.toString().toLowerCase() + "s", temporaryFileName, temporaryLine);
+			new LogError("Can't compare booleans", temporaryFileName, temporaryLine);
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$ge", 2, false);
 		case VOID:
@@ -399,9 +393,8 @@ public final class OperatorOverloading {
 			return ((BigInteger) leftValue).compareTo((BigInteger) rightValue) > 0;
 		case FLOAT:
 			return (double) leftValue > (double) rightValue;
-		case STRING:
 		case BOOLEAN:
-			new LogError("Can't compare" + type.toString().toLowerCase() + "s", temporaryFileName, temporaryLine);
+			new LogError("Can't compare booleans", temporaryFileName, temporaryLine);
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$gt", 2, false);
 		case VOID:
@@ -413,27 +406,17 @@ public final class OperatorOverloading {
 
 	public final static Object instanceOfOperator(Object leftValue, Object rightValue, DataTypes type, Block parent) {
 		var rightName = ((VariableNode) rightValue).getName();
-		switch (rightName) {
-		case "Integer":
-			return type.equals(DataTypes.BIG_INTEGER) || type.equals(DataTypes.INTEGER);
-		case "Float":
-			return type.equals(DataTypes.FLOAT);
-		case "String":
-			return type.equals(DataTypes.STRING);
-		case "Boolean":
-			return type.equals(DataTypes.BOOLEAN);
-		case "Nothing":
-			return type.equals(DataTypes.VOID);
-		default:
-			if (builtInTypes.containsKey(rightName))
-				return builtInTypes.get(rightName).isInstance(leftValue);
-			if (type.equals(DataTypes.ANY))
-				return parent.getStructure(rightName, temporaryFileName, temporaryLine)
-						.instanceOfMe((StructDeclarationNode) leftValue);
-			break;
+
+		if (builtInTypes.containsKey(rightName))
+			return isInstance(leftValue, rightName);
+		if (!parent.hasStructure(rightName)) 
+			new LogError("There isn't any data type with name " + rightName, temporaryFileName, temporaryLine);
+		if (type.equals(DataTypes.ANY)) {
+			return parent.getStructure(rightName, temporaryFileName, temporaryLine)
+					.instanceOfMe((StructDeclarationNode) leftValue);
 		}
 
-		return null;
+		return false;
 	}
 
 	public final static Object lowerEqualsOperator(Object leftValue, Object rightValue, DataTypes type) {
@@ -444,9 +427,8 @@ public final class OperatorOverloading {
 			return ((BigInteger) leftValue).compareTo((BigInteger) rightValue) <= 0;
 		case FLOAT:
 			return (double) leftValue <= (double) rightValue;
-		case STRING:
 		case BOOLEAN:
-			new LogError("Can't compare" + type.toString().toLowerCase() + "s", temporaryFileName, temporaryLine);
+			new LogError("Can't compare booleans", temporaryFileName, temporaryLine);
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$le", 2, false);
 		case VOID:
@@ -465,9 +447,8 @@ public final class OperatorOverloading {
 			return ((BigInteger) leftValue).compareTo((BigInteger) rightValue) < 0;
 		case FLOAT:
 			return (double) leftValue < (double) rightValue;
-		case STRING:
 		case BOOLEAN:
-			new LogError("Can't compare" + type.toString().toLowerCase() + "s", temporaryFileName, temporaryLine);
+			new LogError("Can't compare booleans", temporaryFileName, temporaryLine);
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$lt", 2, false);
 		case VOID:
@@ -488,9 +469,8 @@ public final class OperatorOverloading {
 			return ((BigInteger) leftValue).remainder(rightI);
 		case FLOAT:
 			return (double) leftValue % (double) rightValue;
-		case STRING:
 		case BOOLEAN:
-			new LogError("Can't do modulo operation with " + type.toString().toLowerCase() + "s", temporaryFileName,
+			new LogError("Can't do modulo operation with booleans", temporaryFileName,
 					temporaryLine);
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$mod", 2, false);
@@ -500,7 +480,6 @@ public final class OperatorOverloading {
 			return null;
 		}
 	}
-
 	public final static Object multiplicationOperator(Object leftValue, Object rightValue, DataTypes type) {
 		switch (type) {
 		case INTEGER:
@@ -515,9 +494,8 @@ public final class OperatorOverloading {
 			return ((BigInteger) leftValue).multiply(((BigInteger) rightValue));
 		case FLOAT:
 			return (double) leftValue * (double) rightValue;
-		case STRING:
 		case BOOLEAN:
-			new LogError("Can't multiply " + type.toString().toLowerCase() + "s", temporaryFileName, temporaryLine);
+			new LogError("Can't multiply booleans", temporaryFileName, temporaryLine);
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$mul", 2, false);
 		case VOID:
@@ -536,8 +514,6 @@ public final class OperatorOverloading {
 			return BigInteger.ZERO.subtract((BigInteger) value);
 		case FLOAT:
 			return -(double) value;
-		case STRING:
-			return reverse((String) value);
 		case BOOLEAN:
 			return !(boolean) value;
 		case ANY:
@@ -568,7 +544,6 @@ public final class OperatorOverloading {
 		case BOOLEAN:
 			return ((Boolean) leftValue) || ((Boolean) rightValue);
 		case FLOAT:
-		case STRING:
 			new LogError("Can't do or operation with " + type.toString().toLowerCase() + "s", temporaryFileName,
 					temporaryLine);
 		case ANY:
@@ -592,13 +567,12 @@ public final class OperatorOverloading {
 				if (operator.getParameters().size() == numberOfParameters)
 					return operator.call(arguments, temporaryFileName, temporaryLine);
 			}
-		} else if (!isAssignment && rightValue instanceof StructDeclarationNode) {
-			var t = arguments.get(0);
-			arguments.set(0, arguments.get(1));
-			arguments.set(1, t);
+		}
+		if (!isAssignment && rightValue instanceof StructDeclarationNode) {
 			var struct = (StructDeclarationNode) rightValue;
-			if (struct.hasFunction(nameOfFunction)) {
-				var operator = struct.getFunction(nameOfFunction);
+			var name = "$r_" + nameOfFunction.substring(1);
+			if (!nameOfFunction.startsWith("$a_") && struct.hasFunction(name)) {
+				var operator = struct.getFunction(name);
 				if (operator.getParameters().size() == numberOfParameters)
 					return operator.call(arguments, temporaryFileName, temporaryLine);
 			}
@@ -608,15 +582,6 @@ public final class OperatorOverloading {
 				temporaryFileName, temporaryLine);
 		return null;
 	}
-
-	private static String reverse(String str) {
-		var result = new StringBuilder(str.length());
-		var string = str;
-		for (int j = string.length() - 1; j >= 0; j--)
-			result.append(string.charAt(j));
-		return result.toString();
-	}
-
 	public static void setTemporary(String fileName, int line) {
 		temporaryFileName = fileName;
 		temporaryLine = line;
@@ -628,9 +593,6 @@ public final class OperatorOverloading {
 			return BigInteger.valueOf((int) leftValue).shiftLeft((int) rightValue);
 		case BIG_INTEGER:
 			return ((BigInteger) leftValue).shiftLeft(((BigInteger) rightValue).intValue());
-		case STRING:
-			var str = (String) leftValue;
-			return str.substring(0, str.length() - ((BigInteger) rightValue).intValue());
 		case FLOAT:
 		case BOOLEAN:
 			new LogError("Can't shift left " + type.toString().toLowerCase() + "s", temporaryFileName, temporaryLine);
@@ -650,7 +612,6 @@ public final class OperatorOverloading {
 		case BIG_INTEGER:
 			return ((BigInteger) leftValue).shiftRight(((BigInteger) rightValue).intValue());
 		case FLOAT:
-		case STRING:
 		case BOOLEAN:
 			new LogError("Can't shift right " + type.toString().toLowerCase() + "s", temporaryFileName, temporaryLine);
 		case ANY:
@@ -676,9 +637,8 @@ public final class OperatorOverloading {
 			return ((BigInteger) leftValue).subtract(((BigInteger) rightValue));
 		case FLOAT:
 			return (double) leftValue - (double) rightValue;
-		case STRING:
 		case BOOLEAN:
-			new LogError("Can't subtract " + type.toString().toLowerCase() + "s", temporaryFileName, temporaryLine);
+			new LogError("Can't subtract booleans", temporaryFileName, temporaryLine);
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$sub", 2, false);
 		case VOID:
@@ -695,7 +655,6 @@ public final class OperatorOverloading {
 		case BIG_INTEGER:
 			return ((BigInteger) leftValue).xor((BigInteger) rightValue);
 		case FLOAT:
-		case STRING:
 		case BOOLEAN:
 			new LogError("Can't do xor operation with " + type.toString().toString().toLowerCase() + "s",
 					temporaryFileName, temporaryLine);

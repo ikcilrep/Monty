@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
+import sml.data.string.StringStruct;
 
 public final class ToString extends FunctionDeclarationNode {
 
@@ -35,10 +36,10 @@ public final class ToString extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public StringStruct call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var a = getBody().getVariableValue("a");
-		return toString(a);
+		return new StringStruct(a.toString());
 	}
 
 }

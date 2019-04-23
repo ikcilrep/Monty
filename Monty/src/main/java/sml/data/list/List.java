@@ -66,7 +66,8 @@ public class List extends StructDeclarationNode {
 		new Get(this);
 		new NewIterator(this);
 		new Length(this);
-		new Multiplied(this);
+		new MultipliedLeft(this);
+		new MultipliedRight(this);
 		new Multiply(this);
 		new Pop(this);
 		new Remove(this);

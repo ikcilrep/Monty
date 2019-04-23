@@ -23,7 +23,7 @@ import ast.declarations.VariableDeclarationNode;
 import sml.data.returning.VoidType;
 
 public enum DataTypes {
-	BOOLEAN, INTEGER, BIG_INTEGER, FLOAT, STRING, VOID, ANY;
+	BOOLEAN, INTEGER, BIG_INTEGER, FLOAT, VOID, ANY;
 	public final static BigInteger INT_MAX = BigInteger.valueOf(Integer.MAX_VALUE);
 	public final static BigInteger INT_MIN = BigInteger.valueOf(Integer.MIN_VALUE);
 
@@ -36,8 +36,6 @@ public enum DataTypes {
 			return DataTypes.INTEGER;
 		if (value instanceof Double)
 			return DataTypes.FLOAT;
-		if (value instanceof String)
-			return DataTypes.STRING;
 		if (value instanceof Boolean)
 			return DataTypes.BOOLEAN;
 		if (value instanceof StructDeclarationNode)

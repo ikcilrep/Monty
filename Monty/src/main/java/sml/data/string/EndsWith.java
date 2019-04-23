@@ -18,28 +18,21 @@ package sml.data.string;
 
 import java.util.ArrayList;
 
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
+
 import ast.expressions.OperationNode;
-import sml.data.StaticStruct;
+import sml.data.Method;
 
-final class EndsWith extends FunctionDeclarationNode {
+final class EndsWith extends Method<StringStruct> {
 
-	public EndsWith(StaticStruct struct) {
-		super("endsWith");
-		setBody(new Block(null));
-		addParameter("str");
+	public EndsWith(StringStruct parent) {
+		super(parent,"endsWith");
 		addParameter("suffix");
-		struct.addFunction(this);
 	}
 
 	@Override
 	public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var body = getBody();
-		var str = (String) body.getVariable("str").getValue();
-		var suffix = (String) body.getVariable("suffix").getValue();
-		return str.endsWith(suffix);
+		return parent.getString().endsWith( getBody().getStringVariableValue("suffix"));
 	}
 
 }

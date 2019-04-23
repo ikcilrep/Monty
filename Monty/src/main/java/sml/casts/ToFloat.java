@@ -24,10 +24,11 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.LogError;
 import sml.data.returning.VoidType;
+import sml.data.string.StringStruct;
 
 public final class ToFloat extends FunctionDeclarationNode {
 
-	public static Double toReal(Object a, String callFileName, int callLine) {
+	public static Double toFloat(Object a, String callFileName, int callLine) {
 		if (a instanceof VoidType)
 			new LogError("Can't cast void to real", callFileName, callLine);
 		if (a instanceof BigInteger)
@@ -38,8 +39,8 @@ public final class ToFloat extends FunctionDeclarationNode {
 			return BooleanToFloat.booleanToFloat((Boolean) a);
 		if (a instanceof Double)
 			return (double) a;
-		if (a instanceof String)
-			return StringToFloat.stringToFloat((String) a, callFileName, callLine);
+		if (a instanceof StringStruct)
+			return StringToFloat.stringToFloat((StringStruct) a, callFileName, callLine);
 		else
 			new LogError("Can't cast structure to real", callFileName, callLine);
 		return null;
@@ -55,7 +56,7 @@ public final class ToFloat extends FunctionDeclarationNode {
 	public Double call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var a = getBody().getVariableValue("a");
-		return toReal(a, callFileName, callLine);
+		return toFloat(a, callFileName, callLine);
 	}
 
 }

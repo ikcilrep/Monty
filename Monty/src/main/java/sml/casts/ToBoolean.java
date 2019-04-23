@@ -24,6 +24,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.LogError;
 import sml.data.returning.VoidType;
+import sml.data.string.StringStruct;
 
 public final class ToBoolean extends FunctionDeclarationNode {
 
@@ -38,8 +39,8 @@ public final class ToBoolean extends FunctionDeclarationNode {
 			return FloatToBoolean.floatToBoolean((double) a);
 		if (a instanceof Boolean)
 			return (boolean) a;
-		if (a instanceof String)
-			return StringToBoolean.stringToBoolean((String) a);
+		if (a instanceof StringStruct)
+			return StringToBoolean.stringToBoolean((StringStruct) a);
 		else
 			new LogError("Can't cast structure to boolean", callFileName, callLine);
 		return null;

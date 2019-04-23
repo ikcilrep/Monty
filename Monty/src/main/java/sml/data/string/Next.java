@@ -1,4 +1,4 @@
-package sml.functional.iterable.string;
+package sml.data.string;
 
 import java.util.ArrayList;
 

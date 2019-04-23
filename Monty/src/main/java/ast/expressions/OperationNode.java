@@ -25,7 +25,6 @@ import parser.DataTypes;
 import parser.LogError;
 import sml.casts.IntToBigInteger;
 import sml.casts.IntToFloat;
-import sml.casts.ToString;
 
 public final class OperationNode extends NodeWithParent implements Cloneable {
 
@@ -306,12 +305,6 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 						break;
 					}
 					break;
-				case STRING:
-					if (operator.contains("+")) {
-						rightType = DataTypes.STRING;
-						rightValue = ToString.toString(rightValue);
-					}
-					break;
 				case ANY:
 					rightType = DataTypes.ANY;
 					break;
@@ -322,10 +315,7 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 			if (!leftType.equals(rightType)) {
 				if (rightType.equals(DataTypes.ANY))
 					leftType = DataTypes.ANY;
-				else if (isNotAssignment && operator.equals("+") && rightType.equals(DataTypes.STRING)) {
-					leftType = DataTypes.STRING;
-					leftValue = leftValue.toString();
-				} else
+				 else
 					new LogError("Type mismatch:\t" + leftType.toString().toLowerCase() + " and "
 							+ rightType.toString().toLowerCase(), getFileName(), getLine());
 

@@ -20,13 +20,14 @@ import lexer.Token;
 
 public class LogError {
 	public static String getMessage(String message) {
-		if (Character.isAlphabetic(message.charAt(message.length() - 1)))
+		var lastChar = message.charAt(message.length() - 1);
+		if (Character.isAlphabetic(lastChar) || Character.isDigit(lastChar))
 			return message + ".";
 		return message;
 	}
 
 	public LogError(String message) {
-		System.out.println(message);
+		System.out.println(getMessage(message));
 		System.exit(0);
 	}
 

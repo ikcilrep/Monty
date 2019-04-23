@@ -17,14 +17,15 @@ limitations under the License.
 package sml.casts;
 
 import parser.LogError;
+import sml.data.string.StringStruct;
 
 final class StringToFloat {
 
-	public static Double stringToFloat(String str, String fileName, int line) {
+	public static Double stringToFloat(StringStruct str, String fileName, int line) {
 		try {
-			return Double.parseDouble(str);
+			return Double.parseDouble(str.getString());
 		} catch (NumberFormatException e) {
-			new LogError("Unknown number format for real type:\t" + str, fileName, line);
+			new LogError("Unknown number format for float type:\t" + str, fileName, line);
 		}
 		return null;
 	}

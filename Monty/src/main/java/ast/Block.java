@@ -310,4 +310,8 @@ public class Block extends NodeWithParent implements Cloneable {
 	public void setVariables(HashMap<String, VariableDeclarationNode> variables) {
 		this.variables = variables;
 	}
+
+	public boolean hasStructure(String name) {
+		return getStructures().containsKey(name);
+	}
 }

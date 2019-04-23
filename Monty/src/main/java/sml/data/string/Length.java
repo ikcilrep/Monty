@@ -16,27 +16,21 @@ limitations under the License.
 
 package sml.data.string;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import sml.data.StaticStruct;
+import sml.data.Method;
 
-final class Length extends FunctionDeclarationNode {
+final class Length extends Method<StringStruct> {
 
-	public Length(StaticStruct struct) {
-		super("length");
-		setBody(new Block(null));
-		addParameter("str");
-		struct.addFunction(this);
+	public Length(StringStruct parent) {
+		super(parent,"length");
 	}
 
 	@Override
-	public BigInteger call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public Integer call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return BigInteger.valueOf(getBody().getStringVariableValue("str").length());
+		return parent.getString().length();
 	}
 
 }

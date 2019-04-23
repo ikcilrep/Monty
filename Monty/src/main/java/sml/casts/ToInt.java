@@ -24,6 +24,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.LogError;
 import sml.data.returning.VoidType;
+import sml.data.string.StringStruct;
 
 public final class ToInt extends FunctionDeclarationNode {
 
@@ -36,8 +37,8 @@ public final class ToInt extends FunctionDeclarationNode {
 			return (int) (double) a;
 		if (a instanceof Boolean)
 			return BooleanToInt.booleanToInt((Boolean) a);
-		if (a instanceof String)
-			return StringToInt.stringToInt((String) a, callFileName, callLine);
+		if (a instanceof StringStruct)
+			return StringToInt.stringToInt((StringStruct) a, callFileName, callLine);
 		else
 			new LogError("Can't cast structure to integer", callFileName, callLine);
 		return null;

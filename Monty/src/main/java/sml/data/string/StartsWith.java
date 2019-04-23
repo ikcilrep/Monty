@@ -18,26 +18,20 @@ package sml.data.string;
 
 import java.util.ArrayList;
 
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import sml.data.StaticStruct;
+import sml.data.Method;
 
-final class StartsWith extends FunctionDeclarationNode {
+final class StartsWith extends Method<StringStruct> {
 
-	public StartsWith(StaticStruct struct) {
-		super("startsWith");
-		setBody(new Block(null));
-		addParameter("str");
+	public StartsWith(StringStruct parent) {
+		super(parent,"startsWith");
 		addParameter("prefix");
-		struct.addFunction(this);
 	}
 
 	@Override
 	public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var body = getBody();
-		return body.getStringVariableValue("str").startsWith(body.getStringVariableValue("prefix"));
+		return parent.getString().startsWith(getBody().getStringVariableValue("prefix"));
 	}
 
 }

@@ -18,24 +18,19 @@ package sml.data.string;
 
 import java.util.ArrayList;
 
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import sml.data.StaticStruct;
+import sml.data.Method;
 
-final class LowerCase extends FunctionDeclarationNode {
+final class LowerCase extends Method<StringStruct> {
 
-	public LowerCase(StaticStruct struct) {
-		super("lowerCase");
-		setBody(new Block(null));
-		addParameter("str");
-		struct.addFunction(this);
+	public LowerCase(StringStruct parent) {
+		super(parent, "lowerCase");
 	}
 
 	@Override
 	public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return getBody().getStringVariableValue("str").toLowerCase();
+		return parent.getString().toLowerCase();
 	}
 
 }

@@ -31,6 +31,7 @@ import lexer.Token;
 import parser.DataTypes;
 import parser.LogError;
 import parser.Tokens;
+import sml.data.string.StringStruct;
 
 public class ExpressionParser {
 	/*
@@ -145,11 +146,11 @@ public class ExpressionParser {
 		var literal = token.getText();
 		if (dataType == null)
 			new LogError("Unexpected token \"" + literal + "\"", token);
-		if (dataType.equals(DataTypes.STRING))
+		if (dataType.equals(DataTypes.ANY))
 			if (STRING_LITERALS.containsKey(literal))
 				return STRING_LITERALS.get(literal);
 			else {
-				var newStringLiteral = new ConstantNode(literal);
+				var newStringLiteral = new ConstantNode(new StringStruct(literal));
 				STRING_LITERALS.put(literal, newStringLiteral);
 				return newStringLiteral;
 			}

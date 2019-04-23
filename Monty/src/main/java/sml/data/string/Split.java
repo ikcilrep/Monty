@@ -18,27 +18,22 @@ package sml.data.string;
 
 import java.util.ArrayList;
 
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
-import sml.data.StaticStruct;
+import sml.data.Method;
 import sml.data.list.List;
 
-final class Split extends FunctionDeclarationNode {
+final class Split extends Method<StringStruct> {
 
-	public Split(StaticStruct struct) {
-		super("split");
-		setBody(new Block(null));
-		addParameter("str");
+	public Split(StringStruct parent) {
+		super(parent, "split");
 		addParameter("regex");
-		struct.addFunction(this);
 	}
 
 	@Override
 	public List call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		return new List(body.getStringVariableValue("str").split(body.getStringVariableValue("regex")));
+		return new List(parent.getString().split(body.getStringVariableValue("regex")));
 	}
 
 }

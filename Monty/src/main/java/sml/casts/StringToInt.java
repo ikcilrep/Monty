@@ -18,13 +18,15 @@ package sml.casts;
 
 import java.math.BigInteger;
 
+import sml.data.string.StringStruct;
+
 final class StringToInt {
 
-	public static Object stringToInt(String str, String fileName, int line) {
+	public static Object stringToInt(StringStruct str, String fileName, int line) {
 		try {
-			return Integer.parseInt(str);
-		} catch (ArithmeticException e) {
-			return new BigInteger(str);
+			return Integer.parseInt(str.getString());
+		} catch (NumberFormatException e) {
+			return new BigInteger(str.getString());
 		}
 	}
 

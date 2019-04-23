@@ -25,7 +25,6 @@ import sml.Sml;
 import sml.data.checking.IsIterable;
 import sml.data.returning.BreakType;
 import sml.data.returning.ContinueType;
-import sml.functional.iterable.string.IterableString;
 
 public final class ForStatementNode extends Block {
 	private OperationNode iterable;
@@ -62,9 +61,8 @@ public final class ForStatementNode extends Block {
 		var isNotNameUnderscore = !name.equals("_");
 		var isConst = Character.isUpperCase(name.charAt(0));
 		var toIter = getIterable().run();
-		if (toIter instanceof String)
-			toIter = new IterableString((String) toIter);
-		else if (!IsIterable.isIterable(toIter, getFileName(), getLine()))
+	
+		if (!IsIterable.isIterable(toIter, getFileName(), getLine()))
 			new LogError("Can't iter over not iterable object.", getFileName(), getLine());
 		var iterator = (StructDeclarationNode) ((StructDeclarationNode) toIter).getFunction("Iterator")
 				.call(Sml.emptyArgumentList, getFileName(), getLine());

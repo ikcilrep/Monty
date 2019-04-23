@@ -16,10 +16,12 @@ limitations under the License.
 
 package sml.casts;
 
+import sml.data.string.StringStruct;
+
 final class StringToBoolean {
 
-	public static Boolean stringToBoolean(String str) {
-		return Boolean.parseBoolean(str);
+	public static Boolean stringToBoolean(StringStruct str) {
+		return Boolean.parseBoolean(str.getString());
 	}
 
 }

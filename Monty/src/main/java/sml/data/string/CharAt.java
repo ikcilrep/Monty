@@ -17,29 +17,23 @@ package sml.data.string;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
+import sml.data.string.StringStruct;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
-import sml.data.StaticStruct;
+import sml.data.Method;
 
-final class CharAt extends FunctionDeclarationNode {
+final class CharAt extends Method<StringStruct> {
 
-	public CharAt(StaticStruct struct) {
-		super("charAt");
-		setBody(new Block(null));
-		addParameter("str");
+	public CharAt(StringStruct parent) {
+		super(parent, "charAt");
 		addParameter("index");
-		struct.addFunction(this);
 	}
 
 	@Override
 	public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var str = body.getStringVariableValue("str");
 		var _index = body.getVariableValue("index");
 		int index = 0;
 		if (_index instanceof Integer)
@@ -52,7 +46,12 @@ final class CharAt extends FunctionDeclarationNode {
 				new LogError("Index have to be greater or equals -2^31.", callFileName, callLine);
 			index = bigIndex.intValue();
 		}
-		return String.valueOf(str.charAt(index));
+		try {
+			return String.valueOf(parent.getString().charAt(index));
+		} catch (IndexOutOfBoundsException e) {
+			new LogError("Index " + index + " out of bounds for length " + parent.getString().length(), callFileName, callLine);
+		}
+		return null;
 	}
 
 }
