@@ -17,12 +17,15 @@ limitations under the License.
 package sml.casts;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 public final class FloatToInt {
 
-	public static BigInteger floatToInt(Double floating) {
-		return new BigDecimal(floating).toBigInteger();
+	public static Object floatToInt(Double floating) {
+		try {
+			return Integer.parseInt(((Integer)floating.intValue()).toString());
+		} catch(ArithmeticException e) {
+			return new BigDecimal(floating).toBigInteger();
+		}
 	}
 
 }

@@ -19,6 +19,7 @@ package parser;
 import java.math.BigInteger;
 
 import ast.declarations.StructDeclarationNode;
+import ast.declarations.VariableDeclarationNode;
 import sml.data.returning.VoidType;
 
 public enum DataTypes {
@@ -41,6 +42,8 @@ public enum DataTypes {
 			return DataTypes.BOOLEAN;
 		if (value instanceof StructDeclarationNode)
 			return DataTypes.ANY;
+		if (value instanceof VariableDeclarationNode)
+			return getDataType(((VariableDeclarationNode) value).getValue());
 		return null;
 
 	}

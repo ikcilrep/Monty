@@ -24,7 +24,7 @@ import ast.expressions.OperationNode;
 
 public final class ToString extends FunctionDeclarationNode {
 
-	public static String toString(Object a, String callFileName, int callLine) {
+	public static String toString(Object a) {
 		return a.toString();
 	}
 
@@ -38,7 +38,7 @@ public final class ToString extends FunctionDeclarationNode {
 	public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var a = getBody().getVariableValue("a");
-		return toString(a, callFileName, callLine);
+		return toString(a);
 	}
 
 }
