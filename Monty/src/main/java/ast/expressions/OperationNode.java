@@ -274,11 +274,12 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 					default:
 						break;
 					}
+					break;
 				case BIG_INTEGER:
 					switch (rightType) {
 					case FLOAT:
 						leftType = DataTypes.FLOAT;
-						if (isNotAssignment)
+						if (isNotAssignment) 
 							leftValue = IntToFloat.intToFloat((BigInteger) leftValue);
 						else {
 							var variable = (VariableDeclarationNode) leftValue;

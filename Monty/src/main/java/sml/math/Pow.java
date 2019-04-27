@@ -35,7 +35,11 @@ public final class Pow {
 		return ((BigInteger) basis).pow(index);
 	}
 
-	public static Object pow(Object basis, Object _index, String callFileName, int callLine) {
+	public static Object powerForFloats(double basis, double _index, String callFileName, int callLine) {
+		return Math.pow((double) basis, (double) _index);
+	}
+	
+	public static Object powerForIntegers(Object basis, Object _index, String callFileName, int callLine) {
 		int index = 0;
 		if (_index instanceof Integer)
 			index = (int) _index;
@@ -47,21 +51,11 @@ public final class Pow {
 				new LogError("Index have to be greater or equals -2^31.", callFileName, callLine);
 
 			index = bigIndex.intValue();
-		} else if (_index instanceof Double) {
-			if (basis instanceof Double)
-				return Math.pow((double) basis, (double) _index);
-			else if (basis instanceof Integer)
-				return Math.pow(Double.valueOf((int) basis), (double) _index);
-			else if (basis instanceof BigInteger)
-				return Math.pow(((BigInteger) basis).doubleValue(), (double) _index);
 		}
-
 		if (basis instanceof Integer)
 			return intPow((int) basis, index);
 		else if (basis instanceof BigInteger)
 			return bigPow((BigInteger) basis, index);
-		else if (basis instanceof Double)
-			return Math.pow((double) basis, index);
 		return null;
 	}
 

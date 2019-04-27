@@ -555,12 +555,11 @@ public final class OperatorOverloading {
 		switch (type) {
 		case INTEGER:
 		case BIG_INTEGER:
-			return Pow.pow(leftValue, rightValue, temporaryFileName, temporaryLine);
+			return Pow.powerForIntegers(leftValue, rightValue, temporaryFileName, temporaryLine);
 		case BOOLEAN:
 			return ((Boolean) leftValue) || ((Boolean) rightValue);
 		case FLOAT:
-			new LogError("Can't do or operation with " + type.toString().toLowerCase() + "s", temporaryFileName,
-					temporaryLine);
+			return Math.pow((double) leftValue, (double) rightValue);
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$pow", 2, false);
 		case VOID:
