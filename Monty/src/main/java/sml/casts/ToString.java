@@ -25,21 +25,20 @@ import sml.data.string.StringStruct;
 
 public final class ToString extends FunctionDeclarationNode {
 
-	public static String toString(Object a) {
-		return a.toString();
+	public static String toString(Object toBeCasted) {
+		return toBeCasted.toString();
 	}
 
 	public ToString() {
 		super("toString");
 		setBody(new Block(null));
-		addParameter("a");
+		addParameter("toBeCasted");
 	}
 
 	@Override
 	public StringStruct call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var a = getBody().getVariableValue("a");
-		return new StringStruct(a.toString());
+		return new StringStruct(getBody().getVariableValue("toBeCasted").toString());
 	}
 
 }

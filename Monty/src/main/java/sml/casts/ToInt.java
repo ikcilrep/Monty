@@ -16,11 +16,13 @@ limitations under the License.
 
 package sml.casts;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
+import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.LogError;
 import sml.data.returning.VoidType;
@@ -28,17 +30,17 @@ import sml.data.string.StringStruct;
 
 public final class ToInt extends FunctionDeclarationNode {
 
-	public static Object toInt(Object a, String callFileName, int callLine) {
-		if (a instanceof VoidType)
+	public static Object toInt(Object toBeCasted, String callFileName, int callLine) {
+		if (toBeCasted instanceof VoidType)
 			new LogError("Can't cast void to integer", callFileName, callLine);
-		if (a instanceof BigInteger || a instanceof Integer)
-			return a;
-		if (a instanceof Double)
-			return (int) (double) a;
-		if (a instanceof Boolean)
-			return BooleanToInt.booleanToInt((Boolean) a);
-		if (a instanceof StringStruct)
-			return StringToInt.stringToInt((StringStruct) a, callFileName, callLine);
+		if (toBeCasted instanceof BigInteger || toBeCasted instanceof Integer)
+			return toBeCasted;
+		if (toBeCasted instanceof Double)
+			return fromFloat((double) toBeCasted);
+		if (toBeCasted instanceof Boolean)
+			return fromBoolean((Boolean) toBeCasted);
+		if (toBeCasted instanceof StringStruct)
+			return fromString((StringStruct) toBeCasted, callFileName, callLine);
 		else
 			new LogError("Can't cast structure to integer", callFileName, callLine);
 		return null;
@@ -47,14 +49,43 @@ public final class ToInt extends FunctionDeclarationNode {
 	public ToInt() {
 		super("toInt");
 		setBody(new Block(null));
-		addParameter("a");
+		addParameter("toBeCasted");
 	}
 
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var a = getBody().getVariableValue("a");
-		return toInt(a, callFileName, callLine);
+		var toBeCasted = getBody().getVariableValue("toBeCasted");
+		return toInt(toBeCasted, callFileName, callLine);
 	}
 
+	public static Object fromString(StringStruct str, String fileName, int line) {
+		try {
+			return Integer.parseInt(str.getString());
+		} catch (NumberFormatException e) {
+			return new BigInteger(str.getString());
+		}
+	}
+
+	public static Object fromFloat(Double floating) {
+		try {
+			return Integer.parseInt(((Integer) floating.intValue()).toString());
+		} catch (ArithmeticException e) {
+			return new BigDecimal(floating).toBigInteger();
+		}
+	}
+
+	public static int fromBoolean(Boolean bool) {
+		if (bool == true)
+			return 1;
+		return 0;
+	}
+
+	public static BigInteger fromSmallInt(int integer) {
+		return BigInteger.valueOf(integer);
+	}
+
+	public static void fromSmallIntVariable(VariableDeclarationNode variable, String fileName, int line) {
+		variable.setValue(fromSmallInt((int) variable.getValue()), fileName, line);
+	}
 }

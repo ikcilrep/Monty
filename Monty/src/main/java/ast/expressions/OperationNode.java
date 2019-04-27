@@ -23,8 +23,8 @@ import ast.NodeWithParent;
 import ast.declarations.VariableDeclarationNode;
 import parser.DataTypes;
 import parser.LogError;
-import sml.casts.IntToBigInteger;
-import sml.casts.IntToFloat;
+import sml.casts.ToFloat;
+import sml.casts.ToInt;
 
 public final class OperationNode extends NodeWithParent implements Cloneable {
 
@@ -219,11 +219,11 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 		var isComparison = operator.equals("==") || operator.equals("!=") || operator.equals("<=")
 				|| operator.equals(">=") || operator.equals(">") || operator.equals("<");
 
-		var isNotAssignment = !operator.contains("=") || isComparison;
+		var isAssignment = operator.contains("=") && !isComparison;
 		var a = getLeft().solve();
 
 		var leftValue = getLiteral(a, left.getFileName(), left.getLine());
-		if (isNotAssignment && leftValue instanceof VariableDeclarationNode)
+		if (!isAssignment && leftValue instanceof VariableDeclarationNode)
 			leftValue = ((VariableDeclarationNode) leftValue).getValue();
 
 		var leftType = DataTypes.getDataType(leftValue);
@@ -259,17 +259,17 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 					switch (rightType) {
 					case FLOAT:
 						leftType = DataTypes.FLOAT;
-						leftValue = IntToFloat.intToFloat((int) leftValue);
+						if (isAssignment)
+							ToFloat.fromSmallIntVariable((VariableDeclarationNode) leftValue, getFileName(), getLine());
+						else
+							leftValue = ToFloat.fromInt((int) leftValue);
 						break;
 					case BIG_INTEGER:
 						leftType = DataTypes.BIG_INTEGER;
-						if (isNotAssignment)
-							leftValue = IntToBigInteger.intToBigInteger((int) leftValue);
-						else {
-							var variable = (VariableDeclarationNode) leftValue;
-							variable.setValue(IntToBigInteger.intToBigInteger((int) variable.getValue()), getFileName(),
-									getLine());
-						}
+						if (isAssignment)
+							ToInt.fromSmallIntVariable((VariableDeclarationNode) leftValue, getFileName(), getLine());
+						else
+							leftValue = ToInt.fromSmallInt((int) leftValue);
 						break;
 					default:
 						break;
@@ -279,16 +279,14 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 					switch (rightType) {
 					case FLOAT:
 						leftType = DataTypes.FLOAT;
-						if (isNotAssignment) 
-							leftValue = IntToFloat.intToFloat((BigInteger) leftValue);
-						else {
-							var variable = (VariableDeclarationNode) leftValue;
-							variable.setValue(IntToFloat.intToFloat((BigInteger) leftValue));
-						}
+						if (!isAssignment)
+							ToFloat.fromBigIntVariable((VariableDeclarationNode) leftValue, getFileName(), getLine());
+						else
+							leftValue = ToFloat.fromInt((BigInteger) leftValue);
 						break;
 					case INTEGER:
 						rightType = DataTypes.BIG_INTEGER;
-						rightValue = IntToBigInteger.intToBigInteger((int) rightValue);
+						rightValue = ToInt.fromSmallInt((int) rightValue);
 						break;
 					default:
 						break;
@@ -298,11 +296,11 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 					switch (rightType) {
 					case BIG_INTEGER:
 						rightType = DataTypes.FLOAT;
-						rightValue = IntToFloat.intToFloat((BigInteger) rightValue);
+						rightValue = ToFloat.fromInt((BigInteger) rightValue);
 						break;
 					case INTEGER:
 						rightType = DataTypes.FLOAT;
-						rightValue = IntToFloat.intToFloat((int) rightValue);
+						rightValue = ToFloat.fromInt((int) rightValue);
 						break;
 					default:
 						break;
@@ -318,7 +316,7 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 			if (!leftType.equals(rightType)) {
 				if (rightType.equals(DataTypes.ANY))
 					leftType = DataTypes.ANY;
-				 else
+				else
 					new LogError("Type mismatch:\t" + leftType.toString().toLowerCase() + " and "
 							+ rightType.toString().toLowerCase(), getFileName(), getLine());
 

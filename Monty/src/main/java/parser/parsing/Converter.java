@@ -18,7 +18,7 @@ import parser.LogError;
 public class Converter {
 	private static HashMap<String, Integer> precedence;
 	private static Set<String> rightAssociative = Set.of("=", "+=", "-=", "*=", "/=", "%=", "&=", "^=", "|=", "<<=",
-			">>=", "**");
+			">>=", "**", "**=");
 	private static Set<String> notAssociative = Set.of("<", "<=", ">=", ">", "instanceof");
 
 	static {
@@ -54,6 +54,7 @@ public class Converter {
 		precedence.put("|=", 1);
 		precedence.put("<<=", 1);
 		precedence.put(">>=", 1);
+		precedence.put("**=", 1);
 
 	}
 

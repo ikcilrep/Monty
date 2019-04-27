@@ -28,19 +28,19 @@ import sml.data.string.StringStruct;
 
 public final class ToBoolean extends FunctionDeclarationNode {
 
-	public static Boolean toBoolean(Object a, String callFileName, int callLine) {
-		if (a instanceof VoidType)
+	public static Boolean toBoolean(Object toBeCasted, String callFileName, int callLine) {
+		if (toBeCasted instanceof VoidType)
 			new LogError("Can't cast void to boolean", callFileName, callLine);
-		if (a instanceof BigInteger)
-			return IntToBoolean.intToBoolean((BigInteger) a);
-		if (a instanceof Integer)
-			return IntToBoolean.intToBoolean((int) a);
-		if (a instanceof Double)
-			return FloatToBoolean.floatToBoolean((double) a);
-		if (a instanceof Boolean)
-			return (boolean) a;
-		if (a instanceof StringStruct)
-			return StringToBoolean.stringToBoolean((StringStruct) a);
+		if (toBeCasted instanceof BigInteger)
+			return fromInt((BigInteger) toBeCasted);
+		if (toBeCasted instanceof Integer)
+			return fromInt((int) toBeCasted);
+		if (toBeCasted instanceof Double)
+			return fromFloat((double) toBeCasted);
+		if (toBeCasted instanceof Boolean)
+			return (boolean) toBeCasted;
+		if (toBeCasted instanceof StringStruct)
+			return fromString((StringStruct) toBeCasted);
 		else
 			new LogError("Can't cast structure to boolean", callFileName, callLine);
 		return null;
@@ -49,14 +49,28 @@ public final class ToBoolean extends FunctionDeclarationNode {
 	public ToBoolean() {
 		super("toBoolean");
 		setBody(new Block(null));
-		addParameter("a");
+		addParameter("toBeCasted");
 	}
 
 	@Override
 	public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var a = getBody().getVariableValue("a");
-		return toBoolean(a, callFileName, callLine);
+		var toBeCasted = getBody().getVariableValue("toBeCasted");
+		return toBoolean(toBeCasted, callFileName, callLine);
+	}
+	
+	
+	public static Boolean fromInt(BigInteger integer) {
+		return integer.compareTo(BigInteger.valueOf(0)) > 0;
 	}
 
+	public static Boolean fromInt(int integer) {
+		return integer > 0;
+	}
+	public static Boolean fromFloat(double floating) {
+		return floating > 0;
+	}
+	public static Boolean fromString(StringStruct str) {
+		return Boolean.parseBoolean(str.getString());
+	}
 }

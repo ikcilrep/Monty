@@ -205,6 +205,23 @@ public final class OperatorOverloading {
 		}
 	}
 
+	public final static Object assignmentPowerOperator(Object leftValue, Object rightValue, DataTypes type) {
+		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
+		switch (type) {
+		case INTEGER:
+		case BIG_INTEGER:
+		case FLOAT:
+			variable.setValue(powerOperator(variable.getValue(), rightValue, type), temporaryFileName, temporaryLine);
+			return variable.getValue();
+		case ANY:
+			return overloadOperator(variable.getValue(), rightValue, "$a_pow", 2, true);
+		case VOID:
+			new LogError("Can't do or operation with Nothing.", temporaryFileName, temporaryLine);
+		default:
+			return null;
+		}
+	}
+	
 	public final static Object assignmentShiftLeftOperator(Object leftValue, Object rightValue, DataTypes type) {
 		var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
 		switch (type) {
