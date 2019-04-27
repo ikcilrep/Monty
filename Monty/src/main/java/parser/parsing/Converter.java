@@ -23,8 +23,9 @@ public class Converter {
 
 	static {
 		precedence = new HashMap<>();
-		precedence.put(".", 16);
-		precedence.put("!", 15);
+		precedence.put(".", 17);
+		precedence.put("!", 16);
+		precedence.put("**", 15);
 		precedence.put("*", 14);
 		precedence.put("/", 14);
 		precedence.put("%", 14);

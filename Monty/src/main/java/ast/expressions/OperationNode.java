@@ -63,6 +63,8 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 			return OperatorOverloading.subtractionOperator(leftValue, rightValue, type);
 		case "*":
 			return OperatorOverloading.multiplicationOperator(leftValue, rightValue, type);
+		case "**":
+			return OperatorOverloading.powerOperator(leftValue, rightValue, type);
 		case "/":
 			return OperatorOverloading.divisionOperator(leftValue, rightValue, type);
 		case "%":

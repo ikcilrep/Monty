@@ -18,42 +18,24 @@ package sml.math;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-
-import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
-import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
-import sml.data.StaticStruct;
 
-public final class Pow extends FunctionDeclarationNode {
-	public Pow(StaticStruct struct) {
-		super("pow");
-		setBody(new Block(null));
-		addParameter("basis");
-		addParameter("index");
-		struct.addFunction(this);
-	}
+public final class Pow {
 
-	private Object bigMultiply(BigInteger a, Object b) {
+	private static Object bigMultiply(BigInteger a, Object b) {
 		if (b instanceof Double)
 			return BigDecimal.valueOf((double) b).multiply(new BigDecimal(a)).doubleValue();
 		return a.multiply((BigInteger) b);
 	}
 
-	private Object bigPow(BigInteger basis, int index) {
+	private static Object bigPow(BigInteger basis, int index) {
 		if (index < 0)
 			return BigDecimal.ONE.divide(new BigDecimal(((BigInteger) basis).pow(-index))).doubleValue();
 		return ((BigInteger) basis).pow(index);
 	}
 
-	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		var body = getBody();
-		var basis = body.getVariableValue("basis");
-		var _index = body.getVariableValue("index");
+	public static Object pow(Object basis, Object _index, String callFileName, int callLine) {
 		int index = 0;
 		if (_index instanceof Integer)
 			index = (int) _index;
@@ -75,16 +57,15 @@ public final class Pow extends FunctionDeclarationNode {
 		}
 
 		if (basis instanceof Integer)
-			return pow((int) basis, index);
+			return intPow((int) basis, index);
 		else if (basis instanceof BigInteger)
 			return bigPow((BigInteger) basis, index);
 		else if (basis instanceof Double)
 			return Math.pow((double) basis, index);
-
 		return null;
 	}
 
-	private Object pow(int basis, int index) {
+	private static Object intPow(int basis, int index) {
 		var result = basis;
 		for (int i = 1; i < index; i++)
 			try {

@@ -29,6 +29,7 @@ import sml.data.list.List;
 import sml.data.string.StringStruct;
 import sml.functional.function.Function;
 import sml.math.MathStruct;
+import sml.math.Pow;
 
 public final class OperatorOverloading {
 	public static ArrayList<OperationNode> arguments;
@@ -409,7 +410,7 @@ public final class OperatorOverloading {
 
 		if (builtInTypes.containsKey(rightName))
 			return isInstance(leftValue, rightName);
-		if (!parent.hasStructure(rightName)) 
+		if (!parent.hasStructure(rightName))
 			new LogError("There isn't any data type with name " + rightName, temporaryFileName, temporaryLine);
 		if (type.equals(DataTypes.ANY)) {
 			return parent.getStructure(rightName, temporaryFileName, temporaryLine)
@@ -470,8 +471,7 @@ public final class OperatorOverloading {
 		case FLOAT:
 			return (double) leftValue % (double) rightValue;
 		case BOOLEAN:
-			new LogError("Can't do modulo operation with booleans", temporaryFileName,
-					temporaryLine);
+			new LogError("Can't do modulo operation with booleans", temporaryFileName, temporaryLine);
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$mod", 2, false);
 		case VOID:
@@ -480,6 +480,7 @@ public final class OperatorOverloading {
 			return null;
 		}
 	}
+
 	public final static Object multiplicationOperator(Object leftValue, Object rightValue, DataTypes type) {
 		switch (type) {
 		case INTEGER:
@@ -532,13 +533,7 @@ public final class OperatorOverloading {
 	public final static Object orOperator(Object leftValue, Object rightValue, DataTypes type) {
 		switch (type) {
 		case INTEGER:
-			var leftInt = (int) leftValue;
-			var rightInt = (int) rightValue;
-			try {
-				return leftInt | rightInt;
-			} catch (ArithmeticException e) {
-				return BigInteger.valueOf(leftInt).or(BigInteger.valueOf(rightInt));
-			}
+			return (int) leftValue | (int) rightValue;
 		case BIG_INTEGER:
 			return ((BigInteger) leftValue).or((BigInteger) rightValue);
 		case BOOLEAN:
@@ -548,6 +543,26 @@ public final class OperatorOverloading {
 					temporaryLine);
 		case ANY:
 			return overloadOperator(leftValue, rightValue, "$or", 2, false);
+		case VOID:
+			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " |", temporaryFileName,
+					temporaryLine);
+		default:
+			return null;
+		}
+	}
+
+	public final static Object powerOperator(Object leftValue, Object rightValue, DataTypes type) {
+		switch (type) {
+		case INTEGER:
+		case BIG_INTEGER:
+			return Pow.pow(leftValue, rightValue, temporaryFileName, temporaryLine);
+		case BOOLEAN:
+			return ((Boolean) leftValue) || ((Boolean) rightValue);
+		case FLOAT:
+			new LogError("Can't do or operation with " + type.toString().toLowerCase() + "s", temporaryFileName,
+					temporaryLine);
+		case ANY:
+			return overloadOperator(leftValue, rightValue, "$pow", 2, false);
 		case VOID:
 			new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " |", temporaryFileName,
 					temporaryLine);
@@ -582,6 +597,7 @@ public final class OperatorOverloading {
 				temporaryFileName, temporaryLine);
 		return null;
 	}
+
 	public static void setTemporary(String fileName, int line) {
 		temporaryFileName = fileName;
 		temporaryLine = line;

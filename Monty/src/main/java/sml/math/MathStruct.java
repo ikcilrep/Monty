@@ -9,7 +9,6 @@ public final class MathStruct {
 	static {
 		struct.setFunctions(new HashMap<>());
 		new Abs(struct);
-		new Pow(struct);
 		new Exp(struct);
 		new Round(struct);
 		new Factorial(struct);
