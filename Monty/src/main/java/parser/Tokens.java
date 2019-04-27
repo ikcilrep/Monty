@@ -30,7 +30,7 @@ public class Tokens {
 		case BOOLEAN_LITERAL:
 			return DataTypes.BOOLEAN;
 		case STRING_LITERAL:
-			return DataTypes.ANY;
+			return DataTypes.OBJECT;
 		default:
 			return null;
 		}

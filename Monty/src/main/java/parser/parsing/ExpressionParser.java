@@ -146,7 +146,7 @@ public class ExpressionParser {
 		var literal = token.getText();
 		if (dataType == null)
 			new LogError("Unexpected token \"" + literal + "\"", token);
-		if (dataType.equals(DataTypes.ANY))
+		if (dataType.equals(DataTypes.OBJECT))
 			if (STRING_LITERALS.containsKey(literal))
 				return STRING_LITERALS.get(literal);
 			else {
