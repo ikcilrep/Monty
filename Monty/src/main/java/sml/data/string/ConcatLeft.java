@@ -17,7 +17,7 @@ public class ConcatLeft extends Method<StringStruct> {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return parent.getString() + getBody().getVariable("other").getValue().toString();
+		return parent.getString() + getBody().getVariable("other", callFileName, callLine).getValue().toString();
 	}
 
 }

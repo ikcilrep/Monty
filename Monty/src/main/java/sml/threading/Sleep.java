@@ -37,7 +37,7 @@ public final class Sleep extends FunctionDeclarationNode {
 	@Override
 	public VoidType call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var _millis = getBody().getVariableValue("millis");
+		var _millis = getBody().getVariableValue("millis", callFileName, callLine);
 		int millis = 0;
 		if (_millis instanceof Integer)
 			millis = (int) _millis;

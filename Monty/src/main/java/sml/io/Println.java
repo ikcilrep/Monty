@@ -35,7 +35,7 @@ public final class Println extends FunctionDeclarationNode {
 	@Override
 	public VoidType call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		System.out.println(getBody().getStringVariableValue("toPrint"));
+		System.out.println(getBody().getStringVariableValue("toPrint", callFileName, callLine));
 		return Nothing.nothing;
 	}
 

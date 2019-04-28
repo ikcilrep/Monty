@@ -16,7 +16,7 @@ final class Count extends Method<List> {
 	@Override
 	public BigInteger call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return BigInteger.valueOf(parent.count(getBody().getVariableValue("value")));
+		return BigInteger.valueOf(parent.count(getBody().getVariableValue("value", callFileName, callLine)));
 	}
 
 }

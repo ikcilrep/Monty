@@ -15,7 +15,7 @@ final class Remove extends Method<List> {
 	@Override
 	public List call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return parent.remove(getBody().getVariableValue("value"));
+		return parent.remove(getBody().getVariableValue("value", callFileName, callLine));
 	}
 
 }

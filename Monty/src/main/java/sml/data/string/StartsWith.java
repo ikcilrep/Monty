@@ -31,7 +31,7 @@ final class StartsWith extends Method<StringStruct> {
 	@Override
 	public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return parent.getString().startsWith(getBody().getStringVariableValue("prefix"));
+		return parent.getString().startsWith(getBody().getStringVariableValue("prefix", callFileName, callLine));
 	}
 
 }

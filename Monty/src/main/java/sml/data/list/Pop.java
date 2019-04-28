@@ -18,7 +18,7 @@ final class Pop extends Method<List> {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var _index = getBody().getVariableValue("index");
+		var _index = getBody().getVariableValue("index", callFileName, callLine);
 		int index = 0;
 		if (_index instanceof Integer)
 			index = (int) _index;

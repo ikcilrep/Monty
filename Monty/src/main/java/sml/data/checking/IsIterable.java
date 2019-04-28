@@ -19,7 +19,7 @@ public class IsIterable extends FunctionDeclarationNode {
 		if (!structToCheck.hasFunction("Iterator"))
 			return false;
 
-		var iterator = structToCheck.getFunction("Iterator");
+		var iterator = structToCheck.getFunction("Iterator", callFileName, callLine);
 		if (iterator.parameters.size() > 0)
 			return false;
 		var iteratorValue = iterator.call(Sml.emptyArgumentList, callFileName, callLine);
@@ -40,7 +40,7 @@ public class IsIterable extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return isIterable(getBody().getVariableValue("toCheck"), callFileName, callLine);
+		return isIterable(getBody().getVariableValue("toCheck", callFileName, callLine), callFileName, callLine);
 	}
 
 }

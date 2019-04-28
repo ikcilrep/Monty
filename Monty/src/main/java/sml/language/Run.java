@@ -21,7 +21,7 @@ public final class Run extends FunctionDeclarationNode {
 	@Override
 	public VoidType call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		Parser.parse(Lexer.lex(getBody().getStringVariableValue("code"), callFileName, callLine)).run();
+		Parser.parse(Lexer.lex(getBody().getStringVariableValue("code", callFileName, callLine), callFileName, callLine)).run();
 		return Nothing.nothing;
 	}
 

@@ -35,7 +35,7 @@ public final class Ord extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var chr = (String) getBody().getVariable("chr").getValue();
+		var chr = (String) getBody().getVariableValue("chr",callFileName, callLine);
 		if (chr.length() != 1)
 			new LogError("Expected one character, but got " + chr.length() + ":\t" + chr, callFileName, callLine);
 		return BigInteger.valueOf(chr.charAt(0));

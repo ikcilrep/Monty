@@ -18,7 +18,7 @@ package ast.declarations;
 
 import ast.Node;
 
-abstract class DeclarationNode extends Node {
+public abstract class DeclarationNode extends Node {
 
 	protected String name;
 

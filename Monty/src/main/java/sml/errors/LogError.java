@@ -19,7 +19,7 @@ public final class LogError extends FunctionDeclarationNode {
 	@Override
 	public VoidType call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		new parser.LogError(getBody().getStringVariableValue("message"));
+		new parser.LogError(getBody().getStringVariableValue("message", callFileName, callLine));
 		return Nothing.nothing;
 	}
 

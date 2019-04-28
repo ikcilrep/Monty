@@ -20,8 +20,8 @@ final class Set extends Method<List> {
 	public List call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var _index = body.getVariableValue("index");
-		var value = body.getVariableValue("value");
+		var _index = body.getVariableValue("index", callFileName, callLine);
+		var value = body.getVariableValue("value", callFileName, callLine);
 		int index = 0;
 		if (_index instanceof Integer)
 			index = (int) _index;

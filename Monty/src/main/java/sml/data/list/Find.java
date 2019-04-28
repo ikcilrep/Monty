@@ -16,7 +16,7 @@ final class Find extends Method<List> {
 	@Override
 	public BigInteger call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return BigInteger.valueOf(parent.find(getBody().getVariableValue("value")));
+		return BigInteger.valueOf(parent.find(getBody().getVariableValue("value", callFileName, callLine)));
 	}
 
 }

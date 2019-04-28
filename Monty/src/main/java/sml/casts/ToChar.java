@@ -35,7 +35,7 @@ public final class ToChar extends FunctionDeclarationNode {
 	@Override
 	public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var integer = getBody().getVariableValue("integer");
+		var integer = getBody().getVariableValue("integer", callFileName, callLine);
 		if (integer instanceof Integer)
 			return String.valueOf(Character.valueOf((char) (int) integer));
 		else if (integer instanceof BigInteger) {

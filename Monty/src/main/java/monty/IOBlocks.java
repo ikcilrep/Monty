@@ -22,7 +22,6 @@ import lexer.Lexer;
 import lexer.OptimizedTokensArray;
 import parser.parsing.Parser;
 import sml.Sml;
-import sml.functional.function.FunctionByName;
 import sml.functional.function.Lambda;
 import sml.io.Input;
 import sml.io.Print;
@@ -43,7 +42,6 @@ public class IOBlocks {
 		list = new sml.data.list.NewList();
 		logError = new sml.errors.LogError();
 		nothing = new sml.data.returning.Nothing();
-		f = new FunctionByName();
 		lambda = new Lambda();
 		writtenInMonty = new Block[Sml.numberOfFiles];
 		int i = 0;

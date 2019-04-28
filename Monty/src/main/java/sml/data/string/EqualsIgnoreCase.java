@@ -31,7 +31,7 @@ final class EqualsIgnoreCase extends Method<StringStruct> {
 	@Override
 	public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return parent.getString().equalsIgnoreCase(getBody().getStringVariableValue("toCompare"));
+		return parent.getString().equalsIgnoreCase(getBody().getStringVariableValue("toCompare", callFileName, callLine));
 	}
 
 }

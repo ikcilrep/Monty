@@ -64,16 +64,16 @@ public final class ForStatementNode extends Block {
 	
 		if (!IsIterable.isIterable(toIter, getFileName(), getLine()))
 			new LogError("Can't iter over not iterable object.", getFileName(), getLine());
-		var iterator = (StructDeclarationNode) ((StructDeclarationNode) toIter).getFunction("Iterator")
+		var iterator = (StructDeclarationNode) ((StructDeclarationNode) toIter).getFunction("Iterator", getFileName(), getLine())
 				.call(Sml.emptyArgumentList, getFileName(), getLine());
-		var hasNext = iterator.getFunction("hasNext");
-		var next = iterator.getFunction("next");
+		var hasNext = iterator.getFunction("hasNext", getFileName(), getLine());
+		var next = iterator.getFunction("next", getFileName(), getLine());
 		VariableDeclarationNode variable = null;
 		if (isNotNameUnderscore)
 			if (hasVariable(name))
 				variable = getVariable(name, getFileName(), getLine());
 			else
-				addVariable(variable = new VariableDeclarationNode(name));
+				addVariable(variable = new VariableDeclarationNode(name), getFileName(), getLine());
 
 		if (isNotNameUnderscore)
 			while ((boolean) hasNext.call(Sml.emptyArgumentList, getFileName(), getLine())) {

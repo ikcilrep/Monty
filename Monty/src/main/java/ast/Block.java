@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import ast.declarations.DeclarationNode;
 import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
@@ -45,8 +46,8 @@ public class Block extends NodeWithParent implements Cloneable {
 
 	public void addFunction(FunctionDeclarationNode function) {
 		String name = function.getName();
-		if (getFunctions().containsKey(name))
-			new LogError("Function " + name + " already exists");
+		if (has(name))
+			new LogError("Variable or function with name  " + name + " already exists");
 		getFunctions().put(name, function);
 	}
 
@@ -54,11 +55,11 @@ public class Block extends NodeWithParent implements Cloneable {
 		String name = function.getName();
 		function.setFileName(fileName);
 		function.setLine(line);
-		if (getFunctions().containsKey(name)) {
-			var existing_function = getFunctions().get(name);
-			int[] lines = { existing_function.getLine(), function.getLine() };
-			String[] fileNames = { existing_function.getFileName(), function.getFileName() };
-			new LogError("Function " + name + " already exists", fileNames, lines);
+		if (has(name)) {
+			var existing = getVariableOrFunction(name, fileName, line);
+			int[] lines = { existing.getLine(), function.getLine() };
+			String[] fileNames = { existing.getFileName(), function.getFileName() };
+			new LogError("Variable or function with name  " + name + " already exists", fileNames, lines);
 		}
 		getFunctions().put(name, function);
 	}
@@ -69,7 +70,7 @@ public class Block extends NodeWithParent implements Cloneable {
 
 	public void addStructure(StructDeclarationNode structure) {
 		String name = structure.getName();
-		if (getStructures().containsKey(name)) {
+		if (hasStructure(name)) {
 			var existing_structure = getStructures().get(name);
 			new LogError("Struct " + name + " already exists", existing_structure.getFileName(),
 					existing_structure.getLine());
@@ -81,7 +82,7 @@ public class Block extends NodeWithParent implements Cloneable {
 		String name = structure.getName();
 		structure.setFileName(fileName);
 		structure.setLine(line);
-		if (getStructures().containsKey(name)) {
+		if (hasStructure(name)) {
 			var existing_structure = getStructures().get(name);
 			int[] lines = { existing_structure.getLine(), structure.getLine() };
 			String[] fileNames = { existing_structure.getFileName(), structure.getFileName() };
@@ -92,8 +93,8 @@ public class Block extends NodeWithParent implements Cloneable {
 
 	public void addVariable(VariableDeclarationNode variable) {
 		String name = variable.getName();
-		if (getVariables().containsKey(name))
-			new LogError("Variable " + name + " already exists");
+		if (has(name))
+			new LogError("Variable or function with name " + name + " already exists");
 		getVariables().put(name, variable);
 	}
 
@@ -101,13 +102,17 @@ public class Block extends NodeWithParent implements Cloneable {
 		String name = variable.getName();
 		variable.setFileName(fileName);
 		variable.setLine(line);
-		if (getVariables().containsKey(name)) {
-			var existing_variable = variables.get(name);
-			int[] lines = { existing_variable.getLine(), variable.getLine() };
-			String[] fileNames = { existing_variable.getFileName(), variable.getFileName() };
-			new LogError("Variable " + name + " already exists", fileNames, lines);
+		if (has(name)) {
+			var existing = getVariableOrFunction(name, fileName, line);
+			int[] lines = { existing.getLine(), variable.getLine() };
+			String[] fileNames = { existing.getFileName(), variable.getFileName() };
+			new LogError("Variable or function with name " + name + " already exists", fileNames, lines);
 		}
 		getVariables().put(name, variable);
+	}
+
+	private boolean has(String name) {
+		return getVariables().containsKey(name) || getFunctions().containsKey(name);
 	}
 
 	public void addVariable(VariableDeclarationNode variable, Token token) {
@@ -159,32 +164,36 @@ public class Block extends NodeWithParent implements Cloneable {
 		setChildren(children);
 	}
 
-	public Boolean getBooleanVariableValue(String name) {
-		return (Boolean) getVariable(name).getValue();
+	public void copyVariables() {
+		var variables = new HashMap<String, VariableDeclarationNode>();
+		for (Map.Entry<String, VariableDeclarationNode> entry : getVariables().entrySet())
+			variables.put(entry.getKey(), entry.getValue().copy());
+		setVariables(variables);
+	}
+
+	public Boolean getBooleanVariableValue(String name, String fileName, int line) {
+		return (Boolean) getVariable(name, fileName, line).getValue();
 	}
 
 	public ArrayList<RunnableNode> getChildren() {
 		return children;
 	}
 
-	public FunctionDeclarationNode getFunction(String name) {
-		Block block = this;
-		while (!block.getFunctions().containsKey(name)) {
-			var parent = block.getParent();
-			if (parent == null)
-				new LogError("There isn't any function with name:\t" + name);
-			block = parent;
-		}
-		return block.getFunctions().get(name);
-
-	}
-
 	public FunctionDeclarationNode getFunction(String name, String fileName, int line) {
 		Block block = this;
 		while (!block.getFunctions().containsKey(name)) {
 			var parent = block.getParent();
-			if (parent == null)
-				new LogError("There isn't any function with name:\t" + name, fileName, line);
+			if (parent == null) {
+				block = this;
+				while (!(block.getVariables().containsKey(name)
+						&& block.getVariables().get(name).getValue() instanceof FunctionDeclarationNode)) {
+					parent = block.getParent();
+					if (parent == null)
+						new LogError("There isn't any variable or function with name:\t" + name, fileName, line);
+					block = parent;
+				}
+				return (FunctionDeclarationNode) block.getVariables().get(name).getValue();
+			}
 			block = parent;
 		}
 		return block.getFunctions().get(name);
@@ -199,8 +208,8 @@ public class Block extends NodeWithParent implements Cloneable {
 		return parent;
 	}
 
-	public String getStringVariableValue(String name) {
-		return getVariable(name).getValue().toString();
+	public String getStringVariableValue(String name, String fileName, int line) {
+		return getVariable(name, fileName, line).getValue().toString();
 	}
 
 	public StructDeclarationNode getStructure(String name) {
@@ -229,23 +238,31 @@ public class Block extends NodeWithParent implements Cloneable {
 		return structures;
 	}
 
-	public VariableDeclarationNode getVariable(String name) {
-		Block block = this;
-		while (!block.getVariables().containsKey(name)) {
-			var parent = block.getParent();
-			if (parent == null)
-				new LogError("There isn't any variable with name:\t" + name);
-			block = parent;
-		}
-		return block.getVariables().get(name);
-	}
-
 	public VariableDeclarationNode getVariable(String name, String fileName, int line) {
 		Block block = this;
 		while (!block.getVariables().containsKey(name)) {
 			var parent = block.getParent();
 			if (parent == null)
-				new LogError("There isn't any variable with name:\t" + name, fileName, line);
+				new LogError("There isn't any variable or function with name:\t" + name, fileName, line);
+			block = parent;
+		}
+		return block.getVariables().get(name);
+	}
+
+	public DeclarationNode getVariableOrFunction(String name, String fileName, int line) {
+		Block block = this;
+		while (!block.getVariables().containsKey(name)) {
+			var parent = block.getParent();
+			if (parent == null) {
+				block = this;
+				while (!block.getFunctions().containsKey(name)) {
+					parent = block.getParent();
+					if (parent == null)
+						new LogError("There isn't any variable or function with name:\t" + name);
+					block = parent;
+				}
+				return block.getFunctions().get(name);
+			}
 			block = parent;
 		}
 		return block.getVariables().get(name);
@@ -253,10 +270,6 @@ public class Block extends NodeWithParent implements Cloneable {
 
 	public HashMap<String, VariableDeclarationNode> getVariables() {
 		return variables;
-	}
-
-	public Object getVariableValue(String name) {
-		return getVariable(name).getValue();
 	}
 
 	public Object getVariableValue(String name, String fileName, int line) {
@@ -267,15 +280,12 @@ public class Block extends NodeWithParent implements Cloneable {
 		return functions.containsKey(name);
 	}
 
+	public boolean hasStructure(String name) {
+		return getStructures().containsKey(name);
+	}
+
 	public boolean hasVariable(String name) {
 		return variables.containsKey(name);
-	}
-	
-	public void copyVariables() {
-		var variables = new HashMap<String, VariableDeclarationNode>();
-		for (Map.Entry<String, VariableDeclarationNode> entry : getVariables().entrySet())
-			variables.put(entry.getKey(), entry.getValue().copy());
-		setVariables(variables);
 	}
 
 	@Override
@@ -309,9 +319,5 @@ public class Block extends NodeWithParent implements Cloneable {
 
 	public void setVariables(HashMap<String, VariableDeclarationNode> variables) {
 		this.variables = variables;
-	}
-
-	public boolean hasStructure(String name) {
-		return getStructures().containsKey(name);
 	}
 }

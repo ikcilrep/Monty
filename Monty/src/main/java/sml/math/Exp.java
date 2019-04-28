@@ -35,7 +35,7 @@ public final class Exp extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var x = getBody().getVariableValue("x");
+		var x = getBody().getVariableValue("x", callFileName, callLine);
 		if (x instanceof Double)
 			return Math.exp((double) x);
 		else if (x instanceof Integer)

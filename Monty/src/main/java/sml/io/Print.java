@@ -35,7 +35,7 @@ public final class Print extends FunctionDeclarationNode {
 	@Override
 	public VoidType call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		System.out.print(getBody().getStringVariableValue("toPrint"));
+		System.out.print(getBody().getStringVariableValue("toPrint", callFileName, callLine));
 		return Nothing.nothing;
 	}
 

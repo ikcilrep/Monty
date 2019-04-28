@@ -32,7 +32,7 @@ final class Extend extends Method<List> {
 	@Override
 	public List call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var other = getBody().getVariable("other").getValue();
+		var other = getBody().getVariable("other", callFileName, callLine).getValue();
 		parent.doesCanBeExtendedWith(other, callFileName, callLine);
 		return parent.extend((List) other);
 	}

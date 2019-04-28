@@ -33,7 +33,7 @@ final class Split extends Method<StringStruct> {
 	public List call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		return new List(parent.getString().split(body.getStringVariableValue("regex")));
+		return new List(parent.getString().split(body.getStringVariableValue("regex", callFileName, callLine)));
 	}
 
 }

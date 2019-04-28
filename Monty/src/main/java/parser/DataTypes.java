@@ -18,6 +18,7 @@ package parser;
 
 import java.math.BigInteger;
 
+import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import sml.data.returning.VoidType;
@@ -29,17 +30,17 @@ public enum DataTypes {
 
 	public final static DataTypes getDataType(Object value) {
 		if (value instanceof VoidType)
-			return DataTypes.NOTHING;
+			return NOTHING;
 		if (value instanceof BigInteger)
-			return DataTypes.BIG_INTEGER;
+			return BIG_INTEGER;
 		if (value instanceof Integer)
-			return DataTypes.INTEGER;
+			return INTEGER;
 		if (value instanceof Double)
-			return DataTypes.FLOAT;
+			return FLOAT;
 		if (value instanceof Boolean)
-			return DataTypes.BOOLEAN;
-		if (value instanceof StructDeclarationNode)
-			return DataTypes.OBJECT;
+			return BOOLEAN;
+		if (value instanceof StructDeclarationNode || value instanceof FunctionDeclarationNode)
+			return OBJECT;
 		if (value instanceof VariableDeclarationNode)
 			return getDataType(((VariableDeclarationNode) value).getValue());
 		return null;

@@ -17,7 +17,7 @@ public class Lambda extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public Function call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public FunctionDeclarationNode call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		int argumentsLength = arguments.size() - 1;
 		var fileName = callFileName + ":lambda(" + callLine + ")";
 		var function = new CustomFunctionDeclarationNode("");
@@ -34,7 +34,7 @@ public class Lambda extends FunctionDeclarationNode {
 						callLine);
 			function.addParameter(((VariableNode) argument).getName());
 		}
-		return new Function(function);
+		return function;
 	}
 
 }

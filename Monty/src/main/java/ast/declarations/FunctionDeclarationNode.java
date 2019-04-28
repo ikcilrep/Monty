@@ -86,4 +86,9 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 	public void setBody(Block body) {
 		this.body = body;
 	}
+	
+	@Override
+	public String toString() {
+		return "Function<" + getName() + "> -> " + parametersSize;
+	}
 }

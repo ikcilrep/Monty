@@ -34,8 +34,8 @@ final class Replace extends Method<StringStruct> {
 	public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		return parent.getString().replaceAll(body.getStringVariableValue("regex"),
-				body.getStringVariableValue("replacement"));
+		return parent.getString().replaceAll(body.getStringVariableValue("regex", callFileName, callLine),
+				body.getStringVariableValue("replacement", callFileName, callLine));
 	}
 
 }

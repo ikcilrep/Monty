@@ -20,7 +20,7 @@ public class MultiplyLeft extends Method<StringStruct> {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var _times = getBody().getVariable("times").getValue();
+		var _times = getBody().getVariable("times", callFileName, callLine).getValue();
 		int times = -1;
 		if (_times instanceof Integer)
 			times = (int)_times;

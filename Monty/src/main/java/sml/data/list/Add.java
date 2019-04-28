@@ -31,7 +31,7 @@ final class Add extends Method<List> {
 	@Override
 	public List call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return parent.add(getBody().getVariable("other").getValue());
+		return parent.add(getBody().getVariable("other", callFileName, callLine).getValue());
 	}
 
 }

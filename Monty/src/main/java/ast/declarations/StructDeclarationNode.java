@@ -112,7 +112,7 @@ public class StructDeclarationNode extends Block implements Cloneable {
 	@Override
 	public String toString() {
 		if (hasFunction("toString")) {
-			var function = getFunction("toString");
+			var function = getFunction("toString",OperatorOverloading.getTemporaryFileName(), OperatorOverloading.getTemporaryLine());
 			return function.call(Sml.emptyArgumentList, function.getFileName(), function.getLine()).toString();
 		}
 		return name + "#" + getInstanceNumber();

@@ -20,11 +20,11 @@ public class Constructor extends FunctionDeclarationNode {
 		var thisVariable = new VariableDeclarationNode("This");
 		thisVariable.setValue(newStruct);
 		thisVariable.setConst(true);
-		newStruct.addVariable(thisVariable);
+		newStruct.addVariable(thisVariable, callFileName, callLine);
 		newStruct.incrementNumber();
 		newStruct.run();
 		if (newStruct.hasFunction("init"))
-			newStruct.getFunction("init").call(arguments, callFileName, callLine);
+			newStruct.getFunction("init", callFileName, callLine).call(arguments, callFileName, callLine);
 
 		return newStruct;
 	}

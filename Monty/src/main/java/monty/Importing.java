@@ -135,7 +135,7 @@ public class Importing {
 			importSpecifiedElementFromBlock(block,
 					Parser.parse(Lexer.lex(FileIO.readFile(parent_file.getAbsolutePath(), fileName, line),
 							parent_file.getName(), 1, new OptimizedTokensArray(), 0)),
-					parent_file.getPath(), file.getName().substring(0, file.getName().length() - 3));
+					parent_file.getPath(), file.getName().substring(0, file.getName().length() - 3), fileName, line);
 		} else {
 			var splited = partOfPath.split("\\.");
 			if (!Parser.libraries.containsKey(splited[0]))
@@ -157,17 +157,17 @@ public class Importing {
 		}
 	}
 
-	private static void importSpecifiedElementFromBlock(Block block, Block importedBlock, String path, String name) {
+	private static void importSpecifiedElementFromBlock(Block block, Block importedBlock, String path, String name, String fileName, int line) {
 		var doesContainVariable = importedBlock.hasVariable(name);
 		var doesContainFunction = importedBlock.hasFunction(name);
 		if (doesContainVariable || doesContainFunction) {
 			importedBlock.run();
 			if (doesContainVariable) {
-				var variable = importedBlock.getVariable(name);
+				var variable = importedBlock.getVariable(name, fileName, line);
 				block.addVariable(variable, variable.getFileName(), variable.getLine());
 			}
 			if (doesContainFunction) {
-				var function = importedBlock.getFunction(name);
+				var function = importedBlock.getFunction(name, fileName, line);
 				block.addFunction(function, function.getFileName(), function.getLine());
 				if (Character.isUpperCase(name.charAt(0))) {
 					var struct = importedBlock.getStructure(name);

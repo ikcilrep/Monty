@@ -31,7 +31,7 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 	final static Object getLiteral(Object expression, Block parent, String fileName, int line) {
 		// Returns value of expression.
 		if (expression instanceof VariableNode)
-			return parent.getVariable(((VariableNode) expression).getName(), fileName, line);
+			return parent.getVariableOrFunction(((VariableNode) expression).getName(), fileName, line);
 		else if (expression instanceof FunctionCallNode) {
 			var functionToCall = ((FunctionCallNode) expression);
 			return parent.getFunction(functionToCall.getName(), fileName, line).call(functionToCall.getArguments(),
@@ -164,16 +164,14 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 	public final Object run() {
 		// Returns calculated value.
 		if (!(operand instanceof String)) {
+			OperatorOverloading.setTemporary(getFileName(), getLine());
 			var literal = getLiteral(operand, getFileName(), getLine());
 			if (literal instanceof VariableDeclarationNode)
 				return ((VariableDeclarationNode) literal).getValue();
 			else
 				return literal;
 		}
-		var value = solve();
-		if (value instanceof VariableDeclarationNode)
-			return ((VariableDeclarationNode) value).getValue();
-		return value;
+		return  solve();
 	}
 
 	public void setLeft(OperationNode left) {
@@ -227,7 +225,6 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 		var leftValue = getLiteral(a, left.getFileName(), left.getLine());
 		if (!isAssignment && leftValue instanceof VariableDeclarationNode)
 			leftValue = ((VariableDeclarationNode) leftValue).getValue();
-
 		var leftType = DataTypes.getDataType(leftValue);
 		if (leftType != null && leftType.equals(DataTypes.BOOLEAN)) {
 			if (operator.equals("&"))
@@ -235,6 +232,7 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 			else if (operator.equals("|"))
 				return OperatorOverloading.booleanOrOperator((boolean) leftValue, right);
 		}
+		
 		var b = getRight().solve();
 
 		if (operator.equals(".")) {

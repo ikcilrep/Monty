@@ -38,7 +38,7 @@ public final class ToString extends FunctionDeclarationNode {
 	@Override
 	public StringStruct call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return new StringStruct(getBody().getVariableValue("toBeCasted").toString());
+		return new StringStruct(getBody().getVariableValue("toBeCasted", callFileName, callLine).toString());
 	}
 
 }

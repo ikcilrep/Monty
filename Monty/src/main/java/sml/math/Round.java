@@ -37,7 +37,7 @@ public final class Round extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var f = getBody().getVariableValue("f");
+		var f = getBody().getVariableValue("f", callFileName, callLine);
 		if (f instanceof Double)
 			return Math.round((double) f);
 		return new LogError("Can't round not a number.", callFileName, callLine);

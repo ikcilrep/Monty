@@ -55,7 +55,7 @@ public final class ToInt extends FunctionDeclarationNode {
 	@Override
 	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		var toBeCasted = getBody().getVariableValue("toBeCasted");
+		var toBeCasted = getBody().getVariableValue("toBeCasted", callFileName, callLine);
 		return toInt(toBeCasted, callFileName, callLine);
 	}
 

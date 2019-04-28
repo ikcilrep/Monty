@@ -20,8 +20,8 @@ final class Sublist extends Method<List> {
 	public List call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
 		var body = getBody();
-		var _begin = body.getVariableValue("begin");
-		var _end = body.getVariableValue("end");
+		var _begin = body.getVariableValue("begin", callFileName, callLine);
+		var _end = body.getVariableValue("end", callFileName, callLine);
 
 		int begin = 0;
 		int end = 0;

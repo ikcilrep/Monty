@@ -32,7 +32,7 @@ final class EndsWith extends Method<StringStruct> {
 	@Override
 	public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		return parent.getString().endsWith( getBody().getStringVariableValue("suffix"));
+		return parent.getString().endsWith( getBody().getStringVariableValue("suffix", callFileName, callLine));
 	}
 
 }

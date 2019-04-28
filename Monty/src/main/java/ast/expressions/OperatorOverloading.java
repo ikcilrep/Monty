@@ -21,13 +21,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import ast.Block;
+import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import parser.DataTypes;
 import parser.LogError;
 import sml.data.list.List;
 import sml.data.string.StringStruct;
-import sml.functional.function.Function;
 import sml.math.MathStruct;
 import sml.math.Pow;
 
@@ -39,7 +39,7 @@ public final class OperatorOverloading {
 		arguments.add(new OperationNode(null, null));
 		arguments.add(new OperationNode(null, null));
 		builtInTypes.put("List", List.class);
-		builtInTypes.put("Function", Function.class);
+		builtInTypes.put("Function", FunctionDeclarationNode.class);
 		builtInTypes.put("Integer", null);
 		builtInTypes.put("String", StringStruct.class);
 		builtInTypes.put("Boolean", Boolean.class);
@@ -594,7 +594,7 @@ public final class OperatorOverloading {
 		if (leftValue instanceof StructDeclarationNode) {
 			var struct = (StructDeclarationNode) leftValue;
 			if (struct.hasFunction(nameOfFunction)) {
-				var operator = struct.getFunction(nameOfFunction);
+				var operator = struct.getFunction(nameOfFunction, temporaryFileName, temporaryLine);
 				if (operator.getParameters().size() == numberOfParameters)
 					return operator.call(arguments, temporaryFileName, temporaryLine);
 			}
@@ -603,7 +603,7 @@ public final class OperatorOverloading {
 			var struct = (StructDeclarationNode) rightValue;
 			var name = "$r_" + nameOfFunction.substring(1);
 			if (!nameOfFunction.startsWith("$a_") && struct.hasFunction(name)) {
-				var operator = struct.getFunction(name);
+				var operator = struct.getFunction(name, temporaryFileName, temporaryLine);
 				if (operator.getParameters().size() == numberOfParameters)
 					return operator.call(arguments, temporaryFileName, temporaryLine);
 			}
