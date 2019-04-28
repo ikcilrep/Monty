@@ -6,6 +6,7 @@ import ast.declarations.StructDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.LogError;
 import sml.data.returning.Nothing;
+import sml.data.string.StringStruct;
 
 public class List extends StructDeclarationNode {
 	private Object[] array;
@@ -47,7 +48,11 @@ public class List extends StructDeclarationNode {
 		increaseCapacity((array.length << 1) + 1);
 		length = array.length;
 		for (int i = 0; i < length(); i++)
-			set(i, array[i]);
+			if (array[i] instanceof String)
+				set(i, new StringStruct((String) array[i]));
+			else
+				set(i, array[i]);
+
 	}
 
 	public List add(Object value) {
@@ -222,7 +227,7 @@ public class List extends StructDeclarationNode {
 		if (length > 0)
 			while (true) {
 				var value = get(i++);
-				if (value instanceof String)
+				if (value instanceof StringStruct)
 					stringBuilder.append("\"" + value + "\"");
 				else
 					stringBuilder.append(value);

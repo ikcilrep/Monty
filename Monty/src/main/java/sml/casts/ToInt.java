@@ -62,9 +62,14 @@ public final class ToInt extends FunctionDeclarationNode {
 	public static Object fromString(StringStruct str, String fileName, int line) {
 		try {
 			return Integer.parseInt(str.getString());
-		} catch (NumberFormatException e) {
-			return new BigInteger(str.getString());
+		} catch (NumberFormatException e1) {
+			try {
+				return new BigInteger(str.getString());
+			} catch (NumberFormatException e2) {
+				new LogError("Wrong format for integer ", fileName, line);
+			}
 		}
+		return null;
 	}
 
 	public static Object fromFloat(Double floating) {

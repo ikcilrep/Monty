@@ -23,6 +23,7 @@ import java.util.Scanner;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
+import sml.data.string.StringStruct;
 
 public final class Input extends FunctionDeclarationNode {
 
@@ -34,15 +35,13 @@ public final class Input extends FunctionDeclarationNode {
 	}
 
 	@Override
-	public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+	public StringStruct call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
 		setArguments(arguments, callFileName, callLine);
-		String line = null;
 		try {
-			line = scanner.nextLine();
+			return new StringStruct(scanner.nextLine());
 		} catch (NoSuchElementException e) {
-			return "";
+			return new StringStruct("");
 		}
-		return line;
 	}
 
 }

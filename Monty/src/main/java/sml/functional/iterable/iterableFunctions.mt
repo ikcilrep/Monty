@@ -1,4 +1,4 @@
-func filter iterable, function;
+func filter function, iterable;
 	var list = [];
 	for x in iterable;
 		if function(x);
@@ -8,7 +8,7 @@ func filter iterable, function;
 	return Iterable(list);
 end;
 
-func map iterable, function;
+func map function, iterable;
 	var list = [Nothing] * length(iterable);
 	var i = 0;
 	for x in iterable;
