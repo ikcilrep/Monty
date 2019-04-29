@@ -29,6 +29,7 @@ import sml.io.Println;
 
 public class IOBlocks {
 	public static FunctionDeclarationNode list;
+	public static FunctionDeclarationNode tuple;
 	public static FunctionDeclarationNode logError;
 	public static FunctionDeclarationNode f;
 	public static FunctionDeclarationNode lambda;
@@ -40,6 +41,7 @@ public class IOBlocks {
 
 	static {
 		list = new sml.data.list.NewList();
+		tuple = new sml.data.tuple.NewTuple();
 		logError = new sml.errors.LogError();
 		nothing = new sml.data.returning.Nothing();
 		lambda = new Lambda();
@@ -59,6 +61,7 @@ public class IOBlocks {
 		for (var parsed : writtenInMonty)
 			block.concat(parsed);
 		functions.put("List", list);
+		functions.put("Tuple", tuple);
 		functions.put("f", f);
 		functions.put("lambda", lambda);
 		functions.put("print", print);
