@@ -172,7 +172,7 @@ public class Importing {
                 block.addFunction(function, function.getFileName(), function.getLine());
                 if (Character.isUpperCase(name.charAt(0))) {
                     var struct = importedBlock.getStructure(name);
-                    block.addStructure(struct, struct.getFileName(), struct.getLine());
+                    block.addStruct(struct, struct.getFileName(), struct.getLine());
                 }
             }
         } else {

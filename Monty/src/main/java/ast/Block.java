@@ -33,7 +33,7 @@ public class Block extends NodeWithParent implements Cloneable {
     private ArrayList<RunnableNode> children = new ArrayList<>();
     private HashMap<String, FunctionDeclarationNode> functions = new HashMap<>();
     private HashMap<String, VariableDeclarationNode> variables = new HashMap<>();
-    private HashMap<String, StructDeclarationNode> structures = new HashMap<>();
+    private HashMap<String, StructDeclarationNode> structs = new HashMap<>();
     protected Block parent;
 
     public Block(Block parent) {
@@ -68,27 +68,27 @@ public class Block extends NodeWithParent implements Cloneable {
         addFunction(function, token.getFileName(), token.getLine());
     }
 
-    private void addStructure(StructDeclarationNode structure) {
+    private void addStruct(StructDeclarationNode structure) {
         String name = structure.getName();
         if (hasStructure(name)) {
-            var existing_structure = getStructures().get(name);
+            var existing_structure = getStructs().get(name);
             new LogError("Struct " + name + " already exists", existing_structure.getFileName(),
                     existing_structure.getLine());
         }
-        getStructures().put(name, structure);
+        getStructs().put(name, structure);
     }
 
-    public void addStructure(StructDeclarationNode structure, String fileName, int line) {
+    public void addStruct(StructDeclarationNode structure, String fileName, int line) {
         String name = structure.getName();
         structure.setFileName(fileName);
         structure.setLine(line);
         if (hasStructure(name)) {
-            var existing_structure = getStructures().get(name);
+            var existing_structure = getStructs().get(name);
             int[] lines = {existing_structure.getLine(), structure.getLine()};
             String[] fileNames = {existing_structure.getFileName(), structure.getFileName()};
             new LogError("Struct " + name + " already exists", fileNames, lines);
         }
-        getStructures().put(name, structure);
+        getStructs().put(name, structure);
     }
 
     private void addVariable(VariableDeclarationNode variable) {
@@ -131,11 +131,11 @@ public class Block extends NodeWithParent implements Cloneable {
             function.getBody().setParent(this);
             addFunction(function);
         }
-        var structSet = block.getStructures().entrySet();
+        var structSet = block.getStructs().entrySet();
         for (Map.Entry<String, StructDeclarationNode> entry : structSet) {
             var struct = entry.getValue();
             struct.setParent(this);
-            addStructure(struct);
+            addStruct(struct);
         }
 
     }
@@ -214,28 +214,28 @@ public class Block extends NodeWithParent implements Cloneable {
 
     public StructDeclarationNode getStructure(String name) {
         Block block = this;
-        while (!block.getStructures().containsKey(name)) {
+        while (!block.getStructs().containsKey(name)) {
             var parent = block.getParent();
             if (parent == null)
                 new LogError("There isn't any struct with name:\t" + name);
             block = parent;
         }
-        return block.getStructures().get(name);
+        return block.getStructs().get(name);
     }
 
     public StructDeclarationNode getStructure(String name, String fileName, int line) {
         Block block = this;
-        while (!block.getStructures().containsKey(name)) {
+        while (!block.getStructs().containsKey(name)) {
             var parent = block.getParent();
             if (parent == null)
                 new LogError("There isn't any struct with name:\t" + name, fileName, line);
             block = parent;
         }
-        return block.getStructures().get(name);
+        return block.getStructs().get(name);
     }
 
-    protected HashMap<String, StructDeclarationNode> getStructures() {
-        return structures;
+    protected HashMap<String, StructDeclarationNode> getStructs() {
+        return structs;
     }
 
     public VariableDeclarationNode getVariable(String name, String fileName, int line) {
@@ -281,7 +281,7 @@ public class Block extends NodeWithParent implements Cloneable {
     }
 
     public boolean hasStructure(String name) {
-        return getStructures().containsKey(name);
+        return getStructs().containsKey(name);
     }
 
     public boolean hasVariable(String name) {
@@ -314,9 +314,9 @@ public class Block extends NodeWithParent implements Cloneable {
         this.parent = parent;
     }
 
-    public void setStructures(HashMap<String, StructDeclarationNode> structures) {
-        assert structures != null;
-        this.structures = structures;
+    public void setStructs(HashMap<String, StructDeclarationNode> structs) {
+        assert structs != null;
+        this.structs = structs;
     }
 
     private void setVariables(HashMap<String, VariableDeclarationNode> variables) {
