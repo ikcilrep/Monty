@@ -19,10 +19,10 @@ package sml.math;
 import ast.declarations.VariableDeclarationNode;
 
 public final class Pi extends VariableDeclarationNode {
-	public Pi() {
-		super("Pi");
-		setValue(Math.PI);
-		setConst(true);
-	}
+    public Pi() {
+        super("Pi");
+        setValue(Math.PI);
+        setConst(true);
+    }
 
 }

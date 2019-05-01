@@ -17,14 +17,14 @@ limitations under the License.
 package ast.expressions;
 
 public final class ConstantNode {
-	private Object value;
+    private Object value;
 
-	public ConstantNode(Object value) {
-		this.value = value;
-	}
+    public ConstantNode(Object value) {
+        this.value = value;
+    }
 
-	public final Object getValue() {
-		return value;
-	}
+    public final Object getValue() {
+        return value;
+    }
 
 }

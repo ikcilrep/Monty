@@ -16,47 +16,47 @@ limitations under the License.
 
 package ast.declarations;
 
-import java.util.ArrayList;
-
 import ast.expressions.OperationNode;
 import ast.statements.ContinueStatementNode;
 import parser.LogError;
 import sml.data.returning.BreakType;
 import sml.data.returning.Nothing;
 
+import java.util.ArrayList;
+
 public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
 
-	public CustomFunctionDeclarationNode(String name) {
-		super(name);
-	}
+    public CustomFunctionDeclarationNode(String name) {
+        super(name);
+    }
 
-	public CustomFunctionDeclarationNode workingCopy() {
-		var copy = (CustomFunctionDeclarationNode) copy();
-		copy.getBody().copyVariables();
-		return copy;
-	}
+    private CustomFunctionDeclarationNode workingCopy() {
+        var copy = (CustomFunctionDeclarationNode) copy();
+        copy.getBody().copyVariables();
+        return copy;
+    }
 
-	@Override
-	public final Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		var workingCopy = workingCopy();
-		workingCopy.setArguments(arguments, callFileName, callLine);
-		String[] fileNames = { callFileName, getFileName() };
-		int[] lines = { callLine, getLine() };
-		Object result = null;
-		try {
-			result = workingCopy.getBody().run();
-		} catch (StackOverflowError e) {
-			new LogError("Stack overflow at " + name + " function call", fileNames, lines);
-		}
+    @Override
+    public final Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+        var workingCopy = workingCopy();
+        workingCopy.setArguments(arguments, callFileName, callLine);
+        String[] fileNames = {callFileName, getFileName()};
+        int[] lines = {callLine, getLine()};
+        Object result = null;
+        try {
+            result = workingCopy.getBody().run();
+        } catch (StackOverflowError e) {
+            new LogError("Stack overflow at " + name + " function call", fileNames, lines);
+        }
 
-		if (result == null)
-			result = Nothing.nothing;
-		else {
-			if (result instanceof BreakType)
-				new LogError("Trying to break function " + getName(), fileNames, lines);
-			if (result instanceof ContinueStatementNode)
-				new LogError("Trying to continue function " + getName(), fileNames, lines);
-		}
-		return result;
-	}
+        if (result == null)
+            result = Nothing.nothing;
+        else {
+            if (result instanceof BreakType)
+                new LogError("Trying to break function " + getName(), fileNames, lines);
+            if (result instanceof ContinueStatementNode)
+                new LogError("Trying to continue function " + getName(), fileNames, lines);
+        }
+        return result;
+    }
 }

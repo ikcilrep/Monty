@@ -16,24 +16,24 @@ limitations under the License.
 
 package sml.time;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+
 public final class Millis extends FunctionDeclarationNode {
 
-	public Millis() {
-		super("millis");
-		setBody(new Block(null));
-	}
+    public Millis() {
+        super("millis");
+        setBody(new Block(null));
+    }
 
-	@Override
-	public BigInteger call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		return BigInteger.valueOf(System.currentTimeMillis());
-	}
+    @Override
+    public BigInteger call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+        setArguments(arguments, callFileName, callLine);
+        return BigInteger.valueOf(System.currentTimeMillis());
+    }
 
 }

@@ -16,9 +16,6 @@ limitations under the License.
 
 package sml.casts;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
@@ -26,51 +23,56 @@ import parser.LogError;
 import sml.data.returning.VoidType;
 import sml.data.string.StringStruct;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+
 public final class ToBoolean extends FunctionDeclarationNode {
 
-	public static Boolean toBoolean(Object toBeCasted, String callFileName, int callLine) {
-		if (toBeCasted instanceof VoidType)
-			new LogError("Can't cast void to boolean", callFileName, callLine);
-		if (toBeCasted instanceof BigInteger)
-			return fromInt((BigInteger) toBeCasted);
-		if (toBeCasted instanceof Integer)
-			return fromInt((int) toBeCasted);
-		if (toBeCasted instanceof Double)
-			return fromFloat((double) toBeCasted);
-		if (toBeCasted instanceof Boolean)
-			return (boolean) toBeCasted;
-		if (toBeCasted instanceof StringStruct)
-			return fromString((StringStruct) toBeCasted);
-		else
-			new LogError("Can't cast structure to boolean", callFileName, callLine);
-		return null;
-	}
+    public static Boolean toBoolean(Object toBeCasted, String callFileName, int callLine) {
+        if (toBeCasted instanceof VoidType)
+            new LogError("Can't cast void to boolean", callFileName, callLine);
+        if (toBeCasted instanceof BigInteger)
+            return fromInt((BigInteger) toBeCasted);
+        if (toBeCasted instanceof Integer)
+            return fromInt((int) toBeCasted);
+        if (toBeCasted instanceof Double)
+            return fromFloat((double) toBeCasted);
+        if (toBeCasted instanceof Boolean)
+            return (boolean) toBeCasted;
+        if (toBeCasted instanceof StringStruct)
+            return fromString((StringStruct) toBeCasted);
+        else
+            new LogError("Can't cast structure to boolean", callFileName, callLine);
+        return null;
+    }
 
-	public ToBoolean() {
-		super("toBoolean");
-		setBody(new Block(null));
-		addParameter("toBeCasted");
-	}
+    public ToBoolean() {
+        super("toBoolean");
+        setBody(new Block(null));
+        addParameter("toBeCasted");
+    }
 
-	@Override
-	public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		var toBeCasted = getBody().getVariableValue("toBeCasted", callFileName, callLine);
-		return toBoolean(toBeCasted, callFileName, callLine);
-	}
-	
-	
-	public static Boolean fromInt(BigInteger integer) {
-		return integer.compareTo(BigInteger.valueOf(0)) > 0;
-	}
+    @Override
+    public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+        setArguments(arguments, callFileName, callLine);
+        var toBeCasted = getBody().getVariableValue("toBeCasted", callFileName, callLine);
+        return toBoolean(toBeCasted, callFileName, callLine);
+    }
 
-	public static Boolean fromInt(int integer) {
-		return integer > 0;
-	}
-	public static Boolean fromFloat(double floating) {
-		return floating > 0;
-	}
-	public static Boolean fromString(StringStruct str) {
-		return Boolean.parseBoolean(str.getString());
-	}
+
+    private static Boolean fromInt(BigInteger integer) {
+        return integer.compareTo(BigInteger.valueOf(0)) > 0;
+    }
+
+    private static Boolean fromInt(int integer) {
+        return integer > 0;
+    }
+
+    private static Boolean fromFloat(double floating) {
+        return floating > 0;
+    }
+
+    private static Boolean fromString(StringStruct str) {
+        return Boolean.parseBoolean(str.getString());
+    }
 }

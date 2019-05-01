@@ -16,9 +16,6 @@ limitations under the License.
 
 package sml.threading;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
@@ -26,29 +23,32 @@ import parser.LogError;
 import sml.data.returning.Nothing;
 import sml.data.returning.VoidType;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+
 public final class Sleep extends FunctionDeclarationNode {
 
-	public Sleep() {
-		super("sleep");
-		setBody(new Block(null));
-		addParameter("millis");
-	}
+    public Sleep() {
+        super("sleep");
+        setBody(new Block(null));
+        addParameter("millis");
+    }
 
-	@Override
-	public VoidType call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		var _millis = getBody().getVariableValue("millis", callFileName, callLine);
-		int millis = 0;
-		if (_millis instanceof Integer)
-			millis = (int) _millis;
-		else if (_millis instanceof BigInteger)
-			millis = ((BigInteger) _millis).intValue();
-		try {
-			Thread.sleep(millis);
-		} catch (InterruptedException e) {
-			new LogError("Sleep for " + millis + " was interrupted", callFileName, callLine);
-		}
-		return Nothing.nothing;
-	}
+    @Override
+    public VoidType call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+        setArguments(arguments, callFileName, callLine);
+        var _millis = getBody().getVariableValue("millis", callFileName, callLine);
+        int millis = 0;
+        if (_millis instanceof Integer)
+            millis = (int) _millis;
+        else if (_millis instanceof BigInteger)
+            millis = ((BigInteger) _millis).intValue();
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            new LogError("Sleep for " + millis + " was interrupted", callFileName, callLine);
+        }
+        return Nothing.nothing;
+    }
 
 }

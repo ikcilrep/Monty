@@ -22,42 +22,42 @@ import ast.expressions.OperationNode;
 
 public final class ReturnStatementNode extends NodeWithParent implements Cloneable {
 
-	private OperationNode expression;
+    private OperationNode expression;
 
-	public ReturnStatementNode(OperationNode expression, String fileName, int line) {
-		setExpression(expression);
-		setFileName(fileName);
-		setLine(line);
-	}
+    public ReturnStatementNode(OperationNode expression, String fileName, int line) {
+        setExpression(expression);
+        setFileName(fileName);
+        setLine(line);
+    }
 
-	@Override
-	public NodeWithParent copy() {
-		ReturnStatementNode copy = null;
-		try {
-			copy = (ReturnStatementNode) clone();
-			copy.setExpression(getExpression().copy());
-			return copy;
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+    @Override
+    public NodeWithParent copy() {
+        ReturnStatementNode copy;
+        try {
+            copy = (ReturnStatementNode) clone();
+            copy.setExpression(getExpression().copy());
+            return copy;
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-	public OperationNode getExpression() {
-		return expression;
-	}
+    private OperationNode getExpression() {
+        return expression;
+    }
 
-	@Override
-	public Object run() {
-		return getExpression().run();
-	}
+    @Override
+    public Object run() {
+        return getExpression().run();
+    }
 
-	public void setExpression(OperationNode expression) {
-		this.expression = expression;
-	}
+    private void setExpression(OperationNode expression) {
+        this.expression = expression;
+    }
 
-	@Override
-	public void setParent(Block parent) {
-		expression.setParent(parent);
-	}
+    @Override
+    public void setParent(Block parent) {
+        expression.setParent(parent);
+    }
 }

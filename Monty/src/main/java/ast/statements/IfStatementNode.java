@@ -22,43 +22,43 @@ import ast.expressions.OperationNode;
 
 public final class IfStatementNode extends ConditionalNode {
 
-	private Block elseBody;
+    private Block elseBody;
 
-	private boolean isInElse = false;
+    private boolean isInElse = false;
 
-	public IfStatementNode(Block parent, OperationNode condition, String fileName, int line, boolean isInElse) {
-		super(condition, parent);
-		if (isInElse)
-			setParent(parent.getParent());
-		setInElse(isInElse);
-		setCondition(condition);
-		setFileName(fileName);
-		setLine(line);
-	}
+    public IfStatementNode(Block parent, OperationNode condition, String fileName, int line, boolean isInElse) {
+        super(condition, parent);
+        if (isInElse)
+            setParent(parent.getParent());
+        setInElse(isInElse);
+        setCondition(condition);
+        setFileName(fileName);
+        setLine(line);
+    }
 
-	public Block getElseBody() {
-		return elseBody;
-	}
+    private Block getElseBody() {
+        return elseBody;
+    }
 
-	public boolean isInElse() {
-		return isInElse;
-	}
+    public boolean isInElse() {
+        return isInElse;
+    }
 
-	@Override
-	public Object run() {
-		if (runnedCondition())
-			return super.run();
-		else if (getElseBody() != null)
-			return getElseBody().run();
+    @Override
+    public Object run() {
+        if (ranCondition())
+            return super.run();
+        else if (getElseBody() != null)
+            return getElseBody().run();
 
-		return null;
-	}
+        return null;
+    }
 
-	public void setElseBody(Block elseBody) {
-		this.elseBody = elseBody;
-	}
+    public void setElseBody(Block elseBody) {
+        this.elseBody = elseBody;
+    }
 
-	public void setInElse(boolean isInElse) {
-		this.isInElse = isInElse;
-	}
+    public void setInElse(boolean isInElse) {
+        this.isInElse = isInElse;
+    }
 }

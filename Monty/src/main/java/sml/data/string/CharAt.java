@@ -15,43 +15,43 @@ limitations under the License.
 */
 package sml.data.string;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-import sml.data.string.StringStruct;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
 import sml.data.Method;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+
 final class CharAt extends Method<StringStruct> {
 
-	public CharAt(StringStruct parent) {
-		super(parent, "charAt");
-		addParameter("index");
-	}
+    CharAt(StringStruct parent) {
+        super(parent, "charAt");
+        addParameter("index");
+    }
 
-	@Override
-	public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		var body = getBody();
-		var _index = body.getVariableValue("index", callFileName, callLine);
-		int index = 0;
-		if (_index instanceof Integer)
-			index = (int) _index;
-		else if (_index instanceof BigInteger) {
-			var bigIndex = (BigInteger) _index;
-			if (bigIndex.compareTo(DataTypes.INT_MAX) > 0)
-				new LogError("Index have to be less or equals 2^31-1.", callFileName, callLine);
-			else if (bigIndex.compareTo(DataTypes.INT_MIN) < 0)
-				new LogError("Index have to be greater or equals -2^31.", callFileName, callLine);
-			index = bigIndex.intValue();
-		}
-		try {
-			return String.valueOf(parent.getString().charAt(index));
-		} catch (IndexOutOfBoundsException e) {
-			new LogError("Index " + index + " out of bounds for length " + parent.getString().length(), callFileName, callLine);
-		}
-		return null;
-	}
+    @Override
+    public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+        setArguments(arguments, callFileName, callLine);
+        var body = getBody();
+        var _index = body.getVariableValue("index", callFileName, callLine);
+        int index = 0;
+        if (_index instanceof Integer)
+            index = (int) _index;
+        else if (_index instanceof BigInteger) {
+            var bigIndex = (BigInteger) _index;
+            if (bigIndex.compareTo(DataTypes.INT_MAX) > 0)
+                new LogError("Index have to be less or equals 2^31-1.", callFileName, callLine);
+            else if (bigIndex.compareTo(DataTypes.INT_MIN) < 0)
+                new LogError("Index have to be greater or equals -2^31.", callFileName, callLine);
+            index = bigIndex.intValue();
+        }
+        try {
+            return String.valueOf(parent.getString().charAt(index));
+        } catch (IndexOutOfBoundsException e) {
+            new LogError("Index " + index + " out of bounds for length " + parent.getString().length(), callFileName, callLine);
+        }
+        return null;
+    }
 
 }

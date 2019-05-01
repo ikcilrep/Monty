@@ -23,38 +23,38 @@ import sml.data.returning.BreakType;
 import sml.data.returning.ContinueType;
 
 public final class WhileStatementNode extends ConditionalNode {
-	boolean isDoWhile;
+    private boolean isDoWhile;
 
-	public WhileStatementNode(OperationNode condition, String fileName, int line, boolean isDoWhile, Block parent) {
-		super(condition, parent);
-		setCondition(condition);
-		setFileName(fileName);
-		setLine(line);
-		setDoWhile(isDoWhile);
-	}
+    public WhileStatementNode(OperationNode condition, String fileName, int line, boolean isDoWhile, Block parent) {
+        super(condition, parent);
+        setCondition(condition);
+        setFileName(fileName);
+        setLine(line);
+        setDoWhile(isDoWhile);
+    }
 
-	public boolean isDoWhile() {
-		return isDoWhile;
-	}
+    private boolean isDoWhile() {
+        return isDoWhile;
+    }
 
-	@Override
-	public Object run() {
-		Object result = null;
-		if (isDoWhile() || runnedCondition()) {
-			do {
-				result = super.run();
-				if (result instanceof BreakType)
-					break;
-				if (result instanceof ContinueType)
-					continue;
-				if (result != null)
-					return result;
-			} while (runnedCondition());
-		}
-		return null;
-	}
+    @Override
+    public Object run() {
+        Object result;
+        if (isDoWhile() || ranCondition()) {
+            do {
+                result = super.run();
+                if (result instanceof BreakType)
+                    break;
+                if (result instanceof ContinueType)
+                    continue;
+                if (result != null)
+                    return result;
+            } while (ranCondition());
+        }
+        return null;
+    }
 
-	public void setDoWhile(boolean isDoWhile) {
-		this.isDoWhile = isDoWhile;
-	}
+    private void setDoWhile(boolean isDoWhile) {
+        this.isDoWhile = isDoWhile;
+    }
 }

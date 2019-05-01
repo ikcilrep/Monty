@@ -15,21 +15,21 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import java.util.ArrayList;
-
 import ast.expressions.OperationNode;
 import sml.data.Method;
 
+import java.util.ArrayList;
+
 final class UpperCase extends Method<StringStruct> {
 
-	public UpperCase(StringStruct parent) {
-		super(parent,"upperCase");
-	}
+    UpperCase(StringStruct parent) {
+        super(parent, "upperCase");
+    }
 
-	@Override
-	public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		return parent.getString().toUpperCase();
-	}
+    @Override
+    public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+        setArguments(arguments, callFileName, callLine);
+        return parent.getString().toUpperCase();
+    }
 
 }

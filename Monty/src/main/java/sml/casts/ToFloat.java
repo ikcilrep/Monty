@@ -16,9 +16,6 @@ limitations under the License.
 
 package sml.casts;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
@@ -27,68 +24,71 @@ import parser.LogError;
 import sml.data.returning.VoidType;
 import sml.data.string.StringStruct;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+
 public final class ToFloat extends FunctionDeclarationNode {
 
-	public static Double toFloat(Object toBeCasted, String callFileName, int callLine) {
-		if (toBeCasted instanceof VoidType)
-			new LogError("Can't cast void to real", callFileName, callLine);
-		if (toBeCasted instanceof BigInteger)
-			return fromInt((BigInteger) toBeCasted);
-		if (toBeCasted instanceof Integer)
-			return fromInt((int) toBeCasted);
-		if (toBeCasted instanceof Boolean)
-			return fromBoolean((Boolean) toBeCasted);
-		if (toBeCasted instanceof Double)
-			return (double) toBeCasted;
-		if (toBeCasted instanceof StringStruct)
-			return fromString((StringStruct) toBeCasted, callFileName, callLine);
-		else
-			new LogError("Can't cast structure to real", callFileName, callLine);
-		return null;
-	}
+    private static Double toFloat(Object toBeCasted, String callFileName, int callLine) {
+        if (toBeCasted instanceof VoidType)
+            new LogError("Can't cast void to real", callFileName, callLine);
+        if (toBeCasted instanceof BigInteger)
+            return fromInt((BigInteger) toBeCasted);
+        if (toBeCasted instanceof Integer)
+            return fromInt((int) toBeCasted);
+        if (toBeCasted instanceof Boolean)
+            return fromBoolean((Boolean) toBeCasted);
+        if (toBeCasted instanceof Double)
+            return (double) toBeCasted;
+        if (toBeCasted instanceof StringStruct)
+            return fromString((StringStruct) toBeCasted, callFileName, callLine);
+        else
+            new LogError("Can't cast structure to real", callFileName, callLine);
+        return null;
+    }
 
-	public ToFloat() {
-		super("toFloat");
-		setBody(new Block(null));
-		addParameter("toBeCasted");
-	}
+    public ToFloat() {
+        super("toFloat");
+        setBody(new Block(null));
+        addParameter("toBeCasted");
+    }
 
-	@Override
-	public Double call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		var toBeCasted = getBody().getVariableValue("toBeCasted", callFileName, callLine);
-		return toFloat(toBeCasted, callFileName, callLine);
-	}
+    @Override
+    public Double call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+        setArguments(arguments, callFileName, callLine);
+        var toBeCasted = getBody().getVariableValue("toBeCasted", callFileName, callLine);
+        return toFloat(toBeCasted, callFileName, callLine);
+    }
 
-	public static void fromSmallIntVariable(VariableDeclarationNode variable, String fileName, int line) {
-		variable.setValue(fromInt((int) variable.getValue()), fileName, line);
-	}
+    public static void fromSmallIntVariable(VariableDeclarationNode variable, String fileName, int line) {
+        variable.setValue(fromInt((int) variable.getValue()), fileName, line);
+    }
 
-	public static void fromBigIntVariable(VariableDeclarationNode variable, String fileName, int line) {
-		variable.setValue(fromInt((BigInteger) variable.getValue()), fileName, line);
-	}
+    public static void fromBigIntVariable(VariableDeclarationNode variable, String fileName, int line) {
+        variable.setValue(fromInt((BigInteger) variable.getValue()), fileName, line);
+    }
 
-	public static double fromInt(int integer) {
-		return (double) integer;
-	}
+    public static double fromInt(int integer) {
+        return (double) integer;
+    }
 
-	public static double fromInt(BigInteger integer) {
-		return integer.doubleValue();
-	}
+    public static double fromInt(BigInteger integer) {
+        return integer.doubleValue();
+    }
 
-	public static double fromBoolean(Boolean bool) {
-		if (bool == true)
-			return 1;
-		return 0;
-	}
+    private static double fromBoolean(Boolean bool) {
+        if (bool)
+            return 1;
+        return 0;
+    }
 
-	public static Double fromString(StringStruct str, String fileName, int line) {
-		try {
-			return Double.parseDouble(str.getString());
-		} catch (NumberFormatException e) {
-			new LogError("Unknown number format for float type:\t" + str, fileName, line);
-		}
-		return null;
-	}
+    private static Double fromString(StringStruct str, String fileName, int line) {
+        try {
+            return Double.parseDouble(str.getString());
+        } catch (NumberFormatException e) {
+            new LogError("Unknown number format for float type:\t" + str, fileName, line);
+        }
+        return null;
+    }
 
 }

@@ -16,105 +16,105 @@ limitations under the License.
 
 package ast.declarations;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import ast.Block;
 import ast.expressions.OperatorOverloading;
 import lexer.Token;
 import sml.Sml;
 import sml.casts.ToBoolean;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class StructDeclarationNode extends Block implements Cloneable {
-	private static int actualStructNumber = -1;
-	private static HashMap<Integer, Integer> numbers = new HashMap<>();
-	private int structNumber;
-	private int instanceNumber;
-	private String name;
+    private static int actualStructNumber = -1;
+    private static HashMap<Integer, Integer> numbers = new HashMap<>();
+    private int structNumber;
+    private int instanceNumber;
+    private String name;
 
-	public StructDeclarationNode(Block parent, String name) {
-		super(parent);
-		setName(name);
-		incrementStructNumber();
-		numbers.put(structNumber, -1);
-	}
+    public StructDeclarationNode(Block parent, String name) {
+        super(parent);
+        setName(name);
+        incrementStructNumber();
+        numbers.put(structNumber, -1);
+    }
 
-	public void addNewStruct(Block block, String fileName, int line) {
-		block.addStructure(this, fileName, line);
-		block.addFunction(new Constructor(this), fileName, line);
-	}
+    private void addNewStruct(Block block, String fileName, int line) {
+        block.addStructure(this, fileName, line);
+        block.addFunction(new Constructor(this), fileName, line);
+    }
 
-	public void addNewStruct(Block block, Token token) {
-		addNewStruct(block, token.getFileName(), token.getLine());
-	}
+    public void addNewStruct(Block block, Token token) {
+        addNewStruct(block, token.getFileName(), token.getLine());
+    }
 
-	@Override
-	public StructDeclarationNode copy() {
-		StructDeclarationNode copied = null;
-		copied = (StructDeclarationNode) super.copy();
-		var structs = new HashMap<String, StructDeclarationNode>();
-		for (Map.Entry<String, StructDeclarationNode> entry : getStructures().entrySet()) {
-			var value = entry.getValue().copy();
-			value.setParent(copied);
-			structs.put(entry.getKey(), value);
-			copied.getFunctions().put(value.getName(), new Constructor(value));
-		}
-		copied.setStructures(structs);
+    @Override
+    public StructDeclarationNode copy() {
+        StructDeclarationNode copied;
+        copied = (StructDeclarationNode) super.copy();
+        var structs = new HashMap<String, StructDeclarationNode>();
+        for (Map.Entry<String, StructDeclarationNode> entry : getStructures().entrySet()) {
+            var value = entry.getValue().copy();
+            value.setParent(copied);
+            structs.put(entry.getKey(), value);
+            copied.getFunctions().put(value.getName(), new Constructor(value));
+        }
+        copied.setStructures(structs);
 
-		copied.copyVariables();
+        copied.copyVariables();
 
-		var functions = new HashMap<String, FunctionDeclarationNode>();
-		for (Map.Entry<String, FunctionDeclarationNode> entry : getFunctions().entrySet()) {
-			var value = entry.getValue().copy();
-			value.getBody().setParent(copied);
-			functions.put(entry.getKey(), value);
-		}
-		copied.setFunctions(functions);
-		return copied;
-	}
+        var functions = new HashMap<String, FunctionDeclarationNode>();
+        for (Map.Entry<String, FunctionDeclarationNode> entry : getFunctions().entrySet()) {
+            var value = entry.getValue().copy();
+            value.getBody().setParent(copied);
+            functions.put(entry.getKey(), value);
+        }
+        copied.setFunctions(functions);
+        return copied;
+    }
 
-	@Override
-	public boolean equals(Object other) {
-		return ToBoolean.toBoolean(OperatorOverloading.overloadOperator(this, other, "$eq", 2, false),
-				OperatorOverloading.getTemporaryFileName(), OperatorOverloading.getTemporaryLine());
-	}
+    @Override
+    public boolean equals(Object other) {
+        return ToBoolean.toBoolean(OperatorOverloading.overloadOperator(this, other, "$eq", 2, false),
+                OperatorOverloading.getTemporaryFileName(), OperatorOverloading.getTemporaryLine());
+    }
 
-	public int getInstanceNumber() {
-		return instanceNumber;
-	}
+    private int getInstanceNumber() {
+        return instanceNumber;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public int getStructNumber() {
-		return structNumber;
-	}
+    private int getStructNumber() {
+        return structNumber;
+    }
 
-	public void incrementNumber() {
-		var number = numbers.get(structNumber);
-		numbers.put(structNumber, number + 1);
-		instanceNumber = number + 1;
-	}
+    protected void incrementNumber() {
+        var number = numbers.get(structNumber);
+        numbers.put(structNumber, number + 1);
+        instanceNumber = number + 1;
+    }
 
-	public void incrementStructNumber() {
-		this.structNumber = ++actualStructNumber;
-	}
+    private void incrementStructNumber() {
+        this.structNumber = ++actualStructNumber;
+    }
 
-	public boolean instanceOfMe(StructDeclarationNode s) {
-		return s.getStructNumber() == structNumber;
-	}
+    public boolean instanceOfMe(StructDeclarationNode s) {
+        return s.getStructNumber() == structNumber;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	@Override
-	public String toString() {
-		if (hasFunction("toString")) {
-			var function = getFunction("toString",OperatorOverloading.getTemporaryFileName(), OperatorOverloading.getTemporaryLine());
-			return function.call(Sml.emptyArgumentList, function.getFileName(), function.getLine()).toString();
-		}
-		return name + "#" + getInstanceNumber();
-	}
+    @Override
+    public String toString() {
+        if (hasFunction("toString")) {
+            var function = getFunction("toString", OperatorOverloading.getTemporaryFileName(), OperatorOverloading.getTemporaryLine());
+            return function.call(Sml.emptyArgumentList, function.getFileName(), function.getLine()).toString();
+        }
+        return name + "#" + getInstanceNumber();
+    }
 }

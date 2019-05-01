@@ -16,22 +16,22 @@ limitations under the License.
 
 package sml.data.list;
 
-import java.util.ArrayList;
-
 import ast.expressions.OperationNode;
 import sml.data.Method;
 
+import java.util.ArrayList;
+
 final class Add extends Method<List> {
 
-	Add(List array) {
-		super(array, "add");
-		addParameter("other");
-	}
+    Add(List array) {
+        super(array, "add");
+        addParameter("other");
+    }
 
-	@Override
-	public List call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		return parent.add(getBody().getVariable("other", callFileName, callLine).getValue());
-	}
+    @Override
+    public List call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+        setArguments(arguments, callFileName, callLine);
+        return parent.add(getBody().getVariable("other", callFileName, callLine).getValue());
+    }
 
 }

@@ -16,22 +16,22 @@ limitations under the License.
 
 package sml.data.string;
 
-import java.util.ArrayList;
-
 import ast.expressions.OperationNode;
 import sml.data.Method;
 
+import java.util.ArrayList;
+
 final class StartsWith extends Method<StringStruct> {
 
-	public StartsWith(StringStruct parent) {
-		super(parent,"startsWith");
-		addParameter("prefix");
-	}
+    StartsWith(StringStruct parent) {
+        super(parent, "startsWith");
+        addParameter("prefix");
+    }
 
-	@Override
-	public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		return parent.getString().startsWith(getBody().getStringVariableValue("prefix", callFileName, callLine));
-	}
+    @Override
+    public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+        setArguments(arguments, callFileName, callLine);
+        return parent.getString().startsWith(getBody().getStringVariableValue("prefix", callFileName, callLine));
+    }
 
 }

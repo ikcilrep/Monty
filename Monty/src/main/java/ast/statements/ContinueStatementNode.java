@@ -21,13 +21,13 @@ import sml.data.returning.Nothing;
 
 public final class ContinueStatementNode extends RunnableNode {
 
-	public ContinueStatementNode(String fileName, int line) {
-		setFileName(fileName);
-		setLine(line);
-	}
+    public ContinueStatementNode(String fileName, int line) {
+        setFileName(fileName);
+        setLine(line);
+    }
 
-	@Override
-	public Object run() {
-		return Nothing.continueType;
-	}
+    @Override
+    public Object run() {
+        return Nothing.continueType;
+    }
 }

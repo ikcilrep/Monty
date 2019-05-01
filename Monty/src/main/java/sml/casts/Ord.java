@@ -16,29 +16,29 @@ limitations under the License.
 
 package sml.casts;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.LogError;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+
 public final class Ord extends FunctionDeclarationNode {
 
-	public Ord() {
-		super("ord");
-		setBody(new Block(null));
-		addParameter("chr");
-	}
+    public Ord() {
+        super("ord");
+        setBody(new Block(null));
+        addParameter("chr");
+    }
 
-	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		var chr = (String) getBody().getVariableValue("chr",callFileName, callLine);
-		if (chr.length() != 1)
-			new LogError("Expected one character, but got " + chr.length() + ":\t" + chr, callFileName, callLine);
-		return BigInteger.valueOf(chr.charAt(0));
-	}
+    @Override
+    public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+        setArguments(arguments, callFileName, callLine);
+        var chr = (String) getBody().getVariableValue("chr", callFileName, callLine);
+        if (chr.length() != 1)
+            new LogError("Expected one character, but got " + chr.length() + ":\t" + chr, callFileName, callLine);
+        return BigInteger.valueOf(chr.charAt(0));
+    }
 
 }

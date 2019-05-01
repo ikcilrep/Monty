@@ -16,24 +16,24 @@ limitations under the License.
 
 package sml.data.string;
 
-import java.util.ArrayList;
-
 import ast.expressions.OperationNode;
 import sml.data.Method;
 import sml.data.list.List;
 
+import java.util.ArrayList;
+
 final class Split extends Method<StringStruct> {
 
-	public Split(StringStruct parent) {
-		super(parent, "split");
-		addParameter("regex");
-	}
+    Split(StringStruct parent) {
+        super(parent, "split");
+        addParameter("regex");
+    }
 
-	@Override
-	public List call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		var body = getBody();
-		return new List(parent.getString().split(body.getStringVariableValue("regex", callFileName, callLine)));
-	}
+    @Override
+    public List call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+        setArguments(arguments, callFileName, callLine);
+        var body = getBody();
+        return new List(parent.getString().split(body.getStringVariableValue("regex", callFileName, callLine)));
+    }
 
 }

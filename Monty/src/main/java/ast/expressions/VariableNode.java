@@ -18,19 +18,19 @@ package ast.expressions;
 
 public final class VariableNode extends NamedExpression {
 
-	private String name;
+    private String name;
 
-	public VariableNode(String name) {
-		setName(name);
-	}
+    public VariableNode(String name) {
+        setName(name);
+    }
 
-	@Override
-	public String getName() {
-		return name;
-	}
+    @Override
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
 }

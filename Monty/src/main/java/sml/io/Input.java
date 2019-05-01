@@ -16,32 +16,32 @@ limitations under the License.
 
 package sml.io;
 
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
-
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import sml.data.string.StringStruct;
 
+import java.util.ArrayList;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
+
 public final class Input extends FunctionDeclarationNode {
 
-	public static Scanner scanner = new Scanner(System.in);
+    private static Scanner scanner = new Scanner(System.in);
 
-	public Input() {
-		super("input");
-		setBody(new Block(null));
-	}
+    public Input() {
+        super("input");
+        setBody(new Block(null));
+    }
 
-	@Override
-	public StringStruct call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		try {
-			return new StringStruct(scanner.nextLine());
-		} catch (NoSuchElementException e) {
-			return new StringStruct("");
-		}
-	}
+    @Override
+    public StringStruct call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+        setArguments(arguments, callFileName, callLine);
+        try {
+            return new StringStruct(scanner.nextLine());
+        } catch (NoSuchElementException e) {
+            return new StringStruct("");
+        }
+    }
 
 }

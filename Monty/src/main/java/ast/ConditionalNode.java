@@ -20,35 +20,36 @@ import ast.expressions.OperationNode;
 import sml.casts.ToBoolean;
 
 public class ConditionalNode extends Block {
-	private OperationNode condition;
+    private OperationNode condition;
 
-	public ConditionalNode(OperationNode condition, Block parent) {
-		super(parent);
-		setCondition(condition);
-	}
+    public ConditionalNode(OperationNode condition, Block parent) {
+        super(parent);
+        setCondition(condition);
+    }
 
-	@Override
-	public ConditionalNode copy() {
-		var copied = (ConditionalNode) super.copy();
-		copied.setCondition(getCondition().copy());
-		return copied;
-	}
+    @Override
+    public ConditionalNode copy() {
+        var copied = (ConditionalNode) super.copy();
+        copied.setCondition(getCondition().copy());
+        return copied;
+    }
 
-	public OperationNode getCondition() {
-		return condition;
-	}
+    private OperationNode getCondition() {
+        return condition;
+    }
 
-	public boolean runnedCondition() {
-		return ToBoolean.toBoolean(getCondition().run(), getFileName(), getLine());
-	}
+    protected boolean ranCondition() {
+        return ToBoolean.toBoolean(getCondition().run(), getFileName(), getLine());
+    }
 
-	public void setCondition(OperationNode condition) {
-		this.condition = condition;
-	}
+    protected void setCondition(OperationNode condition) {
+        assert condition != null;
+        this.condition = condition;
+    }
 
-	@Override
-	public void setParent(Block parent) {
-		super.setParent(parent);
-		getCondition().setParent(parent);
-	}
+    @Override
+    public void setParent(Block parent) {
+        super.setParent(parent);
+        getCondition().setParent(parent);
+    }
 }

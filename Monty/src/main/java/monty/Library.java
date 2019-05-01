@@ -19,22 +19,22 @@ package monty;
 import java.util.HashMap;
 
 public abstract class Library {
-	private HashMap<String, Object> sublibraries = new HashMap<>();
-	private String name;
+    private HashMap<String, Object> children = new HashMap<>();
+    private String name;
 
-	protected Library(String name) {
-		this.name = name;
-		setLibrary();
-	}
+    protected Library(String name) {
+        this.name = name;
+        setLibrary();
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public HashMap<String, Object> getSublibraries() {
-		return sublibraries;
-	}
+    protected HashMap<String, Object> getChildren() {
+        return children;
+    }
 
-	public abstract void setLibrary();
+    public abstract void setLibrary();
 
 }

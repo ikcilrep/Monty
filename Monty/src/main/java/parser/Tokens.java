@@ -21,38 +21,38 @@ import lexer.Token;
 import lexer.TokenTypes;
 
 public class Tokens {
-	public static DataTypes getDataType(TokenTypes type) {
-		switch (type) {
-		case INTEGER_LITERAL:
-			return DataTypes.INTEGER;
-		case REAL_LITERAL:
-			return DataTypes.FLOAT;
-		case BOOLEAN_LITERAL:
-			return DataTypes.BOOLEAN;
-		case STRING_LITERAL:
-			return DataTypes.OBJECT;
-		default:
-			return null;
-		}
-	}
+    public static DataTypes getDataType(TokenTypes type) {
+        switch (type) {
+            case INTEGER_LITERAL:
+                return DataTypes.INTEGER;
+            case REAL_LITERAL:
+                return DataTypes.FLOAT;
+            case BOOLEAN_LITERAL:
+                return DataTypes.BOOLEAN;
+            case STRING_LITERAL:
+                return DataTypes.OBJECT;
+            default:
+                return null;
+        }
+    }
 
-	public static String getText(OptimizedTokensArray array) {
-		var result = new StringBuilder();
-		for (Token token : array)
-			result.append(token.getText());
-		return result.toString();
-	}
+    public static String getText(OptimizedTokensArray array) {
+        var result = new StringBuilder();
+        for (Token token : array)
+            result.append(token.getText());
+        return result.toString();
+    }
 
-	public static String getTypesToString(OptimizedTokensArray array) {
-		var result = new StringBuilder();
-		for (Token token : array) {
-			if (token.getType().equals(TokenTypes.OPERATOR) && token.getText().equals("."))
-				result.append("DOT");
-			else
-				result.append(token.getType());
+    static String getTypesToString(OptimizedTokensArray array) {
+        var result = new StringBuilder();
+        for (Token token : array) {
+            if (token.getType().equals(TokenTypes.OPERATOR) && token.getText().equals("."))
+                result.append("DOT");
+            else
+                result.append(token.getType());
 
-			result.append(' ');
-		}
-		return result.toString();
-	}
+            result.append(' ');
+        }
+        return result.toString();
+    }
 }

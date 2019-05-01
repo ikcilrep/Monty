@@ -16,18 +16,10 @@ limitations under the License.
 
 package sml;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import ast.expressions.OperationNode;
 import monty.FileIO;
 import monty.Library;
-import sml.casts.Ord;
-import sml.casts.ToBoolean;
-import sml.casts.ToChar;
-import sml.casts.ToFloat;
-import sml.casts.ToInt;
-import sml.casts.ToString;
+import sml.casts.*;
 import sml.language.Run;
 import sml.math.E;
 import sml.math.Pi;
@@ -36,71 +28,74 @@ import sml.threading.Sleep;
 import sml.time.Millis;
 import sml.time.Seconds;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public final class Sml extends Library {
-	public static final ArrayList<OperationNode> emptyArgumentList = new ArrayList<>();
-	public static String[] paths;
-	public static String[] code;
-	public static short numberOfFiles;
-	static {
-		String[] paths_ = { "iterations/range/range.mt", "functional/iterable/iterable.mt",
-				"functional/iterable/iterableFunctions.mt" };
-		numberOfFiles = (short) paths_.length;
-		paths = new String[numberOfFiles];
-		code = new String[numberOfFiles];
-		paths = paths_;
-		int i = 0;
-		for (var path : paths)
-			code[i++] = FileIO.readFile(Sml.class.getResourceAsStream(path), path);
+    public static final ArrayList<OperationNode> emptyArgumentList = new ArrayList<>();
+    public static String[] paths;
+    public static String[] code;
+    public static short numberOfFiles;
 
-	}
+    static {
+        String[] paths_ = {"iterations/range/range.mt", "functional/iterable/iterable.mt",
+                "functional/iterable/iterableFunctions.mt"};
+        numberOfFiles = (short) paths_.length;
+        paths = new String[numberOfFiles];
+        code = new String[numberOfFiles];
+        paths = paths_;
+        int i = 0;
+        for (var path : paths)
+            code[i++] = FileIO.readFile(Sml.class.getResourceAsStream(path), path);
 
-	public Sml() {
-		super("sml");
-	}
+    }
 
-	@Override
-	public void setLibrary() {
-		var sml = getSublibraries();
-		var casts = new HashMap<String, Object>();
-		var math = new HashMap<String, Object>();
-		var system = new HashMap<String, Object>();
-		var data = new HashMap<String, Object>();
-		var threading = new HashMap<String, Object>();
-		var time = new HashMap<String, Object>();
-		var string = new HashMap<String, Object>();
-		var files = new HashMap<String, Object>();
-		var language = new HashMap<String, Object>();
+    public Sml() {
+        super("sml");
+    }
 
-		sml.put("casts", casts);
-		sml.put("math", math);
-		sml.put("system", system);
-		sml.put("data", data);
-		sml.put("threading", threading);
-		sml.put("time", time);
-		sml.put("math", math);
-		sml.put("files", files);
-		sml.put("language", language);
+    @Override
+    public void setLibrary() {
+        var sml = getChildren();
+        var casts = new HashMap<String, Object>();
+        var math = new HashMap<String, Object>();
+        var system = new HashMap<String, Object>();
+        var data = new HashMap<String, Object>();
+        var threading = new HashMap<String, Object>();
+        var time = new HashMap<String, Object>();
+        var string = new HashMap<String, Object>();
+        var files = new HashMap<String, Object>();
+        var language = new HashMap<String, Object>();
 
-		casts.put("toBoolean", new ToBoolean());
-		casts.put("toFloat", new ToFloat());
-		casts.put("toInt", new ToInt());
-		casts.put("toString", new ToString());
-		casts.put("toChar", new ToChar());
-		casts.put("ord", new Ord());
+        sml.put("casts", casts);
+        sml.put("math", math);
+        sml.put("system", system);
+        sml.put("data", data);
+        sml.put("threading", threading);
+        sml.put("time", time);
+        sml.put("files", files);
+        sml.put("language", language);
 
-		data.put("string", string);
+        casts.put("toBoolean", new ToBoolean());
+        casts.put("toFloat", new ToFloat());
+        casts.put("toInt", new ToInt());
+        casts.put("toString", new ToString());
+        casts.put("toChar", new ToChar());
+        casts.put("ord", new Ord());
 
-		system.put("Argv", new Argv());
+        data.put("string", string);
 
-		threading.put("sleep", new Sleep());
+        system.put("Argv", new Argv());
 
-		time.put("seconds", new Seconds());
-		time.put("millis", new Millis());
+        threading.put("sleep", new Sleep());
 
-		math.put("Pi", new Pi());
-		math.put("E", new E());
+        time.put("seconds", new Seconds());
+        time.put("millis", new Millis());
 
-		language.put("run", new Run());
-	}
+        math.put("Pi", new Pi());
+        math.put("E", new E());
+
+        language.put("run", new Run());
+    }
 
 }

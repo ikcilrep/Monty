@@ -16,22 +16,22 @@ limitations under the License.
 
 package sml.data.string;
 
-import java.util.ArrayList;
-
 import ast.expressions.OperationNode;
 import sml.data.Method;
 
+import java.util.ArrayList;
+
 final class EqualsIgnoreCase extends Method<StringStruct> {
 
-	public EqualsIgnoreCase(StringStruct parent) {
-		super(parent,"equalsIgnoreCase");
-		addParameter("toCompare");
-	}
+    EqualsIgnoreCase(StringStruct parent) {
+        super(parent, "equalsIgnoreCase");
+        addParameter("toCompare");
+    }
 
-	@Override
-	public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		return parent.getString().equalsIgnoreCase(getBody().getStringVariableValue("toCompare", callFileName, callLine));
-	}
+    @Override
+    public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+        setArguments(arguments, callFileName, callLine);
+        return parent.getString().equalsIgnoreCase(getBody().getStringVariableValue("toCompare", callFileName, callLine));
+    }
 
 }

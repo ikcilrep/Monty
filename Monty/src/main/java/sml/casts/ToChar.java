@@ -16,39 +16,39 @@ limitations under the License.
 
 package sml.casts;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+
 public final class ToChar extends FunctionDeclarationNode {
-	public ToChar() {
-		super("toChar");
-		setBody(new Block(null));
-		addParameter("integer");
-	}
+    public ToChar() {
+        super("toChar");
+        setBody(new Block(null));
+        addParameter("integer");
+    }
 
-	@Override
-	public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		var integer = getBody().getVariableValue("integer", callFileName, callLine);
-		if (integer instanceof Integer)
-			return String.valueOf(Character.valueOf((char) (int) integer));
-		else if (integer instanceof BigInteger) {
-			var bigInteger = (BigInteger) integer;
-			if (bigInteger.compareTo(DataTypes.INT_MAX) > 0)
-				new LogError("Char number have to be less or equals 2^31-1.", callFileName, callLine);
-			else if (bigInteger.compareTo(DataTypes.INT_MIN) < 0)
-				new LogError("Char number have to be greater or equals -2^31.", callFileName, callLine);
+    @Override
+    public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+        setArguments(arguments, callFileName, callLine);
+        var integer = getBody().getVariableValue("integer", callFileName, callLine);
+        if (integer instanceof Integer)
+            return String.valueOf(Character.valueOf((char) (int) integer));
+        else if (integer instanceof BigInteger) {
+            var bigInteger = (BigInteger) integer;
+            if (bigInteger.compareTo(DataTypes.INT_MAX) > 0)
+                new LogError("Char number have to be less or equals 2^31-1.", callFileName, callLine);
+            else if (bigInteger.compareTo(DataTypes.INT_MIN) < 0)
+                new LogError("Char number have to be greater or equals -2^31.", callFileName, callLine);
 
-			return String.valueOf(Character.valueOf((char) (int) bigInteger.intValue()));
-		}
-		new LogError("Can't change not a number to char.", callFileName, callLine);
-		return null;
-	}
+            return String.valueOf(Character.valueOf((char) (int) bigInteger.intValue()));
+        }
+        new LogError("Can't change not a number to char.", callFileName, callLine);
+        return null;
+    }
 
 }

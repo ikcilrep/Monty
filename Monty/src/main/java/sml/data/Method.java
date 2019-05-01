@@ -21,12 +21,12 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.StructDeclarationNode;
 
 public abstract class Method<T extends StructDeclarationNode> extends FunctionDeclarationNode {
-	protected T parent;
+    protected T parent;
 
-	public Method(T parent, String name) {
-		super(name);
-		setBody(new Block(parent));
-		this.parent = parent;
-		parent.addFunction(this);
-	}
+    public Method(T parent, String name) {
+        super(name);
+        setBody(new Block(parent));
+        this.parent = parent;
+        parent.addFunction(this);
+    }
 }

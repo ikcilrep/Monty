@@ -16,26 +16,26 @@ limitations under the License.
 
 package sml.data.string;
 
-import java.util.ArrayList;
-
 import ast.expressions.OperationNode;
 import sml.data.Method;
 
+import java.util.ArrayList;
+
 final class Replace extends Method<StringStruct> {
 
-	public Replace(StringStruct parent) {
-		super(parent, "replace");
-		addParameter("regex");
-		addParameter("replacement");
+    Replace(StringStruct parent) {
+        super(parent, "replace");
+        addParameter("regex");
+        addParameter("replacement");
 
-	}
+    }
 
-	@Override
-	public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		var body = getBody();
-		return parent.getString().replaceAll(body.getStringVariableValue("regex", callFileName, callLine),
-				body.getStringVariableValue("replacement", callFileName, callLine));
-	}
+    @Override
+    public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+        setArguments(arguments, callFileName, callLine);
+        var body = getBody();
+        return parent.getString().replaceAll(body.getStringVariableValue("regex", callFileName, callLine),
+                body.getStringVariableValue("replacement", callFileName, callLine));
+    }
 
 }

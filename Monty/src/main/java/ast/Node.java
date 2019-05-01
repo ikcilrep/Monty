@@ -17,22 +17,22 @@ limitations under the License.
 package ast;
 
 public class Node {
-	private int line;
-	private String fileName;
+    private int line;
+    private String fileName;
 
-	public String getFileName() {
-		return fileName;
-	}
+    public String getFileName() {
+        return fileName;
+    }
 
-	public int getLine() {
-		return line;
-	}
+    public int getLine() {
+        return line;
+    }
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 
-	public void setLine(int line) {
-		this.line = line;
-	}
+    public void setLine(int line) {
+        this.line = line;
+    }
 }

@@ -16,8 +16,6 @@ limitations under the License.
 
 package parser.parsing;
 
-import java.util.HashMap;
-
 import ast.Block;
 import lexer.OptimizedTokensArray;
 import lexer.Token;
@@ -27,72 +25,74 @@ import monty.Library;
 import parser.Identificator;
 import parser.LogError;
 
+import java.util.HashMap;
+
 public final class Parser {
-	public final static HashMap<String, Library> libraries = new HashMap<>();
+    public final static HashMap<String, Library> libraries = new HashMap<>();
 
-	public final static Block parse(OptimizedTokensArray tokens) {
-		var tokensBeforeSemicolon = new OptimizedTokensArray();
-		var block = new Block(null);
+    public static Block parse(OptimizedTokensArray tokens) {
+        var tokensBeforeSemicolon = new OptimizedTokensArray();
+        var block = new Block(null);
 
-		for (Token token : tokens) {
-			if (token.getType().equals(TokenTypes.SEMICOLON)) {
-				if (tokensBeforeSemicolon.length() == 0)
-					continue;
-				if (Identificator.isVariableDeclaration(tokensBeforeSemicolon)) {
-					AdderToBlock.addVariableDeclaration(block, tokensBeforeSemicolon);
-				} else if (Identificator.isReturnStatement(tokensBeforeSemicolon)) {
-					AdderToBlock.addReturnStatement(block, tokensBeforeSemicolon);
-				} else if (Identificator.isFunctionDeclaration(tokensBeforeSemicolon)) {
-					block = AdderToBlock.addFunctionDeclaration(block, tokensBeforeSemicolon);
-				} else if (Identificator.isStructDeclaration(tokensBeforeSemicolon)) {
-					block = AdderToBlock.addStructDeclaration(block, tokensBeforeSemicolon);
-				} else if (Identificator.isIfStatement(tokensBeforeSemicolon)) {
-					block = AdderToBlock.addIfStatement(block, tokensBeforeSemicolon, false);
-				} else if (Identificator.isElseStatement(tokensBeforeSemicolon)) {
-					block = AdderToBlock.addElseStatement(block, tokensBeforeSemicolon);
-					if (tokensBeforeSemicolon.length() > 1) {
-						block = AdderToBlock.addIfStatement(block,
-								tokensBeforeSemicolon.subarray(1, tokensBeforeSemicolon.length()), true);
-					}
-				} else if (Identificator.isWhileStatement(tokensBeforeSemicolon)) {
-					block = AdderToBlock.addWhileStatement(block, tokensBeforeSemicolon);
-				} else if (Identificator.isDoWhileStatement(tokensBeforeSemicolon)) {
-					block = AdderToBlock.addDoWhileStatement(block, tokensBeforeSemicolon);
-				} else if (Identificator.isImport(tokensBeforeSemicolon)) {
-					Importing.importFile(block, tokensBeforeSemicolon);
-				} else if (Identificator.isJar(tokensBeforeSemicolon)) {
-					Importing.addJarLibrary(tokensBeforeSemicolon);
-				} else if (Identificator.isBreakStatement(tokensBeforeSemicolon)) {
-					AdderToBlock.addBreakStatement(block, tokensBeforeSemicolon.get(0).getFileName(),
-							tokensBeforeSemicolon.get(0).getLine());
-				} else if (Identificator.isContinueStatement(tokensBeforeSemicolon)) {
-					AdderToBlock.addContinueStatement(block, tokensBeforeSemicolon.get(0).getFileName(),
-							tokensBeforeSemicolon.get(0).getLine());
-				} else if (Identificator.isForStatement(tokensBeforeSemicolon)) {
-					block = AdderToBlock.addForStatement(block, tokensBeforeSemicolon);
-				} else if (Identificator.isEndKeyword(tokensBeforeSemicolon)) {
-					var parent = block.getParent();
-					if (parent == null)
-						new LogError("Nothing to end!", tokensBeforeSemicolon.get(0));
-					/*
-					 * if (block instanceof IfStatementNode && ((IfStatementNode) block).isInElse())
-					 * block = parent;
-					 */
-					block = block.getParent();
-				} else if (Identificator.isExpression(tokensBeforeSemicolon, 0, tokensBeforeSemicolon.length())) {
-					AdderToBlock.addExpression(block, tokensBeforeSemicolon);
-				}
-				tokensBeforeSemicolon.clear();
-			} else
-				tokensBeforeSemicolon.append(token);
-		}
-		while (true) {
-			var parent = block.getParent();
-			if (parent == null)
-				break;
-			block = parent;
-		}
-		return block;
+        for (Token token : tokens) {
+            if (token.getType().equals(TokenTypes.SEMICOLON)) {
+                if (tokensBeforeSemicolon.length() == 0)
+                    continue;
+                if (Identificator.isVariableDeclaration(tokensBeforeSemicolon)) {
+                    AdderToBlock.addVariableDeclaration(block, tokensBeforeSemicolon);
+                } else if (Identificator.isReturnStatement(tokensBeforeSemicolon)) {
+                    AdderToBlock.addReturnStatement(block, tokensBeforeSemicolon);
+                } else if (Identificator.isFunctionDeclaration(tokensBeforeSemicolon)) {
+                    block = AdderToBlock.addFunctionDeclaration(block, tokensBeforeSemicolon);
+                } else if (Identificator.isStructDeclaration(tokensBeforeSemicolon)) {
+                    block = AdderToBlock.addStructDeclaration(block, tokensBeforeSemicolon);
+                } else if (Identificator.isIfStatement(tokensBeforeSemicolon)) {
+                    block = AdderToBlock.addIfStatement(block, tokensBeforeSemicolon, false);
+                } else if (Identificator.isElseStatement(tokensBeforeSemicolon)) {
+                    block = AdderToBlock.addElseStatement(block, tokensBeforeSemicolon);
+                    if (tokensBeforeSemicolon.length() > 1) {
+                        block = AdderToBlock.addIfStatement(block,
+                                tokensBeforeSemicolon.subarray(1, tokensBeforeSemicolon.length()), true);
+                    }
+                } else if (Identificator.isWhileStatement(tokensBeforeSemicolon)) {
+                    block = AdderToBlock.addWhileStatement(block, tokensBeforeSemicolon);
+                } else if (Identificator.isDoWhileStatement(tokensBeforeSemicolon)) {
+                    block = AdderToBlock.addDoWhileStatement(block, tokensBeforeSemicolon);
+                } else if (Identificator.isImport(tokensBeforeSemicolon)) {
+                    Importing.importFile(block, tokensBeforeSemicolon);
+                } else if (Identificator.isJar(tokensBeforeSemicolon)) {
+                    Importing.addJarLibrary(tokensBeforeSemicolon);
+                } else if (Identificator.isBreakStatement(tokensBeforeSemicolon)) {
+                    AdderToBlock.addBreakStatement(block, tokensBeforeSemicolon.get(0).getFileName(),
+                            tokensBeforeSemicolon.get(0).getLine());
+                } else if (Identificator.isContinueStatement(tokensBeforeSemicolon)) {
+                    AdderToBlock.addContinueStatement(block, tokensBeforeSemicolon.get(0).getFileName(),
+                            tokensBeforeSemicolon.get(0).getLine());
+                } else if (Identificator.isForStatement(tokensBeforeSemicolon)) {
+                    block = AdderToBlock.addForStatement(block, tokensBeforeSemicolon);
+                } else if (Identificator.isEndKeyword(tokensBeforeSemicolon)) {
+                    var parent = block.getParent();
+                    if (parent == null)
+                        new LogError("Nothing to end!", tokensBeforeSemicolon.get(0));
+                    /*
+                     * if (block instanceof IfStatementNode && ((IfStatementNode) block).isInElse())
+                     * block = parent;
+                     */
+                    block = block.getParent();
+                } else if (Identificator.isExpression(tokensBeforeSemicolon, 0, tokensBeforeSemicolon.length())) {
+                    AdderToBlock.addExpression(block, tokensBeforeSemicolon);
+                }
+                tokensBeforeSemicolon.clear();
+            } else
+                tokensBeforeSemicolon.append(token);
+        }
+        while (true) {
+            var parent = block.getParent();
+            if (parent == null)
+                break;
+            block = parent;
+        }
+        return block;
 
-	}
+    }
 }

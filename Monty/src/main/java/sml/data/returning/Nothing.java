@@ -20,14 +20,14 @@ import ast.declarations.VariableDeclarationNode;
 
 public final class Nothing extends VariableDeclarationNode {
 
-	public static VoidType nothing = new VoidType();
-	public static BreakType breakType = new BreakType();
-	public static ContinueType continueType = new ContinueType();
+    public static VoidType nothing = new VoidType();
+    public static BreakType breakType = new BreakType();
+    public static ContinueType continueType = new ContinueType();
 
-	public Nothing() {
-		super("Nothing");
-		setValue(nothing);
-		setConst(true);
-	}
+    public Nothing() {
+        super("Nothing");
+        setValue(nothing);
+        setConst(true);
+    }
 
 }

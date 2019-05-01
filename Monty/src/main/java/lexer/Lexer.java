@@ -16,184 +16,183 @@ limitations under the License.
 
 package lexer;
 
-import java.util.Set;
-
 import org.apache.commons.text.StringEscapeUtils;
-
 import parser.LogError;
 
+import java.util.Set;
+
 public final class Lexer {
-	private final static Set<Character> OPERATORS_PARTS = Set.of('+', '-', '*', '/', '!', '<', '>', '=', '|', '&', '%',
-			'^', '.');
-	private final static Set<String> OPERATORS = Set.of(".", "!", "+", "-", "*", "**", "/", "<", ">", "&", "|", "^", "=",
-			"<<", ">>", "!=", "+=", "-=", "*=", "/=", "<=", ">=", "&=", "|=", "^=", "==", "<<=", ">>=", "%", "%=","**=");
+    private final static Set<Character> OPERATORS_PARTS = Set.of('+', '-', '*', '/', '!', '<', '>', '=', '|', '&', '%',
+            '^', '.');
+    private final static Set<String> OPERATORS = Set.of(".", "!", "+", "-", "*", "**", "/", "<", ">", "&", "|", "^", "=",
+            "<<", ">>", "!=", "+=", "-=", "*=", "/=", "<=", ">=", "&=", "|=", "^=", "==", "<<=", ">>=", "%", "%=", "**=");
 
-	private final static Set<TokenTypes> hasValue = Set.of(TokenTypes.BOOLEAN_LITERAL, TokenTypes.INTEGER_LITERAL,
-			TokenTypes.STRING_LITERAL, TokenTypes.REAL_LITERAL, TokenTypes.IDENTIFIER, TokenTypes.CLOSING_BRACKET,
-			TokenTypes.CLOSING_SQUARE_BRACKET);
+    private final static Set<TokenTypes> hasValue = Set.of(TokenTypes.BOOLEAN_LITERAL, TokenTypes.INTEGER_LITERAL,
+            TokenTypes.STRING_LITERAL, TokenTypes.REAL_LITERAL, TokenTypes.IDENTIFIER, TokenTypes.CLOSING_BRACKET,
+            TokenTypes.CLOSING_SQUARE_BRACKET);
 
-	private final static OptimizedTokensArray identifierOrKeyword(String code, String fileName, int line,
-			OptimizedTokensArray tokens, int i) {
-		var tokenText = "" + code.charAt(i);
-		char c;
-		while (++i < code.length() && Character.isJavaIdentifierPart(c = code.charAt(i)))
-			tokenText += c;
-		tokens.append(new Token(keywordOrIdentifierToTokenType(tokenText), tokenText, fileName, line));
-		return lex(code, fileName, line, tokens, i);
-	}
+    private static OptimizedTokensArray identifierOrKeyword(String code, String fileName, int line,
+                                                            OptimizedTokensArray tokens, int i) {
+        var tokenText = new StringBuilder(String.valueOf(code.charAt(i)));
+        char c;
+        while (++i < code.length() && Character.isJavaIdentifierPart(c = code.charAt(i)))
+            tokenText.append(c);
+        tokens.append(new Token(keywordOrIdentifierToTokenType(tokenText.toString()), tokenText.toString(), fileName, line));
+        return lex(code, fileName, line, tokens, i);
+    }
 
-	private final static TokenTypes interpunctionToTokenType(char tokenText) {
-		switch (tokenText) {
-		case ',':
-			return TokenTypes.COMMA;
-		case '(':
-			return TokenTypes.OPENING_BRACKET;
-		case ')':
-			return TokenTypes.CLOSING_BRACKET;
-		case '[':
-			return TokenTypes.OPENING_SQUARE_BRACKET;
-		case ']':
-			return TokenTypes.CLOSING_SQUARE_BRACKET;
-		default:
-			return TokenTypes.SEMICOLON;
-		}
+    private static TokenTypes getSpecialTokenType(char tokenText) {
+        switch (tokenText) {
+            case ',':
+                return TokenTypes.COMMA;
+            case '(':
+                return TokenTypes.OPENING_BRACKET;
+            case ')':
+                return TokenTypes.CLOSING_BRACKET;
+            case '[':
+                return TokenTypes.OPENING_SQUARE_BRACKET;
+            case ']':
+                return TokenTypes.CLOSING_SQUARE_BRACKET;
+            default:
+                return TokenTypes.SEMICOLON;
+        }
 
-	}
+    }
 
-	private final static TokenTypes keywordOrIdentifierToTokenType(String tokenText) {
-		switch (tokenText) {
-		case "if":
-			return TokenTypes.IF_KEYWORD;
-		case "else":
-			return TokenTypes.ELSE_KEYWORD;
-		case "end":
-			return TokenTypes.END_KEYWORD;
-		case "func":
-			return TokenTypes.FUNC_KEYWORD;
-		case "struct":
-			return TokenTypes.STRUCT_KEYWORD;
-		case "return":
-			return TokenTypes.RETURN_KEYWORD;
-		case "var":
-			return TokenTypes.VAR_KEYWORD;
-		case "for":
-			return TokenTypes.FOR_KEYWORD;
-		case "while":
-			return TokenTypes.WHILE_KEYWORD;
-		case "in":
-			return TokenTypes.IN_KEYWORD;
-		case "break":
-			return TokenTypes.BREAK_KEYWORD;
-		case "continue":
-			return TokenTypes.CONTINUE_KEYWORD;
-		case "import":
-			return TokenTypes.IMPORT_KEYWORD;
-		case "jar":
-			return TokenTypes.JAR_KEYWORD;
-		case "dynamic":
-			return TokenTypes.DYNAMIC_KEYWORD;
-		case "change":
-			return TokenTypes.CHANGE_KEYWORD;
-		case "do":
-			return TokenTypes.DO_KEYWORD;
-		case "to":
-			return TokenTypes.TO_KEYWORD;
-		case "true":
-		case "false":
-			return TokenTypes.BOOLEAN_LITERAL;
-		case "instanceof":
-			return TokenTypes.OPERATOR;
-		default:
-			return TokenTypes.IDENTIFIER;
-		}
-	}
+    private static TokenTypes keywordOrIdentifierToTokenType(String tokenText) {
+        switch (tokenText) {
+            case "if":
+                return TokenTypes.IF_KEYWORD;
+            case "else":
+                return TokenTypes.ELSE_KEYWORD;
+            case "end":
+                return TokenTypes.END_KEYWORD;
+            case "func":
+                return TokenTypes.FUNC_KEYWORD;
+            case "struct":
+                return TokenTypes.STRUCT_KEYWORD;
+            case "return":
+                return TokenTypes.RETURN_KEYWORD;
+            case "var":
+                return TokenTypes.VAR_KEYWORD;
+            case "for":
+                return TokenTypes.FOR_KEYWORD;
+            case "while":
+                return TokenTypes.WHILE_KEYWORD;
+            case "in":
+                return TokenTypes.IN_KEYWORD;
+            case "break":
+                return TokenTypes.BREAK_KEYWORD;
+            case "continue":
+                return TokenTypes.CONTINUE_KEYWORD;
+            case "import":
+                return TokenTypes.IMPORT_KEYWORD;
+            case "jar":
+                return TokenTypes.JAR_KEYWORD;
+            case "dynamic":
+                return TokenTypes.DYNAMIC_KEYWORD;
+            case "change":
+                return TokenTypes.CHANGE_KEYWORD;
+            case "do":
+                return TokenTypes.DO_KEYWORD;
+            case "to":
+                return TokenTypes.TO_KEYWORD;
+            case "true":
+            case "false":
+                return TokenTypes.BOOLEAN_LITERAL;
+            case "instanceof":
+                return TokenTypes.OPERATOR;
+            default:
+                return TokenTypes.IDENTIFIER;
+        }
+    }
 
-	public final static OptimizedTokensArray lex(String code, String path) {
-		return lex(code, path, 1, new OptimizedTokensArray(), 0);
-	}
+    public static OptimizedTokensArray lex(String code, String path) {
+        return lex(code, path, 1, new OptimizedTokensArray(), 0);
+    }
 
-	public final static OptimizedTokensArray lex(String code, String path, int line) {
-		return lex(code, path, 1, new OptimizedTokensArray(), line);
-	}
+    public static OptimizedTokensArray lex(String code, String path, int line) {
+        return lex(code, path, 1, new OptimizedTokensArray(), line);
+    }
 
-	public final static OptimizedTokensArray lex(String code, String fileName, int line, OptimizedTokensArray tokens,
-			int i) {
-		var isInComment = false;
-		for (; i < code.length(); i++) {
-			char c = code.charAt(i);
-			if (c == '\n') {
-				line++;
-				isInComment = false;
-			}
-			if (!isInComment) {
-				if (c == '#')
-					isInComment = true;
-				if (c == ';' || c == ',' || c == '(' || c == ')' || c == '[' || c == ']')
-					tokens.append(new Token(interpunctionToTokenType(c), c + "", fileName, line));
-				if (c == '\"')
-					return stringLiteral(code, fileName, line, tokens, i);
-				if (Character.isDigit(c) || ((c == '+' || c == '-')
-						&& (tokens.length() == 0 || !hasValue.contains(tokens.get(tokens.length() - 1).getType())
-								&& (i + 1 < code.length() && Character.isDigit(code.charAt(i + 1))))))
-					return number(code, fileName, line, tokens, i);
-				if (OPERATORS_PARTS.contains(c))
-					return operator(code, fileName, line, tokens, i);
-				if (Character.isJavaIdentifierStart(c))
-					return identifierOrKeyword(code, fileName, line, tokens, i);
-			}
-		}
-		tokens.trimToSize();
-		return tokens;
-	}
+    public static OptimizedTokensArray lex(String code, String fileName, int line, OptimizedTokensArray tokens,
+                                           int i) {
+        var isInComment = false;
+        for (; i < code.length(); i++) {
+            char c = code.charAt(i);
+            if (c == '\n') {
+                line++;
+                isInComment = false;
+            }
+            if (!isInComment) {
+                if (c == '#')
+                    isInComment = true;
+                if (c == ';' || c == ',' || c == '(' || c == ')' || c == '[' || c == ']')
+                    tokens.append(new Token(getSpecialTokenType(c), c + "", fileName, line));
+                if (c == '\"')
+                    return stringLiteral(code, fileName, line, tokens, i);
+                if (Character.isDigit(c) || ((c == '+' || c == '-')
+                        && (tokens.length() == 0 || !hasValue.contains(tokens.get(tokens.length() - 1).getType())
+                        && (i + 1 < code.length() && Character.isDigit(code.charAt(i + 1))))))
+                    return number(code, fileName, line, tokens, i);
+                if (OPERATORS_PARTS.contains(c))
+                    return operator(code, fileName, line, tokens, i);
+                if (Character.isJavaIdentifierStart(c))
+                    return identifierOrKeyword(code, fileName, line, tokens, i);
+            }
+        }
+        tokens.trimToSize();
+        return tokens;
+    }
 
-	private final static OptimizedTokensArray number(String code, String fileName, int line,
-			OptimizedTokensArray tokens, int i) {
-		var tokenText = "" + code.charAt(i);
-		while (++i < code.length() && Character.isDigit(code.charAt(i)))
-			tokenText += code.charAt(i);
-		if (i + 1 < code.length() && code.charAt(i) == '.' && Character.isDigit(code.charAt(i + 1)))
-			return realLiteral(code, tokenText + '.', fileName, line, tokens, i);
-		tokens.append(new Token(TokenTypes.INTEGER_LITERAL, tokenText, fileName, line));
-		return lex(code, fileName, line, tokens, i);
-	}
+    private static OptimizedTokensArray number(String code, String fileName, int line,
+                                               OptimizedTokensArray tokens, int i) {
+        var tokenText = new StringBuilder(String.valueOf(code.charAt(i)));
+        while (++i < code.length() && Character.isDigit(code.charAt(i)))
+            tokenText.append(code.charAt(i));
+        if (i + 1 < code.length() && code.charAt(i) == '.' && Character.isDigit(code.charAt(i + 1)))
+            return realLiteral(code, tokenText.toString() + '.', fileName, line, tokens, i);
+        tokens.append(new Token(TokenTypes.INTEGER_LITERAL, tokenText.toString(), fileName, line));
+        return lex(code, fileName, line, tokens, i);
+    }
 
-	private final static OptimizedTokensArray operator(String code, String fileName, int line,
-			OptimizedTokensArray tokens, int i) {
-		var tokenText = "" + code.charAt(i);
-		while (++i < code.length() && OPERATORS_PARTS.contains(code.charAt(i)))
-			tokenText += code.charAt(i);
-		Token token = new Token(operatorToTokenType(tokenText, fileName, line), tokenText, fileName, line);
-		tokens.append(token);
-		return lex(code, fileName, line, tokens, i);
-	}
+    private static OptimizedTokensArray operator(String code, String fileName, int line,
+                                                 OptimizedTokensArray tokens, int i) {
+        var tokenText = new StringBuilder(String.valueOf(code.charAt(i)));
+        while (++i < code.length() && OPERATORS_PARTS.contains(code.charAt(i)))
+            tokenText.append(code.charAt(i));
+        Token token = new Token(operatorToTokenType(tokenText.toString(), fileName, line), tokenText.toString(), fileName, line);
+        tokens.append(token);
+        return lex(code, fileName, line, tokens, i);
+    }
 
-	private final static TokenTypes operatorToTokenType(String tokenText, String fileName, int line) {
-		if (OPERATORS.contains(tokenText))
-			return TokenTypes.OPERATOR;
-		new LogError("Unknown operator:\t" + tokenText, fileName, line);
-		return null;
-	}
+    private static TokenTypes operatorToTokenType(String tokenText, String fileName, int line) {
+        if (OPERATORS.contains(tokenText))
+            return TokenTypes.OPERATOR;
+        new LogError("Unknown operator:\t" + tokenText, fileName, line);
+        return null;
+    }
 
-	private final static OptimizedTokensArray realLiteral(String code, String integer, String fileName, int line,
-			OptimizedTokensArray tokens, int i) {
-		var tokenText = integer;
-		while (++i < code.length() && Character.isDigit(code.charAt(i)))
-			tokenText += code.charAt(i);
-		tokens.append(new Token(TokenTypes.REAL_LITERAL, tokenText, fileName, line));
-		return lex(code, fileName, line, tokens, i);
-	}
+    private static OptimizedTokensArray realLiteral(String code, String integer, String fileName, int line,
+                                                    OptimizedTokensArray tokens, int i) {
+        var tokenText = new StringBuilder(integer);
+        while (++i < code.length() && Character.isDigit(code.charAt(i)))
+            tokenText.append(code.charAt(i));
+        tokens.append(new Token(TokenTypes.REAL_LITERAL, tokenText.toString(), fileName, line));
+        return lex(code, fileName, line, tokens, i);
+    }
 
-	private final static OptimizedTokensArray stringLiteral(String code, String fileName, int line,
-			OptimizedTokensArray tokens, int i) {
-		var tokenText = "";
-		try {
-			while (code.charAt(++i - 1) == '\\' || code.charAt(i) != '\"')
-				tokenText += code.charAt(i);
-		} catch (IndexOutOfBoundsException e) {
-			new LogError("String wasn't closed", fileName, line);
-		}
-		Token token = new Token(TokenTypes.STRING_LITERAL, StringEscapeUtils.unescapeJava(tokenText), fileName, line);
-		tokens.append(token);
-		return lex(code, fileName, line, tokens, i + 1);
-	}
+    private static OptimizedTokensArray stringLiteral(String code, String fileName, int line,
+                                                            OptimizedTokensArray tokens, int i) {
+        var tokenText = new StringBuilder();
+        try {
+            while (code.charAt(++i - 1) == '\\' || code.charAt(i) != '\"')
+                tokenText.append(code.charAt(i));
+        } catch (IndexOutOfBoundsException e) {
+            new LogError("String wasn't closed", fileName, line);
+        }
+        Token token = new Token(TokenTypes.STRING_LITERAL, StringEscapeUtils.unescapeJava(tokenText.toString()), fileName, line);
+        tokens.append(token);
+        return lex(code, fileName, line, tokens, i + 1);
+    }
 }

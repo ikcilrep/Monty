@@ -15,10 +15,10 @@ limitations under the License.
 */
 package parser.parsing;
 
-public final class IntegerHolder {
-	int i;
+final class IntegerHolder {
+    int i;
 
-	public IntegerHolder(int i) {
-		this.i = i;
-	}
+    IntegerHolder(int i) {
+        this.i = i;
+    }
 }

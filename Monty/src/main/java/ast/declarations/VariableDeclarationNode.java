@@ -21,53 +21,56 @@ import sml.data.returning.Nothing;
 
 public class VariableDeclarationNode extends DeclarationNode implements Cloneable {
 
-	public static VariableDeclarationNode toMe(Object object, String fileName, int line) {
-		if (object instanceof VariableDeclarationNode)
-			return (VariableDeclarationNode) object;
-		new LogError("Can't cast any value to variable.", fileName, line);
-		return null;
-	}
-	private boolean isConst = false;
+    public static VariableDeclarationNode toMe(Object object, String fileName, int line) {
+        try {
+            return (VariableDeclarationNode) object;
+        } catch(ClassCastException e) {
+            new LogError("Can't cast any value to variable.", fileName, line);
+        }
+        return null;
+    }
 
-	private boolean wasValueChanged = false;
+    private boolean isConst = false;
 
-	private Object value = Nothing.nothing;
+    private boolean wasValueChanged = false;
 
-	public VariableDeclarationNode(String name) {
-		super(name);
-	}
+    private Object value = Nothing.nothing;
 
-	public final VariableDeclarationNode copy() {
-		try {
-			return (VariableDeclarationNode) clone();
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+    public VariableDeclarationNode(String name) {
+        super(name);
+    }
 
-	public final Object getValue() {
-		return value;
-	}
+    public final VariableDeclarationNode copy() {
+        try {
+            return (VariableDeclarationNode) clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-	public boolean isConst() {
-		return isConst;
-	}
+    public final Object getValue() {
+        return value;
+    }
 
-	public void setConst(boolean isConst) {
-		this.isConst = isConst;
-	}
+    public boolean isConst() {
+        return isConst;
+    }
 
-	public final void setValue(Object value) {
-		this.value = value;
-		wasValueChanged = true;
-	}
+    public void setConst(boolean isConst) {
+        this.isConst = isConst;
+    }
 
-	public final void setValue(Object value, String fileName, int line) {
-		if (isConst && wasValueChanged)
-			new LogError("Can't change value of const.", fileName, line);
-		this.value = value;
-		wasValueChanged = true;
-	}
+    public final void setValue(Object value) {
+        this.value = value;
+        wasValueChanged = true;
+    }
+
+    public final void setValue(Object value, String fileName, int line) {
+        if (isConst && wasValueChanged)
+            new LogError("Can't change value of const.", fileName, line);
+        this.value = value;
+        wasValueChanged = true;
+    }
 
 }

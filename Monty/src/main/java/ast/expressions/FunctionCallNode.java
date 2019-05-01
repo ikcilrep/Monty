@@ -20,43 +20,43 @@ import java.util.ArrayList;
 
 public final class FunctionCallNode extends NamedExpression implements Cloneable {
 
-	private String name;
-	private ArrayList<OperationNode> arguments = new ArrayList<>();
+    private String name;
+    private ArrayList<OperationNode> arguments = new ArrayList<>();
 
-	public FunctionCallNode(String name) {
-		this.name = name;
-	}
+    public FunctionCallNode(String name) {
+        this.name = name;
+    }
 
-	public final void addArgument(OperationNode argument) {
-		arguments.add(argument);
-	}
+    public final void addArgument(OperationNode argument) {
+        arguments.add(argument);
+    }
 
-	public FunctionCallNode copy() {
-		try {
-			var copied = (FunctionCallNode) clone();
-			var copyOfArguments = new ArrayList<OperationNode>(arguments.size());
-			for (var argument : arguments)
-				copyOfArguments.add(argument.copy());
-			copied.setArguments(copyOfArguments);
-			return copied;
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
-		return null;
+    public FunctionCallNode copy() {
+        try {
+            var copied = (FunctionCallNode) clone();
+            var copyOfArguments = new ArrayList<OperationNode>(arguments.size());
+            for (var argument : arguments)
+                copyOfArguments.add(argument.copy());
+            copied.setArguments(copyOfArguments);
+            return copied;
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return null;
 
-	}
+    }
 
-	public final ArrayList<OperationNode> getArguments() {
-		return arguments;
-	}
+    public final ArrayList<OperationNode> getArguments() {
+        return arguments;
+    }
 
-	@Override
-	public final String getName() {
-		return name;
-	}
+    @Override
+    public final String getName() {
+        return name;
+    }
 
-	public void setArguments(ArrayList<OperationNode> arguments) {
-		this.arguments = arguments;
-	}
+    public void setArguments(ArrayList<OperationNode> arguments) {
+        this.arguments = arguments;
+    }
 
 }

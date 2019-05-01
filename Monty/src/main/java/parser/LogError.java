@@ -1,4 +1,3 @@
-
 /*
 Copyright 2018-2019 Szymon Perlicki
 
@@ -19,39 +18,42 @@ package parser;
 import lexer.Token;
 
 public class LogError {
-	public static String getMessage(String message) {
-		var lastChar = message.charAt(message.length() - 1);
-		if (Character.isAlphabetic(lastChar) || Character.isDigit(lastChar))
-			return message + ".";
-		return message;
-	}
+    private static String getMessage(String message) {
+        var lastChar = message.charAt(message.length() - 1);
+        if (Character.isAlphabetic(lastChar) || Character.isDigit(lastChar))
+            return message + ".";
+        return message;
+    }
 
-	public LogError(String message) {
-		System.out.println(getMessage(message));
-		System.exit(0);
-	}
+    public LogError(String message) {
+        System.out.println(getMessage(message));
+        System.exit(0);
+    }
 
-	public LogError(String message, String fileName, int line) {
-		System.out.println(getMessage(message) + "\nLook at " + line + " line in " + fileName + ".");
-		System.exit(0);
-	}
+    public LogError(String message, String fileName, int line) {
+        System.out.println(getMessage(message) + "\nLook at " + line + " line in " + fileName + ".");
+        System.exit(0);
+    }
 
-	public LogError(String message, String[] fileNames, int[] lines) {
-		if (fileNames.length != lines.length)
-			new LogError("Language creator mess something up!");
-		String linesToString = "";
-		for (int i = 0; i < lines.length; i++) {
-			linesToString += lines[i] + " line in " + fileNames[i];
-			if (i + 1 < lines.length)
-				linesToString += ", ";
-		}
-		System.out.println(getMessage(message) + "\nLook at " + linesToString + ".");
-		System.exit(0);
-	}
+    public LogError(String message, String[] fileNames, int[] lines) {
+        if (fileNames.length != lines.length)
+            new LogError("Language creator mess something up!");
+        var places = new StringBuilder();
+        for (int i = 0; i < lines.length; i++) {
+            places.append(lines[i]);
+            places.append(" line in ");
+            places.append(fileNames[i]);
 
-	public LogError(String message, Token token) {
-		System.out.println(
-				getMessage(message) + "\nLook at " + token.getLine() + " line in " + token.getFileName() + ".");
-		System.exit(0);
-	}
+            if (i + 1 < lines.length)
+                places.append(", ");
+        }
+        System.out.println(getMessage(message) + "\nLook at " + places + ".");
+        System.exit(0);
+    }
+
+    public LogError(String message, Token token) {
+        System.out.println(
+                getMessage(message) + "\nLook at " + token.getLine() + " line in " + token.getFileName() + ".");
+        System.exit(0);
+    }
 }

@@ -16,35 +16,35 @@ limitations under the License.
 
 package parser;
 
-import java.math.BigInteger;
-
 import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import sml.data.returning.VoidType;
 
+import java.math.BigInteger;
+
 public enum DataTypes {
-	BOOLEAN, INTEGER, BIG_INTEGER, FLOAT, NOTHING, OBJECT;
-	public final static BigInteger INT_MAX = BigInteger.valueOf(Integer.MAX_VALUE);
-	public final static BigInteger INT_MIN = BigInteger.valueOf(Integer.MIN_VALUE);
+    BOOLEAN, INTEGER, BIG_INTEGER, FLOAT, NOTHING, OBJECT;
+    public final static BigInteger INT_MAX = BigInteger.valueOf(Integer.MAX_VALUE);
+    public final static BigInteger INT_MIN = BigInteger.valueOf(Integer.MIN_VALUE);
 
-	public final static DataTypes getDataType(Object value) {
-		if (value instanceof VoidType)
-			return NOTHING;
-		if (value instanceof BigInteger)
-			return BIG_INTEGER;
-		if (value instanceof Integer)
-			return INTEGER;
-		if (value instanceof Double)
-			return FLOAT;
-		if (value instanceof Boolean)
-			return BOOLEAN;
-		if (value instanceof StructDeclarationNode || value instanceof FunctionDeclarationNode)
-			return OBJECT;
-		if (value instanceof VariableDeclarationNode)
-			return getDataType(((VariableDeclarationNode) value).getValue());
-		return null;
+    public static DataTypes getDataType(Object value) {
+        if (value instanceof VoidType)
+            return NOTHING;
+        if (value instanceof BigInteger)
+            return BIG_INTEGER;
+        if (value instanceof Integer)
+            return INTEGER;
+        if (value instanceof Double)
+            return FLOAT;
+        if (value instanceof Boolean)
+            return BOOLEAN;
+        if (value instanceof StructDeclarationNode || value instanceof FunctionDeclarationNode)
+            return OBJECT;
+        if (value instanceof VariableDeclarationNode)
+            return getDataType(((VariableDeclarationNode) value).getValue());
+        return null;
 
-	}
+    }
 
 }

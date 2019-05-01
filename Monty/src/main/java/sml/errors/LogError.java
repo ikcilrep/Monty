@@ -1,26 +1,26 @@
 package sml.errors;
 
-import java.util.ArrayList;
-
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import sml.data.returning.Nothing;
 import sml.data.returning.VoidType;
 
+import java.util.ArrayList;
+
 public final class LogError extends FunctionDeclarationNode {
 
-	public LogError() {
-		super("logError");
-		setBody(new Block(null));
-		addParameter("message");
-	}
+    public LogError() {
+        super("logError");
+        setBody(new Block(null));
+        addParameter("message");
+    }
 
-	@Override
-	public VoidType call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		new parser.LogError(getBody().getStringVariableValue("message", callFileName, callLine));
-		return Nothing.nothing;
-	}
+    @Override
+    public VoidType call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+        setArguments(arguments, callFileName, callLine);
+        new parser.LogError(getBody().getStringVariableValue("message", callFileName, callLine));
+        return Nothing.nothing;
+    }
 
 }

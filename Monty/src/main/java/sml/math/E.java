@@ -19,10 +19,10 @@ package sml.math;
 import ast.declarations.VariableDeclarationNode;
 
 public final class E extends VariableDeclarationNode {
-	public E() {
-		super("E");
-		setValue(Math.E);
-		setConst(true);
-	}
+    public E() {
+        super("E");
+        setValue(Math.E);
+        setConst(true);
+    }
 
 }

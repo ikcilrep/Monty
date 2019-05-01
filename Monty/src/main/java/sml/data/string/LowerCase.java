@@ -16,21 +16,21 @@ limitations under the License.
 
 package sml.data.string;
 
-import java.util.ArrayList;
-
 import ast.expressions.OperationNode;
 import sml.data.Method;
 
+import java.util.ArrayList;
+
 final class LowerCase extends Method<StringStruct> {
 
-	public LowerCase(StringStruct parent) {
-		super(parent, "lowerCase");
-	}
+    LowerCase(StringStruct parent) {
+        super(parent, "lowerCase");
+    }
 
-	@Override
-	public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		return parent.getString().toLowerCase();
-	}
+    @Override
+    public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+        setArguments(arguments, callFileName, callLine);
+        return parent.getString().toLowerCase();
+    }
 
 }

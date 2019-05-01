@@ -16,10 +16,6 @@ limitations under the License.
 
 package sml.casts;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.ArrayList;
-
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
@@ -28,69 +24,73 @@ import parser.LogError;
 import sml.data.returning.VoidType;
 import sml.data.string.StringStruct;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.ArrayList;
+
 public final class ToInt extends FunctionDeclarationNode {
 
-	public static Object toInt(Object toBeCasted, String callFileName, int callLine) {
-		if (toBeCasted instanceof VoidType)
-			new LogError("Can't cast void to integer", callFileName, callLine);
-		if (toBeCasted instanceof BigInteger || toBeCasted instanceof Integer)
-			return toBeCasted;
-		if (toBeCasted instanceof Double)
-			return fromFloat((double) toBeCasted);
-		if (toBeCasted instanceof Boolean)
-			return fromBoolean((Boolean) toBeCasted);
-		if (toBeCasted instanceof StringStruct)
-			return fromString((StringStruct) toBeCasted, callFileName, callLine);
-		else
-			new LogError("Can't cast structure to integer", callFileName, callLine);
-		return null;
-	}
+    private static Object toInt(Object toBeCasted, String callFileName, int callLine) {
+        if (toBeCasted instanceof VoidType)
+            new LogError("Can't cast void to integer", callFileName, callLine);
+        if (toBeCasted instanceof BigInteger || toBeCasted instanceof Integer)
+            return toBeCasted;
+        if (toBeCasted instanceof Double)
+            return fromFloat((double) toBeCasted);
+        if (toBeCasted instanceof Boolean)
+            return fromBoolean((Boolean) toBeCasted);
+        if (toBeCasted instanceof StringStruct)
+            return fromString((StringStruct) toBeCasted, callFileName, callLine);
+        else
+            new LogError("Can't cast structure to integer", callFileName, callLine);
+        return null;
+    }
 
-	public ToInt() {
-		super("toInt");
-		setBody(new Block(null));
-		addParameter("toBeCasted");
-	}
+    public ToInt() {
+        super("toInt");
+        setBody(new Block(null));
+        addParameter("toBeCasted");
+    }
 
-	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		var toBeCasted = getBody().getVariableValue("toBeCasted", callFileName, callLine);
-		return toInt(toBeCasted, callFileName, callLine);
-	}
+    @Override
+    public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+        setArguments(arguments, callFileName, callLine);
+        var toBeCasted = getBody().getVariableValue("toBeCasted", callFileName, callLine);
+        return toInt(toBeCasted, callFileName, callLine);
+    }
 
-	public static Object fromString(StringStruct str, String fileName, int line) {
-		try {
-			return Integer.parseInt(str.getString());
-		} catch (NumberFormatException e1) {
-			try {
-				return new BigInteger(str.getString());
-			} catch (NumberFormatException e2) {
-				new LogError("Wrong format for integer ", fileName, line);
-			}
-		}
-		return null;
-	}
+    private static Object fromString(StringStruct str, String fileName, int line) {
+        try {
+            return Integer.parseInt(str.getString());
+        } catch (NumberFormatException e1) {
+            try {
+                return new BigInteger(str.getString());
+            } catch (NumberFormatException e2) {
+                new LogError("Wrong format for integer ", fileName, line);
+            }
+        }
+        return null;
+    }
 
-	public static Object fromFloat(Double floating) {
-		try {
-			return Integer.parseInt(((Integer) floating.intValue()).toString());
-		} catch (ArithmeticException e) {
-			return new BigDecimal(floating).toBigInteger();
-		}
-	}
+    private static Object fromFloat(Double floating) {
+        try {
+            return Integer.parseInt(((Integer) floating.intValue()).toString());
+        } catch (ArithmeticException e) {
+            return new BigDecimal(floating).toBigInteger();
+        }
+    }
 
-	public static int fromBoolean(Boolean bool) {
-		if (bool == true)
-			return 1;
-		return 0;
-	}
+    private static int fromBoolean(Boolean bool) {
+        if (bool)
+            return 1;
+        return 0;
+    }
 
-	public static BigInteger fromSmallInt(int integer) {
-		return BigInteger.valueOf(integer);
-	}
+    public static BigInteger fromSmallInt(int integer) {
+        return BigInteger.valueOf(integer);
+    }
 
-	public static void fromSmallIntVariable(VariableDeclarationNode variable, String fileName, int line) {
-		variable.setValue(fromSmallInt((int) variable.getValue()), fileName, line);
-	}
+    public static void fromSmallIntVariable(VariableDeclarationNode variable, String fileName, int line) {
+        variable.setValue(fromSmallInt((int) variable.getValue()), fileName, line);
+    }
 }

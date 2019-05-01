@@ -20,14 +20,14 @@ import ast.Node;
 
 public abstract class DeclarationNode extends Node {
 
-	protected String name;
+    protected String name;
 
-	public DeclarationNode(String name) {
-		this.name = name;
-	}
+    DeclarationNode(String name) {
+        this.name = name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
 }

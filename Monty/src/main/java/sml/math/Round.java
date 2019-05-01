@@ -16,31 +16,31 @@ limitations under the License.
 
 package sml.math;
 
-import java.util.ArrayList;
-
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.LogError;
 import sml.data.StaticStruct;
 
+import java.util.ArrayList;
+
 public final class Round extends FunctionDeclarationNode {
 
-	public Round(StaticStruct struct) {
-		super("round");
-		setBody(new Block(null));
-		addParameter("f");
-		addParameter("scale");
-		struct.addFunction(this);
-	}
+    Round(StaticStruct struct) {
+        super("round");
+        setBody(new Block(null));
+        addParameter("f");
+        addParameter("scale");
+        struct.addFunction(this);
+    }
 
-	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		var f = getBody().getVariableValue("f", callFileName, callLine);
-		if (f instanceof Double)
-			return Math.round((double) f);
-		return new LogError("Can't round not a number.", callFileName, callLine);
-	}
+    @Override
+    public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+        setArguments(arguments, callFileName, callLine);
+        var f = getBody().getVariableValue("f", callFileName, callLine);
+        if (f instanceof Double)
+            return Math.round((double) f);
+        return new LogError("Can't round not a number.", callFileName, callLine);
+    }
 
 }

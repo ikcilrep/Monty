@@ -16,21 +16,21 @@ limitations under the License.
 
 package sml.data.string;
 
-import java.util.ArrayList;
-
 import ast.expressions.OperationNode;
 import sml.data.Method;
 
+import java.util.ArrayList;
+
 final class Length extends Method<StringStruct> {
 
-	public Length(StringStruct parent) {
-		super(parent,"length");
-	}
+    Length(StringStruct parent) {
+        super(parent, "length");
+    }
 
-	@Override
-	public Integer call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		return parent.getString().length();
-	}
+    @Override
+    public Integer call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+        setArguments(arguments, callFileName, callLine);
+        return parent.getString().length();
+    }
 
 }

@@ -16,29 +16,29 @@ limitations under the License.
 
 package sml.casts;
 
-import java.util.ArrayList;
-
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import sml.data.string.StringStruct;
 
+import java.util.ArrayList;
+
 public final class ToString extends FunctionDeclarationNode {
 
-	public static String toString(Object toBeCasted) {
-		return toBeCasted.toString();
-	}
+    public static String toString(Object toBeCasted) {
+        return toBeCasted.toString();
+    }
 
-	public ToString() {
-		super("toString");
-		setBody(new Block(null));
-		addParameter("toBeCasted");
-	}
+    public ToString() {
+        super("toString");
+        setBody(new Block(null));
+        addParameter("toBeCasted");
+    }
 
-	@Override
-	public StringStruct call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		return new StringStruct(getBody().getVariableValue("toBeCasted", callFileName, callLine).toString());
-	}
+    @Override
+    public StringStruct call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+        setArguments(arguments, callFileName, callLine);
+        return new StringStruct(getBody().getVariableValue("toBeCasted", callFileName, callLine).toString());
+    }
 
 }

@@ -15,70 +15,63 @@ limitations under the License.
 */
 package monty;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
 import parser.LogError;
 
+import java.io.*;
+
 public abstract class FileIO {
-	public static String readFile(BufferedReader br, String path, String callFileName, int callLine) {
-		var text = new StringBuilder();
-		try {
-			String line;
-			while ((line = br.readLine()) != null)
-				text.append(line + "\n");
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (br != null)
-					br.close();
-			} catch (IOException ex) {
-				new LogError("Failed to read file:\t" + path, callFileName, callLine);
-			}
-		}
-		return text.toString();
-	}
+    private static String readFile(BufferedReader br, String path, String callFileName, int callLine) {
+        var text = new StringBuilder();
+        try {
+            String line;
+            while ((line = br.readLine()) != null)
+                text.append(line).append("\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (br != null)
+                    br.close();
+            } catch (IOException ex) {
+                new LogError("Failed to read file:\t" + path, callFileName, callLine);
+            }
+        }
+        return text.toString();
+    }
 
-	public static String readFile(InputStream in, String path) {
-		return readFile(new BufferedReader(new InputStreamReader(in)), path, "Sml.java", -1);
-	}
+    public static String readFile(InputStream in, String path) {
+        return readFile(new BufferedReader(new InputStreamReader(in)), path, "Sml.java", -1);
+    }
 
-	public static String readFile(InputStream in, String path, String callFileName, int callLine) {
-		return readFile(new BufferedReader(new InputStreamReader(in)), path, callFileName, callLine);
-	}
+    public static String readFile(InputStream in, String path, String callFileName, int callLine) {
+        return readFile(new BufferedReader(new InputStreamReader(in)), path, callFileName, callLine);
+    }
 
-	public static String readFile(String path, String callFileName, int callLine) {
-		BufferedReader br = null;
-		FileReader fr = null;
-		try {
-			fr = new FileReader(path);
-		} catch (FileNotFoundException e) {
-			new LogError("This file doesn't exist:\t" + path, callFileName, callLine);
-		}
+    static String readFile(String path, String callFileName, int callLine) {
+        BufferedReader br;
+        FileReader fr = null;
+        try {
+            fr = new FileReader(path);
+        } catch (FileNotFoundException e) {
+            new LogError("This file doesn't exist:\t" + path, callFileName, callLine);
+        }
 
-		br = new BufferedReader(fr);
+        br = new BufferedReader(fr);
 
-		return readFile(br, path, callFileName, callLine);
-	}
+        return readFile(br, path, callFileName, callLine);
+    }
 
-	public static void writeFile(String path, String text, boolean isAppend, String callFileName, int callLine) {
-		try {
-			File file = new File(path);
-			FileWriter fileWriter = new FileWriter(file, isAppend);
-			fileWriter.write(text);
-			fileWriter.flush();
-			fileWriter.close();
-		} catch (IOException e) {
-			new LogError("Failed to write file:\t" + path, callFileName, callLine);
-			e.printStackTrace();
-		}
+    public static void writeFile(String path, String text, boolean isAppend, String callFileName, int callLine) {
+        try {
+            File file = new File(path);
+            FileWriter fileWriter = new FileWriter(file, isAppend);
+            fileWriter.write(text);
+            fileWriter.flush();
+            fileWriter.close();
+        } catch (IOException e) {
+            new LogError("Failed to write file:\t" + path, callFileName, callLine);
+            e.printStackTrace();
+        }
 
-	}
+    }
 }

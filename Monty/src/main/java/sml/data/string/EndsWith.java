@@ -16,23 +16,22 @@ limitations under the License.
 
 package sml.data.string;
 
-import java.util.ArrayList;
-
-
 import ast.expressions.OperationNode;
 import sml.data.Method;
 
+import java.util.ArrayList;
+
 final class EndsWith extends Method<StringStruct> {
 
-	public EndsWith(StringStruct parent) {
-		super(parent,"endsWith");
-		addParameter("suffix");
-	}
+    EndsWith(StringStruct parent) {
+        super(parent, "endsWith");
+        addParameter("suffix");
+    }
 
-	@Override
-	public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		return parent.getString().endsWith( getBody().getStringVariableValue("suffix", callFileName, callLine));
-	}
+    @Override
+    public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+        setArguments(arguments, callFileName, callLine);
+        return parent.getString().endsWith(getBody().getStringVariableValue("suffix", callFileName, callLine));
+    }
 
 }

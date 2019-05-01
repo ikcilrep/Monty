@@ -19,69 +19,69 @@ package lexer;
 import java.util.Iterator;
 
 public final class OptimizedTokensArray implements Iterable<Token> {
-	protected Token[] array;
-	public int top;
+    protected Token[] array;
+    private int top;
 
-	public OptimizedTokensArray() {
-		clear();
-	}
+    public OptimizedTokensArray() {
+        clear();
+    }
 
-	public OptimizedTokensArray append(Token element) {
-		top++;
+    public OptimizedTokensArray append(Token element) {
+        top++;
 
-		if (array.length == top)
-			setLength(array.length << 1);
-		array[top] = element;
-		return this;
-	}
+        if (array.length == top)
+            setLength(array.length << 1);
+        array[top] = element;
+        return this;
+    }
 
-	public final void clear() {
-		top = -1;
-		array = new Token[64];
-	}
+    public final void clear() {
+        top = -1;
+        array = new Token[64];
+    }
 
-	public final Token get(int index) {
-		return array[index];
-	}
+    public final Token get(int index) {
+        return array[index];
+    }
 
-	@Override
-	public final Iterator<Token> iterator() {
-		return new Iterator<Token>() {
-			int counter = 0;
+    @Override
+    public final Iterator<Token> iterator() {
+        return new Iterator<>() {
+            int counter = 0;
 
-			@Override
-			public final boolean hasNext() {
-				return counter <= top;
+            @Override
+            public final boolean hasNext() {
+                return counter <= top;
 
-			}
+            }
 
-			@Override
-			public final Token next() {
-				return array[counter++];
-			}
-		};
-	}
+            @Override
+            public final Token next() {
+                return array[counter++];
+            }
+        };
+    }
 
-	public final int length() {
-		return top + 1;
-	}
+    public final int length() {
+        return top + 1;
+    }
 
-	public final void setLength(int length) {
-		var newArray = new Token[length];
-		for (int i = 0; i < array.length && i < length; i++) {
-			newArray[i] = array[i];
-		}
-		array = newArray;
-	}
+    public final void setLength(int length) {
+        var newArray = new Token[length];
+        for (int i = 0; i < array.length && i < length; i++) {
+            newArray[i] = array[i];
+        }
+        array = newArray;
+    }
 
-	public final OptimizedTokensArray subarray(int begin, int end) {
-		OptimizedTokensArray newArray = new OptimizedTokensArray();
-		for (int i = begin; i < end; i++)
-			newArray.append(get(i));
-		return newArray;
-	}
+    public final OptimizedTokensArray subarray(int begin, int end) {
+        OptimizedTokensArray newArray = new OptimizedTokensArray();
+        for (int i = begin; i < end; i++)
+            newArray.append(get(i));
+        return newArray;
+    }
 
-	public final void trimToSize() {
-		setLength(top + 1);
-	}
+    final void trimToSize() {
+        setLength(top + 1);
+    }
 }

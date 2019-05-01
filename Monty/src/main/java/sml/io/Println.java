@@ -16,27 +16,27 @@ limitations under the License.
 
 package sml.io;
 
-import java.util.ArrayList;
-
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import sml.data.returning.Nothing;
 import sml.data.returning.VoidType;
 
+import java.util.ArrayList;
+
 public final class Println extends FunctionDeclarationNode {
 
-	public Println() {
-		super("println");
-		setBody(new Block(null));
-		addParameter("toPrint");
-	}
+    public Println() {
+        super("println");
+        setBody(new Block(null));
+        addParameter("toPrint");
+    }
 
-	@Override
-	public VoidType call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		System.out.println(getBody().getStringVariableValue("toPrint", callFileName, callLine));
-		return Nothing.nothing;
-	}
+    @Override
+    public VoidType call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+        setArguments(arguments, callFileName, callLine);
+        System.out.println(getBody().getStringVariableValue("toPrint", callFileName, callLine));
+        return Nothing.nothing;
+    }
 
 }

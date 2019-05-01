@@ -16,34 +16,34 @@ limitations under the License.
 
 package sml.math;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import sml.data.StaticStruct;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+
 public final class Exp extends FunctionDeclarationNode {
-	public Exp(StaticStruct struct) {
-		super("exp");
-		setBody(new Block(null));
-		addParameter("x");
-		struct.addFunction(this);
-	}
+    Exp(StaticStruct struct) {
+        super("exp");
+        setBody(new Block(null));
+        addParameter("x");
+        struct.addFunction(this);
+    }
 
-	@Override
-	public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		var x = getBody().getVariableValue("x", callFileName, callLine);
-		if (x instanceof Double)
-			return Math.exp((double) x);
-		else if (x instanceof Integer)
-			return Math.exp(Double.valueOf((int) x));
-		else if (x instanceof BigInteger)
-			return Math.exp(((BigInteger) x).doubleValue());
+    @Override
+    public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+        setArguments(arguments, callFileName, callLine);
+        var x = getBody().getVariableValue("x", callFileName, callLine);
+        if (x instanceof Double)
+            return Math.exp((double) x);
+        else if (x instanceof Integer)
+            return Math.exp((double) (int) x);
+        else if (x instanceof BigInteger)
+            return Math.exp(((BigInteger) x).doubleValue());
 
-		return null;
-	}
+        return null;
+    }
 
 }

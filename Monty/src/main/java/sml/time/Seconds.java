@@ -16,23 +16,23 @@ limitations under the License.
 
 package sml.time;
 
-import java.util.ArrayList;
-
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 
+import java.util.ArrayList;
+
 public final class Seconds extends FunctionDeclarationNode {
 
-	public Seconds() {
-		super("seconds");
-		setBody(new Block(null));
-	}
+    public Seconds() {
+        super("seconds");
+        setBody(new Block(null));
+    }
 
-	@Override
-	public Double call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		return System.currentTimeMillis() / 1000d;
-	}
+    @Override
+    public Double call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+        setArguments(arguments, callFileName, callLine);
+        return System.currentTimeMillis() / 1000d;
+    }
 
 }

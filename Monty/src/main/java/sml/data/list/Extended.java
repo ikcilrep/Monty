@@ -16,25 +16,25 @@ limitations under the License.
 
 package sml.data.list;
 
-import java.util.ArrayList;
-
 import ast.expressions.OperationNode;
 import sml.data.Method;
 
+import java.util.ArrayList;
+
 final class Extended extends Method<List> {
 
-	Extended(List array) {
-		super(array, "$add");
-		addParameter("this");
-		addParameter("other");
-	}
+    Extended(List array) {
+        super(array, "$add");
+        addParameter("this");
+        addParameter("other");
+    }
 
-	@Override
-	public List call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-		setArguments(arguments, callFileName, callLine);
-		var other = getBody().getVariable("other", callFileName, callLine).getValue();
-		parent.doesCanBeExtendedWith(other, callFileName, callLine);
-		return parent.extended((List) other);
-	}
+    @Override
+    public List call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+        setArguments(arguments, callFileName, callLine);
+        var other = getBody().getVariable("other", callFileName, callLine).getValue();
+        parent.doesCanBeExtendedWith(other, callFileName, callLine);
+        return parent.extended((List) other);
+    }
 
 }
