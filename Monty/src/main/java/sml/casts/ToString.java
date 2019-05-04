@@ -20,14 +20,11 @@ import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import sml.data.string.StringStruct;
+import sml.data.tuple.Tuple;
 
 import java.util.ArrayList;
 
 public final class ToString extends FunctionDeclarationNode {
-
-    public static String toString(Object toBeCasted) {
-        return toBeCasted.toString();
-    }
 
     public ToString() {
         super("toString");
@@ -35,8 +32,12 @@ public final class ToString extends FunctionDeclarationNode {
         addParameter("toBeCasted");
     }
 
+    public static String toString(Object toBeCasted) {
+        return toBeCasted.toString();
+    }
+
     @Override
-    public StringStruct call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+    public StringStruct call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
         return new StringStruct(getBody().getVariableValue("toBeCasted", callFileName, callLine).toString());
     }

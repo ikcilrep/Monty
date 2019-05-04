@@ -18,8 +18,6 @@ package monty;
 
 import parser.parsing.Parser;
 
-import java.io.FileNotFoundException;
-
 public class Main {
     public static String[] argv = null;
     static String path;

@@ -17,7 +17,6 @@ limitations under the License.
 package parser.parsing;
 
 import ast.Block;
-import lexer.OptimizedTokensArray;
 import lexer.Token;
 import lexer.TokenTypes;
 import monty.Importing;
@@ -25,18 +24,18 @@ import monty.Library;
 import parser.Identificator;
 import parser.LogError;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public final class Parser {
     public final static HashMap<String, Library> libraries = new HashMap<>();
 
-    public static Block parse(OptimizedTokensArray tokens) {
-        var tokensBeforeSemicolon = new OptimizedTokensArray();
+    public static Block parse(ArrayList<Token> tokens) {
+        var tokensBeforeSemicolon = new ArrayList<Token>();
         var block = new Block(null);
-
         for (Token token : tokens) {
             if (token.getType().equals(TokenTypes.SEMICOLON)) {
-                if (tokensBeforeSemicolon.length() == 0)
+                if (tokensBeforeSemicolon.size() == 0)
                     continue;
                 if (Identificator.isVariableDeclaration(tokensBeforeSemicolon)) {
                     AdderToBlock.addVariableDeclaration(block, tokensBeforeSemicolon);
@@ -50,9 +49,9 @@ public final class Parser {
                     block = AdderToBlock.addIfStatement(block, tokensBeforeSemicolon, false);
                 } else if (Identificator.isElseStatement(tokensBeforeSemicolon)) {
                     block = AdderToBlock.addElseStatement(block, tokensBeforeSemicolon);
-                    if (tokensBeforeSemicolon.length() > 1) {
-                        block = AdderToBlock.addIfStatement(block,
-                                tokensBeforeSemicolon.subarray(1, tokensBeforeSemicolon.length()), true);
+                    if (tokensBeforeSemicolon.size() > 1) {
+                        block = AdderToBlock.addIfStatement(block, (ArrayList<Token>)
+                                tokensBeforeSemicolon.subList(1, tokensBeforeSemicolon.size()), true);
                     }
                 } else if (Identificator.isWhileStatement(tokensBeforeSemicolon)) {
                     block = AdderToBlock.addWhileStatement(block, tokensBeforeSemicolon);
@@ -79,12 +78,12 @@ public final class Parser {
                      * block = parent;
                      */
                     block = block.getParent();
-                } else if (Identificator.isExpression(tokensBeforeSemicolon, 0, tokensBeforeSemicolon.length())) {
+                } else if (Identificator.isExpression(tokensBeforeSemicolon, 0, tokensBeforeSemicolon.size())) {
                     AdderToBlock.addExpression(block, tokensBeforeSemicolon);
                 }
                 tokensBeforeSemicolon.clear();
             } else
-                tokensBeforeSemicolon.append(token);
+                tokensBeforeSemicolon.add(token);
         }
         while (true) {
             var parent = block.getParent();

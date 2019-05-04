@@ -19,6 +19,7 @@ package sml.time;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
+import sml.data.tuple.Tuple;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public final class Millis extends FunctionDeclarationNode {
     }
 
     @Override
-    public BigInteger call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+    public BigInteger call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
         return BigInteger.valueOf(System.currentTimeMillis());
     }

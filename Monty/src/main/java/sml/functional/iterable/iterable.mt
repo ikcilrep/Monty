@@ -14,11 +14,11 @@ struct Iterable;
 			end;
 			counter += 1;
 		end;
-		logError("Iterable doesn't have " +  index + " element");
+		logError "Iterable doesn't have " +  index + " element";
 	end;
-	
+
 	func toList;
-		var list = [Nothing] * length(This);
+		var list = [Nothing] * length This;
 		var i = 0;
 		for x in This;
 			list.set(i, x);
@@ -28,7 +28,7 @@ struct Iterable;
 	end;
 	
 	func tail;
-		var result = Iterable(iterable);
+		var result = Iterable iterable;
 		result.begin = begin + 1;
 		return result;
 	end;

@@ -19,24 +19,23 @@ package ast.declarations;
 import ast.Block;
 import ast.expressions.OperationNode;
 import parser.LogError;
+import sml.data.tuple.Tuple;
 
 import java.util.ArrayList;
 
 public abstract class FunctionDeclarationNode extends DeclarationNode implements Cloneable {
-    private Block body;
-    private int parametersSize = 0;
     public ArrayList<VariableDeclarationNode> parameters = new ArrayList<>();
+    private Block body;
 
     public FunctionDeclarationNode(String name) {
         super(name);
     }
 
     public void addParameter(String name) {
-        parameters.add(new VariableDeclarationNode(name));
-        incrementParameterSize();
+        getParameters().add(new VariableDeclarationNode(name));
     }
 
-    public abstract Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine);
+    public abstract Object call(Tuple arguments, String callFileName, int callLine);
 
     public FunctionDeclarationNode copy() {
         try {
@@ -53,24 +52,36 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
         return body;
     }
 
+    public void setBody(Block body) {
+        this.body = body;
+    }
+
     public ArrayList<VariableDeclarationNode> getParameters() {
         return parameters;
     }
 
-    private void incrementParameterSize() {
-        parametersSize++;
-    }
-
-    public void setArguments(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-        var argumentsSize = arguments.size();
-        if (argumentsSize > parametersSize)
+    public void setArguments(Tuple arguments, String callFileName, int callLine) {
+        var argumentsLength = arguments.length();
+        var parametersSize = getParameters().size();
+        if (parametersSize == 1 && parametersSize  != argumentsLength) {
+            var name = getParameters().get(0).getName();
+            VariableDeclarationNode variable;
+            if (!body.hasVariable(name)) {
+                variable = new VariableDeclarationNode(name);
+                body.addVariable(variable, getFileName(), getLine());
+            } else
+                variable = body.getVariable(name, getFileName(), getLine());
+            variable.setValue(arguments);
+            variable.setConst(Character.isUpperCase(name.charAt(0)));
+            return;
+        } else if (argumentsLength > parametersSize)
             new LogError("Too many arguments in " + name + " function call.", callFileName, callLine);
-        else if (argumentsSize < parametersSize)
+        else if (argumentsLength < parametersSize)
             new LogError("Too few arguments in " + name + " function call.", callFileName, callLine);
         var parameters = getParameters();
         var body = getBody();
 
-        for (int i = 0; i < arguments.size(); i++) {
+        for (int i = 0; i < arguments.length(); i++) {
             var name = parameters.get(i).getName();
             VariableDeclarationNode variable;
             if (!body.hasVariable(name)) {
@@ -78,17 +89,13 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
                 body.addVariable(variable, getFileName(), getLine());
             } else
                 variable = body.getVariable(name, getFileName(), getLine());
-            variable.setValue(arguments.get(i).run());
+            variable.setValue(arguments.get(i));
             variable.setConst(Character.isUpperCase(name.charAt(0)));
         }
     }
 
-    public void setBody(Block body) {
-        this.body = body;
-    }
-
     @Override
     public String toString() {
-        return "Function<" + getName() + "> -> " + parametersSize;
+        return "Function<" + getName() + "> <- " + getParameters().size();
     }
 }

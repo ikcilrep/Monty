@@ -5,6 +5,7 @@ import ast.expressions.OperationNode;
 import parser.LogError;
 import sml.data.returning.Nothing;
 import sml.data.string.StringStruct;
+import sml.data.tuple.Tuple;
 
 import java.util.ArrayList;
 
@@ -16,27 +17,26 @@ public class List extends StructDeclarationNode {
         super(null, "List");
     }
 
-    public List(ArrayList<OperationNode> arguments) {
+    public List(Tuple arguments) {
         super(null, "List");
         addFunctions();
-        increaseCapacity((arguments.size() << 1) + 1);
-        length = arguments.size();
-        for (int i = 0; i < length(); i++)
-            set(i, arguments.get(i).run());
+        increaseCapacity((arguments.length() << 1) + 1);
+        setLength(arguments.length());
+        setArray(arguments.getArray());
     }
 
     public List(int length) {
         super(null, "List");
         addFunctions();
         increaseCapacity(length << 1);
-        this.length = length;
+        setLength(length);
     }
 
     public List(List array) {
         super(null, "List");
         addFunctions();
         this.array = new Object[array.length()];
-        length = array.length();
+        setLength(array.length());
         for (int i = 0; i < length(); i++)
             set(i, array.get(i));
 
@@ -46,7 +46,7 @@ public class List extends StructDeclarationNode {
         super(null, "List");
         addFunctions();
         increaseCapacity((array.length << 1) + 1);
-        length = array.length;
+        setLength(array.length);
         for (int i = 0; i < length(); i++)
             if (array[i] instanceof String)
                 set(i, new StringStruct((String) array[i]));
@@ -121,7 +121,7 @@ public class List extends StructDeclarationNode {
     public List extend(List array) {
         int i = length();
         increaseCapacity((i + array.length()) << 1);
-        this.length = capacity() >> 1;
+        setLength(capacity() >> 1);
         for (int j = 0; i < length(); i++, j++)
             set(i, array.get(j));
 
@@ -145,6 +145,10 @@ public class List extends StructDeclarationNode {
 
     public Object[] getArray() {
         return array;
+    }
+
+    private void setArray(Object[] array) {
+        this.array = array;
     }
 
     private void increaseCapacity(int capacity) {
@@ -173,7 +177,7 @@ public class List extends StructDeclarationNode {
         var array = new Object[length << 1];
         for (int i = 0; i < length; i++)
             array[i] = get(i % length());
-        this.length = length;
+        setLength(length);
         setArray(array);
         return this;
     }
@@ -203,10 +207,6 @@ public class List extends StructDeclarationNode {
         return this;
     }
 
-    public void setArray(Object[] array) {
-        this.array = array;
-    }
-
     public void setLength(int length) {
         this.length = length;
     }
@@ -232,7 +232,7 @@ public class List extends StructDeclarationNode {
                 else
                     stringBuilder.append(value);
                 if (i < length)
-                    stringBuilder.append(',');
+                    stringBuilder.append(", ");
                 else
                     break;
             }

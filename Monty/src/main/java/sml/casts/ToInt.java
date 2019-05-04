@@ -23,12 +23,19 @@ import ast.expressions.OperationNode;
 import parser.LogError;
 import sml.data.returning.VoidType;
 import sml.data.string.StringStruct;
+import sml.data.tuple.Tuple;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
 public final class ToInt extends FunctionDeclarationNode {
+
+    public ToInt() {
+        super("toInt");
+        setBody(new Block(null));
+        addParameter("toBeCasted");
+    }
 
     private static Object toInt(Object toBeCasted, String callFileName, int callLine) {
         if (toBeCasted instanceof VoidType)
@@ -44,19 +51,6 @@ public final class ToInt extends FunctionDeclarationNode {
         else
             new LogError("Can't cast structure to integer", callFileName, callLine);
         return null;
-    }
-
-    public ToInt() {
-        super("toInt");
-        setBody(new Block(null));
-        addParameter("toBeCasted");
-    }
-
-    @Override
-    public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-        setArguments(arguments, callFileName, callLine);
-        var toBeCasted = getBody().getVariableValue("toBeCasted", callFileName, callLine);
-        return toInt(toBeCasted, callFileName, callLine);
     }
 
     private static Object fromString(StringStruct str, String fileName, int line) {
@@ -92,5 +86,12 @@ public final class ToInt extends FunctionDeclarationNode {
 
     public static void fromSmallIntVariable(VariableDeclarationNode variable, String fileName, int line) {
         variable.setValue(fromSmallInt((int) variable.getValue()), fileName, line);
+    }
+
+    @Override
+    public Object call(Tuple arguments, String callFileName, int callLine) {
+        setArguments(arguments, callFileName, callLine);
+        var toBeCasted = getBody().getVariableValue("toBeCasted", callFileName, callLine);
+        return toInt(toBeCasted, callFileName, callLine);
     }
 }

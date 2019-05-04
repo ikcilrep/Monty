@@ -16,9 +16,10 @@ limitations under the License.
 
 package parser;
 
-import lexer.OptimizedTokensArray;
 import lexer.Token;
 import lexer.TokenTypes;
+
+import java.util.List;
 
 public class Tokens {
     public static DataTypes getDataType(TokenTypes type) {
@@ -36,14 +37,14 @@ public class Tokens {
         }
     }
 
-    public static String getText(OptimizedTokensArray array) {
+    public static String getText(List<Token> array) {
         var result = new StringBuilder();
         for (Token token : array)
             result.append(token.getText());
         return result.toString();
     }
 
-    static String getTypesToString(OptimizedTokensArray array) {
+    static String getTypesToString(List<Token> array) {
         var result = new StringBuilder();
         for (Token token : array) {
             if (token.getType().equals(TokenTypes.OPERATOR) && token.getText().equals("."))

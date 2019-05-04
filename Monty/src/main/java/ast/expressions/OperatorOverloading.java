@@ -24,21 +24,18 @@ import parser.DataTypes;
 import parser.LogError;
 import sml.data.list.List;
 import sml.data.string.StringStruct;
-import sml.math.MathStruct;
+import sml.data.tuple.Tuple;
 import sml.math.Pow;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.HashMap;
 
- public class OperatorOverloading {
-    public static ArrayList<OperationNode> arguments;
+public class OperatorOverloading {
     private static HashMap<String, Class<?>> builtInTypes = new HashMap<>();
+    private static int temporaryLine;
+    private static String temporaryFileName;
 
     static {
-        arguments = new ArrayList<>();
-        arguments.add(new OperationNode(null, null));
-        arguments.add(new OperationNode(null, null));
         builtInTypes.put("List", List.class);
         builtInTypes.put("Function", FunctionDeclarationNode.class);
         builtInTypes.put("Integer", null);
@@ -53,9 +50,6 @@ import java.util.HashMap;
             return value instanceof Integer || value instanceof BigInteger;
         return builtInTypes.get(name).isInstance(value);
     }
-
-    private static int temporaryLine;
-    private static String temporaryFileName;
 
     static Object additionOperator(Object leftValue, Object rightValue, DataTypes type) {
         switch (type) {
@@ -74,7 +68,7 @@ import java.util.HashMap;
             case BOOLEAN:
                 new LogError("Can't add booleans.", temporaryFileName, temporaryLine);
             case OBJECT:
-                return overloadOperator(leftValue, rightValue, "$add", 2, false);
+                return overloadOperator(leftValue, rightValue, "$add", 2);
             case NOTHING:
                 new LogError("Can't add Nothing.", temporaryFileName, temporaryLine);
             default:
@@ -82,7 +76,7 @@ import java.util.HashMap;
         }
     }
 
-     static Object andOperator(Object leftValue, Object rightValue, DataTypes type) {
+    static Object andOperator(Object leftValue, Object rightValue, DataTypes type) {
         switch (type) {
             case INTEGER:
                 return (int) leftValue & (int) rightValue;
@@ -92,7 +86,7 @@ import java.util.HashMap;
                 new LogError("Can't do and operation with " + type.toString().toLowerCase() + "s", temporaryFileName,
                         temporaryLine);
             case OBJECT:
-                return overloadOperator(leftValue, rightValue, "$and", 2, false);
+                return overloadOperator(leftValue, rightValue, "$and", 2);
             case NOTHING:
                 new LogError("Can't do and operation with Nothing.", temporaryFileName, temporaryLine);
             default:
@@ -100,7 +94,9 @@ import java.util.HashMap;
         }
     }
 
-     static Object assignmentAdditionOperator(Object leftValue, Object rightValue, DataTypes type) {
+    static Object assignmentAdditionOperator(Object leftValue, Object rightValue, DataTypes type) {
+        if (type.equals(DataTypes.OBJECT))
+            return overloadOperator(leftValue, rightValue, "$a_add", 2);
         var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
         switch (type) {
             case INTEGER:
@@ -111,8 +107,6 @@ import java.util.HashMap;
                 return variable.getValue();
             case BOOLEAN:
                 new LogError("Can't add booleans.", temporaryFileName, temporaryLine);
-            case OBJECT:
-                return overloadOperator(variable.getValue(), rightValue, "$a_add", 2, true);
             case NOTHING:
                 new LogError("Can't add Nothing.", temporaryFileName, temporaryLine);
             default:
@@ -120,16 +114,17 @@ import java.util.HashMap;
         }
     }
 
-     static Object assignmentAndOperator(Object leftValue, Object rightValue, DataTypes type) {
+    static Object assignmentAndOperator(Object leftValue, Object rightValue, DataTypes type) {
+        if (type.equals(DataTypes.OBJECT))
+            return overloadOperator(leftValue, rightValue, "$a_and", 2);
         var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
+
         switch (type) {
             case INTEGER:
             case BIG_INTEGER:
             case FLOAT:
                 variable.setValue(andOperator(variable.getValue(), rightValue, type), temporaryFileName, temporaryLine);
                 return variable.getValue();
-            case OBJECT:
-                return overloadOperator(variable.getValue(), rightValue, "$a_and", 2, true);
             case NOTHING:
                 new LogError("Can't do and operation with Nothing.", temporaryFileName, temporaryLine);
             default:
@@ -137,7 +132,10 @@ import java.util.HashMap;
         }
     }
 
-     static Object assignmentDivisionOperator(Object leftValue, Object rightValue, DataTypes type) {
+    static Object assignmentDivisionOperator(Object leftValue, Object rightValue, DataTypes type) {
+        if (type.equals(DataTypes.OBJECT))
+            return overloadOperator(leftValue, rightValue, "$a_div", 2);
+
         var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
         switch (type) {
             case INTEGER:
@@ -146,8 +144,6 @@ import java.util.HashMap;
                 variable.setValue(divisionOperator(variable.getValue(), rightValue, type), temporaryFileName,
                         temporaryLine);
                 return variable.getValue();
-            case OBJECT:
-                return overloadOperator(variable.getValue(), rightValue, "$a_div", 2, true);
             case NOTHING:
                 new LogError("Can't divide Nothing.", temporaryFileName, temporaryLine);
             default:
@@ -155,8 +151,11 @@ import java.util.HashMap;
         }
     }
 
-     static Object assignmentMultiplicationOperator(Object leftValue, Object rightValue, DataTypes type) {
+    static Object assignmentMultiplicationOperator(Object leftValue, Object rightValue, DataTypes type) {
+        if (type.equals(DataTypes.OBJECT))
+            return overloadOperator(leftValue, rightValue, "$a_mul", 2);
         var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
+
         switch (type) {
             case INTEGER:
             case BIG_INTEGER:
@@ -164,8 +163,6 @@ import java.util.HashMap;
                 variable.setValue(multiplicationOperator(variable.getValue(), rightValue, type), temporaryFileName,
                         temporaryLine);
                 return variable.getValue();
-            case OBJECT:
-                return overloadOperator(variable.getValue(), rightValue, "$a_mul", 2, true);
             case NOTHING:
                 new LogError("Can't multiply Nothing.", temporaryFileName, temporaryLine);
             default:
@@ -173,7 +170,7 @@ import java.util.HashMap;
         }
     }
 
-     static Object assignmentOperator(Object leftValue, Object rightValue, DataTypes type) {
+    static Object assignmentOperator(Object leftValue, Object rightValue, DataTypes type) {
         var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
         switch (type) {
             case INTEGER:
@@ -189,7 +186,9 @@ import java.util.HashMap;
         }
     }
 
-     static Object assignmentOrOperator(Object leftValue, Object rightValue, DataTypes type) {
+    static Object assignmentOrOperator(Object leftValue, Object rightValue, DataTypes type) {
+        if (type.equals(DataTypes.OBJECT))
+            return overloadOperator(leftValue, rightValue, "$a_or", 2);
         var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
         switch (type) {
             case INTEGER:
@@ -197,8 +196,6 @@ import java.util.HashMap;
             case FLOAT:
                 variable.setValue(orOperator(variable.getValue(), rightValue, type), temporaryFileName, temporaryLine);
                 return variable.getValue();
-            case OBJECT:
-                return overloadOperator(variable.getValue(), rightValue, "$a_or", 2, true);
             case NOTHING:
                 new LogError("Can't do or operation with Nothing.", temporaryFileName, temporaryLine);
             default:
@@ -206,7 +203,9 @@ import java.util.HashMap;
         }
     }
 
-     static Object assignmentPowerOperator(Object leftValue, Object rightValue, DataTypes type) {
+    static Object assignmentPowerOperator(Object leftValue, Object rightValue, DataTypes type) {
+        if (type.equals(DataTypes.OBJECT))
+            return overloadOperator(leftValue, rightValue, "$a_pow", 2);
         var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
         switch (type) {
             case INTEGER:
@@ -214,8 +213,6 @@ import java.util.HashMap;
             case FLOAT:
                 variable.setValue(powerOperator(variable.getValue(), rightValue, type), temporaryFileName, temporaryLine);
                 return variable.getValue();
-            case OBJECT:
-                return overloadOperator(variable.getValue(), rightValue, "$a_pow", 2, true);
             case NOTHING:
                 new LogError("Can't do or operation with Nothing.", temporaryFileName, temporaryLine);
             default:
@@ -223,7 +220,9 @@ import java.util.HashMap;
         }
     }
 
-     static Object assignmentShiftLeftOperator(Object leftValue, Object rightValue, DataTypes type) {
+    static Object assignmentShiftLeftOperator(Object leftValue, Object rightValue, DataTypes type) {
+        if (type.equals(DataTypes.OBJECT))
+            return overloadOperator(leftValue, rightValue, "$a_shl", 2);
         var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
         switch (type) {
             case INTEGER:
@@ -232,8 +231,6 @@ import java.util.HashMap;
                 variable.setValue(shiftLeftOperator(variable.getValue(), rightValue, type), temporaryFileName,
                         temporaryLine);
                 return variable.getValue();
-            case OBJECT:
-                return overloadOperator(variable.getValue(), rightValue, "$a_shl", 2, true);
             case NOTHING:
                 new LogError("Can't shift left Nothing.", temporaryFileName, temporaryLine);
             default:
@@ -241,7 +238,9 @@ import java.util.HashMap;
         }
     }
 
-     static Object assignmentShiftRightOperator(Object leftValue, Object rightValue, DataTypes type) {
+    static Object assignmentShiftRightOperator(Object leftValue, Object rightValue, DataTypes type) {
+        if (type.equals(DataTypes.OBJECT))
+            return overloadOperator(leftValue, rightValue, "$a_shr", 2);
         var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
         switch (type) {
             case INTEGER:
@@ -250,8 +249,6 @@ import java.util.HashMap;
                 variable.setValue(shiftRightOperator(variable.getValue(), rightValue, type), temporaryFileName,
                         temporaryLine);
                 return variable.getValue();
-            case OBJECT:
-                return overloadOperator(variable.getValue(), rightValue, "$a_shr", 2, true);
             case NOTHING:
                 new LogError("Can't shift right Nothing.", temporaryFileName, temporaryLine);
             default:
@@ -259,7 +256,9 @@ import java.util.HashMap;
         }
     }
 
-     static Object assignmentSubtractionOperator(Object leftValue, Object rightValue, DataTypes type) {
+    static Object assignmentSubtractionOperator(Object leftValue, Object rightValue, DataTypes type) {
+        if (type.equals(DataTypes.OBJECT))
+            return overloadOperator(leftValue, rightValue, "$a_sub", 2);
         var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
         switch (type) {
             case INTEGER:
@@ -268,8 +267,6 @@ import java.util.HashMap;
                 variable.setValue(subtractionOperator(variable.getValue(), rightValue, type), temporaryFileName,
                         temporaryLine);
                 return variable.getValue();
-            case OBJECT:
-                return overloadOperator(variable.getValue(), rightValue, "$a_sub", 2, true);
             case NOTHING:
                 new LogError("Can't subtract Nothing.", temporaryFileName, temporaryLine);
             default:
@@ -277,7 +274,9 @@ import java.util.HashMap;
         }
     }
 
-     static Object assignmentXorOperator(Object leftValue, Object rightValue, DataTypes type) {
+    static Object assignmentXorOperator(Object leftValue, Object rightValue, DataTypes type) {
+        if (type.equals(DataTypes.OBJECT))
+            return overloadOperator(leftValue, rightValue, "$a_xor", 2);
         var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
         switch (type) {
             case INTEGER:
@@ -285,8 +284,6 @@ import java.util.HashMap;
             case FLOAT:
                 variable.setValue(xorOperator(variable.getValue(), rightValue, type), temporaryFileName, temporaryLine);
                 return variable.getValue();
-            case OBJECT:
-                return overloadOperator(variable.getValue(), rightValue, "$a_xor", 2, true);
             case NOTHING:
                 new LogError("Can't xor Nothing.", temporaryFileName, temporaryLine);
             default:
@@ -294,7 +291,7 @@ import java.util.HashMap;
         }
     }
 
-     static Object booleanAndOperator(boolean leftValue, OperationNode right) {
+    static Object booleanAndOperator(boolean leftValue, OperationNode right) {
         if (!leftValue)
             return false;
         var rightValue = right.run();
@@ -308,7 +305,7 @@ import java.util.HashMap;
         return rightValue;
     }
 
-     static Object booleanOrOperator(boolean leftValue, OperationNode right) {
+    static Object booleanOrOperator(boolean leftValue, OperationNode right) {
         if (leftValue)
             return true;
         var rightValue = right.run();
@@ -322,7 +319,7 @@ import java.util.HashMap;
         return rightValue;
     }
 
-     static Object divisionOperator(Object leftValue, Object rightValue, DataTypes type) {
+    static Object divisionOperator(Object leftValue, Object rightValue, DataTypes type) {
         switch (type) {
             case INTEGER:
                 return (int) leftValue / (int) rightValue;
@@ -335,7 +332,7 @@ import java.util.HashMap;
             case BOOLEAN:
                 new LogError("Can't divide " + type.toString().toLowerCase() + "s", temporaryFileName, temporaryLine);
             case OBJECT:
-                return overloadOperator(leftValue, rightValue, "$div", 2, false);
+                return overloadOperator(leftValue, rightValue, "$div", 2);
             case NOTHING:
                 new LogError("Can't divide Nothing.", temporaryFileName, temporaryLine);
             default:
@@ -343,36 +340,19 @@ import java.util.HashMap;
         }
     }
 
-     static Object dotOperator(Object leftValue, Object rightValue, DataTypes type, Block parent) {
+    static Object dotOperator(Object leftValue, OperationNode rightValue, DataTypes type, Block parent) {
+
         if (type.equals(DataTypes.OBJECT))
-            return OperationNode.getLiteral(rightValue, (StructDeclarationNode) leftValue, temporaryFileName,
-                    temporaryLine);
-        if (rightValue instanceof FunctionCallNode) {
-            var function = (FunctionCallNode) rightValue;
-            var arguments = new ArrayList<OperationNode>();
-            arguments.add(new OperationNode(new ConstantNode(leftValue), parent));
-            arguments.addAll(function.getArguments());
-            switch (type) {
-                case INTEGER:
-                case BIG_INTEGER:
-                case FLOAT:
-                    return MathStruct.getStruct().getFunction(function.getName(), temporaryFileName, temporaryLine)
-                            .call(arguments, temporaryFileName, temporaryLine);
-                case NOTHING:
-                    new LogError("Can't get attributes or methods from Nothing.", temporaryFileName, temporaryLine);
-                case BOOLEAN:
-                    new LogError("Can't get attributes or methods from boolean.", temporaryFileName, temporaryLine);
-                default:
-                    return null;
-            }
-        } else {
+            return rightValue.runWithParent((StructDeclarationNode) leftValue);
+
+        else
             new LogError("Can't get attributes from simple values.", temporaryFileName, temporaryLine);
-        }
+
         return null;
 
     }
 
-     static Object equalsOperator(Object leftValue, Object rightValue) {
+    static Object equalsOperator(Object leftValue, Object rightValue) {
         return leftValue.equals(rightValue);
     }
 
@@ -384,7 +364,7 @@ import java.util.HashMap;
         return temporaryLine;
     }
 
-     static Object greaterEqualsOperator(Object leftValue, Object rightValue, DataTypes type) {
+    static Object greaterEqualsOperator(Object leftValue, Object rightValue, DataTypes type) {
         switch (type) {
             case INTEGER:
                 return (int) leftValue >= (int) rightValue;
@@ -395,7 +375,7 @@ import java.util.HashMap;
             case BOOLEAN:
                 new LogError("Can't compare booleans", temporaryFileName, temporaryLine);
             case OBJECT:
-                return overloadOperator(leftValue, rightValue, "$ge", 2, false);
+                return overloadOperator(leftValue, rightValue, "$ge", 2);
             case NOTHING:
                 new LogError("Can't compare Nothing.", temporaryFileName, temporaryLine);
 
@@ -404,7 +384,7 @@ import java.util.HashMap;
         }
     }
 
-     static Object greaterOperator(Object leftValue, Object rightValue, DataTypes type) {
+    static Object greaterOperator(Object leftValue, Object rightValue, DataTypes type) {
         switch (type) {
             case INTEGER:
                 return (int) leftValue > (int) rightValue;
@@ -415,7 +395,7 @@ import java.util.HashMap;
             case BOOLEAN:
                 new LogError("Can't compare booleans", temporaryFileName, temporaryLine);
             case OBJECT:
-                return overloadOperator(leftValue, rightValue, "$gt", 2, false);
+                return overloadOperator(leftValue, rightValue, "$gt", 2);
             case NOTHING:
                 new LogError("Can't compare Nothing.", temporaryFileName, temporaryLine);
             default:
@@ -423,8 +403,8 @@ import java.util.HashMap;
         }
     }
 
-     static Object instanceOfOperator(Object leftValue, Object rightValue, DataTypes type, Block parent) {
-        var rightName = ((VariableNode) rightValue).getName();
+    static Object instanceOfOperator(Object leftValue, Object rightValue, DataTypes type, Block parent) {
+        var rightName = ((IdentifierNode) rightValue).getName();
 
         if (builtInTypes.containsKey(rightName))
             return isInstance(leftValue, rightName);
@@ -438,7 +418,7 @@ import java.util.HashMap;
         return false;
     }
 
-     static Object lowerEqualsOperator(Object leftValue, Object rightValue, DataTypes type) {
+    static Object lowerEqualsOperator(Object leftValue, Object rightValue, DataTypes type) {
         switch (type) {
             case INTEGER:
                 return (int) leftValue <= (int) rightValue;
@@ -449,7 +429,7 @@ import java.util.HashMap;
             case BOOLEAN:
                 new LogError("Can't compare booleans", temporaryFileName, temporaryLine);
             case OBJECT:
-                return overloadOperator(leftValue, rightValue, "$le", 2, false);
+                return overloadOperator(leftValue, rightValue, "$le", 2);
             case NOTHING:
                 new LogError("Can't compare Nothing.", temporaryFileName, temporaryLine);
 
@@ -458,7 +438,7 @@ import java.util.HashMap;
         }
     }
 
-     static Object lowerOperator(Object leftValue, Object rightValue, DataTypes type) {
+    static Object lowerOperator(Object leftValue, Object rightValue, DataTypes type) {
         switch (type) {
             case INTEGER:
                 return (int) leftValue < (int) rightValue;
@@ -469,7 +449,7 @@ import java.util.HashMap;
             case BOOLEAN:
                 new LogError("Can't compare booleans", temporaryFileName, temporaryLine);
             case OBJECT:
-                return overloadOperator(leftValue, rightValue, "$lt", 2, false);
+                return overloadOperator(leftValue, rightValue, "$lt", 2);
             case NOTHING:
                 new LogError("Can't compare Nothing.", temporaryFileName, temporaryLine);
             default:
@@ -477,7 +457,7 @@ import java.util.HashMap;
         }
     }
 
-     static Object moduloOperator(Object leftValue, Object rightValue, DataTypes type) {
+    static Object moduloOperator(Object leftValue, Object rightValue, DataTypes type) {
         switch (type) {
             case INTEGER:
                 return (int) leftValue % (int) rightValue;
@@ -491,7 +471,7 @@ import java.util.HashMap;
             case BOOLEAN:
                 new LogError("Can't do modulo operation with booleans", temporaryFileName, temporaryLine);
             case OBJECT:
-                return overloadOperator(leftValue, rightValue, "$mod", 2, false);
+                return overloadOperator(leftValue, rightValue, "$mod", 2);
             case NOTHING:
                 new LogError("Can't do modulo operation with Nothing.", temporaryFileName, temporaryLine);
             default:
@@ -499,7 +479,7 @@ import java.util.HashMap;
         }
     }
 
-     static Object multiplicationOperator(Object leftValue, Object rightValue, DataTypes type) {
+    static Object multiplicationOperator(Object leftValue, Object rightValue, DataTypes type) {
         switch (type) {
             case INTEGER:
                 var leftInt = (int) leftValue;
@@ -516,7 +496,7 @@ import java.util.HashMap;
             case BOOLEAN:
                 new LogError("Can't multiply booleans", temporaryFileName, temporaryLine);
             case OBJECT:
-                return overloadOperator(leftValue, rightValue, "$mul", 2, false);
+                return overloadOperator(leftValue, rightValue, "$mul", 2);
             case NOTHING:
                 new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " *", temporaryFileName,
                         temporaryLine);
@@ -525,7 +505,7 @@ import java.util.HashMap;
         }
     }
 
-     static Object negationOperator(Object value, DataTypes type) {
+    static Object negationOperator(Object value, DataTypes type) {
         switch (type) {
             case INTEGER:
                 return -(int) value;
@@ -536,7 +516,7 @@ import java.util.HashMap;
             case BOOLEAN:
                 return !(boolean) value;
             case OBJECT:
-                return overloadOperator(null, value, "$not", 1, false);
+                return overloadOperator(null, value, "$not", 1);
             case NOTHING:
                 new LogError("Void hasn't got any value:\t" + value + " !", temporaryFileName, temporaryLine);
             default:
@@ -544,11 +524,11 @@ import java.util.HashMap;
         }
     }
 
-     static Object notEqualsOperator(Object leftValue, Object rightValue) {
+    static Object notEqualsOperator(Object leftValue, Object rightValue) {
         return !leftValue.equals(rightValue);
     }
 
-     static Object orOperator(Object leftValue, Object rightValue, DataTypes type) {
+    static Object orOperator(Object leftValue, Object rightValue, DataTypes type) {
         switch (type) {
             case INTEGER:
                 return (int) leftValue | (int) rightValue;
@@ -560,7 +540,7 @@ import java.util.HashMap;
                 new LogError("Can't do or operation with " + type.toString().toLowerCase() + "s", temporaryFileName,
                         temporaryLine);
             case OBJECT:
-                return overloadOperator(leftValue, rightValue, "$or", 2, false);
+                return overloadOperator(leftValue, rightValue, "$or", 2);
             case NOTHING:
                 new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " |", temporaryFileName,
                         temporaryLine);
@@ -569,7 +549,7 @@ import java.util.HashMap;
         }
     }
 
-     static Object powerOperator(Object leftValue, Object rightValue, DataTypes type) {
+    static Object powerOperator(Object leftValue, Object rightValue, DataTypes type) {
         switch (type) {
             case INTEGER:
             case BIG_INTEGER:
@@ -579,7 +559,7 @@ import java.util.HashMap;
             case FLOAT:
                 return Math.pow((double) leftValue, (double) rightValue);
             case OBJECT:
-                return overloadOperator(leftValue, rightValue, "$pow", 2, false);
+                return overloadOperator(leftValue, rightValue, "$pow", 2);
             case NOTHING:
                 new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " |", temporaryFileName,
                         temporaryLine);
@@ -588,10 +568,10 @@ import java.util.HashMap;
         }
     }
 
-     public static Object overloadOperator(Object leftValue, Object rightValue, String nameOfFunction,
-                                            int numberOfParameters, boolean isAssignment) {
-        arguments.get(0).setOperand(new ConstantNode(leftValue));
-        arguments.get(1).setOperand(new ConstantNode(rightValue));
+    public static Object overloadOperator(Object leftValue, Object rightValue, String nameOfFunction,
+                                          int numberOfParameters) {
+        var arguments = new Tuple(leftValue, rightValue);
+        leftValue = OperationNode.getVariableValue(leftValue);
         if (leftValue instanceof StructDeclarationNode) {
             var struct = (StructDeclarationNode) leftValue;
             if (struct.hasFunction(nameOfFunction)) {
@@ -600,10 +580,10 @@ import java.util.HashMap;
                     return operator.call(arguments, temporaryFileName, temporaryLine);
             }
         }
-        if (!isAssignment && rightValue instanceof StructDeclarationNode) {
+        if (rightValue instanceof StructDeclarationNode) {
             var struct = (StructDeclarationNode) rightValue;
             var name = "$r_" + nameOfFunction.substring(1);
-            if (!nameOfFunction.startsWith("$a_") && struct.hasFunction(name)) {
+            if (struct.hasFunction(name)) {
                 var operator = struct.getFunction(name, temporaryFileName, temporaryLine);
                 if (operator.getParameters().size() == numberOfParameters)
                     return operator.call(arguments, temporaryFileName, temporaryLine);
@@ -620,7 +600,7 @@ import java.util.HashMap;
         temporaryLine = line;
     }
 
-     static Object shiftLeftOperator(Object leftValue, Object rightValue, DataTypes type) {
+    static Object shiftLeftOperator(Object leftValue, Object rightValue, DataTypes type) {
         switch (type) {
             case INTEGER:
                 return BigInteger.valueOf((int) leftValue).shiftLeft((int) rightValue);
@@ -630,7 +610,7 @@ import java.util.HashMap;
             case BOOLEAN:
                 new LogError("Can't shift left " + type.toString().toLowerCase() + "s", temporaryFileName, temporaryLine);
             case OBJECT:
-                return overloadOperator(leftValue, rightValue, "$shl", 2, false);
+                return overloadOperator(leftValue, rightValue, "$shl", 2);
             case NOTHING:
                 new LogError("Can't shift left Nothing.", temporaryFileName, temporaryLine);
             default:
@@ -638,7 +618,7 @@ import java.util.HashMap;
         }
     }
 
-     static Object shiftRightOperator(Object leftValue, Object rightValue, DataTypes type) {
+    static Object shiftRightOperator(Object leftValue, Object rightValue, DataTypes type) {
         switch (type) {
             case INTEGER:
                 return (int) leftValue >> (int) rightValue;
@@ -648,7 +628,7 @@ import java.util.HashMap;
             case BOOLEAN:
                 new LogError("Can't shift right " + type.toString().toLowerCase() + "s", temporaryFileName, temporaryLine);
             case OBJECT:
-                return overloadOperator(leftValue, rightValue, "$shr", 2, false);
+                return overloadOperator(leftValue, rightValue, "$shr", 2);
             case NOTHING:
                 new LogError("Can't shift right Nothing.", temporaryFileName, temporaryLine);
             default:
@@ -656,7 +636,7 @@ import java.util.HashMap;
         }
     }
 
-     static Object subtractionOperator(Object leftValue, Object rightValue, DataTypes type) {
+    static Object subtractionOperator(Object leftValue, Object rightValue, DataTypes type) {
         switch (type) {
             case INTEGER:
                 var leftInt = (int) leftValue;
@@ -673,7 +653,7 @@ import java.util.HashMap;
             case BOOLEAN:
                 new LogError("Can't subtract booleans", temporaryFileName, temporaryLine);
             case OBJECT:
-                return overloadOperator(leftValue, rightValue, "$sub", 2, false);
+                return overloadOperator(leftValue, rightValue, "$sub", 2);
             case NOTHING:
                 new LogError("Can't subtract Nothing.", temporaryFileName, temporaryLine);
             default:
@@ -681,7 +661,7 @@ import java.util.HashMap;
         }
     }
 
-     static Object xorOperator(Object leftValue, Object rightValue, DataTypes type) {
+    static Object xorOperator(Object leftValue, Object rightValue, DataTypes type) {
         switch (type) {
             case INTEGER:
                 return (int) leftValue ^ (int) rightValue;
@@ -692,7 +672,7 @@ import java.util.HashMap;
                 new LogError("Can't do xor operation with " + type.toString().toLowerCase() + "s",
                         temporaryFileName, temporaryLine);
             case OBJECT:
-                return overloadOperator(leftValue, rightValue, "$xor", 2, false);
+                return overloadOperator(leftValue, rightValue, "$xor", 2);
             case NOTHING:
                 new LogError("Can't do xor operation with Nothing.", temporaryFileName, temporaryLine);
             default:

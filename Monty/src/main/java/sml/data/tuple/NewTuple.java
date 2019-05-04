@@ -1,9 +1,10 @@
 package sml.data.tuple;
 
 import ast.declarations.FunctionDeclarationNode;
-import ast.expressions.OperationNode;
-
-import java.util.ArrayList;
+import ast.declarations.StructDeclarationNode;
+import ast.declarations.VariableDeclarationNode;
+import parser.LogError;
+import sml.data.string.StringStruct;
 
 public class NewTuple extends FunctionDeclarationNode {
 
@@ -12,8 +13,7 @@ public class NewTuple extends FunctionDeclarationNode {
     }
 
     @Override
-    public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-        return new Tuple(arguments);
+    public Object call(Tuple arguments, String callFileName, int callLine) {
+        return arguments;
     }
-
 }

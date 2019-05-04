@@ -40,8 +40,16 @@ public final class IfStatementNode extends ConditionalNode {
         return elseBody;
     }
 
+    public void setElseBody(Block elseBody) {
+        this.elseBody = elseBody;
+    }
+
     public boolean isInElse() {
         return isInElse;
+    }
+
+    public void setInElse(boolean isInElse) {
+        this.isInElse = isInElse;
     }
 
     @Override
@@ -52,13 +60,5 @@ public final class IfStatementNode extends ConditionalNode {
             return getElseBody().run();
 
         return null;
-    }
-
-    public void setElseBody(Block elseBody) {
-        this.elseBody = elseBody;
-    }
-
-    public void setInElse(boolean isInElse) {
-        this.isInElse = isInElse;
     }
 }

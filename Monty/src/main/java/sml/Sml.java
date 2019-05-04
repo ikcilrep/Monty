@@ -20,8 +20,11 @@ import ast.expressions.OperationNode;
 import monty.FileIO;
 import monty.Library;
 import sml.casts.*;
+import sml.data.tuple.Tuple;
 import sml.language.Run;
 import sml.math.E;
+import sml.math.Exp;
+import sml.math.Factorial;
 import sml.math.Pi;
 import sml.system.Argv;
 import sml.threading.Sleep;
@@ -32,7 +35,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public final class Sml extends Library {
-    public static final ArrayList<OperationNode> emptyArgumentList = new ArrayList<>();
+    public static final Tuple EMPTY_ARGUMENT_LIST = new Tuple();
     public static String[] paths;
     public static String[] code;
     public static short numberOfFiles;
@@ -94,6 +97,9 @@ public final class Sml extends Library {
 
         math.put("Pi", new Pi());
         math.put("E", new E());
+        math.put("exp", new Exp());
+        math.put("factorial", new Factorial());
+
 
         language.put("run", new Run());
     }

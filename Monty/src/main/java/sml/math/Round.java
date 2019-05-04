@@ -21,21 +21,21 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.LogError;
 import sml.data.StaticStruct;
+import sml.data.tuple.Tuple;
 
 import java.util.ArrayList;
 
 public final class Round extends FunctionDeclarationNode {
 
-    Round(StaticStruct struct) {
+    public Round() {
         super("round");
         setBody(new Block(null));
         addParameter("f");
         addParameter("scale");
-        struct.addFunction(this);
     }
 
     @Override
-    public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+    public Object call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
         var f = getBody().getVariableValue("f", callFileName, callLine);
         if (f instanceof Double)

@@ -1,16 +1,18 @@
 package sml.data.string;
 
+import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
 import sml.data.Method;
 import sml.data.tuple.Tuple;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 
-public class MultiplyLeft extends Method<StringStruct> {
+public class MultipliedLeft extends Method<StringStruct> {
 
-    MultiplyLeft(StringStruct parent) {
-        super(parent, "$a_mul");
+    MultipliedLeft(StringStruct parent) {
+        super(parent, "$mul");
         addParameter("this");
         addParameter("times");
 
@@ -31,7 +33,7 @@ public class MultiplyLeft extends Method<StringStruct> {
             times = ((BigInteger) _times).intValue();
         } else
             new LogError("Multiplier has to be integer.", callFileName, callLine);
-        return parent.mulitply(times);
+        return parent.mulitplied(times);
     }
 
 }

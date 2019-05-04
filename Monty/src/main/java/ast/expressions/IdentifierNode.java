@@ -16,15 +16,23 @@ limitations under the License.
 
 package ast.expressions;
 
-public final class VariableNode extends NamedExpression {
-
-    private String name;
-
-    public VariableNode(String name) {
-        setName(name);
+public final class IdentifierNode {
+    boolean isFunctionCall() {
+        return isFunctionCall;
     }
 
-    @Override
+    private void setFunctionCall(boolean functionCall) {
+        isFunctionCall = functionCall;
+    }
+
+    private boolean isFunctionCall;
+    private String name;
+
+    public IdentifierNode(String name, boolean isFunctionCall) {
+        setName(name);
+        setFunctionCall(isFunctionCall);
+    }
+
     public String getName() {
         return name;
     }

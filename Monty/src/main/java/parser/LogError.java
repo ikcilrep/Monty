@@ -18,13 +18,6 @@ package parser;
 import lexer.Token;
 
 public class LogError {
-    private static String getMessage(String message) {
-        var lastChar = message.charAt(message.length() - 1);
-        if (Character.isAlphabetic(lastChar) || Character.isDigit(lastChar))
-            return message + ".";
-        return message;
-    }
-
     public LogError(String message) {
         System.out.println(getMessage(message));
         System.exit(0);
@@ -55,5 +48,12 @@ public class LogError {
         System.out.println(
                 getMessage(message) + "\nLook at " + token.getLine() + " line in " + token.getFileName() + ".");
         System.exit(0);
+    }
+
+    private static String getMessage(String message) {
+        var lastChar = message.charAt(message.length() - 1);
+        if (Character.isAlphabetic(lastChar) || Character.isDigit(lastChar))
+            return message + ".";
+        return message;
     }
 }

@@ -16,7 +16,7 @@ final class Get extends Method<Tuple> {
     }
 
     @Override
-    public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+    public Object call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
         var _index = getBody().getVariableValue("index", callFileName, callLine);
         int index = 0;

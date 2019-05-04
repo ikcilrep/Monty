@@ -20,6 +20,7 @@ import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.LogError;
+import sml.data.tuple.Tuple;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public final class Ord extends FunctionDeclarationNode {
     }
 
     @Override
-    public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+    public Object call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
         var chr = (String) getBody().getVariableValue("chr", callFileName, callLine);
         if (chr.length() != 1)

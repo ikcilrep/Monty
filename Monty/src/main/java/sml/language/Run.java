@@ -7,6 +7,7 @@ import lexer.Lexer;
 import parser.parsing.Parser;
 import sml.data.returning.Nothing;
 import sml.data.returning.VoidType;
+import sml.data.tuple.Tuple;
 
 import java.util.ArrayList;
 
@@ -19,7 +20,7 @@ public final class Run extends FunctionDeclarationNode {
     }
 
     @Override
-    public VoidType call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+    public VoidType call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
         Parser.parse(Lexer.lex(getBody().getStringVariableValue("code", callFileName, callLine), callFileName, callLine)).run();
         return Nothing.nothing;

@@ -9,12 +9,16 @@ public class StringStruct extends StructDeclarationNode {
         super(null, "String");
         this.setString(string);
         new CharAt(this);
-        new ConcatLeft(this);
-        new ConcatRight(this);
+        new AddedLeft(this);
+        new AddedRight(this);
+        new AddLeft(this);
+        new AddRight(this);
         new EndsWith(this);
         new EqualsIgnoreCase(this);
         new Length(this);
         new LowerCase(this);
+        new MultipliedLeft(this);
+        new MultipliedRight(this);
         new MultiplyLeft(this);
         new MultiplyRight(this);
         new NewIterator(this);

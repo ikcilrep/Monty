@@ -18,40 +18,51 @@ package ast.expressions;
 
 import ast.Block;
 import ast.NodeWithParent;
+import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import parser.DataTypes;
 import parser.LogError;
 import sml.casts.ToFloat;
 import sml.casts.ToInt;
+import sml.data.tuple.Tuple;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class OperationNode extends NodeWithParent implements Cloneable {
 
-    static Object getLiteral(Object expression, Block parent, String fileName, int line) {
-        // Returns value of expression.
-        if (expression instanceof VariableNode)
-            return parent.getVariableOrFunction(((VariableNode) expression).getName(), fileName, line);
-        else if (expression instanceof FunctionCallNode) {
-            var functionToCall = ((FunctionCallNode) expression);
-            return parent.getFunction(functionToCall.getName(), fileName, line).call(functionToCall.getArguments(),
-                    fileName, line);
-        } else if (expression instanceof ConstantNode)
-            return ((ConstantNode) expression).getValue();
-        return expression;
-    }
-
     private OperationNode left = null;
-
     private Object operand;
-
     private Block parent = null;
-
     private OperationNode right = null;
-
     public OperationNode(Object operand, Block parent) {
         setOperand(operand);
         setParent(parent);
+    }
+
+    static Object getVariableValue(Object canBeVariable) {
+        if (canBeVariable instanceof  VariableDeclarationNode)
+            return ((VariableDeclarationNode) canBeVariable).getValue();
+        return canBeVariable;
+    }
+
+    private static Object getLiteral(Object expression, Block parent,
+                                     boolean doesGetValueFromVariable, String fileName, int line) {
+        // Returns value of expression.
+        if (expression instanceof IdentifierNode) {
+            var variableNode = ((IdentifierNode) expression);
+            if (variableNode.isFunctionCall())
+                return parent.getFunction(variableNode.getName(), fileName, line);
+
+
+            var variableOrFunction = parent.getVariableOrFunction(((IdentifierNode) expression).getName(), fileName, line);
+            if (doesGetValueFromVariable && variableOrFunction instanceof VariableDeclarationNode)
+                return ((VariableDeclarationNode) variableOrFunction).getValue();
+            return variableOrFunction;
+        } else if (expression instanceof ConstantNode)
+            return ((ConstantNode) expression).getValue();
+        return expression;
     }
 
     private Object calculate(Object leftValue, Object rightValue, String operator, DataTypes type) {
@@ -124,8 +135,6 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
         try {
             var copied = (OperationNode) clone();
             var operand = getOperand();
-            if (operand instanceof FunctionCallNode)
-                copied.setOperand(((FunctionCallNode) operand).copy());
             var right = getRight();
             if (right != null)
                 copied.setRight(right.copy());
@@ -144,74 +153,89 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
         return left;
     }
 
-    private Object getLiteral(Object expression, String fileName, int line) {
-        return getLiteral(expression, parent, fileName, line);
+
+    private Object getLiteral(Object expression, boolean doesGetValueFromVariable, String fileName, int line) {
+        return getLiteral(expression, parent, doesGetValueFromVariable, fileName, line);
     }
 
-    public Object getOperand() {
+    private Object getOperand() {
         return operand;
+    }
+
+    private void setOperand(Object operand) {
+        this.operand = operand;
     }
 
     public final Block getParent() {
         return parent;
     }
 
+    @Override
+    public final void setParent(Block parent) {
+        this.parent = parent;
+        if (getLeft() != null)
+            getLeft().setParent(parent);
+        if (getRight() != null)
+            getRight().setParent(parent);
+    }
+
     private OperationNode getRight() {
         return right;
     }
 
+
+    final Object runWithParent(Block parent) {
+        // Returns calculated value.
+        Object result;
+        if (!(operand instanceof String || operand instanceof IdentifierNode)) {
+            OperatorOverloading.setTemporary(getFileName(), getLine());
+            result = operand;
+        }  else
+            result = solve(parent);
+        result = getLiteral(result,parent, true, getFileName(), getLine());
+        if (result instanceof ArrayList)
+            return new Tuple(((ArrayList) result).toArray());
+        else if (result instanceof VariableDeclarationNode)
+            return ((VariableDeclarationNode) result).getValue();
+        return result;
+    }
+
     @Override
     public final Object run() {
-        // Returns calculated value.
-        if (!(operand instanceof String)) {
-            OperatorOverloading.setTemporary(getFileName(), getLine());
-            var literal = getLiteral(operand, getFileName(), getLine());
-            if (literal instanceof VariableDeclarationNode)
-                return ((VariableDeclarationNode) literal).getValue();
-            else
-                return literal;
-        }
-        return solve();
+        return runWithParent(getParent());
     }
 
-    private void setLeft(OperationNode left) {
+
+    public final void setLeft(OperationNode left) {
         this.left = left;
     }
 
-    public final void setLeftOperand(OperationNode left) {
-        this.left = left;
-    }
-
-    void setOperand(Object operand) {
-        this.operand = operand;
-    }
-
-    @Override
-    public final void setParent(Block parent) {
-        this.parent = parent;
-        if (left != null)
-            left.setParent(parent);
-        if (right != null)
-            right.setParent(parent);
-        if (operand instanceof FunctionCallNode) {
-            var function = ((FunctionCallNode) operand);
-            var arguments = function.getArguments();
-            for (var argument : arguments)
-                argument.setParent(parent);
-        }
-    }
-
-    private void setRight(OperationNode right) {
-        this.right = right;
-    }
-
-    public final void setRightOperand(OperationNode right) {
+    public final void setRight(OperationNode right) {
         this.right = right;
     }
 
     private Object solve() {
+        return solve(getParent());
+    }
+    private Object solve(Block parent) {
         var operand = getOperand();
-        if (!(operand instanceof String))
+
+        if (operand instanceof IdentifierNode && ((IdentifierNode) operand).isFunctionCall()) {
+            var value = getLiteral(operand,parent, true, getFileName(), getLine());
+            if (getRight() == null)
+                return value;
+
+            if (value instanceof FunctionDeclarationNode) {
+
+                    var arguments = getRight().runWithParent(parent);
+                    if (!(arguments instanceof Tuple))
+                        arguments = new Tuple(arguments);
+                    return ((FunctionDeclarationNode) value).call((Tuple) arguments, getFileName(), getLine());
+                    
+            }
+        }else if (operand.equals(""))
+            return getRight().runWithParent(parent);
+        else if (!(operand instanceof String))
             return operand;
         OperatorOverloading.setTemporary(getFileName(), getLine());
 
@@ -220,11 +244,25 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
                 || operator.equals(">=") || operator.equals(">") || operator.equals("<");
 
         var isAssignment = operator.contains("=") && !isComparison;
-        var a = getLeft().solve();
+        var leftValue = getLiteral(getLeft().solve(parent),parent, !isAssignment, left.getFileName(), left.getLine());
 
-        var leftValue = getLiteral(a, left.getFileName(), left.getLine());
-        if (!isAssignment && leftValue instanceof VariableDeclarationNode)
-            leftValue = ((VariableDeclarationNode) leftValue).getValue();
+
+        if (operator.equals(",")) {
+            var rightValue = getLiteral(getRight().solve(parent), parent,true, left.getFileName(), left.getLine());
+            if (leftValue instanceof ArrayList) {
+                ((ArrayList) leftValue).add(rightValue);
+                return leftValue;
+            }
+            if (rightValue instanceof ArrayList) {
+                ((ArrayList) rightValue).add(0, leftValue);
+                return rightValue;
+            }
+            return new ArrayList<>(List.of(leftValue,rightValue));
+        }
+
+        if (leftValue instanceof ArrayList)
+            return new Tuple(((ArrayList) leftValue).toArray());
+
         var leftType = DataTypes.getDataType(leftValue);
         if (leftType != null && leftType.equals(DataTypes.BOOLEAN)) {
             if (operator.equals("&"))
@@ -233,25 +271,30 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
                 return OperatorOverloading.booleanOrOperator((boolean) leftValue, right);
         }
 
-        var b = getRight().solve();
+
 
         if (operator.equals(".")) {
-            if (!(b instanceof NamedExpression))
+            if (!(getRight().getOperand() instanceof IdentifierNode))
                 new LogError("Variable or function can only be got from struct.", getFileName(), getLine());
-            return OperatorOverloading.dotOperator(leftValue, b, leftType, parent);
-        } else if (operator.equals("instanceof")) {
-            if (!(b instanceof NamedExpression))
+            return OperatorOverloading.dotOperator(leftValue, getRight(), leftType, parent);
+        }
+        var b = getRight().solve(parent);
+
+        if (operator.equals("instanceof")) {
+            if (!(b instanceof IdentifierNode))
                 new LogError("Right value have to be type name.", getFileName(), getLine());
             return OperatorOverloading.instanceOfOperator(leftValue, b, leftType, parent);
         }
 
-        var rightValue = getLiteral(b, right.getFileName(), right.getLine());
-
-        if (rightValue instanceof VariableDeclarationNode)
-            rightValue = ((VariableDeclarationNode) rightValue).getValue();
+        var rightValue = getLiteral(b,parent, true, right.getFileName(), right.getLine());
+        if (rightValue instanceof ArrayList)
+            return new Tuple(((ArrayList) rightValue).toArray());
         var rightType = DataTypes.getDataType(rightValue);
-        if (operator.equals("="))
+
+
+        if (operator.equals("=")) {
             leftType = rightType;
+        }
         if (!(operator.equals("==") || operator.equals("!="))) {
             if (!leftType.equals(rightType)) {
                 switch (leftType) {

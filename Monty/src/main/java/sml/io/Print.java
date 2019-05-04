@@ -21,6 +21,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import sml.data.returning.Nothing;
 import sml.data.returning.VoidType;
+import sml.data.tuple.Tuple;
 
 import java.util.ArrayList;
 
@@ -33,7 +34,7 @@ public final class Print extends FunctionDeclarationNode {
     }
 
     @Override
-    public VoidType call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+    public VoidType call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
         System.out.print(getBody().getStringVariableValue("toPrint", callFileName, callLine));
         return Nothing.nothing;

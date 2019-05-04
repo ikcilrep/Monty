@@ -17,6 +17,7 @@ limitations under the License.
 
 import ast.expressions.OperationNode;
 import sml.data.Method;
+import sml.data.tuple.Tuple;
 
 import java.util.ArrayList;
 
@@ -27,7 +28,7 @@ final class UpperCase extends Method<StringStruct> {
     }
 
     @Override
-    public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+    public String call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
         return parent.getString().toUpperCase();
     }

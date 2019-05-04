@@ -75,7 +75,7 @@ public class StructDeclarationNode extends Block implements Cloneable {
 
     @Override
     public boolean equals(Object other) {
-        return ToBoolean.toBoolean(OperatorOverloading.overloadOperator(this, other, "$eq", 2, false),
+        return ToBoolean.toBoolean(OperatorOverloading.overloadOperator(this, other, "$eq", 2),
                 OperatorOverloading.getTemporaryFileName(), OperatorOverloading.getTemporaryLine());
     }
 
@@ -85,6 +85,10 @@ public class StructDeclarationNode extends Block implements Cloneable {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     private int getStructNumber() {
@@ -105,15 +109,11 @@ public class StructDeclarationNode extends Block implements Cloneable {
         return s.getStructNumber() == structNumber;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     @Override
     public String toString() {
         if (hasFunction("toString")) {
             var function = getFunction("toString", OperatorOverloading.getTemporaryFileName(), OperatorOverloading.getTemporaryLine());
-            return function.call(Sml.emptyArgumentList, function.getFileName(), function.getLine()).toString();
+            return function.call(Sml.EMPTY_ARGUMENT_LIST, function.getFileName(), function.getLine()).toString();
         }
         return name + "#" + getInstanceNumber();
     }

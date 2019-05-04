@@ -4,6 +4,7 @@ import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
 import sml.data.Method;
+import sml.data.tuple.Tuple;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ final class MultipliedLeft extends Method<List> {
     }
 
     @Override
-    public List call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+    public List call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
         var _times = getBody().getVariableValue("times", callFileName, callLine);
         int times = 0;

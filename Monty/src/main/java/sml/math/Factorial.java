@@ -21,6 +21,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.LogError;
 import sml.data.StaticStruct;
+import sml.data.tuple.Tuple;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -32,23 +33,20 @@ public final class Factorial extends FunctionDeclarationNode {
     private static final BigInteger PRECOMPUTED_LAST_N = BigInteger.valueOf(PRECOMPUTED.length + 1);
     private static final int MAX = 12;
 
-    Factorial(StaticStruct struct) {
+    public Factorial() {
         super("factorial");
         setBody(new Block(null));
         addParameter("n");
-        struct.addFunction(this);
     }
 
     @Override
-    public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+    public Object call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
         var n = getBody().getVariableValue("n", callFileName, callLine);
         if (n instanceof BigInteger) {
             try {
                 n = ((BigInteger) n).intValueExact();
-            } catch (ArithmeticException e) {
-                new LogError("This function can calculate factorial only for positive integers smaller than 2^31-1.", callFileName,
-                        callLine);
+            } catch (ArithmeticException ignored) {
             }
         }
         if (n instanceof Integer) {
@@ -63,7 +61,8 @@ public final class Factorial extends FunctionDeclarationNode {
                 result = result.multiply(i);
             return result;
         }
-
+        new LogError("This function can calculate factorial only for positive integers smaller than 2^31-1.", callFileName,
+                callLine);
         return null;
     }
 

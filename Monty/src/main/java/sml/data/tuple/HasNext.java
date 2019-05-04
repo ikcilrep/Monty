@@ -1,10 +1,7 @@
-package sml.data.list;
+package sml.data.tuple;
 
-import ast.expressions.OperationNode;
 import sml.data.Method;
-import sml.data.tuple.Tuple;
 
-import java.util.ArrayList;
 
 class HasNext extends Method<Iterator> {
 

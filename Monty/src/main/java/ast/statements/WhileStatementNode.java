@@ -37,6 +37,10 @@ public final class WhileStatementNode extends ConditionalNode {
         return isDoWhile;
     }
 
+    private void setDoWhile(boolean isDoWhile) {
+        this.isDoWhile = isDoWhile;
+    }
+
     @Override
     public Object run() {
         Object result;
@@ -52,9 +56,5 @@ public final class WhileStatementNode extends ConditionalNode {
             } while (ranCondition());
         }
         return null;
-    }
-
-    private void setDoWhile(boolean isDoWhile) {
-        this.isDoWhile = isDoWhile;
     }
 }

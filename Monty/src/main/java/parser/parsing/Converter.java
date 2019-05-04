@@ -1,23 +1,28 @@
 package parser.parsing;
 
 import ast.Block;
-import ast.expressions.FunctionCallNode;
+import ast.expressions.ConstantNode;
 import ast.expressions.OperationNode;
-import lexer.OptimizedTokensArray;
+import ast.expressions.IdentifierNode;
 import lexer.Token;
 import lexer.TokenTypes;
 import parser.LogError;
+import sml.Sml;
 
 import java.util.*;
 
 class Converter {
+
+
+    final static Token EMPTY_OPERATOR = new Token(TokenTypes.OPERATOR, "", null, -1);
     private static HashMap<String, Integer> precedence;
     private static Set<String> rightAssociative = Set.of("=", "+=", "-=", "*=", "/=", "%=", "&=", "^=", "|=", "<<=",
             ">>=", "**", "**=");
     private static Set<String> notAssociative = Set.of("<", "<=", ">=", ">", "instanceof");
-
+    private final static IdentifierNode LIST_CALL = new IdentifierNode("List", true);
     static {
         precedence = new HashMap<>();
+        precedence.put("", 18);
         precedence.put(".", 17);
         precedence.put("!", 16);
         precedence.put("**", 15);
@@ -50,37 +55,39 @@ class Converter {
         precedence.put("<<=", 1);
         precedence.put(">>=", 1);
         precedence.put("**=", 1);
+        precedence.put(",", 0);
+
 
     }
+    private static int getPrecedence(Token token) {
+        return precedence.get(token.getText());
+    }
 
-    static OptimizedTokensArray infixToSuffix(OptimizedTokensArray tokens, Block parent) {
-        var outputQueue = new OptimizedTokensArray();
+    static ArrayList<Token> infixToSuffix(ArrayList<Token> tokens, Block parent, int start) {
+        var outputQueue = new ArrayList<Token>();
         var operatorStack = new Stack<Token>();
-        var functions = new LinkedList<FunctionCallNode>();
-        var lists = new LinkedList<FunctionCallNode>();
-        var wasLastIdentifier = false;
-        for (var i = new IntegerHolder(0); i.i < tokens.length(); i.i++) {
+        var lists = new LinkedList<OperationNode>();
+        var wasLastOpeningBracket = false;
+        for (var i = new IntegerHolder(start); i.i < tokens.size(); i.i++) {
             var token = tokens.get(i.i);
             var type = token.getType();
             switch (type) {
                 case OPERATOR:
                     if (!operatorStack.empty()) {
                         var top = operatorStack.peek();
-                        if (!top.getType().equals(TokenTypes.OPENING_BRACKET)) {
-                            var operatorAtTheTop = top.getText();
-                            int topPrecedence = precedence.get(operatorAtTheTop);
-                            int thisPrecedence = precedence.get(token.getText());
+                        if (!(top.getType().equals(TokenTypes.OPENING_BRACKET) || top.getType().equals(TokenTypes.FUNCTION))) {
+                            int topPrecedence = getPrecedence(top);
+                            int thisPrecedence = getPrecedence(token);
                             while (topPrecedence > thisPrecedence
-                                    || (topPrecedence == thisPrecedence && isLeftAssociative(operatorAtTheTop))) {
-                                outputQueue.append(operatorStack.pop());
+                                    || (topPrecedence == thisPrecedence && isLeftAssociative(top))) {
+                                outputQueue.add(operatorStack.pop());
                                 if (operatorStack.empty())
                                     break;
                                 top = operatorStack.peek();
-                                if (top.getType().equals(TokenTypes.OPENING_BRACKET))
+                                if (top.getType().equals(TokenTypes.OPENING_BRACKET) ||top.getType().equals(TokenTypes.FUNCTION))
                                     break;
-                                operatorAtTheTop = top.getText();
-                                topPrecedence = precedence.get(top.getText());
-                                thisPrecedence = precedence.get(token.getText());
+                                topPrecedence = getPrecedence(top);
+                                thisPrecedence = getPrecedence(token);
                             }
                         }
                     }
@@ -88,105 +95,82 @@ class Converter {
                     break;
                 case OPENING_SQUARE_BRACKET:
                     lists.add(parseList(tokens, parent, i));
-                    outputQueue.append(token);
-                    break;
-                case OPENING_BRACKET:
-                    if (wasLastIdentifier) {
-                        var last = outputQueue.get(outputQueue.length() - 1);
-                        last.setFunction(true);
-                        functions.add(parseFunction(last.getText(), tokens, parent, i));
-                    } else
-                        operatorStack.push(token);
+                    outputQueue.add(token);
                     break;
                 case CLOSING_BRACKET:
-                    while (!operatorStack.peek().getType().equals(TokenTypes.OPENING_BRACKET))
-                        try {
-                            outputQueue.append(operatorStack.pop());
-                        } catch (EmptyStackException e) {
-                            new LogError("Mismatched brackets.", token);
-                        }
+                    if (wasLastOpeningBracket)
+                        outputQueue.add(new Token(TokenTypes.EMPTY_TUPLE, "", token.getFileName(), token.getLine()));
+                    else
+                        while (!operatorStack.peek().getType().equals(TokenTypes.OPENING_BRACKET))
+                            try {
+                                outputQueue.add(operatorStack.pop());
+                            } catch (EmptyStackException e) {
+                                new LogError("Mismatched brackets.", token);
+                            }
                     operatorStack.pop();
+                    operatorStack.push(EMPTY_OPERATOR);
+                    break;
+                case OPENING_BRACKET:
+                    operatorStack.push(token);
+                    break;
+                case IDENTIFIER:
+                    if (i.i + 1 < tokens.size()) {
+                        var nextType =tokens.get(i.i + 1).getType();
+                        if (!(nextType.equals(TokenTypes.OPERATOR) || nextType.equals(TokenTypes.CLOSING_BRACKET)
+                                || nextType.equals(TokenTypes.CLOSING_SQUARE_BRACKET))) {
+                            token.setType(TokenTypes.FUNCTION);
+                            operatorStack.push(token);
+                            break;
+                        }
+                    }
+                    outputQueue.add(token);
                     break;
                 default:
-                    outputQueue.append(token);
+                    outputQueue.add(token);
                     break;
             }
-            wasLastIdentifier = type.equals(TokenTypes.IDENTIFIER);
+            wasLastOpeningBracket = type.equals(TokenTypes.OPENING_BRACKET);
+
         }
         while (!operatorStack.empty())
-            outputQueue.append(operatorStack.pop());
-        ExpressionParser.setFunctions(functions);
+            outputQueue.add(operatorStack.pop());
         ExpressionParser.setLists(lists);
         return outputQueue;
     }
 
-    private static boolean isLeftAssociative(String operator) {
+    private static boolean isLeftAssociative(Token token) {
+        var operator = token.getText();
         return !(rightAssociative.contains(operator) || notAssociative.contains(operator));
     }
 
-    private static ArrayList<OperationNode> parseExpressionsSeparatedByComma(OptimizedTokensArray tokens,
-                                                                                   Block parent, IntegerHolder i, boolean isList) {
-        var result = new ArrayList<OperationNode>();
-        var expression = new OptimizedTokensArray();
-        var type = tokens.get(i.i).getType();
-        short a = 0;
-        short b = 1;
-        if (isList) {
-            a = 1;
-            b = 0;
-        }
-        for (short[] brackets = {b, a}; brackets[a] > 0; i.i++) {
-            var token = tokens.get(i.i);
-            try {
-                type = token.getType();
-            } catch (NullPointerException e) {
-                new LogError("Unclosed bracket.", tokens.get(i.i - 1));
-            }
-
-            switch (type) {
-                case OPENING_BRACKET:
-                    brackets[0]++;
-                    break;
-                case CLOSING_BRACKET:
-                    brackets[0]--;
-                    break;
+    private static OperationNode parseList(ArrayList<Token> tokens, Block parent, IntegerHolder i) {
+        var list = new OperationNode(LIST_CALL, parent);
+        var token = tokens.get(i.i);
+        token.setFileName(token.getFileName());
+        token.setLine(token.getLine());
+        i.i++;
+        var openedBrackets = 1;
+        var counter = i.i;
+        while (openedBrackets > 0) {
+            var tokenType = tokens.get(counter).getType();
+            switch (tokenType) {
                 case OPENING_SQUARE_BRACKET:
-                    brackets[1]++;
+                    openedBrackets++;
                     break;
                 case CLOSING_SQUARE_BRACKET:
-                    brackets[1]--;
+                    openedBrackets--;
                     break;
-                default:
-                    break;
+                    default:
+                        break;
             }
-
-            if (brackets[b] == 0 && ((type.equals(TokenTypes.COMMA) && brackets[a] == 1) || brackets[a] == 0)) {
-                if (expression.length() == 0)
-                    if (brackets[a] == 1)
-                        new LogError("Unexpected comma.", tokens.get(0));
-                    else
-                        continue;
-                result.add(ExpressionParser.parseInfix(parent, expression));
-                expression.clear();
-            } else
-                expression.append(token);
+            counter++;
         }
-        i.i--;
-        return result;
-    }
+        if (counter -1 > i.i) {
+            list.setRight(ExpressionParser.parseInfix(parent, new ArrayList<Token>(tokens.subList(i.i, counter-1))));
+            i.i = counter - 1;
+        } else
+            list.setRight(new OperationNode(new ConstantNode(Sml.EMPTY_ARGUMENT_LIST),parent));
+        return list;
 
-    private static FunctionCallNode parseFunction(String name, OptimizedTokensArray tokens, Block parent,
-                                                  IntegerHolder i) {
-        i.i++;
-        var function = new FunctionCallNode(name);
-        function.setArguments(parseExpressionsSeparatedByComma(tokens, parent, i, false));
-        return function;
-    }
-
-    private static FunctionCallNode parseList(OptimizedTokensArray tokens, Block parent, IntegerHolder i) {
-        var function = new FunctionCallNode("List");
-        i.i++;
-        function.setArguments(parseExpressionsSeparatedByComma(tokens, parent, i, true));
-        return function;
     }
 }

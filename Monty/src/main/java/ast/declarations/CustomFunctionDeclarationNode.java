@@ -21,6 +21,7 @@ import ast.statements.ContinueStatementNode;
 import parser.LogError;
 import sml.data.returning.BreakType;
 import sml.data.returning.Nothing;
+import sml.data.tuple.Tuple;
 
 import java.util.ArrayList;
 
@@ -37,7 +38,7 @@ public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode
     }
 
     @Override
-    public final Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+    public final Object call(Tuple arguments, String callFileName, int callLine) {
         var workingCopy = workingCopy();
         workingCopy.setArguments(arguments, callFileName, callLine);
         String[] fileNames = {callFileName, getFileName()};

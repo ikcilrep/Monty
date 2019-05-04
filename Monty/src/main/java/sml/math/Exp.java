@@ -19,21 +19,22 @@ package sml.math;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
+import parser.LogError;
 import sml.data.StaticStruct;
+import sml.data.tuple.Tuple;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 
 public final class Exp extends FunctionDeclarationNode {
-    Exp(StaticStruct struct) {
+    public Exp() {
         super("exp");
         setBody(new Block(null));
         addParameter("x");
-        struct.addFunction(this);
     }
 
     @Override
-    public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+    public Object call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
         var x = getBody().getVariableValue("x", callFileName, callLine);
         if (x instanceof Double)
@@ -42,8 +43,8 @@ public final class Exp extends FunctionDeclarationNode {
             return Math.exp((double) (int) x);
         else if (x instanceof BigInteger)
             return Math.exp(((BigInteger) x).doubleValue());
+        return new LogError("Can't exp not a number.", callFileName, callLine);
 
-        return null;
     }
 
 }

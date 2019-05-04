@@ -21,23 +21,21 @@ import sml.data.returning.Nothing;
 
 public class VariableDeclarationNode extends DeclarationNode implements Cloneable {
 
-    public static VariableDeclarationNode toMe(Object object, String fileName, int line) {
-        try {
-            return (VariableDeclarationNode) object;
-        } catch(ClassCastException e) {
-            new LogError("Can't cast any value to variable.", fileName, line);
-        }
-        return null;
-    }
-
     private boolean isConst = false;
-
     private boolean wasValueChanged = false;
-
     private Object value = Nothing.nothing;
 
     public VariableDeclarationNode(String name) {
         super(name);
+    }
+
+    public static VariableDeclarationNode toMe(Object object, String fileName, int line) {
+        try {
+            return (VariableDeclarationNode) object;
+        } catch (ClassCastException e) {
+            new LogError("Can't cast any value to variable.", fileName, line);
+        }
+        return null;
     }
 
     public final VariableDeclarationNode copy() {
@@ -53,17 +51,17 @@ public class VariableDeclarationNode extends DeclarationNode implements Cloneabl
         return value;
     }
 
+    public final void setValue(Object value) {
+        this.value = value;
+        wasValueChanged = true;
+    }
+
     public boolean isConst() {
         return isConst;
     }
 
     public void setConst(boolean isConst) {
         this.isConst = isConst;
-    }
-
-    public final void setValue(Object value) {
-        this.value = value;
-        wasValueChanged = true;
     }
 
     public final void setValue(Object value, String fileName, int line) {

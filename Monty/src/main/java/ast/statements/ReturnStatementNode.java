@@ -47,13 +47,13 @@ public final class ReturnStatementNode extends NodeWithParent implements Cloneab
         return expression;
     }
 
+    private void setExpression(OperationNode expression) {
+        this.expression = expression;
+    }
+
     @Override
     public Object run() {
         return getExpression().run();
-    }
-
-    private void setExpression(OperationNode expression) {
-        this.expression = expression;
     }
 
     @Override

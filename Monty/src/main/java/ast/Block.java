@@ -30,11 +30,11 @@ import java.util.Map;
 
 public class Block extends NodeWithParent implements Cloneable {
 
+    protected Block parent;
     private ArrayList<RunnableNode> children = new ArrayList<>();
     private HashMap<String, FunctionDeclarationNode> functions = new HashMap<>();
     private HashMap<String, VariableDeclarationNode> variables = new HashMap<>();
     private HashMap<String, StructDeclarationNode> structs = new HashMap<>();
-    protected Block parent;
 
     public Block(Block parent) {
         this.parent = parent;
@@ -179,6 +179,10 @@ public class Block extends NodeWithParent implements Cloneable {
         return children;
     }
 
+    private void setChildren(ArrayList<RunnableNode> children) {
+        this.children = children;
+    }
+
     public FunctionDeclarationNode getFunction(String name, String fileName, int line) {
         Block block = this;
         while (!block.getFunctions().containsKey(name)) {
@@ -204,8 +208,19 @@ public class Block extends NodeWithParent implements Cloneable {
         return functions;
     }
 
+    protected void setFunctions(HashMap<String, FunctionDeclarationNode> functions) {
+        assert functions != null;
+        this.functions = functions;
+
+    }
+
     public Block getParent() {
         return parent;
+    }
+
+    @Override
+    public void setParent(Block parent) {
+        this.parent = parent;
     }
 
     public String getStringVariableValue(String name, String fileName, int line) {
@@ -238,6 +253,11 @@ public class Block extends NodeWithParent implements Cloneable {
         return structs;
     }
 
+    public void setStructs(HashMap<String, StructDeclarationNode> structs) {
+        assert structs != null;
+        this.structs = structs;
+    }
+
     public VariableDeclarationNode getVariable(String name, String fileName, int line) {
         Block block = this;
         while (!block.getVariables().containsKey(name)) {
@@ -255,7 +275,7 @@ public class Block extends NodeWithParent implements Cloneable {
             var parent = block.getParent();
             if (parent == null) {
                 block = this;
-                while (!block.getFunctions().containsKey(name)) {
+                while (!block.hasFunction(name)) {
                     parent = block.getParent();
                     if (parent == null)
                         new LogError("There isn't any variable or function with name:\t" + name);
@@ -268,8 +288,13 @@ public class Block extends NodeWithParent implements Cloneable {
         return block.getVariables().get(name);
     }
 
-    public HashMap<String, VariableDeclarationNode> getVariables() {
+    private HashMap<String, VariableDeclarationNode> getVariables() {
         return variables;
+    }
+
+    private void setVariables(HashMap<String, VariableDeclarationNode> variables) {
+        assert variables != null;
+        this.variables = variables;
     }
 
     public Object getVariableValue(String name, String fileName, int line) {
@@ -297,30 +322,5 @@ public class Block extends NodeWithParent implements Cloneable {
                 return result;
         }
         return null;
-    }
-
-    private void setChildren(ArrayList<RunnableNode> children) {
-        this.children = children;
-    }
-
-    protected void setFunctions(HashMap<String, FunctionDeclarationNode> functions) {
-        assert functions != null;
-        this.functions = functions;
-
-    }
-
-    @Override
-    public void setParent(Block parent) {
-        this.parent = parent;
-    }
-
-    public void setStructs(HashMap<String, StructDeclarationNode> structs) {
-        assert structs != null;
-        this.structs = structs;
-    }
-
-    private void setVariables(HashMap<String, VariableDeclarationNode> variables) {
-        assert variables != null;
-        this.variables = variables;
     }
 }

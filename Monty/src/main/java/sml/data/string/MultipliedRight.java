@@ -1,18 +1,20 @@
 package sml.data.string;
 
+import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
 import sml.data.Method;
 import sml.data.tuple.Tuple;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 
-public class MultiplyLeft extends Method<StringStruct> {
+public class MultipliedRight extends Method<StringStruct> {
 
-    MultiplyLeft(StringStruct parent) {
-        super(parent, "$a_mul");
-        addParameter("this");
+    MultipliedRight(StringStruct parent) {
+        super(parent, "$r_mul");
         addParameter("times");
+        addParameter("this");
 
     }
 
@@ -25,13 +27,13 @@ public class MultiplyLeft extends Method<StringStruct> {
             times = (int) _times;
         else if (_times instanceof BigInteger) {
             if (((BigInteger) _times).compareTo(DataTypes.INT_MIN) < 0)
-                new LogError("Multiplier has to be greater than -2^31.", callFileName, callLine);
+                new LogError("Multiplicand has to be greater than -2^31.", callFileName, callLine);
             else if (((BigInteger) _times).compareTo(DataTypes.INT_MAX) > 0)
-                new LogError("Multiplier has to be less than 2^31 - 1.", callFileName, callLine);
+                new LogError("Multiplicand has to be less than 2^31 - 1.", callFileName, callLine);
             times = ((BigInteger) _times).intValue();
         } else
-            new LogError("Multiplier has to be integer.", callFileName, callLine);
-        return parent.mulitply(times);
+            new LogError("Multiplicand has to be integer.", callFileName, callLine);
+        return parent.mulitplied(times);
     }
 
 }

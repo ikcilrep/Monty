@@ -21,17 +21,20 @@ public final class Token implements Cloneable {
     private String fileName;
     private TokenTypes type;
     private int line;
-    private boolean isFunction;
 
     public Token(TokenTypes type) {
-        this.type = type;
+        setType(type);
     }
 
     public Token(TokenTypes type, String text, String fileName, int line) {
+        setType(type);
+        setText(text);
+        setFileName(fileName);
+        setLine(line);
+    }
+
+    public void setType(TokenTypes type) {
         this.type = type;
-        this.text = text;
-        this.fileName = fileName;
-        this.line = line;
     }
 
     public final Token copy() throws CloneNotSupportedException {
@@ -42,36 +45,27 @@ public final class Token implements Cloneable {
         return fileName;
     }
 
-    public final int getLine() {
-        return line;
-    }
-
-    public final String getText() {
-        return text;
-    }
-
-    public final TokenTypes getType() {
-        return type;
-    }
-
-    public boolean isFunction() {
-        return isFunction;
-    }
-
     public final void setFileName(String fileName) {
         this.fileName = fileName;
     }
 
-    public void setFunction(boolean isFunction) {
-        this.isFunction = isFunction;
+    public final int getLine() {
+        return line;
     }
 
     public final void setLine(int line) {
         this.line = line;
     }
 
-    public final void setText(String text) {
+    public final String getText() {
+        return text;
+    }
+
+    private void setText(String text) {
         this.text = text;
     }
 
+    public final TokenTypes getType() {
+        return type;
+    }
 }

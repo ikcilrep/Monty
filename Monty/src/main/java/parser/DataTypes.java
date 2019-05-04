@@ -22,6 +22,7 @@ import ast.declarations.VariableDeclarationNode;
 import sml.data.returning.VoidType;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 
 public enum DataTypes {
     BOOLEAN, INTEGER, BIG_INTEGER, FLOAT, NOTHING, OBJECT;

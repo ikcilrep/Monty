@@ -20,6 +20,7 @@ import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import sml.data.string.StringStruct;
+import sml.data.tuple.Tuple;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
@@ -35,7 +36,7 @@ public final class Input extends FunctionDeclarationNode {
     }
 
     @Override
-    public StringStruct call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+    public StringStruct call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
         try {
             return new StringStruct(scanner.nextLine());

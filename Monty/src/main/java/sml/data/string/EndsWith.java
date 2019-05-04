@@ -18,6 +18,7 @@ package sml.data.string;
 
 import ast.expressions.OperationNode;
 import sml.data.Method;
+import sml.data.tuple.Tuple;
 
 import java.util.ArrayList;
 
@@ -29,7 +30,7 @@ final class EndsWith extends Method<StringStruct> {
     }
 
     @Override
-    public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+    public Boolean call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
         return parent.getString().endsWith(getBody().getStringVariableValue("suffix", callFileName, callLine));
     }

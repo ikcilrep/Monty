@@ -38,13 +38,13 @@ public class ConditionalNode extends Block {
         return condition;
     }
 
-    protected boolean ranCondition() {
-        return ToBoolean.toBoolean(getCondition().run(), getFileName(), getLine());
-    }
-
     protected void setCondition(OperationNode condition) {
         assert condition != null;
         this.condition = condition;
+    }
+
+    protected boolean ranCondition() {
+        return ToBoolean.toBoolean(getCondition().run(), getFileName(), getLine());
     }
 
     @Override

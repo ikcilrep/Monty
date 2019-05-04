@@ -24,12 +24,12 @@ public class Node {
         return fileName;
     }
 
-    public int getLine() {
-        return line;
-    }
-
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public int getLine() {
+        return line;
     }
 
     public void setLine(int line) {

@@ -2,6 +2,7 @@ package ast.declarations;
 
 import ast.Block;
 import ast.expressions.OperationNode;
+import sml.data.tuple.Tuple;
 
 import java.util.ArrayList;
 
@@ -15,7 +16,7 @@ public class Constructor extends FunctionDeclarationNode {
     }
 
     @Override
-    public Object call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+    public Object call(Tuple arguments, String callFileName, int callLine) {
         var newStruct = struct.getParent().getStructure(name, callFileName, callLine).copy();
         var thisVariable = new VariableDeclarationNode("This");
         thisVariable.setValue(newStruct);
@@ -23,6 +24,7 @@ public class Constructor extends FunctionDeclarationNode {
         newStruct.addVariable(thisVariable, callFileName, callLine);
         newStruct.incrementNumber();
         newStruct.run();
+
         if (newStruct.hasFunction("init"))
             newStruct.getFunction("init", callFileName, callLine).call(arguments, callFileName, callLine);
 

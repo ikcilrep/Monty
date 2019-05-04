@@ -20,7 +20,6 @@ import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import lexer.Lexer;
-import lexer.OptimizedTokensArray;
 import lexer.Token;
 import parser.LogError;
 import parser.Tokens;
@@ -33,6 +32,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Objects;
@@ -46,8 +46,8 @@ public class Importing {
             + (mainPath.endsWith(File.separator) || mainPath.isEmpty() ? "" : File.separator)
             + (fileAbsolutePath == null ? "" : fileAbsolutePath) + File.separator;
 
-    public static void addJarLibrary(OptimizedTokensArray tokens) {
-        var partOfPath = Tokens.getText(tokens.subarray(1, tokens.length()));
+    public static void addJarLibrary(ArrayList<Token> tokens) {
+        var partOfPath = Tokens.getText(tokens.subList(1, tokens.size()));
         var path = mainFileLocation + partOfPath.replace('.', File.separatorChar) + ".jar";
         try {
             File jar = new File(path);
@@ -120,8 +120,8 @@ public class Importing {
         }
     }
 
-    public static void importFile(Block block, OptimizedTokensArray tokensBeforeSemicolon) {
-        var partOfPath = Tokens.getText(tokensBeforeSemicolon.subarray(1, tokensBeforeSemicolon.length()));
+    public static void importFile(Block block, ArrayList<Token> tokensBeforeSemicolon) {
+        var partOfPath = Tokens.getText(tokensBeforeSemicolon.subList(1, tokensBeforeSemicolon.size()));
         var path = mainFileLocation + partOfPath.replace('.', File.separatorChar);
         var file = new File(path + ".mt");
         var parent_file = new File(file.getParent() + ".mt");
@@ -135,7 +135,7 @@ public class Importing {
         else if (parent_file.exists() && parent_file.isFile()) {
             importSpecifiedElementFromBlock(block,
                     Parser.parse(Lexer.lex(FileIO.readFile(parent_file.getAbsolutePath(), fileName, line),
-                            parent_file.getName(), 1, new OptimizedTokensArray(), 0)),
+                            parent_file.getName(), 1, new ArrayList<Token>(), 0)),
                     parent_file.getPath(), file.getName().substring(0, file.getName().length() - 3), fileName, line);
         } else {
             var splited = partOfPath.split("\\.");
@@ -184,7 +184,7 @@ public class Importing {
     private static void importWholeFile(Block block, String path, String fileName, int line) {
         var file = new File(path);
         block.concat(Parser.parse(Lexer.lex(FileIO.readFile(file.getAbsolutePath(), fileName, line), path, 1,
-                new OptimizedTokensArray(), 0)));
+                new ArrayList<Token>(), 0)));
     }
 
     private static String[] subArray(String[] array, int begin) {

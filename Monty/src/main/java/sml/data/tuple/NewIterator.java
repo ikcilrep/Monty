@@ -1,14 +1,11 @@
-package sml.data.string;
+package sml.data.tuple;
 
-import ast.expressions.OperationNode;
 import sml.data.Method;
-import sml.data.tuple.Tuple;
+import sml.data.list.List;
 
-import java.util.ArrayList;
+final class NewIterator extends Method<Tuple> {
 
-final class NewIterator extends Method<StringStruct> {
-
-    NewIterator(StringStruct parent) {
+    NewIterator(Tuple parent) {
         super(parent, "Iterator");
     }
 

@@ -22,6 +22,7 @@ import ast.expressions.OperationNode;
 import parser.LogError;
 import sml.data.returning.Nothing;
 import sml.data.returning.VoidType;
+import sml.data.tuple.Tuple;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public final class Sleep extends FunctionDeclarationNode {
     }
 
     @Override
-    public VoidType call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+    public VoidType call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
         var _millis = getBody().getVariableValue("millis", callFileName, callLine);
         int millis = 0;

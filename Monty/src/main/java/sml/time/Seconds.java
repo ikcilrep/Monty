@@ -19,6 +19,7 @@ package sml.time;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
+import sml.data.tuple.Tuple;
 
 import java.util.ArrayList;
 
@@ -30,7 +31,7 @@ public final class Seconds extends FunctionDeclarationNode {
     }
 
     @Override
-    public Double call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+    public Double call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
         return System.currentTimeMillis() / 1000d;
     }

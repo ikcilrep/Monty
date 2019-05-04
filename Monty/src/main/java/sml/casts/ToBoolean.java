@@ -22,11 +22,18 @@ import ast.expressions.OperationNode;
 import parser.LogError;
 import sml.data.returning.VoidType;
 import sml.data.string.StringStruct;
+import sml.data.tuple.Tuple;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 
 public final class ToBoolean extends FunctionDeclarationNode {
+
+    public ToBoolean() {
+        super("toBoolean");
+        setBody(new Block(null));
+        addParameter("toBeCasted");
+    }
 
     public static Boolean toBoolean(Object toBeCasted, String callFileName, int callLine) {
         if (toBeCasted instanceof VoidType)
@@ -46,20 +53,6 @@ public final class ToBoolean extends FunctionDeclarationNode {
         return null;
     }
 
-    public ToBoolean() {
-        super("toBoolean");
-        setBody(new Block(null));
-        addParameter("toBeCasted");
-    }
-
-    @Override
-    public Boolean call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-        setArguments(arguments, callFileName, callLine);
-        var toBeCasted = getBody().getVariableValue("toBeCasted", callFileName, callLine);
-        return toBoolean(toBeCasted, callFileName, callLine);
-    }
-
-
     private static Boolean fromInt(BigInteger integer) {
         return integer.compareTo(BigInteger.valueOf(0)) > 0;
     }
@@ -74,5 +67,12 @@ public final class ToBoolean extends FunctionDeclarationNode {
 
     private static Boolean fromString(StringStruct str) {
         return Boolean.parseBoolean(str.getString());
+    }
+
+    @Override
+    public Boolean call(Tuple arguments, String callFileName, int callLine) {
+        setArguments(arguments, callFileName, callLine);
+        var toBeCasted = getBody().getVariableValue("toBeCasted", callFileName, callLine);
+        return toBoolean(toBeCasted, callFileName, callLine);
     }
 }

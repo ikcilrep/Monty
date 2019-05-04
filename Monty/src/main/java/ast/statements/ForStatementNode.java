@@ -50,8 +50,16 @@ public final class ForStatementNode extends Block {
         return iterable;
     }
 
+    private void setIterable(OperationNode iterable) {
+        this.iterable = iterable;
+    }
+
     private String getVariableName() {
         return variableName;
+    }
+
+    private void setVariableName(String variableName) {
+        this.variableName = variableName;
     }
 
     @Override
@@ -61,58 +69,58 @@ public final class ForStatementNode extends Block {
         var isNotNameUnderscore = !name.equals("_");
         var isConst = Character.isUpperCase(name.charAt(0));
         var toBeIterated = getIterable().run();
-
-        if (!IsIterable.isIterable(toBeIterated, getFileName(), getLine()))
-            new LogError("Can't iterate over not iterable object.", getFileName(), getLine());
-        var iterator = (StructDeclarationNode) ((StructDeclarationNode) toBeIterated).getFunction("Iterator", getFileName(), getLine())
-                .call(Sml.emptyArgumentList, getFileName(), getLine());
-        var hasNext = iterator.getFunction("hasNext", getFileName(), getLine());
-        var next = iterator.getFunction("next", getFileName(), getLine());
         VariableDeclarationNode variable = null;
         if (isNotNameUnderscore)
             if (hasVariable(name))
                 variable = getVariable(name, getFileName(), getLine());
             else
                 addVariable(variable = new VariableDeclarationNode(name), getFileName(), getLine());
+        if (IsIterable.isIterable(toBeIterated, getFileName(), getLine())) {
+            var iterator = (StructDeclarationNode) ((StructDeclarationNode) toBeIterated).getFunction("Iterator", getFileName(), getLine())
+                    .call(Sml.EMPTY_ARGUMENT_LIST, getFileName(), getLine());
+            var hasNext = iterator.getFunction("hasNext", getFileName(), getLine());
+            var next = iterator.getFunction("next", getFileName(), getLine());
 
-        if (isNotNameUnderscore)
-            while ((boolean) hasNext.call(Sml.emptyArgumentList, getFileName(), getLine())) {
+            if (isNotNameUnderscore) {
+                while ((boolean) hasNext.call(Sml.EMPTY_ARGUMENT_LIST, getFileName(), getLine())) {
+                    variable.setConst(false);
+                    variable.setValue(next.call(Sml.EMPTY_ARGUMENT_LIST, getFileName(), getLine()));
+                    variable.setConst(isConst);
+                    result = super.run();
+                    if (result instanceof BreakType)
+                        break;
+                    if (result instanceof ContinueType)
+                        continue;
+                    if (result != null)
+                        return result;
+                }
+            } else
+                while ((boolean) hasNext.call(Sml.EMPTY_ARGUMENT_LIST, getFileName(), getLine())) {
+                    next.call(Sml.EMPTY_ARGUMENT_LIST, getFileName(), getLine());
+                    result = super.run();
+                    if (result instanceof BreakType)
+                        break;
+                    if (result instanceof ContinueType)
+                        continue;
+                    if (result != null)
+                        return result;
+                }
+        } else {
+            if (isNotNameUnderscore) {
                 variable.setConst(false);
-                variable.setValue(next.call(Sml.emptyArgumentList, getFileName(), getLine()));
+                variable.setValue(toBeIterated);
                 variable.setConst(isConst);
-                result = super.run();
-                if (result instanceof BreakType)
-                    break;
-                if (result instanceof ContinueType)
-                    continue;
-                if (result != null)
-                    return result;
             }
-        else
-            while ((boolean) hasNext.call(Sml.emptyArgumentList, getFileName(), getLine())) {
-                next.call(Sml.emptyArgumentList, getFileName(), getLine());
-                result = super.run();
-                if (result instanceof BreakType)
-                    break;
-                if (result instanceof ContinueType)
-                    continue;
-                if (result != null)
-                    return result;
-            }
+            result = super.run();
+            if (!(result == null || (result instanceof BreakType || result instanceof ContinueType)))
+                return result;
+        }
         return null;
-    }
-
-    private void setIterable(OperationNode iterable) {
-        this.iterable = iterable;
     }
 
     @Override
     public void setParent(Block parent) {
         super.setParent(parent);
         getIterable().setParent(parent);
-    }
-
-    private void setVariableName(String variableName) {
-        this.variableName = variableName;
     }
 }

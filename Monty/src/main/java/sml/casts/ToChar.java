@@ -21,6 +21,7 @@ import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
+import sml.data.tuple.Tuple;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public final class ToChar extends FunctionDeclarationNode {
     }
 
     @Override
-    public String call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
+    public String call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
         var integer = getBody().getVariableValue("integer", callFileName, callLine);
         if (integer instanceof Integer)

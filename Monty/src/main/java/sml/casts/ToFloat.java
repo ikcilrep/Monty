@@ -23,11 +23,18 @@ import ast.expressions.OperationNode;
 import parser.LogError;
 import sml.data.returning.VoidType;
 import sml.data.string.StringStruct;
+import sml.data.tuple.Tuple;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 
 public final class ToFloat extends FunctionDeclarationNode {
+
+    public ToFloat() {
+        super("toFloat");
+        setBody(new Block(null));
+        addParameter("toBeCasted");
+    }
 
     private static Double toFloat(Object toBeCasted, String callFileName, int callLine) {
         if (toBeCasted instanceof VoidType)
@@ -45,19 +52,6 @@ public final class ToFloat extends FunctionDeclarationNode {
         else
             new LogError("Can't cast structure to real", callFileName, callLine);
         return null;
-    }
-
-    public ToFloat() {
-        super("toFloat");
-        setBody(new Block(null));
-        addParameter("toBeCasted");
-    }
-
-    @Override
-    public Double call(ArrayList<OperationNode> arguments, String callFileName, int callLine) {
-        setArguments(arguments, callFileName, callLine);
-        var toBeCasted = getBody().getVariableValue("toBeCasted", callFileName, callLine);
-        return toFloat(toBeCasted, callFileName, callLine);
     }
 
     public static void fromSmallIntVariable(VariableDeclarationNode variable, String fileName, int line) {
@@ -89,6 +83,13 @@ public final class ToFloat extends FunctionDeclarationNode {
             new LogError("Unknown number format for float type:\t" + str, fileName, line);
         }
         return null;
+    }
+
+    @Override
+    public Double call(Tuple arguments, String callFileName, int callLine) {
+        setArguments(arguments, callFileName, callLine);
+        var toBeCasted = getBody().getVariableValue("toBeCasted", callFileName, callLine);
+        return toFloat(toBeCasted, callFileName, callLine);
     }
 
 }

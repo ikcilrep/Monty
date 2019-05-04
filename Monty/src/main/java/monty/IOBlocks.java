@@ -19,32 +19,33 @@ import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import lexer.Lexer;
-import lexer.OptimizedTokensArray;
+import lexer.Token;
 import parser.parsing.Parser;
 import sml.Sml;
-import sml.functional.function.Lambda;
 import sml.io.Input;
 import sml.io.Print;
 import sml.io.Println;
 
+import java.util.ArrayList;
+
 public class IOBlocks {
+    private static FunctionDeclarationNode abs;
     public static FunctionDeclarationNode list;
-    private static FunctionDeclarationNode tuple;
+    public static VariableDeclarationNode nothing;
     private static FunctionDeclarationNode logError;
-    private static FunctionDeclarationNode f;
-    private static FunctionDeclarationNode lambda;
     private static FunctionDeclarationNode print;
     private static FunctionDeclarationNode println;
+    private static FunctionDeclarationNode round;
+    private static FunctionDeclarationNode tuple;
+
     private static FunctionDeclarationNode input;
-    public static VariableDeclarationNode nothing;
     private static Block[] writtenInMonty;
 
     static {
+        abs = new sml.math.Abs();
         list = new sml.data.list.NewList();
-        tuple = new sml.data.tuple.NewTuple();
         logError = new sml.errors.LogError();
         nothing = new sml.data.returning.Nothing();
-        lambda = new Lambda();
         writtenInMonty = new Block[Sml.numberOfFiles];
         int i = 0;
         for (var code : Sml.code)
@@ -52,29 +53,30 @@ public class IOBlocks {
 
         print = new Print();
         println = new Println();
+        round = new sml.math.Round();
+        tuple = new sml.data.tuple.NewTuple();
         input = new Input();
     }
 
-    private static void autoImport(Block block) {
-        var functions = block.getFunctions();
-        block.getVariables().put("Nothing", nothing);
+    private static void autoImport(Block block,String fileName, int line) {
+        block.addVariable(nothing,fileName,line);
+        block.addFunction(abs,fileName,line);
+        block.addFunction(list,fileName,line);
+        block.addFunction(print,fileName,line);
+        block.addFunction(println,fileName,line);
+        block.addFunction(round,fileName,line);
+        block.addFunction(input,fileName,line);
+        block.addFunction(logError,fileName,line);
+        block.addFunction(tuple,fileName,line);
+
         for (var parsed : writtenInMonty)
             block.concat(parsed);
-        functions.put("List", list);
-        functions.put("Tuple", tuple);
-        functions.put("f", f);
-        functions.put("lambda", lambda);
-        functions.put("print", print);
-        functions.put("println", println);
-        functions.put("input", input);
-        functions.put("logError", logError);
-
     }
 
     static Block readBlockFromFile(String path, String fileName, int line) {
         var block = Parser
-                .parse(Lexer.lex(FileIO.readFile(path, fileName, line), path, 1, new OptimizedTokensArray(), 0));
-        autoImport(block);
+                .parse(Lexer.lex(FileIO.readFile(path, fileName, line), path, 1, new ArrayList<>(), 0));
+        autoImport(block,fileName,line);
         return block;
     }
 

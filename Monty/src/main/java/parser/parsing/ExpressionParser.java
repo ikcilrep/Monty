@@ -18,59 +18,61 @@ package parser.parsing;
 
 import ast.Block;
 import ast.expressions.ConstantNode;
-import ast.expressions.FunctionCallNode;
 import ast.expressions.OperationNode;
-import ast.expressions.VariableNode;
-import lexer.OptimizedTokensArray;
+import ast.expressions.IdentifierNode;
 import lexer.Token;
 import parser.DataTypes;
 import parser.LogError;
 import parser.Tokens;
+import sml.Sml;
 import sml.data.string.StringStruct;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Stack;
 
 class ExpressionParser {
+    private final static HashMap<String, ConstantNode> LITERALS = new HashMap<>();
+    private final static HashMap<String, ConstantNode> STRING_LITERALS = new HashMap<>();
     /*
      * Parses list of tokens to abstract syntax tree.
      */
-    private static LinkedList<FunctionCallNode> functions;
-    private static LinkedList<FunctionCallNode> lists;
+    private static LinkedList<OperationNode> lists;
 
-    private final static HashMap<String, ConstantNode> LITERALS = new HashMap<>();
-
-    private final static HashMap<String, ConstantNode> STRING_LITERALS = new HashMap<>();
-
-    private static OperationNode parse(Block parent, OptimizedTokensArray tokens) {
-        return parse(parent, tokens, new Stack<>(), new IntegerHolder(0));
-    }
-
-    private static OperationNode parse(Block parent, OptimizedTokensArray tokens, Stack<OperationNode> stack,
-                                             IntegerHolder i) {
-        if (i.i < tokens.length()) {
+    private static OperationNode parse(Block parent, ArrayList<Token> tokens, Stack<OperationNode> stack,
+                                       IntegerHolder i) {
+        if (i.i < tokens.size()) {
             var token = tokens.get(i.i);
             OperationNode node;
             switch (token.getType()) {
                 case OPERATOR: // If token is operator
                     node = new OperationNode(token.getText(), parent);
-                    if (!token.getText().equals("!")) {
-                        if (stack.isEmpty())
-                            new LogError("There isn't right operand", token);
-                        node.setRightOperand(stack.pop());
-                    } else {
-                        node.setRightOperand(stack.peek());
-                    }
+                    if (stack.isEmpty())
+                        new LogError("There isn't right operand", token);
+
+                    if (token == Converter.EMPTY_OPERATOR || token.getText().equals("!"))
+                        node.setRight(stack.peek());
+                    else
+                        node.setRight(stack.pop());
+
                     if (stack.isEmpty())
                         new LogError("There isn't left operand", token);
-                    node.setLeftOperand(stack.pop());
+                    node.setLeft(stack.pop());
+                    break;
+                case FUNCTION:
+                    node = new OperationNode(new IdentifierNode(token.getText(), true), parent);
+                    if (stack.isEmpty())
+                        new LogError("There isn't right operand", token);
+                    node.setRight(stack.pop());
                     break;
                 case IDENTIFIER: // If token is identifier
                     return recParseIdentifier(parent, tokens, stack, i);
                 case OPENING_SQUARE_BRACKET:
                     return recParseList(parent, tokens, stack, i);
+                case EMPTY_TUPLE:
+                    return recParseEmptyTuple(parent, tokens, stack,i);
                 default:
                     // Otherwise token in expression can be only constant.
                     var dataType = Tokens.getDataType(token.getType());
@@ -88,64 +90,54 @@ class ExpressionParser {
         return stack.pop();
     }
 
-    private static OperationNode parseFunction(Block parent, OptimizedTokensArray tokens, IntegerHolder i) {
-        var token = tokens.get(i.i);
-        var function = functions.poll();
-        var node = new OperationNode(function, parent);
-        node.setFileName(token.getFileName());
-        node.setLine(token.getLine());
-        return node;
+
+    static OperationNode parseInfix(Block parent, ArrayList<Token> tokens) {
+        return parseInfix(parent, tokens, 0);
     }
 
-    private static OperationNode parseIdentifier(Block parent, OptimizedTokensArray array, IntegerHolder i) {
-        if (array.get(i.i).isFunction())
-            return parseFunction(parent, array, i);
-        return parseVariable(parent, array, i);
+    static OperationNode parseInfix(Block parent, ArrayList<Token> tokens, int start) {
+        return parse(parent, Converter.infixToSuffix(tokens, parent, start), new Stack<>(), new IntegerHolder(0));
     }
 
-    static OperationNode parseInfix(Block parent, OptimizedTokensArray tokens) {
-        return parse(parent, Converter.infixToSuffix(tokens, parent));
-    }
-
-    static OperationNode parseInfix(Block parent, OptimizedTokensArray tokens, int start) {
-        return parse(parent, Converter.infixToSuffix(tokens, parent), new Stack<>(), new IntegerHolder(start));
-    }
-
-    private static OperationNode parseVariable(Block parent, OptimizedTokensArray array, IntegerHolder i) {
+    private static OperationNode parseIdentifier(Block parent, ArrayList<Token> array, IntegerHolder i) {
         var token = array.get(i.i);
-        var variable = new VariableNode(token.getText());
+        var variable = new IdentifierNode(token.getText(), false);
         var node = new OperationNode(variable, parent);
         node.setFileName(token.getFileName());
         node.setLine(token.getLine());
         return node;
     }
 
-    private static OperationNode recParseIdentifier(Block parent, OptimizedTokensArray tokens,
-                                                          Stack<OperationNode> stack, IntegerHolder i) {
+    private static OperationNode recParseIdentifier(Block parent, ArrayList<Token> tokens,
+                                                    Stack<OperationNode> stack, IntegerHolder i) {
         stack.push(parseIdentifier(parent, tokens, i));
         i.i++;
         return parse(parent, tokens, stack, i);
     }
 
-    private static OperationNode recParseList(Block parent, OptimizedTokensArray tokens,
-                                                    Stack<OperationNode> stack, IntegerHolder i) {
-        stack.push(new OperationNode(lists.poll(), parent));
+    private static OperationNode recParseList(Block parent, ArrayList<Token> tokens,
+                                              Stack<OperationNode> stack, IntegerHolder i) {
+        stack.push(lists.poll());
         i.i++;
         return parse(parent, tokens, stack, i);
     }
 
-    static void setFunctions(LinkedList<FunctionCallNode> functions) {
-        ExpressionParser.functions = functions;
+    private static OperationNode recParseEmptyTuple(Block parent, ArrayList<Token> tokens,
+                                              Stack<OperationNode> stack, IntegerHolder i) {
+        stack.push(new OperationNode(new ConstantNode(Sml.EMPTY_ARGUMENT_LIST),parent));
+        i.i++;
+        return parse(parent, tokens, stack, i);
     }
 
-    static void setLists(LinkedList<FunctionCallNode> lists) {
+
+    static void setLists(LinkedList<OperationNode> lists) {
         ExpressionParser.lists = lists;
     }
 
     private static ConstantNode toDataType(Token token, DataTypes dataType) {
         // Returns values with proper data type.
         var literal = token.getText();
-        if (dataType != null){
+        if (dataType != null) {
             if (dataType.equals(DataTypes.OBJECT))
                 if (STRING_LITERALS.containsKey(literal))
                     return STRING_LITERALS.get(literal);

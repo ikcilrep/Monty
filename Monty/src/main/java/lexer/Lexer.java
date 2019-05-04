@@ -19,32 +19,31 @@ package lexer;
 import org.apache.commons.text.StringEscapeUtils;
 import parser.LogError;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 public final class Lexer {
     private final static Set<Character> OPERATORS_PARTS = Set.of('+', '-', '*', '/', '!', '<', '>', '=', '|', '&', '%',
-            '^', '.');
+            '^', '.', ',');
     private final static Set<String> OPERATORS = Set.of(".", "!", "+", "-", "*", "**", "/", "<", ">", "&", "|", "^", "=",
-            "<<", ">>", "!=", "+=", "-=", "*=", "/=", "<=", ">=", "&=", "|=", "^=", "==", "<<=", ">>=", "%", "%=", "**=");
+            "<<", ">>", "!=", "+=", "-=", "*=", "/=", "<=", ">=", "&=", "|=", "^=", "==", "<<=", ">>=", "%", "%=", "**=", ",");
 
     private final static Set<TokenTypes> hasValue = Set.of(TokenTypes.BOOLEAN_LITERAL, TokenTypes.INTEGER_LITERAL,
             TokenTypes.STRING_LITERAL, TokenTypes.REAL_LITERAL, TokenTypes.IDENTIFIER, TokenTypes.CLOSING_BRACKET,
             TokenTypes.CLOSING_SQUARE_BRACKET);
 
-    private static OptimizedTokensArray identifierOrKeyword(String code, String fileName, int line,
-                                                            OptimizedTokensArray tokens, int i) {
+    private static ArrayList<Token> identifierOrKeyword(String code, String fileName, int line,
+                                                        ArrayList<Token> tokens, int i) {
         var tokenText = new StringBuilder(String.valueOf(code.charAt(i)));
         char c;
         while (++i < code.length() && Character.isJavaIdentifierPart(c = code.charAt(i)))
             tokenText.append(c);
-        tokens.append(new Token(keywordOrIdentifierToTokenType(tokenText.toString()), tokenText.toString(), fileName, line));
+        tokens.add(new Token(keywordOrIdentifierToTokenType(tokenText.toString()), tokenText.toString(), fileName, line));
         return lex(code, fileName, line, tokens, i);
     }
 
     private static TokenTypes getSpecialTokenType(char tokenText) {
         switch (tokenText) {
-            case ',':
-                return TokenTypes.COMMA;
             case '(':
                 return TokenTypes.OPENING_BRACKET;
             case ')':
@@ -107,16 +106,16 @@ public final class Lexer {
         }
     }
 
-    public static OptimizedTokensArray lex(String code, String path) {
-        return lex(code, path, 1, new OptimizedTokensArray(), 0);
+    public static ArrayList<Token> lex(String code, String path) {
+        return lex(code, path, 1, new ArrayList<>(), 0);
     }
 
-    public static OptimizedTokensArray lex(String code, String path, int line) {
-        return lex(code, path, 1, new OptimizedTokensArray(), line);
+    public static ArrayList<Token> lex(String code, String path, int line) {
+        return lex(code, path, 1, new ArrayList<>(), line);
     }
 
-    public static OptimizedTokensArray lex(String code, String fileName, int line, OptimizedTokensArray tokens,
-                                           int i) {
+    public static ArrayList<Token> lex(String code, String fileName, int line, ArrayList<Token> tokens,
+                                       int i) {
         var isInComment = false;
         for (; i < code.length(); i++) {
             char c = code.charAt(i);
@@ -127,12 +126,12 @@ public final class Lexer {
             if (!isInComment) {
                 if (c == '#')
                     isInComment = true;
-                if (c == ';' || c == ',' || c == '(' || c == ')' || c == '[' || c == ']')
-                    tokens.append(new Token(getSpecialTokenType(c), c + "", fileName, line));
+                if (c == ';' || c == '(' || c == ')' || c == '[' || c == ']')
+                    tokens.add(new Token(getSpecialTokenType(c), c + "", fileName, line));
                 if (c == '\"')
                     return stringLiteral(code, fileName, line, tokens, i);
                 if (Character.isDigit(c) || ((c == '+' || c == '-')
-                        && (tokens.length() == 0 || !hasValue.contains(tokens.get(tokens.length() - 1).getType())
+                        && (tokens.size() == 0 || !hasValue.contains(tokens.get(tokens.size() - 1).getType())
                         && (i + 1 < code.length() && Character.isDigit(code.charAt(i + 1))))))
                     return number(code, fileName, line, tokens, i);
                 if (OPERATORS_PARTS.contains(c))
@@ -145,24 +144,24 @@ public final class Lexer {
         return tokens;
     }
 
-    private static OptimizedTokensArray number(String code, String fileName, int line,
-                                               OptimizedTokensArray tokens, int i) {
+    private static ArrayList<Token> number(String code, String fileName, int line,
+                                           ArrayList<Token> tokens, int i) {
         var tokenText = new StringBuilder(String.valueOf(code.charAt(i)));
         while (++i < code.length() && Character.isDigit(code.charAt(i)))
             tokenText.append(code.charAt(i));
         if (i + 1 < code.length() && code.charAt(i) == '.' && Character.isDigit(code.charAt(i + 1)))
             return realLiteral(code, tokenText.toString() + '.', fileName, line, tokens, i);
-        tokens.append(new Token(TokenTypes.INTEGER_LITERAL, tokenText.toString(), fileName, line));
+        tokens.add(new Token(TokenTypes.INTEGER_LITERAL, tokenText.toString(), fileName, line));
         return lex(code, fileName, line, tokens, i);
     }
 
-    private static OptimizedTokensArray operator(String code, String fileName, int line,
-                                                 OptimizedTokensArray tokens, int i) {
+    private static ArrayList<Token> operator(String code, String fileName, int line,
+                                             ArrayList<Token> tokens, int i) {
         var tokenText = new StringBuilder(String.valueOf(code.charAt(i)));
         while (++i < code.length() && OPERATORS_PARTS.contains(code.charAt(i)))
             tokenText.append(code.charAt(i));
         Token token = new Token(operatorToTokenType(tokenText.toString(), fileName, line), tokenText.toString(), fileName, line);
-        tokens.append(token);
+        tokens.add(token);
         return lex(code, fileName, line, tokens, i);
     }
 
@@ -173,17 +172,17 @@ public final class Lexer {
         return null;
     }
 
-    private static OptimizedTokensArray realLiteral(String code, String integer, String fileName, int line,
-                                                    OptimizedTokensArray tokens, int i) {
+    private static ArrayList<Token> realLiteral(String code, String integer, String fileName, int line,
+                                                ArrayList<Token> tokens, int i) {
         var tokenText = new StringBuilder(integer);
         while (++i < code.length() && Character.isDigit(code.charAt(i)))
             tokenText.append(code.charAt(i));
-        tokens.append(new Token(TokenTypes.REAL_LITERAL, tokenText.toString(), fileName, line));
+        tokens.add(new Token(TokenTypes.REAL_LITERAL, tokenText.toString(), fileName, line));
         return lex(code, fileName, line, tokens, i);
     }
 
-    private static OptimizedTokensArray stringLiteral(String code, String fileName, int line,
-                                                            OptimizedTokensArray tokens, int i) {
+    private static ArrayList<Token> stringLiteral(String code, String fileName, int line,
+                                                  ArrayList<Token> tokens, int i) {
         var tokenText = new StringBuilder();
         try {
             while (code.charAt(++i - 1) == '\\' || code.charAt(i) != '\"')
@@ -192,7 +191,7 @@ public final class Lexer {
             new LogError("String wasn't closed", fileName, line);
         }
         Token token = new Token(TokenTypes.STRING_LITERAL, StringEscapeUtils.unescapeJava(tokenText.toString()), fileName, line);
-        tokens.append(token);
+        tokens.add(token);
         return lex(code, fileName, line, tokens, i + 1);
     }
 }
