@@ -11,7 +11,7 @@ import java.util.ArrayList;
 final class Get extends Method<Tuple> {
 
     Get(Tuple parent) {
-        super(parent, "get");
+        super(parent, "get",new String[1]);
         addParameter("index");
     }
 

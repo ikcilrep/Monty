@@ -18,15 +18,12 @@ package parser.parsing;
 
 import ast.Block;
 import ast.declarations.CustomFunctionDeclarationNode;
-import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import ast.expressions.IdentifierNode;
 import ast.statements.*;
 import lexer.Token;
-import lexer.TokenTypes;
-import parser.Identificator;
 import parser.LogError;
 
 import java.util.ArrayList;
@@ -79,10 +76,10 @@ abstract class AdderToBlock {
 
     static Block addFunctionDeclaration(Block block, ArrayList<Token> tokens) {
         var functionName = tokens.get(1).getText();
-        var function = new CustomFunctionDeclarationNode(functionName);
         if (Character.isUpperCase(functionName.charAt(0)))
             new LogError("Function name " + functionName + " can't start with upper case.", tokens.get(2));
-        parseFunctionsParameters(2, tokens, function);
+        var identifiers = parseIdentifiers(tokens,2);
+        var function = new CustomFunctionDeclarationNode(functionName, identifiers, identifiers.length-1);
         function.setBody(new Block(block));
         block.addFunction(function, tokens.get(1));
         return function.getBody();
@@ -135,10 +132,10 @@ abstract class AdderToBlock {
 
     }
 
-    private static void parseFunctionsParameters(int start, ArrayList<Token> tokens,
-                                                 FunctionDeclarationNode function) {
-        for (int i = start; i < tokens.size(); i++)
-            function.addParameter(tokens.get(i).getText());
-
+    private static String[] parseIdentifiers(ArrayList<Token> tokens, int start) {
+        var result = new String[tokens.size() -start];
+        for (int i = start, j = 0; i < tokens.size(); i++, j++)
+            result[j] = tokens.get(i).getText();
+        return result;
     }
 }

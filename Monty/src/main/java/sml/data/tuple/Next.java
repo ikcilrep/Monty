@@ -1,11 +1,12 @@
 package sml.data.tuple;
 
+import ast.declarations.FunctionDeclarationNode;
 import sml.data.Method;
 
 class Next extends Method<Iterator> {
 
     Next(Iterator parent) {
-        super(parent, "next");
+        super(parent, "next", FunctionDeclarationNode.EMPTY_PARAMETERS);
     }
 
     @Override

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class MultipliedLeft extends Method<StringStruct> {
 
     MultipliedLeft(StringStruct parent) {
-        super(parent, "$mul");
+        super(parent, "$mul",new String[2]);
         addParameter("this");
         addParameter("times");
 

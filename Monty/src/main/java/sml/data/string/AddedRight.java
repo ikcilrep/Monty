@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class AddedRight extends Method<StringStruct> {
 
     AddedRight(StringStruct parent) {
-        super(parent, "$r_add");
+        super(parent, "$r_add",new String[2]);
         addParameter("other");
         addParameter("this");
 

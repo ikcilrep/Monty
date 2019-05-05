@@ -31,7 +31,7 @@ import java.util.ArrayList;
 public final class ToFloat extends FunctionDeclarationNode {
 
     public ToFloat() {
-        super("toFloat");
+        super("toFloat", new String[1]);
         setBody(new Block(null));
         addParameter("toBeCasted");
     }

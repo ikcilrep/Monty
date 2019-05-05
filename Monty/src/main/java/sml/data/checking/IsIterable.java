@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class IsIterable extends FunctionDeclarationNode {
 
     public IsIterable() {
-        super("isIterable");
+        super("isIterable", new String[1]);
         setBody(new Block(null));
         addParameter("toCheck");
     }
@@ -27,7 +27,7 @@ public class IsIterable extends FunctionDeclarationNode {
             return false;
 
         var iterator = structToCheck.getFunction("Iterator", callFileName, callLine);
-        if (iterator.parameters.size() > 0)
+        if (iterator.getParametersLength() > 0)
             return false;
         var iteratorValue = iterator.call(Sml.EMPTY_ARGUMENT_LIST, callFileName, callLine);
         if (!(iteratorValue instanceof StructDeclarationNode))

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 final class Remove extends Method<List> {
 
     Remove(List parent) {
-        super(parent, "remove");
+        super(parent, "remove",new String[1]);
         addParameter("value");
     }
 

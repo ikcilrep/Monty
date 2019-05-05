@@ -12,7 +12,7 @@ import java.util.ArrayList;
 final class Pop extends Method<List> {
 
     Pop(List parent) {
-        super(parent, "pop");
+        super(parent, "pop",new String[1]);
         addParameter("index");
     }
 

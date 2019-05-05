@@ -12,7 +12,7 @@ import java.util.ArrayList;
 final class Get extends Method<List> {
 
     Get(List parent) {
-        super(parent, "get");
+        super(parent, "get",new String[1]);
         addParameter("index");
     }
 

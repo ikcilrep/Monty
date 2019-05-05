@@ -27,8 +27,9 @@ import java.util.ArrayList;
 
 public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
 
-    public CustomFunctionDeclarationNode(String name) {
-        super(name);
+
+    public CustomFunctionDeclarationNode(String name, String[] parameters, int lastNotNullParameterIndex) {
+        super(name, parameters, lastNotNullParameterIndex);
     }
 
     private CustomFunctionDeclarationNode workingCopy() {

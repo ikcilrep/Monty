@@ -15,6 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import ast.declarations.FunctionDeclarationNode;
 import ast.expressions.OperationNode;
 import sml.data.Method;
 import sml.data.tuple.Tuple;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 final class UpperCase extends Method<StringStruct> {
 
     UpperCase(StringStruct parent) {
-        super(parent, "upperCase");
+        super(parent, "upperCase", FunctionDeclarationNode.EMPTY_PARAMETERS);
     }
 
     @Override

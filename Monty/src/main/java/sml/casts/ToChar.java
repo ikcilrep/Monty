@@ -28,7 +28,7 @@ import java.util.ArrayList;
 
 public final class ToChar extends FunctionDeclarationNode {
     public ToChar() {
-        super("toChar");
+        super("toChar", new String[1]);
         setBody(new Block(null));
         addParameter("integer");
     }

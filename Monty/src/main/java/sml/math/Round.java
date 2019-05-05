@@ -28,10 +28,9 @@ import java.util.ArrayList;
 public final class Round extends FunctionDeclarationNode {
 
     public Round() {
-        super("round");
+        super("round", new String[1]);
         setBody(new Block(null));
         addParameter("f");
-        addParameter("scale");
     }
 
     @Override

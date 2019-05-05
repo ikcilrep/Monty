@@ -9,7 +9,7 @@ import java.util.ArrayList;
 final class Next extends Method<Iterator> {
 
     Next(Iterator parent) {
-        super(parent, "next");
+        super(parent, "next",null);
     }
 
     @Override

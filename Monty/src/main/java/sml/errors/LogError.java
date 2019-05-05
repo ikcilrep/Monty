@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public final class LogError extends FunctionDeclarationNode {
 
     public LogError() {
-        super("logError");
+        super("logError",new String[1]);
         setBody(new Block(null));
         addParameter("message");
     }

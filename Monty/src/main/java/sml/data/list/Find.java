@@ -10,7 +10,7 @@ import java.util.ArrayList;
 final class Find extends Method<List> {
 
     Find(List parent) {
-        super(parent, "find");
+        super(parent, "find",new String[1]);
         addParameter("value");
     }
 

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 final class Sublist extends Method<List> {
 
     Sublist(List parent) {
-        super(parent, "sublist");
+        super(parent, "sublist",new String[2]);
         addParameter("begin");
         addParameter("end");
     }

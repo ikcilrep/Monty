@@ -23,8 +23,8 @@ import ast.declarations.StructDeclarationNode;
 public abstract class Method<T extends StructDeclarationNode> extends FunctionDeclarationNode {
     protected T parent;
 
-    public Method(T parent, String name) {
-        super(name);
+    public Method(T parent, String name, String[] parameters) {
+        super(name, parameters);
         setBody(new Block(parent));
         this.parent = parent;
         parent.addFunction(this);

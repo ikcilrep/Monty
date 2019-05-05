@@ -12,7 +12,7 @@ import java.util.ArrayList;
 final class Set extends Method<List> {
 
     Set(List parent) {
-        super(parent, "set");
+        super(parent, "set",new String[2]);
         addParameter("index");
         addParameter("value");
     }

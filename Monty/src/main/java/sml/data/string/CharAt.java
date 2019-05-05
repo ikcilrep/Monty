@@ -27,7 +27,7 @@ import java.util.ArrayList;
 final class CharAt extends Method<StringStruct> {
 
     CharAt(StringStruct parent) {
-        super(parent, "charAt");
+        super(parent, "charAt",new String[1]);
         addParameter("index");
     }
 

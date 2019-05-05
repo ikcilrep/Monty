@@ -10,7 +10,7 @@ import java.util.ArrayList;
 final class Count extends Method<List> {
 
     Count(List parent) {
-        super(parent, "count");
+        super(parent, "count",new String[1]);
         addParameter("value");
     }
 

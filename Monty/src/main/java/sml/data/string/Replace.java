@@ -25,7 +25,7 @@ import java.util.ArrayList;
 final class Replace extends Method<StringStruct> {
 
     Replace(StringStruct parent) {
-        super(parent, "replace");
+        super(parent, "replace",new String[2]);
         addParameter("regex");
         addParameter("replacement");
 

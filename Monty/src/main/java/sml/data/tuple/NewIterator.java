@@ -1,12 +1,13 @@
 package sml.data.tuple;
 
+import ast.declarations.FunctionDeclarationNode;
 import sml.data.Method;
 import sml.data.list.List;
 
 final class NewIterator extends Method<Tuple> {
 
     NewIterator(Tuple parent) {
-        super(parent, "Iterator");
+        super(parent, "Iterator", FunctionDeclarationNode.EMPTY_PARAMETERS);
     }
 
     @Override

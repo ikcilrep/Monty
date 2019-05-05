@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 final class MultipliedLeft extends Method<List> {
     MultipliedLeft(List parent) {
-        super(parent, "$mul");
+        super(parent, "$mul",new String[2]);
         addParameter("this");
         addParameter("times");
     }

@@ -26,7 +26,7 @@ import java.util.ArrayList;
 public final class Seconds extends FunctionDeclarationNode {
 
     public Seconds() {
-        super("seconds");
+        super("seconds", FunctionDeclarationNode.EMPTY_PARAMETERS);
         setBody(new Block(null));
     }
 

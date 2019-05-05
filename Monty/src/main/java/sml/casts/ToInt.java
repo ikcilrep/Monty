@@ -32,7 +32,7 @@ import java.util.ArrayList;
 public final class ToInt extends FunctionDeclarationNode {
 
     public ToInt() {
-        super("toInt");
+        super("toInt", new String[1]);
         setBody(new Block(null));
         addParameter("toBeCasted");
     }

@@ -28,7 +28,7 @@ import java.util.ArrayList;
 public final class Ord extends FunctionDeclarationNode {
 
     public Ord() {
-        super("ord");
+        super("ord", new String[1]);
         setBody(new Block(null));
         addParameter("chr");
     }

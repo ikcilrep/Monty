@@ -30,7 +30,7 @@ import java.util.ArrayList;
 public final class ToBoolean extends FunctionDeclarationNode {
 
     public ToBoolean() {
-        super("toBoolean");
+        super("toBoolean", new String[1]);
         setBody(new Block(null));
         addParameter("toBeCasted");
     }

@@ -29,7 +29,7 @@ import java.util.ArrayList;
 public final class Abs extends FunctionDeclarationNode {
 
     public Abs() {
-        super("abs");
+        super("abs",new String[1]);
         setBody(new Block(null));
         addParameter("f");
     }

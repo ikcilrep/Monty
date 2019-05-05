@@ -26,7 +26,7 @@ import java.util.ArrayList;
 final class Split extends Method<StringStruct> {
 
     Split(StringStruct parent) {
-        super(parent, "split");
+        super(parent, "split",new String[1]);
         addParameter("regex");
     }
 

@@ -31,7 +31,7 @@ public final class Input extends FunctionDeclarationNode {
     private static Scanner scanner = new Scanner(System.in);
 
     public Input() {
-        super("input");
+        super("input",FunctionDeclarationNode.EMPTY_PARAMETERS);
         setBody(new Block(null));
     }
 

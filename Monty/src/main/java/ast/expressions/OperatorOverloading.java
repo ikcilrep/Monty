@@ -576,7 +576,7 @@ public class OperatorOverloading {
             var struct = (StructDeclarationNode) leftValue;
             if (struct.hasFunction(nameOfFunction)) {
                 var operator = struct.getFunction(nameOfFunction, temporaryFileName, temporaryLine);
-                if (operator.getParameters().size() == numberOfParameters)
+                if (operator.getParametersLength() == numberOfParameters)
                     return operator.call(arguments, temporaryFileName, temporaryLine);
             }
         }
@@ -585,7 +585,7 @@ public class OperatorOverloading {
             var name = "$r_" + nameOfFunction.substring(1);
             if (struct.hasFunction(name)) {
                 var operator = struct.getFunction(name, temporaryFileName, temporaryLine);
-                if (operator.getParameters().size() == numberOfParameters)
+                if (operator.getParametersLength() == numberOfParameters)
                     return operator.call(arguments, temporaryFileName, temporaryLine);
             }
         }

@@ -25,7 +25,7 @@ import java.util.ArrayList;
 final class ReplaceFirst extends Method<StringStruct> {
 
     ReplaceFirst(StringStruct parent) {
-        super(parent, "replaceFirst");
+        super(parent, "replaceFirst",new String[2]);
         addParameter("regex");
         addParameter("replacement");
 

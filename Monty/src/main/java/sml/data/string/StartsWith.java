@@ -25,7 +25,7 @@ import java.util.ArrayList;
 final class StartsWith extends Method<StringStruct> {
 
     StartsWith(StringStruct parent) {
-        super(parent, "startsWith");
+        super(parent, "startsWith",new String[1]);
         addParameter("prefix");
     }
 

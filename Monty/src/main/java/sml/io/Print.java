@@ -28,7 +28,7 @@ import java.util.ArrayList;
 public final class Print extends FunctionDeclarationNode {
 
     public Print() {
-        super("print");
+        super("print",new String[1]);
         setBody(new Block(null));
         addParameter("toPrint");
     }

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 final class Multiply extends Method<List> {
     Multiply(List parent) {
-        super(parent, "$a_mul");
+        super(parent, "$a_mul",new String[2]);
         addParameter("this");
         addParameter("times");
     }

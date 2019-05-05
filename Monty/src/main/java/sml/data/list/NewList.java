@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class NewList extends FunctionDeclarationNode {
 
     public NewList() {
-        super("List");
+        super("List", FunctionDeclarationNode.EMPTY_PARAMETERS);
     }
 
     @Override

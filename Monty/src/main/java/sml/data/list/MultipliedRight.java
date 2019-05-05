@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 final class MultipliedRight extends Method<List> {
     MultipliedRight(List parent) {
-        super(parent, "$r_mul");
+        super(parent, "$r_mul",new String[2]);
         addParameter("times");
         addParameter("this");
     }

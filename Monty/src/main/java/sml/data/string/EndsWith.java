@@ -25,7 +25,7 @@ import java.util.ArrayList;
 final class EndsWith extends Method<StringStruct> {
 
     EndsWith(StringStruct parent) {
-        super(parent, "endsWith");
+        super(parent, "endsWith",new String[1]);
         addParameter("suffix");
     }
 

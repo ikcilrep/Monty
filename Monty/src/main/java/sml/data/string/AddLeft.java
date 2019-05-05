@@ -6,7 +6,7 @@ import sml.data.tuple.Tuple;
 public class AddLeft extends Method<StringStruct> {
 
     AddLeft(StringStruct parent) {
-        super(parent, "$a_add");
+        super(parent, "$a_add",new String[2]);
         addParameter("this");
         addParameter("other");
 

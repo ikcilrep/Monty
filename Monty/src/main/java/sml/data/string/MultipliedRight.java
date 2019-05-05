@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class MultipliedRight extends Method<StringStruct> {
 
     MultipliedRight(StringStruct parent) {
-        super(parent, "$r_mul");
+        super(parent, "$r_mul",new String[2]);
         addParameter("times");
         addParameter("this");
 

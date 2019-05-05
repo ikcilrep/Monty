@@ -24,15 +24,28 @@ import sml.data.tuple.Tuple;
 import java.util.ArrayList;
 
 public abstract class FunctionDeclarationNode extends DeclarationNode implements Cloneable {
-    public ArrayList<VariableDeclarationNode> parameters = new ArrayList<>();
-    private Block body;
+    public static String[] EMPTY_PARAMETERS = new String[0];
 
-    public FunctionDeclarationNode(String name) {
+    private void setParameters(String[] parameters, int lastNotNullParameterIndex) {
+        this.parameters = parameters;
+        this.lastNotNullParameterIndex = lastNotNullParameterIndex;
+    }
+    private String[] parameters;
+    private int lastNotNullParameterIndex;
+    private Block body;
+   
+    public FunctionDeclarationNode(String name, String[] parameters, int lastNotNullParameterIndex) {
         super(name);
+        setParameters(parameters,lastNotNullParameterIndex);
+    }
+
+    public FunctionDeclarationNode(String name, String[] parameters) {
+        super(name);
+        setParameters(parameters, -1);
     }
 
     public void addParameter(String name) {
-        getParameters().add(new VariableDeclarationNode(name));
+        getParameters()[++lastNotNullParameterIndex] = name;
     }
 
     public abstract Object call(Tuple arguments, String callFileName, int callLine);
@@ -56,15 +69,23 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
         this.body = body;
     }
 
-    public ArrayList<VariableDeclarationNode> getParameters() {
+    private String[] getParameters() {
         return parameters;
     }
+    public int getParametersLength()
+    {
+        if (parameters == null)
+            return 0;
+        return parameters.length;
+    }
+
 
     public void setArguments(Tuple arguments, String callFileName, int callLine) {
         var argumentsLength = arguments.length();
-        var parametersSize = getParameters().size();
+        var parameters = getParameters();
+        var parametersSize = parameters.length;
         if (parametersSize == 1 && parametersSize  != argumentsLength) {
-            var name = getParameters().get(0).getName();
+            var name = this.parameters[0];
             VariableDeclarationNode variable;
             if (!body.hasVariable(name)) {
                 variable = new VariableDeclarationNode(name);
@@ -78,11 +99,10 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
             new LogError("Too many arguments in " + name + " function call.", callFileName, callLine);
         else if (argumentsLength < parametersSize)
             new LogError("Too few arguments in " + name + " function call.", callFileName, callLine);
-        var parameters = getParameters();
         var body = getBody();
 
         for (int i = 0; i < arguments.length(); i++) {
-            var name = parameters.get(i).getName();
+            var name = parameters[i];
             VariableDeclarationNode variable;
             if (!body.hasVariable(name)) {
                 variable = new VariableDeclarationNode(name);
@@ -96,6 +116,6 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
 
     @Override
     public String toString() {
-        return "Function<" + getName() + "> <- " + getParameters().size();
+        return "Function<" + getName() + "> <- " + getParametersLength();
     }
 }

@@ -25,7 +25,7 @@ import java.util.ArrayList;
 final class EqualsIgnoreCase extends Method<StringStruct> {
 
     EqualsIgnoreCase(StringStruct parent) {
-        super(parent, "equalsIgnoreCase");
+        super(parent, "equalsIgnoreCase",new String[1]);
         addParameter("toCompare");
     }
 

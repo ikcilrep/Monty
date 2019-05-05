@@ -25,7 +25,7 @@ import java.util.ArrayList;
 final class Extended extends Method<List> {
 
     Extended(List array) {
-        super(array, "$add");
+        super(array, "$add",new String[2]);
         addParameter("this");
         addParameter("other");
     }

@@ -28,7 +28,7 @@ import java.util.ArrayList;
 final class Substring extends Method<StringStruct> {
 
     Substring(StringStruct parent) {
-        super(parent, "substring");
+        super(parent, "substring",new String[2]);
         addParameter("begin");
         addParameter("end");
     }

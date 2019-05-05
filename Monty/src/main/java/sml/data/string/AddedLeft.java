@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class AddedLeft extends Method<StringStruct> {
 
     AddedLeft(StringStruct parent) {
-        super(parent, "$add");
+        super(parent, "$add",new String[2]);
         addParameter("this");
         addParameter("other");
 

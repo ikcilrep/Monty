@@ -27,7 +27,7 @@ import java.util.ArrayList;
 public final class Millis extends FunctionDeclarationNode {
 
     public Millis() {
-        super("millis");
+        super("millis", FunctionDeclarationNode.EMPTY_PARAMETERS);
         setBody(new Block(null));
     }
 

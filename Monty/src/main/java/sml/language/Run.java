@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public final class Run extends FunctionDeclarationNode {
 
     public Run() {
-        super("run");
+        super("run",new String[1]);
         addParameter("code");
         setBody(new Block(null));
     }

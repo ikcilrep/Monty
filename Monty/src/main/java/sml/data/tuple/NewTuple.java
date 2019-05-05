@@ -9,7 +9,7 @@ import sml.data.string.StringStruct;
 public class NewTuple extends FunctionDeclarationNode {
 
     public NewTuple() {
-        super("Tuple");
+        super("Tuple",FunctionDeclarationNode.EMPTY_PARAMETERS);
     }
 
     @Override

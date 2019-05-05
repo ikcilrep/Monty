@@ -10,7 +10,7 @@ public class Constructor extends FunctionDeclarationNode {
     private StructDeclarationNode struct;
 
     Constructor(StructDeclarationNode struct) {
-        super(struct.getName());
+        super(struct.getName(), FunctionDeclarationNode.EMPTY_PARAMETERS);
         setStruct(struct);
         setBody(new Block(null));
     }

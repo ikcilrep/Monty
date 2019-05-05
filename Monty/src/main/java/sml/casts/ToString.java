@@ -27,7 +27,7 @@ import java.util.ArrayList;
 public final class ToString extends FunctionDeclarationNode {
 
     public ToString() {
-        super("toString");
+        super("toString", new String[1]);
         setBody(new Block(null));
         addParameter("toBeCasted");
     }

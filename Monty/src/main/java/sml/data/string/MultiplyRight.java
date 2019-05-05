@@ -10,7 +10,7 @@ import java.math.BigInteger;
 public class MultiplyRight extends Method<StringStruct> {
 
     MultiplyRight(StringStruct parent) {
-        super(parent, "$r_a_mul");
+        super(parent, "$r_a_mul",new String[2]);
         addParameter("this");
         addParameter("times");
 

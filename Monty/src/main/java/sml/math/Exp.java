@@ -28,7 +28,7 @@ import java.util.ArrayList;
 
 public final class Exp extends FunctionDeclarationNode {
     public Exp() {
-        super("exp");
+        super("exp", new String[1]);
         setBody(new Block(null));
         addParameter("x");
     }

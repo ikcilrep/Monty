@@ -34,7 +34,7 @@ public final class Factorial extends FunctionDeclarationNode {
     private static final int MAX = 12;
 
     public Factorial() {
-        super("factorial");
+        super("factorial",new String[1]);
         setBody(new Block(null));
         addParameter("n");
     }

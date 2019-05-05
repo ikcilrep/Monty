@@ -10,7 +10,7 @@ import java.math.BigInteger;
 public class MultiplyLeft extends Method<StringStruct> {
 
     MultiplyLeft(StringStruct parent) {
-        super(parent, "$a_mul");
+        super(parent, "$a_mul",new String[2]);
         addParameter("this");
         addParameter("times");
 
