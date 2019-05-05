@@ -17,6 +17,7 @@ public class Tuple extends StructDeclarationNode {
 
     private void addFunctions() {
          new NewIterator(this);
+         new Get(this);
     }
 
     public Tuple(Object[] array) {

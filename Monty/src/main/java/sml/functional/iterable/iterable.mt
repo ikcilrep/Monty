@@ -21,7 +21,7 @@ struct Iterable;
 		var list = [Nothing] * length This;
 		var i = 0;
 		for x in This;
-			list.set(i, x);
+			list.set i, x;
 			i += 1;
 		end;
 		return list;

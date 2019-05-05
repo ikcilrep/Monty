@@ -228,7 +228,7 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 
             if (value instanceof FunctionDeclarationNode) {
 
-                    var arguments = getRight().runWithParent(parent);
+                    var arguments = getRight().runWithParent(getParent());
                     if (!(arguments instanceof Tuple))
                         arguments = new Tuple(arguments);
                     return ((FunctionDeclarationNode) value).call((Tuple) arguments, getFileName(), getLine());
