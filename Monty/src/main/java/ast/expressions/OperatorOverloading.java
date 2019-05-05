@@ -343,7 +343,7 @@ public class OperatorOverloading {
     static Object dotOperator(Object leftValue, OperationNode rightValue, DataTypes type, Block parent) {
 
         if (type.equals(DataTypes.OBJECT))
-            return rightValue.runWithParent((StructDeclarationNode) leftValue);
+            return rightValue.runWithParent((StructDeclarationNode) leftValue, false);
 
         else
             new LogError("Can't get attributes from simple values.", temporaryFileName, temporaryLine);

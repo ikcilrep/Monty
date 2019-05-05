@@ -3,7 +3,7 @@ struct Range;
     var max;
     var step;
 
-    func init min, max, step;
+    func init min max step;
         This.min = min;
         This.max = max;
         This.step = step; 

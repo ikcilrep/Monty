@@ -91,12 +91,15 @@ class ExpressionParser {
     }
 
 
-    static OperationNode parseInfix(Block parent, ArrayList<Token> tokens) {
-        return parseInfix(parent, tokens, 0);
+     static OperationNode parseInfix(Block parent, ArrayList<Token> tokens) {
+        return parseInfix(parent, tokens, 0,tokens.size());
+    }
+    static OperationNode parseInfix(Block parent, ArrayList<Token> tokens, int start) {
+        return parseInfix(parent, tokens, start, tokens.size());
     }
 
-    static OperationNode parseInfix(Block parent, ArrayList<Token> tokens, int start) {
-        return parse(parent, Converter.infixToSuffix(tokens, parent, start), new Stack<>(), new IntegerHolder(0));
+    static OperationNode parseInfix(Block parent, ArrayList<Token> tokens, int start, int end) {
+        return parse(parent, Converter.infixToSuffix(tokens, parent, start, end), new Stack<>(), new IntegerHolder(0));
     }
 
     private static OperationNode parseIdentifier(Block parent, ArrayList<Token> array, IntegerHolder i) {

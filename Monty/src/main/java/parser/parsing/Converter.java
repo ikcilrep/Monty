@@ -63,12 +63,12 @@ class Converter {
         return precedence.get(token.getText());
     }
 
-    static ArrayList<Token> infixToSuffix(ArrayList<Token> tokens, Block parent, int start) {
+    static ArrayList<Token> infixToSuffix(ArrayList<Token> tokens, Block parent, int start, int end) {
         var outputQueue = new ArrayList<Token>();
         var operatorStack = new Stack<Token>();
         var lists = new LinkedList<OperationNode>();
         var wasLastOpeningBracket = false;
-        for (var i = new IntegerHolder(start); i.i < tokens.size(); i.i++) {
+        for (var i = new IntegerHolder(start); i.i < end; i.i++) {
             var token = tokens.get(i.i);
             var type = token.getType();
             switch (type) {
@@ -166,7 +166,7 @@ class Converter {
             counter++;
         }
         if (counter -1 > i.i) {
-            list.setRight(ExpressionParser.parseInfix(parent, new ArrayList<Token>(tokens.subList(i.i, counter-1))));
+            list.setRight(ExpressionParser.parseInfix(parent, tokens,i.i, counter-1));
             i.i = counter - 1;
         } else
             list.setRight(new OperationNode(new ConstantNode(Sml.EMPTY_ARGUMENT_LIST),parent));

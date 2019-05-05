@@ -184,7 +184,7 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
     }
 
 
-    final Object runWithParent(Block parent) {
+    final Object runWithParent(Block parent, boolean doesGetVariableValue) {
         // Returns calculated value.
         Object result;
         if (!(operand instanceof String || operand instanceof IdentifierNode)) {
@@ -192,14 +192,17 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
             result = operand;
         }  else
             result = solve(parent);
-        result = getLiteral(result,parent, true, getFileName(), getLine());
+        result = getLiteral(result,parent, doesGetVariableValue, getFileName(), getLine());
         if (result instanceof ArrayList)
             return new Tuple(((ArrayList) result).toArray());
-        else if (result instanceof VariableDeclarationNode)
+        else if (result instanceof VariableDeclarationNode && doesGetVariableValue)
             return ((VariableDeclarationNode) result).getValue();
         return result;
     }
-
+    private final Object runWithParent(Block parent) {
+        // Returns calculated value.
+        return runWithParent(parent,true);
+    }
     @Override
     public final Object run() {
         return runWithParent(getParent());
@@ -214,9 +217,7 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
         this.right = right;
     }
 
-    private Object solve() {
-        return solve(getParent());
-    }
+
     private Object solve(Block parent) {
         var operand = getOperand();
 
@@ -244,6 +245,7 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
                 || operator.equals(">=") || operator.equals(">") || operator.equals("<");
 
         var isAssignment = operator.contains("=") && !isComparison;
+        var isDot = operator.equals(".");
         var leftValue = getLiteral(getLeft().solve(parent),parent, !isAssignment, left.getFileName(), left.getLine());
 
 
@@ -273,7 +275,7 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 
 
 
-        if (operator.equals(".")) {
+        if (isDot) {
             if (!(getRight().getOperand() instanceof IdentifierNode))
                 new LogError("Variable or function can only be got from struct.", getFileName(), getLine());
             return OperatorOverloading.dotOperator(leftValue, getRight(), leftType, parent);

@@ -57,7 +57,7 @@ public abstract class Identificator {
     public static boolean isElseStatement(ArrayList<Token> tokens) {
         if (!tokens.get(0).getType().equals(TokenTypes.ELSE_KEYWORD))
             return false;
-        if (tokens.size() > 1 && !isIfStatement((ArrayList<Token>) tokens.subList(1, tokens.size())))
+        if (tokens.size() > 1 && !isIfStatement(tokens, 1))
             new LogError("Expected if statement or nothing after \"else\" keyword.",
                     tokens.get(tokens.size() > 1 ? 1 : 0));
         return true;
@@ -119,16 +119,10 @@ public abstract class Identificator {
             return false;
         if (!isSecondTokenIdentifier)
             new LogError("Expected identifier after \"func\" keyword.", tokens.get(1));
-        TokenTypes last = null;
         for (int i = 2; i < tokens.size(); i++) {
             var token = tokens.get(i);
-            if (isComma(token)) {
-                if (!((last == null || last.equals(TokenTypes.IDENTIFIER)) && i + 1 < tokens.size()))
-                    new LogError("Unexpected comma.", token);
-            } else if (!token.getType().equals(TokenTypes.IDENTIFIER))
+            if (!token.getType().equals(TokenTypes.IDENTIFIER))
                 new LogError("Unexpected token:\t\"" + token.getText() + "\"", token);
-
-            last = token.getType();
         }
         return true;
 
@@ -137,10 +131,16 @@ public abstract class Identificator {
         return token.getType().equals(TokenTypes.OPERATOR) && token.getText().equals(",");
     }
     public static boolean isIfStatement(ArrayList<Token> tokens) {
-        if (!tokens.get(0).getType().equals(TokenTypes.IF_KEYWORD))
+        return isIfStatement(tokens, 0);
+
+    }
+
+    public static boolean isIfStatement(ArrayList<Token> tokens, int start) {
+        if (!tokens.get(start).getType().equals(TokenTypes.IF_KEYWORD))
             return false;
-        if (tokens.size() == 1 || !isExpression(tokens, 1, tokens.size()))
-            new LogError("Expected expression after \"if\" keyword.", tokens.get(tokens.size() > 1 ? 1 : 0));
+        var length = start + 1;
+        if (tokens.size() == length || !isExpression(tokens, length, tokens.size()))
+            new LogError("Expected expression after \"if\" keyword.", tokens.get(tokens.size() > length ? length : start));
         return true;
 
     }

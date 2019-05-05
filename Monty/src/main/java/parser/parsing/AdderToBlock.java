@@ -137,14 +137,8 @@ abstract class AdderToBlock {
 
     private static void parseFunctionsParameters(int start, ArrayList<Token> tokens,
                                                  FunctionDeclarationNode function) {
-        String name = null;
-        for (int i = start; i < tokens.size(); i++) {
-            var tokenType = tokens.get(i).getType();
-            var isTokenTypeEqualsComma = Identificator.isComma(tokens.get(i));
-            if (tokenType.equals(TokenTypes.IDENTIFIER))
-                name = tokens.get(i).getText();
-            if (isTokenTypeEqualsComma || i + 1 >= tokens.size())
-                function.addParameter(name);
-        }
+        for (int i = start; i < tokens.size(); i++)
+            function.addParameter(tokens.get(i).getText());
+
     }
 }
