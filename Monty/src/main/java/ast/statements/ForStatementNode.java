@@ -20,9 +20,7 @@ import ast.Block;
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.LogError;
 import sml.Sml;
-import sml.data.checking.IsIterable;
 import sml.data.returning.BreakType;
 import sml.data.returning.ContinueType;
 
@@ -30,61 +28,63 @@ public final class ForStatementNode extends Block {
     private OperationNode iterable;
     private String variableName;
 
-    public ForStatementNode(String variableName, OperationNode array, String fileName, int line, Block parent) {
+    private static boolean isIterable(Object toCheck, String callFileName, int callLine) {
+        if (toCheck instanceof String)
+            return true;
+        if (!(toCheck instanceof StructDeclarationNode))
+            return false;
+        var structToCheck = (StructDeclarationNode) toCheck;
+        if (!structToCheck.hasFunction("Iterator"))
+            return false;
+
+        var iterator = structToCheck.getFunction("Iterator", callFileName, callLine);
+        if (iterator.getParametersLength() > 0)
+            return false;
+        var iteratorValue = iterator.call(Sml.EMPTY_ARGUMENT_LIST, callFileName, callLine);
+        if (!(iteratorValue instanceof StructDeclarationNode))
+            return false;
+        var iteratorStruct = (StructDeclarationNode) iteratorValue;
+        return iteratorStruct.hasFunction("hasNext") && iteratorStruct.hasFunction("next");
+    }
+    public ForStatementNode(String variableName, OperationNode iterable, String fileName, int line, Block parent) {
         super(parent);
-        setIterable(array);
+        this.iterable = iterable;
+        this.variableName = variableName;
         setFileName(fileName);
         setLine(line);
-        setVariableName(variableName);
     }
 
     @Override
     public ForStatementNode copy() {
         var copied = (ForStatementNode) super.copy();
-        copied.setIterable(getIterable().copy());
+        copied.iterable = iterable.copy();
         return copied;
 
     }
 
-    private OperationNode getIterable() {
-        return iterable;
-    }
 
-    private void setIterable(OperationNode iterable) {
-        this.iterable = iterable;
-    }
-
-    private String getVariableName() {
-        return variableName;
-    }
-
-    private void setVariableName(String variableName) {
-        this.variableName = variableName;
-    }
 
     @Override
     public Object run() {
         Object result;
-        var name = getVariableName();
-        var isNotNameUnderscore = !name.equals("_");
-        var isConst = Character.isUpperCase(name.charAt(0));
-        var toBeIterated = getIterable().run();
+        var isNotNameUnderscore = !variableName.equals("_");
+        var isConst = Character.isUpperCase(variableName.charAt(0));
+        var toBeIterated = iterable.run();
         VariableDeclarationNode variable = null;
+        var fileName = getFileName();
+        var line = getLine();
         if (isNotNameUnderscore)
-            if (hasVariable(name))
-                variable = getVariable(name, getFileName(), getLine());
-            else
-                addVariable(variable = new VariableDeclarationNode(name), getFileName(), getLine());
-        if (IsIterable.isIterable(toBeIterated, getFileName(), getLine())) {
+            addVariable(variable = new VariableDeclarationNode(variableName), getFileName(), getLine());
+        if (isIterable(toBeIterated, getFileName(), getLine())) {
             var iterator = (StructDeclarationNode) ((StructDeclarationNode) toBeIterated).getFunction("Iterator", getFileName(), getLine())
                     .call(Sml.EMPTY_ARGUMENT_LIST, getFileName(), getLine());
             var hasNext = iterator.getFunction("hasNext", getFileName(), getLine());
             var next = iterator.getFunction("next", getFileName(), getLine());
 
             if (isNotNameUnderscore) {
-                while ((boolean) hasNext.call(Sml.EMPTY_ARGUMENT_LIST, getFileName(), getLine())) {
+                while ((boolean) hasNext.call(Sml.EMPTY_ARGUMENT_LIST, fileName, line)) {
                     variable.setConst(false);
-                    variable.setValue(next.call(Sml.EMPTY_ARGUMENT_LIST, getFileName(), getLine()));
+                    variable.setValue(next.call(Sml.EMPTY_ARGUMENT_LIST, fileName, line), fileName, line);
                     variable.setConst(isConst);
                     result = super.run();
                     if (result instanceof BreakType)
@@ -108,7 +108,7 @@ public final class ForStatementNode extends Block {
         } else {
             if (isNotNameUnderscore) {
                 variable.setConst(false);
-                variable.setValue(toBeIterated);
+                variable.setValue(toBeIterated, fileName, line);
                 variable.setConst(isConst);
             }
             result = super.run();
@@ -121,6 +121,6 @@ public final class ForStatementNode extends Block {
     @Override
     public void setParent(Block parent) {
         super.setParent(parent);
-        getIterable().setParent(parent);
+        iterable.setParent(parent);
     }
 }

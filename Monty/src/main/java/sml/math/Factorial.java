@@ -17,16 +17,13 @@ limitations under the License.
 package sml.math;
 
 import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
-import ast.expressions.OperationNode;
 import parser.LogError;
-import sml.data.StaticStruct;
+import sml.NativeFunctionDeclarationNode;
 import sml.data.tuple.Tuple;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 
-public final class Factorial extends FunctionDeclarationNode {
+public final class Factorial extends NativeFunctionDeclarationNode {
     private static final int[] PRECOMPUTED = {1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800, 39916800,
             479001600};
     private static final BigInteger PRECOMPUTED_LAST = BigInteger.valueOf(PRECOMPUTED[PRECOMPUTED.length - 1]);

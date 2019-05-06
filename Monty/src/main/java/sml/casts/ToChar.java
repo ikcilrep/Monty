@@ -17,16 +17,14 @@ limitations under the License.
 package sml.casts;
 
 import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
-import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
+import sml.NativeFunctionDeclarationNode;
 import sml.data.tuple.Tuple;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 
-public final class ToChar extends FunctionDeclarationNode {
+public final class ToChar extends NativeFunctionDeclarationNode {
     public ToChar() {
         super("toChar", new String[1]);
         setBody(new Block(null));

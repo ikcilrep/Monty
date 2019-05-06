@@ -19,11 +19,11 @@ package ast.declarations;
 import parser.LogError;
 import sml.data.returning.Nothing;
 
-public class VariableDeclarationNode extends DeclarationNode implements Cloneable {
+public class VariableDeclarationNode extends DeclarationNode {
 
     private boolean isConst = false;
     private boolean wasValueChanged = false;
-    private Object value = Nothing.nothing;
+    protected Object value = Nothing.nothing;
 
     public VariableDeclarationNode(String name) {
         super(name);
@@ -39,25 +39,13 @@ public class VariableDeclarationNode extends DeclarationNode implements Cloneabl
     }
 
     public final VariableDeclarationNode copy() {
-        try {
-            return (VariableDeclarationNode) clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-        return null;
+        var copied = new VariableDeclarationNode(name);
+        copied.value = value;
+        return copied;
     }
 
     public final Object getValue() {
         return value;
-    }
-
-    public final void setValue(Object value) {
-        this.value = value;
-        wasValueChanged = true;
-    }
-
-    public boolean isConst() {
-        return isConst;
     }
 
     public void setConst(boolean isConst) {

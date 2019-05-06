@@ -1,13 +1,11 @@
 package sml.data.list;
 
-import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
 import sml.data.Method;
 import sml.data.tuple.Tuple;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 
 final class Get extends Method<List> {
 

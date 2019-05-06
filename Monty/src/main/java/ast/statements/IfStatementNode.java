@@ -24,40 +24,27 @@ public final class IfStatementNode extends ConditionalNode {
 
     private Block elseBody;
 
-    private boolean isInElse = false;
 
     public IfStatementNode(Block parent, OperationNode condition, String fileName, int line, boolean isInElse) {
         super(condition, parent);
         if (isInElse)
             setParent(parent.getParent());
-        setInElse(isInElse);
         setCondition(condition);
         setFileName(fileName);
         setLine(line);
-    }
-
-    private Block getElseBody() {
-        return elseBody;
     }
 
     public void setElseBody(Block elseBody) {
         this.elseBody = elseBody;
     }
 
-    public boolean isInElse() {
-        return isInElse;
-    }
-
-    public void setInElse(boolean isInElse) {
-        this.isInElse = isInElse;
-    }
 
     @Override
     public Object run() {
-        if (ranCondition())
+        if (runCondition())
             return super.run();
-        else if (getElseBody() != null)
-            return getElseBody().run();
+        else if (elseBody != null)
+            return elseBody.run();
 
         return null;
     }

@@ -17,11 +17,8 @@ limitations under the License.
 package sml.data.string;
 
 import ast.declarations.FunctionDeclarationNode;
-import ast.expressions.OperationNode;
 import sml.data.Method;
 import sml.data.tuple.Tuple;
-
-import java.util.ArrayList;
 
 final class LowerCase extends Method<StringStruct> {
 

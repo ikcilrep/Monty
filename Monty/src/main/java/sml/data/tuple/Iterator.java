@@ -4,7 +4,7 @@ import ast.declarations.StructDeclarationNode;
 
 
 final class Iterator extends StructDeclarationNode {
-    private Tuple tuple;
+    private final Tuple tuple;
     private int counter = -1;
 
     Iterator(Tuple tuple) {

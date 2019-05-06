@@ -1,15 +1,12 @@
 package sml.errors;
 
 import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
-import ast.expressions.OperationNode;
+import sml.NativeFunctionDeclarationNode;
 import sml.data.returning.Nothing;
 import sml.data.returning.VoidType;
 import sml.data.tuple.Tuple;
 
-import java.util.ArrayList;
-
-public final class LogError extends FunctionDeclarationNode {
+public final class LogError extends NativeFunctionDeclarationNode {
 
     public LogError() {
         super("logError",new String[1]);

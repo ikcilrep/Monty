@@ -25,35 +25,21 @@ public final class ReturnStatementNode extends NodeWithParent implements Cloneab
     private OperationNode expression;
 
     public ReturnStatementNode(OperationNode expression, String fileName, int line) {
-        setExpression(expression);
+        this.expression = expression;
         setFileName(fileName);
         setLine(line);
     }
 
     @Override
     public NodeWithParent copy() {
-        ReturnStatementNode copy;
-        try {
-            copy = (ReturnStatementNode) clone();
-            copy.setExpression(getExpression().copy());
-            return copy;
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return new ReturnStatementNode(expression,getFileName(), getLine());
     }
 
-    private OperationNode getExpression() {
-        return expression;
-    }
 
-    private void setExpression(OperationNode expression) {
-        this.expression = expression;
-    }
 
     @Override
     public Object run() {
-        return getExpression().run();
+        return expression.run();
     }
 
     @Override

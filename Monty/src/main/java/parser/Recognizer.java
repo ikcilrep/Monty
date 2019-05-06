@@ -22,7 +22,7 @@ import lexer.TokenTypes;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-public abstract class Identificator {
+public abstract class Recognizer {
     private static final Pattern IMPORT_REGEX = Pattern.compile("^[A-Z_]+ (DOT [A-Z_]+ )*$");
 
     public static boolean isBreakStatement(ArrayList<Token> tokens) {
@@ -73,7 +73,7 @@ public abstract class Identificator {
     }
 
     public static boolean isExpression(ArrayList<Token> tokens, int start, int end) {
-        for (; start < tokens.size(); start++) {
+        for (; start < end; start++) {
             var token = tokens.get(start);
             switch (token.getType()) {
                 case OPERATOR:
@@ -127,15 +127,12 @@ public abstract class Identificator {
         return true;
 
     }
-    public static boolean isComma(Token token) {
-        return token.getType().equals(TokenTypes.OPERATOR) && token.getText().equals(",");
-    }
     public static boolean isIfStatement(ArrayList<Token> tokens) {
         return isIfStatement(tokens, 0);
 
     }
 
-    public static boolean isIfStatement(ArrayList<Token> tokens, int start) {
+    private static boolean isIfStatement(ArrayList<Token> tokens, int start) {
         if (!tokens.get(start).getType().equals(TokenTypes.IF_KEYWORD))
             return false;
         var length = start + 1;
@@ -147,11 +144,6 @@ public abstract class Identificator {
 
     public static boolean isImport(ArrayList<Token> tokens) {
         return tokens.get(0).getType().equals(TokenTypes.IMPORT_KEYWORD)
-                && IMPORT_REGEX.matcher(Tokens.getTypesToString(tokens.subList(1, tokens.size()))).matches();
-    }
-
-    public static boolean isJar(ArrayList<Token> tokens) {
-        return tokens.get(0).getType().equals(TokenTypes.JAR_KEYWORD)
                 && IMPORT_REGEX.matcher(Tokens.getTypesToString(tokens.subList(1, tokens.size()))).matches();
     }
 

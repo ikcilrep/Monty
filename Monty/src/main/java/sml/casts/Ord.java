@@ -17,15 +17,13 @@ limitations under the License.
 package sml.casts;
 
 import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
-import ast.expressions.OperationNode;
 import parser.LogError;
+import sml.NativeFunctionDeclarationNode;
 import sml.data.tuple.Tuple;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 
-public final class Ord extends FunctionDeclarationNode {
+public final class Ord extends NativeFunctionDeclarationNode {
 
     public Ord() {
         super("ord", new String[1]);

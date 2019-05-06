@@ -37,10 +37,6 @@ public final class Pow {
         return basis.pow(index);
     }
 
-    public static Object powerForFloats(double basis, double _index, String callFileName, int callLine) {
-        return Math.pow(basis, _index);
-    }
-
     public static Object powerForIntegers(Object basis, Object _index, String callFileName, int callLine) {
         int index = 0;
         if (_index instanceof Integer)

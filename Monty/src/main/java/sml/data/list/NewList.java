@@ -1,12 +1,10 @@
 package sml.data.list;
 
 import ast.declarations.FunctionDeclarationNode;
-import ast.expressions.OperationNode;
+import sml.NativeFunctionDeclarationNode;
 import sml.data.tuple.Tuple;
 
-import java.util.ArrayList;
-
-public class NewList extends FunctionDeclarationNode {
+public class NewList extends NativeFunctionDeclarationNode {
 
     public NewList() {
         super("List", FunctionDeclarationNode.EMPTY_PARAMETERS);
@@ -17,4 +15,8 @@ public class NewList extends FunctionDeclarationNode {
         return new List(arguments);
     }
 
+    @Override
+    public String toString() {
+        return "Constructor<"+getName()+">";
+    }
 }

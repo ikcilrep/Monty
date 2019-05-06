@@ -17,23 +17,16 @@ limitations under the License.
 package sml.casts;
 
 import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
-import ast.expressions.OperationNode;
+import sml.NativeFunctionDeclarationNode;
 import sml.data.string.StringStruct;
 import sml.data.tuple.Tuple;
 
-import java.util.ArrayList;
-
-public final class ToString extends FunctionDeclarationNode {
+public final class ToString extends NativeFunctionDeclarationNode {
 
     public ToString() {
         super("toString", new String[1]);
         setBody(new Block(null));
         addParameter("toBeCasted");
-    }
-
-    public static String toString(Object toBeCasted) {
-        return toBeCasted.toString();
     }
 
     @Override

@@ -21,24 +21,17 @@ public final class IdentifierNode {
         return isFunctionCall;
     }
 
-    private void setFunctionCall(boolean functionCall) {
-        isFunctionCall = functionCall;
-    }
-
-    private boolean isFunctionCall;
-    private String name;
+    private final boolean isFunctionCall;
+    private final String name;
 
     public IdentifierNode(String name, boolean isFunctionCall) {
-        setName(name);
-        setFunctionCall(isFunctionCall);
+        this.name = name;
+        this.isFunctionCall = isFunctionCall;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
 }

@@ -16,29 +16,22 @@ limitations under the License.
 
 package lexer;
 
-public final class Token implements Cloneable {
-    private String text;
+public final class Token {
+    private final String text;
     private String fileName;
     private TokenTypes type;
     private int line;
 
-    public Token(TokenTypes type) {
-        setType(type);
-    }
 
     public Token(TokenTypes type, String text, String fileName, int line) {
-        setType(type);
-        setText(text);
-        setFileName(fileName);
-        setLine(line);
+        this.type = type;
+        this.text = text;
+        this.fileName = fileName;
+        this.line = line;
     }
 
     public void setType(TokenTypes type) {
         this.type = type;
-    }
-
-    public final Token copy() throws CloneNotSupportedException {
-        return (Token) super.clone();
     }
 
     public final String getFileName() {
@@ -59,10 +52,6 @@ public final class Token implements Cloneable {
 
     public final String getText() {
         return text;
-    }
-
-    private void setText(String text) {
-        this.text = text;
     }
 
     public final TokenTypes getType() {

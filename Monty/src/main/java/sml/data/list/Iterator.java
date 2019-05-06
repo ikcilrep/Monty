@@ -3,7 +3,7 @@ package sml.data.list;
 import ast.declarations.StructDeclarationNode;
 
 final class Iterator extends StructDeclarationNode {
-    List list;
+    private final List list;
     private int counter = -1;
 
     Iterator(List list) {

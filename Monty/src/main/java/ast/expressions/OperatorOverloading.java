@@ -31,7 +31,7 @@ import java.math.BigInteger;
 import java.util.HashMap;
 
 public class OperatorOverloading {
-    private static HashMap<String, Class<?>> builtInTypes = new HashMap<>();
+    private final static HashMap<String, Class<?>> builtInTypes = new HashMap<>();
     private static int temporaryLine;
     private static String temporaryFileName;
 
@@ -340,7 +340,7 @@ public class OperatorOverloading {
         }
     }
 
-    static Object dotOperator(Object leftValue, OperationNode rightValue, DataTypes type, Block parent) {
+    static Object dotOperator(Object leftValue, OperationNode rightValue, DataTypes type) {
 
         if (type.equals(DataTypes.OBJECT))
             return rightValue.runWithParent((StructDeclarationNode) leftValue, false);

@@ -17,7 +17,7 @@ limitations under the License.
 package ast;
 
 public abstract class NodeWithParent extends RunnableNode {
-    public abstract NodeWithParent copy();
+    protected abstract NodeWithParent copy();
 
-    public abstract void setParent(Block parent);
+    protected abstract void setParent(Block parent);
 }

@@ -18,12 +18,10 @@ package sml.time;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
-import ast.expressions.OperationNode;
+import sml.NativeFunctionDeclarationNode;
 import sml.data.tuple.Tuple;
 
-import java.util.ArrayList;
-
-public final class Seconds extends FunctionDeclarationNode {
+public final class Seconds extends NativeFunctionDeclarationNode {
 
     public Seconds() {
         super("seconds", FunctionDeclarationNode.EMPTY_PARAMETERS);

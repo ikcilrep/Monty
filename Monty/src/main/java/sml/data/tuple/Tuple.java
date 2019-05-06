@@ -2,18 +2,15 @@ package sml.data.tuple;
 
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
-import ast.expressions.OperationNode;
 import parser.LogError;
 import sml.data.string.StringStruct;
-
-import java.util.ArrayList;
 
 public class Tuple extends StructDeclarationNode {
     public Object[] getArray() {
         return array;
     }
 
-    private Object[] array;
+    private final Object[] array;
 
     private void addFunctions() {
          new NewIterator(this);

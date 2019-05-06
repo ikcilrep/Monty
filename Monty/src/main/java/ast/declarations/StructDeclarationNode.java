@@ -27,21 +27,20 @@ import java.util.Map;
 
 public class StructDeclarationNode extends Block implements Cloneable {
     private static int actualStructNumber = -1;
-    private static HashMap<Integer, Integer> numbers = new HashMap<>();
+    private final static HashMap<Integer, Integer> numbers = new HashMap<>();
     private int structNumber;
     private int instanceNumber;
-    private String name;
+    private final String name;
 
     public StructDeclarationNode(Block parent, String name) {
         super(parent);
-        setName(name);
+        this.name = name;
         incrementStructNumber();
         numbers.put(structNumber, -1);
     }
 
     private void addNewStruct(Block block, String fileName, int line) {
-        block.addStruct(this, fileName, line);
-        block.addFunction(new Constructor(this), fileName, line);
+        block.addStruct(this, new Constructor(this),fileName, line);
     }
 
     public void addNewStruct(Block block, Token token) {
@@ -53,23 +52,23 @@ public class StructDeclarationNode extends Block implements Cloneable {
         StructDeclarationNode copied;
         copied = (StructDeclarationNode) super.copy();
         var structs = new HashMap<String, StructDeclarationNode>();
-        for (Map.Entry<String, StructDeclarationNode> entry : getStructs().entrySet()) {
+        for (Map.Entry<String, StructDeclarationNode> entry : this.structs.entrySet()) {
             var value = entry.getValue().copy();
             value.setParent(copied);
             structs.put(entry.getKey(), value);
-            copied.getFunctions().put(value.getName(), new Constructor(value));
+            copied.functions.put(value.getName(), new Constructor(value));
         }
-        copied.setStructs(structs);
+        copied.structs = structs;
 
         copied.copyVariables();
 
         var functions = new HashMap<String, FunctionDeclarationNode>();
-        for (Map.Entry<String, FunctionDeclarationNode> entry : getFunctions().entrySet()) {
+        for (Map.Entry<String, FunctionDeclarationNode> entry : this.functions.entrySet()) {
             var value = entry.getValue().copy();
             value.getBody().setParent(copied);
             functions.put(entry.getKey(), value);
         }
-        copied.setFunctions(functions);
+        copied.functions = functions;
         return copied;
     }
 
@@ -79,21 +78,11 @@ public class StructDeclarationNode extends Block implements Cloneable {
                 OperatorOverloading.getTemporaryFileName(), OperatorOverloading.getTemporaryLine());
     }
 
-    private int getInstanceNumber() {
-        return instanceNumber;
-    }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    private int getStructNumber() {
-        return structNumber;
-    }
 
     protected void incrementNumber() {
         var number = numbers.get(structNumber);
@@ -105,8 +94,8 @@ public class StructDeclarationNode extends Block implements Cloneable {
         this.structNumber = ++actualStructNumber;
     }
 
-    public boolean instanceOfMe(StructDeclarationNode s) {
-        return s.getStructNumber() == structNumber;
+    public boolean instanceOfMe(StructDeclarationNode other) {
+        return other.structNumber == structNumber;
     }
 
     @Override
@@ -115,6 +104,6 @@ public class StructDeclarationNode extends Block implements Cloneable {
             var function = getFunction("toString", OperatorOverloading.getTemporaryFileName(), OperatorOverloading.getTemporaryLine());
             return function.call(Sml.EMPTY_ARGUMENT_LIST, function.getFileName(), function.getLine()).toString();
         }
-        return name + "#" + getInstanceNumber();
+        return name + "#" + instanceNumber;
     }
 }

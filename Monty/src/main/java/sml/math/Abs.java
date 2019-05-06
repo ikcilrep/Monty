@@ -17,16 +17,13 @@ limitations under the License.
 package sml.math;
 
 import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
-import ast.expressions.OperationNode;
 import parser.LogError;
-import sml.data.StaticStruct;
+import sml.NativeFunctionDeclarationNode;
 import sml.data.tuple.Tuple;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 
-public final class Abs extends FunctionDeclarationNode {
+public final class Abs extends NativeFunctionDeclarationNode {
 
     public Abs() {
         super("abs",new String[1]);

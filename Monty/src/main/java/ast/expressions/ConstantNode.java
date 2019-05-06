@@ -17,7 +17,7 @@ limitations under the License.
 package ast.expressions;
 
 public final class ConstantNode {
-    private Object value;
+    private final Object value;
 
     public ConstantNode(Object value) {
         this.value = value;

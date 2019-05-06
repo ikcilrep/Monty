@@ -17,17 +17,15 @@ limitations under the License.
 package sml.threading;
 
 import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
-import ast.expressions.OperationNode;
 import parser.LogError;
+import sml.NativeFunctionDeclarationNode;
 import sml.data.returning.Nothing;
 import sml.data.returning.VoidType;
 import sml.data.tuple.Tuple;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 
-public final class Sleep extends FunctionDeclarationNode {
+public final class Sleep extends NativeFunctionDeclarationNode {
 
     public Sleep() {
         super("sleep",new String[1]);

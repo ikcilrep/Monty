@@ -17,15 +17,12 @@ limitations under the License.
 package sml.io;
 
 import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
-import ast.expressions.OperationNode;
+import sml.NativeFunctionDeclarationNode;
 import sml.data.returning.Nothing;
 import sml.data.returning.VoidType;
 import sml.data.tuple.Tuple;
 
-import java.util.ArrayList;
-
-public final class Print extends FunctionDeclarationNode {
+public final class Print extends NativeFunctionDeclarationNode {
 
     public Print() {
         super("print",new String[1]);

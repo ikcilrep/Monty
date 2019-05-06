@@ -16,9 +16,7 @@ limitations under the License.
 
 package sml;
 
-import ast.expressions.OperationNode;
 import monty.FileIO;
-import monty.Library;
 import sml.casts.*;
 import sml.data.tuple.Tuple;
 import sml.language.Run;
@@ -31,15 +29,19 @@ import sml.threading.Sleep;
 import sml.time.Millis;
 import sml.time.Seconds;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
-public final class Sml extends Library {
+public final class Sml{
     public static final Tuple EMPTY_ARGUMENT_LIST = new Tuple();
     public static String[] paths;
-    public static String[] code;
-    public static short numberOfFiles;
+    public final static String[] code;
+    public final static short numberOfFiles;
 
+    public static HashMap<String, Object> getChildren() {
+        return children;
+    }
+
+    private final static HashMap<String, Object> children;
     static {
         String[] paths_ = {"iterations/range/range.mt", "functional/iterable/iterable.mt",
                 "functional/iterable/iterableFunctions.mt"};
@@ -50,16 +52,7 @@ public final class Sml extends Library {
         int i = 0;
         for (var path : paths)
             code[i++] = FileIO.readFile(Sml.class.getResourceAsStream(path), path);
-
-    }
-
-    public Sml() {
-        super("sml");
-    }
-
-    @Override
-    public void setLibrary() {
-        var sml = getChildren();
+        children = new HashMap<>();
         var casts = new HashMap<String, Object>();
         var math = new HashMap<String, Object>();
         var system = new HashMap<String, Object>();
@@ -70,14 +63,14 @@ public final class Sml extends Library {
         var files = new HashMap<String, Object>();
         var language = new HashMap<String, Object>();
 
-        sml.put("casts", casts);
-        sml.put("math", math);
-        sml.put("system", system);
-        sml.put("data", data);
-        sml.put("threading", threading);
-        sml.put("time", time);
-        sml.put("files", files);
-        sml.put("language", language);
+        children.put("casts", casts);
+        children.put("math", math);
+        children.put("system", system);
+        children.put("data", data);
+        children.put("threading", threading);
+        children.put("time", time);
+        children.put("files", files);
+        children.put("language", language);
 
         casts.put("toBoolean", new ToBoolean());
         casts.put("toFloat", new ToFloat());

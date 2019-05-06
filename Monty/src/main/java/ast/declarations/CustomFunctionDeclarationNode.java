@@ -16,14 +16,11 @@ limitations under the License.
 
 package ast.declarations;
 
-import ast.expressions.OperationNode;
 import ast.statements.ContinueStatementNode;
 import parser.LogError;
 import sml.data.returning.BreakType;
 import sml.data.returning.Nothing;
 import sml.data.tuple.Tuple;
-
-import java.util.ArrayList;
 
 public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
 
@@ -34,7 +31,7 @@ public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode
 
     private CustomFunctionDeclarationNode workingCopy() {
         var copy = (CustomFunctionDeclarationNode) copy();
-        copy.getBody().copyVariables();
+        copy.body.copyVariables();
         return copy;
     }
 
@@ -60,5 +57,12 @@ public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode
                 new LogError("Trying to continue function " + getName(), fileNames, lines);
         }
         return result;
+    }
+
+    @Override
+    public CustomFunctionDeclarationNode copy() {
+        var copied = new CustomFunctionDeclarationNode(name, parameters, lastNotNullParameterIndex);
+        copied.setBody(body.copy());
+        return copied;
     }
 }

@@ -1,17 +1,14 @@
 package sml.language;
 
 import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
-import ast.expressions.OperationNode;
 import lexer.Lexer;
 import parser.parsing.Parser;
+import sml.NativeFunctionDeclarationNode;
 import sml.data.returning.Nothing;
 import sml.data.returning.VoidType;
 import sml.data.tuple.Tuple;
 
-import java.util.ArrayList;
-
-public final class Run extends FunctionDeclarationNode {
+public final class Run extends NativeFunctionDeclarationNode {
 
     public Run() {
         super("run",new String[1]);

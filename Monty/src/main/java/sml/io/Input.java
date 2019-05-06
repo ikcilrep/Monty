@@ -18,17 +18,16 @@ package sml.io;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
-import ast.expressions.OperationNode;
+import sml.NativeFunctionDeclarationNode;
 import sml.data.string.StringStruct;
 import sml.data.tuple.Tuple;
 
-import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public final class Input extends FunctionDeclarationNode {
+public final class Input extends NativeFunctionDeclarationNode {
 
-    private static Scanner scanner = new Scanner(System.in);
+    private final static Scanner scanner = new Scanner(System.in);
 
     public Input() {
         super("input",FunctionDeclarationNode.EMPTY_PARAMETERS);

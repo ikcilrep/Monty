@@ -16,8 +16,6 @@ limitations under the License.
 
 package monty;
 
-import parser.parsing.Parser;
-
 public class Main {
     public static String[] argv = null;
     static String path;
@@ -28,9 +26,8 @@ public class Main {
             System.exit(1);
         }
         argv = args;
-        Parser.libraries.put("sml", new sml.Sml());
         path = args[0];
-        IOBlocks.readBlockFromFile(path, "command line", 1).run();
+        IOBlocks.readBlockFromFile(path).run();
     }
 
 }

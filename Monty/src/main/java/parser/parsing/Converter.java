@@ -2,8 +2,8 @@ package parser.parsing;
 
 import ast.Block;
 import ast.expressions.ConstantNode;
-import ast.expressions.OperationNode;
 import ast.expressions.IdentifierNode;
+import ast.expressions.OperationNode;
 import lexer.Token;
 import lexer.TokenTypes;
 import parser.LogError;
@@ -15,10 +15,10 @@ class Converter {
 
 
     final static Token EMPTY_OPERATOR = new Token(TokenTypes.OPERATOR, "", null, -1);
-    private static HashMap<String, Integer> precedence;
-    private static Set<String> rightAssociative = Set.of("=", "+=", "-=", "*=", "/=", "%=", "&=", "^=", "|=", "<<=",
+    private final static HashMap<String, Integer> precedence;
+    private final static Set<String> rightAssociative = Set.of("=", "+=", "-=", "*=", "/=", "%=", "&=", "^=", "|=", "<<=",
             ">>=", "**", "**=");
-    private static Set<String> notAssociative = Set.of("<", "<=", ">=", ">", "instanceof");
+    private final static Set<String> notAssociative = Set.of("<", "<=", ">=", ">", "instanceof");
     private final static IdentifierNode LIST_CALL = new IdentifierNode("List", true);
     static {
         precedence = new HashMap<>();

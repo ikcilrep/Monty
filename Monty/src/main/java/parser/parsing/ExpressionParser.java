@@ -18,8 +18,8 @@ package parser.parsing;
 
 import ast.Block;
 import ast.expressions.ConstantNode;
-import ast.expressions.OperationNode;
 import ast.expressions.IdentifierNode;
+import ast.expressions.OperationNode;
 import lexer.Token;
 import parser.DataTypes;
 import parser.LogError;

@@ -1,12 +1,9 @@
 package sml.data.tuple;
 
 import ast.declarations.FunctionDeclarationNode;
-import ast.declarations.StructDeclarationNode;
-import ast.declarations.VariableDeclarationNode;
-import parser.LogError;
-import sml.data.string.StringStruct;
+import sml.NativeFunctionDeclarationNode;
 
-public class NewTuple extends FunctionDeclarationNode {
+public class NewTuple extends NativeFunctionDeclarationNode {
 
     public NewTuple() {
         super("Tuple",FunctionDeclarationNode.EMPTY_PARAMETERS);

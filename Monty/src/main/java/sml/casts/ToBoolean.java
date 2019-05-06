@@ -17,17 +17,15 @@ limitations under the License.
 package sml.casts;
 
 import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
-import ast.expressions.OperationNode;
 import parser.LogError;
+import sml.NativeFunctionDeclarationNode;
 import sml.data.returning.VoidType;
 import sml.data.string.StringStruct;
 import sml.data.tuple.Tuple;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 
-public final class ToBoolean extends FunctionDeclarationNode {
+public final class ToBoolean extends NativeFunctionDeclarationNode {
 
     public ToBoolean() {
         super("toBoolean", new String[1]);

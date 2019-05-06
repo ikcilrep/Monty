@@ -17,22 +17,19 @@ limitations under the License.
 package ast.declarations;
 
 import ast.Block;
-import ast.expressions.OperationNode;
 import parser.LogError;
 import sml.data.tuple.Tuple;
 
-import java.util.ArrayList;
-
-public abstract class FunctionDeclarationNode extends DeclarationNode implements Cloneable {
-    public static String[] EMPTY_PARAMETERS = new String[0];
+public abstract class FunctionDeclarationNode extends DeclarationNode {
+    public final static String[] EMPTY_PARAMETERS = new String[0];
 
     private void setParameters(String[] parameters, int lastNotNullParameterIndex) {
         this.parameters = parameters;
         this.lastNotNullParameterIndex = lastNotNullParameterIndex;
     }
-    private String[] parameters;
-    private int lastNotNullParameterIndex;
-    private Block body;
+    String[] parameters;
+    int lastNotNullParameterIndex;
+    Block body;
    
     public FunctionDeclarationNode(String name, String[] parameters, int lastNotNullParameterIndex) {
         super(name);
@@ -44,22 +41,13 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
         setParameters(parameters, -1);
     }
 
-    public void addParameter(String name) {
+    protected void addParameter(String name) {
         getParameters()[++lastNotNullParameterIndex] = name;
     }
 
     public abstract Object call(Tuple arguments, String callFileName, int callLine);
 
-    public FunctionDeclarationNode copy() {
-        try {
-            var copied = (FunctionDeclarationNode) clone();
-            copied.setBody(getBody().copy());
-            return copied;
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+    public abstract FunctionDeclarationNode copy();
 
     public Block getBody() {
         return body;
@@ -80,19 +68,21 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
     }
 
 
-    public void setArguments(Tuple arguments, String callFileName, int callLine) {
+    protected void setArguments(Tuple arguments, String callFileName, int callLine) {
         var argumentsLength = arguments.length();
         var parameters = getParameters();
         var parametersSize = parameters.length;
+        var fileName = getFileName();
+        var line = getLine();
         if (parametersSize == 1 && parametersSize  != argumentsLength) {
             var name = this.parameters[0];
             VariableDeclarationNode variable;
             if (!body.hasVariable(name)) {
                 variable = new VariableDeclarationNode(name);
-                body.addVariable(variable, getFileName(), getLine());
+                body.addVariable(variable, fileName, line);
             } else
-                variable = body.getVariable(name, getFileName(), getLine());
-            variable.setValue(arguments);
+                variable = body.getVariable(name, fileName, line);
+            variable.setValue(arguments, fileName, line);
             variable.setConst(Character.isUpperCase(name.charAt(0)));
             return;
         } else if (argumentsLength > parametersSize)
@@ -104,13 +94,10 @@ public abstract class FunctionDeclarationNode extends DeclarationNode implements
         for (int i = 0; i < arguments.length(); i++) {
             var name = parameters[i];
             VariableDeclarationNode variable;
-            if (!body.hasVariable(name)) {
-                variable = new VariableDeclarationNode(name);
-                body.addVariable(variable, getFileName(), getLine());
-            } else
-                variable = body.getVariable(name, getFileName(), getLine());
-            variable.setValue(arguments.get(i));
+            variable = new VariableDeclarationNode(name);
+            variable.setValue(arguments.get(i), callFileName, callLine);
             variable.setConst(Character.isUpperCase(name.charAt(0)));
+            body.addVariable(variable, getFileName(), getLine());
         }
     }
 

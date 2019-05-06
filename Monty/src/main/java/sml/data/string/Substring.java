@@ -16,14 +16,12 @@ limitations under the License.
 
 package sml.data.string;
 
-import ast.expressions.OperationNode;
 import parser.DataTypes;
 import parser.LogError;
 import sml.data.Method;
 import sml.data.tuple.Tuple;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 
 final class Substring extends Method<StringStruct> {
 

@@ -17,16 +17,21 @@ limitations under the License.
 package sml.data;
 
 import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.StructDeclarationNode;
+import sml.NativeFunctionDeclarationNode;
 
-public abstract class Method<T extends StructDeclarationNode> extends FunctionDeclarationNode {
-    protected T parent;
+public abstract class Method<T extends StructDeclarationNode> extends NativeFunctionDeclarationNode {
+    protected final T parent;
 
-    public Method(T parent, String name, String[] parameters) {
+    protected Method(T parent, String name, String[] parameters) {
         super(name, parameters);
         setBody(new Block(parent));
         this.parent = parent;
         parent.addFunction(this);
+    }
+
+    @Override
+    public Method<T> copy() {
+        return null;
     }
 }

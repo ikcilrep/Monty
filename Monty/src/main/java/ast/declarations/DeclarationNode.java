@@ -20,7 +20,7 @@ import ast.Node;
 
 public abstract class DeclarationNode extends Node {
 
-    protected String name;
+    final String name;
 
     DeclarationNode(String name) {
         this.name = name;

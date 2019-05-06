@@ -43,10 +43,6 @@ public abstract class FileIO {
         return readFile(new BufferedReader(new InputStreamReader(in)), path, "Sml.java", -1);
     }
 
-    public static String readFile(InputStream in, String path, String callFileName, int callLine) {
-        return readFile(new BufferedReader(new InputStreamReader(in)), path, callFileName, callLine);
-    }
-
     static String readFile(String path, String callFileName, int callLine) {
         BufferedReader br;
         FileReader fr = null;
@@ -61,17 +57,4 @@ public abstract class FileIO {
         return readFile(br, path, callFileName, callLine);
     }
 
-    public static void writeFile(String path, String text, boolean isAppend, String callFileName, int callLine) {
-        try {
-            File file = new File(path);
-            FileWriter fileWriter = new FileWriter(file, isAppend);
-            fileWriter.write(text);
-            fileWriter.flush();
-            fileWriter.close();
-        } catch (IOException e) {
-            new LogError("Failed to write file:\t" + path, callFileName, callLine);
-            e.printStackTrace();
-        }
-
-    }
 }

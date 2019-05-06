@@ -18,13 +18,12 @@ package sml.time;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
-import ast.expressions.OperationNode;
+import sml.NativeFunctionDeclarationNode;
 import sml.data.tuple.Tuple;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 
-public final class Millis extends FunctionDeclarationNode {
+public final class Millis extends NativeFunctionDeclarationNode {
 
     public Millis() {
         super("millis", FunctionDeclarationNode.EMPTY_PARAMETERS);

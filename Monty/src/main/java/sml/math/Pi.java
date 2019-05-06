@@ -21,7 +21,7 @@ import ast.declarations.VariableDeclarationNode;
 public final class Pi extends VariableDeclarationNode {
     public Pi() {
         super("Pi");
-        setValue(Math.PI);
+        value = Math.PI;
         setConst(true);
     }
 

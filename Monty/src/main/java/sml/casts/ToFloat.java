@@ -17,18 +17,16 @@ limitations under the License.
 package sml.casts;
 
 import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
-import ast.expressions.OperationNode;
 import parser.LogError;
+import sml.NativeFunctionDeclarationNode;
 import sml.data.returning.VoidType;
 import sml.data.string.StringStruct;
 import sml.data.tuple.Tuple;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 
-public final class ToFloat extends FunctionDeclarationNode {
+public final class ToFloat extends NativeFunctionDeclarationNode {
 
     public ToFloat() {
         super("toFloat", new String[1]);

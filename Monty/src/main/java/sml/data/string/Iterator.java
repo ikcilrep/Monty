@@ -4,7 +4,7 @@ import ast.declarations.StructDeclarationNode;
 
 final class Iterator extends StructDeclarationNode {
     int counter = 0;
-    char[] string;
+    final char[] string;
 
     Iterator(StringStruct stringStruct) {
         super(null, "Iterator");

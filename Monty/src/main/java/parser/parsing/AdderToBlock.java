@@ -20,8 +20,8 @@ import ast.Block;
 import ast.declarations.CustomFunctionDeclarationNode;
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
-import ast.expressions.OperationNode;
 import ast.expressions.IdentifierNode;
+import ast.expressions.OperationNode;
 import ast.statements.*;
 import lexer.Token;
 import parser.LogError;
@@ -88,7 +88,6 @@ abstract class AdderToBlock {
     static Block addIfStatement(Block block, ArrayList<Token> tokens, boolean isInElse) {
         var ifStatement = new IfStatementNode(block, ExpressionParser.parseInfix(block, tokens, 1),
                 tokens.get(0).getFileName(), tokens.get(0).getLine(), isInElse);
-        ifStatement.setInElse(isInElse);
         block.addChild(ifStatement);
         return ifStatement;
 

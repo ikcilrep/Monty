@@ -17,6 +17,7 @@ limitations under the License.
 package monty;
 
 import ast.Block;
+import ast.declarations.Constructor;
 import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import lexer.Lexer;
@@ -24,98 +25,53 @@ import lexer.Token;
 import parser.LogError;
 import parser.Tokens;
 import parser.parsing.Parser;
+import sml.Sml;
 
 import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Objects;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 public class Importing {
-    private static Path fileAbsolutePath = Paths.get(Main.path).getParent();
-    private static String mainPath = new File(Main.path).isAbsolute() ? "" : Paths.get("").toAbsolutePath().toString();
-    private static String mainFileLocation = mainPath
+    private final static Path fileAbsolutePath = Paths.get(Main.path).getParent();
+    private final static String mainPath = new File(Main.path).isAbsolute() ? "" : Paths.get("").toAbsolutePath().toString();
+    private final static String mainFileLocation = mainPath
             + (mainPath.endsWith(File.separator) || mainPath.isEmpty() ? "" : File.separator)
             + (fileAbsolutePath == null ? "" : fileAbsolutePath) + File.separator;
 
-    public static void addJarLibrary(ArrayList<Token> tokens) {
-        var partOfPath = Tokens.getText(tokens.subList(1, tokens.size()));
-        var path = mainFileLocation + partOfPath.replace('.', File.separatorChar) + ".jar";
-        try {
-            File jar = new File(path);
-            if (jar.exists()) {
-                @SuppressWarnings("resource")
-                JarFile jarFile = new JarFile(jar);
-                Enumeration<JarEntry> e = jarFile.entries();
-
-                URL[] urls = {new URL("jar:file:" + jar + "!/")};
-                URLClassLoader cl = URLClassLoader.newInstance(urls);
-
-                while (e.hasMoreElements()) {
-                    JarEntry je = e.nextElement();
-                    if (je.isDirectory() || !je.getName().endsWith(".class")) {
-                        continue;
-                    }
-                    // -6 because of .class
-                    String className = je.getName().substring(0, je.getName().length() - 6);
-                    className = className.replace('/', '.');
-                    Class<?> c = cl.loadClass(className);
-                    Object instance;
-                    instance = c.getDeclaredConstructor().newInstance();
-
-                    if (instance instanceof Library) {
-                        Library lib = (Library) instance;
-                        Parser.libraries.put(lib.getName(), lib);
-                    }
-                }
-            } else {
-                new LogError("There isn't library to import:\t" + path, tokens.get(1));
-            }
-        } catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException
-                | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e1) {
-            e1.printStackTrace();
-
-        }
-    }
 
     @SuppressWarnings("unchecked")
-    private static void importAllElementsFromJarSublibrary(Block block, HashMap<String, Object> addFrom, Token token) {
+    private static void importAllElementsFromSmlChildren(Block block, HashMap<String, Object> addFrom, Token token) {
         for (Object value : addFrom.values())
             if (value instanceof FunctionDeclarationNode)
                 block.addFunction((FunctionDeclarationNode) value, token);
             else
-                importAllElementsFromJarSublibrary(block, (HashMap<String, Object>) value, token);
+                importAllElementsFromSmlChildren(block, (HashMap<String, Object>) value, token);
     }
 
     @SuppressWarnings("unchecked")
-    private static void importElementFromJarLibrary(Block block, String[] splited, String path, Library toSearch,
+    private static void importElementFromSml(Block block, String[] splitted, String path,
                                                     Token token) {
-        var sublibraries = toSearch.getChildren();
+        var children = Sml.getChildren();
         Object functionVariableOrSubLibrary;
-        int i = 0;
 
-        for (String toImport : splited) {
-            if (!sublibraries.containsKey(toImport))
+        for (int i = 1; i < splitted.length; i++) {
+            var toImport = splitted[i];
+            if (!children.containsKey(toImport))
                 new LogError("There isn't file to import:\t" + path, token);
-            else if ((functionVariableOrSubLibrary = sublibraries.get(toImport)) instanceof FunctionDeclarationNode) {
+            else if ((functionVariableOrSubLibrary = children.get(toImport)) instanceof FunctionDeclarationNode) {
                 block.addFunction((FunctionDeclarationNode) functionVariableOrSubLibrary, token);
                 break;
             } else if (functionVariableOrSubLibrary instanceof VariableDeclarationNode) {
                 block.addVariable((VariableDeclarationNode) functionVariableOrSubLibrary, token);
                 break;
-            } else if (i + 1 >= splited.length)
-                importAllElementsFromJarSublibrary(block, (HashMap<String, Object>) functionVariableOrSubLibrary,
+            } else if (i + 1 >= splitted.length)
+                importAllElementsFromSmlChildren(block, (HashMap<String, Object>) functionVariableOrSubLibrary,
                         token);
             else
-                sublibraries = (HashMap<String, Object>) functionVariableOrSubLibrary;
+                children = (HashMap<String, Object>) functionVariableOrSubLibrary;
             i++;
         }
     }
@@ -135,14 +91,13 @@ public class Importing {
         else if (parent_file.exists() && parent_file.isFile()) {
             importSpecifiedElementFromBlock(block,
                     Parser.parse(Lexer.lex(FileIO.readFile(parent_file.getAbsolutePath(), fileName, line),
-                            parent_file.getName(), 1, new ArrayList<Token>(), 0)),
+                            parent_file.getName(), 1, new ArrayList<>(), 0)),
                     parent_file.getPath(), file.getName().substring(0, file.getName().length() - 3), fileName, line);
         } else {
-            var splited = partOfPath.split("\\.");
-            if (!Parser.libraries.containsKey(splited[0]))
+            var splitted = partOfPath.split("\\.");
+            if (!splitted[0].equals("sml"))
                 new LogError("There isn't file to import:\t" + path, tokensBeforeSemicolon.get(1));
-            importElementFromJarLibrary(block, subArray(splited, 1), path, Parser.libraries.get(splited[0]),
-                    tokensBeforeSemicolon.get(1));
+            importElementFromSml(block, splitted, path, tokensBeforeSemicolon.get(1));
         }
     }
 
@@ -169,11 +124,12 @@ public class Importing {
             }
             if (doesContainFunction) {
                 var function = importedBlock.getFunction(name, fileName, line);
-                block.addFunction(function, function.getFileName(), function.getLine());
                 if (Character.isUpperCase(name.charAt(0))) {
                     var struct = importedBlock.getStructure(name);
-                    block.addStruct(struct, struct.getFileName(), struct.getLine());
-                }
+                    block.addStruct(struct,(Constructor)function, struct.getFileName(), struct.getLine());
+                } else
+                    block.addFunction(function, function.getFileName(), function.getLine());
+
             }
         } else {
             new LogError("There aren't any function or variable with this name to import:\t" + name
@@ -184,15 +140,8 @@ public class Importing {
     private static void importWholeFile(Block block, String path, String fileName, int line) {
         var file = new File(path);
         block.concat(Parser.parse(Lexer.lex(FileIO.readFile(file.getAbsolutePath(), fileName, line), path, 1,
-                new ArrayList<Token>(), 0)));
+                new ArrayList<>(), 0)));
     }
 
-    private static String[] subArray(String[] array, int begin) {
-        var newArray = new String[array.length - begin];
-        for (int i = 0; begin < array.length; begin++, i++) {
-            newArray[i] = array[begin];
-        }
-        return newArray;
-    }
 
 }

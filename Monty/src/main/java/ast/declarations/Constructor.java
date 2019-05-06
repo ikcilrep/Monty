@@ -1,25 +1,23 @@
 package ast.declarations;
 
 import ast.Block;
-import ast.expressions.OperationNode;
+import sml.NativeFunctionDeclarationNode;
 import sml.data.tuple.Tuple;
 
-import java.util.ArrayList;
-
-public class Constructor extends FunctionDeclarationNode {
-    private StructDeclarationNode struct;
+public class Constructor extends NativeFunctionDeclarationNode {
+    private final StructDeclarationNode struct;
 
     Constructor(StructDeclarationNode struct) {
         super(struct.getName(), FunctionDeclarationNode.EMPTY_PARAMETERS);
-        setStruct(struct);
+        this.struct = struct;
         setBody(new Block(null));
     }
 
     @Override
     public Object call(Tuple arguments, String callFileName, int callLine) {
-        var newStruct = struct.getParent().getStructure(name, callFileName, callLine).copy();
+        var newStruct = struct.getParent().getStructure(struct.getName(), callFileName, callLine).copy();
         var thisVariable = new VariableDeclarationNode("This");
-        thisVariable.setValue(newStruct);
+        thisVariable.setValue(newStruct, callFileName, callLine);
         thisVariable.setConst(true);
         newStruct.addVariable(thisVariable, callFileName, callLine);
         newStruct.incrementNumber();
@@ -33,20 +31,13 @@ public class Constructor extends FunctionDeclarationNode {
 
     @Override
     public Constructor copy() {
-        try {
-            return (Constructor) clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return new Constructor(struct);
     }
 
-    public StructDeclarationNode getStruct() {
-        return struct;
-    }
 
-    public void setStruct(StructDeclarationNode struct) {
-        this.struct = struct;
+    @Override
+    public String toString() {
+        return "Constructor<"+getName()+">";
     }
 
 }

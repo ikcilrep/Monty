@@ -19,7 +19,6 @@ import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import lexer.Lexer;
-import lexer.Token;
 import parser.parsing.Parser;
 import sml.Sml;
 import sml.io.Input;
@@ -28,18 +27,18 @@ import sml.io.Println;
 
 import java.util.ArrayList;
 
-public class IOBlocks {
-    private static FunctionDeclarationNode abs;
-    public static FunctionDeclarationNode list;
-    public static VariableDeclarationNode nothing;
-    private static FunctionDeclarationNode logError;
-    private static FunctionDeclarationNode print;
-    private static FunctionDeclarationNode println;
-    private static FunctionDeclarationNode round;
-    private static FunctionDeclarationNode tuple;
+class IOBlocks {
+    private final static FunctionDeclarationNode abs;
+    private final static FunctionDeclarationNode list;
+    private final static VariableDeclarationNode nothing;
+    private final static FunctionDeclarationNode logError;
+    private final static FunctionDeclarationNode print;
+    private final static FunctionDeclarationNode println;
+    private final static FunctionDeclarationNode round;
+    private final static FunctionDeclarationNode tuple;
 
-    private static FunctionDeclarationNode input;
-    private static Block[] writtenInMonty;
+    private final static FunctionDeclarationNode input;
+    private final static Block[] writtenInMonty;
 
     static {
         abs = new sml.math.Abs();
@@ -58,7 +57,9 @@ public class IOBlocks {
         input = new Input();
     }
 
-    private static void autoImport(Block block,String fileName, int line) {
+    private static void autoImport(Block block) {
+        var fileName = "command line";
+        var line = 1;
         block.addVariable(nothing,fileName,line);
         block.addFunction(abs,fileName,line);
         block.addFunction(list,fileName,line);
@@ -73,10 +74,10 @@ public class IOBlocks {
             block.concat(parsed);
     }
 
-    static Block readBlockFromFile(String path, String fileName, int line) {
+    static Block readBlockFromFile(String path) {
         var block = Parser
-                .parse(Lexer.lex(FileIO.readFile(path, fileName, line), path, 1, new ArrayList<>(), 0));
-        autoImport(block,fileName,line);
+                .parse(Lexer.lex(FileIO.readFile(path, "command line", 1), path, 1, new ArrayList<>(), 0));
+        autoImport(block);
         return block;
     }
 
