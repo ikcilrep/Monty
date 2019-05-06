@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Block extends NodeWithParent implements Cloneable {
+public class Block extends NodeWithParent {
 
     private Block parent;
     private ArrayList<RunnableNode> children = new ArrayList<>();
@@ -165,7 +165,7 @@ public class Block extends NodeWithParent implements Cloneable {
 
     public void copyVariables() {
         var variables = new HashMap<String, VariableDeclarationNode>();
-        for (Map.Entry<String, VariableDeclarationNode> entry : variables.entrySet())
+        for (Map.Entry<String, VariableDeclarationNode> entry : this.variables.entrySet())
             variables.put(entry.getKey(), entry.getValue().copy());
         this.variables = variables;
     }

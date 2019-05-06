@@ -26,7 +26,7 @@ import sml.data.returning.ContinueType;
 
 public final class ForStatementNode extends Block {
     private OperationNode iterable;
-    private String variableName;
+    private final String variableName;
 
     private static boolean isIterable(Object toCheck, String callFileName, int callLine) {
         if (toCheck instanceof String)

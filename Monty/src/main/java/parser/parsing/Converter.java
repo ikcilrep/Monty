@@ -1,7 +1,6 @@
 package parser.parsing;
 
 import ast.Block;
-import ast.expressions.ConstantNode;
 import ast.expressions.IdentifierNode;
 import ast.expressions.OperationNode;
 import lexer.Token;
@@ -14,7 +13,7 @@ import java.util.*;
 class Converter {
 
 
-    final static Token EMPTY_OPERATOR = new Token(TokenTypes.OPERATOR, "", null, -1);
+    private final static Token EMPTY_OPERATOR = new Token(TokenTypes.OPERATOR, "", null, -1);
     private final static HashMap<String, Integer> precedence;
     private final static Set<String> rightAssociative = Set.of("=", "+=", "-=", "*=", "/=", "%=", "&=", "^=", "|=", "<<=",
             ">>=", "**", "**=");
@@ -169,7 +168,7 @@ class Converter {
             list.setRight(ExpressionParser.parseInfix(parent, tokens,i.i, counter-1));
             i.i = counter - 1;
         } else
-            list.setRight(new OperationNode(new ConstantNode(Sml.EMPTY_ARGUMENT_LIST),parent));
+            list.setRight(new OperationNode(Sml.EMPTY_ARGUMENT_LIST,parent));
         return list;
 
     }

@@ -297,7 +297,7 @@ public class OperatorOverloading {
         var rightValue = right.run();
         if (!(rightValue instanceof Boolean))
             if (rightValue instanceof StructDeclarationNode)
-                return andOperator(leftValue, rightValue, DataTypes.OBJECT);
+                return andOperator(true, rightValue, DataTypes.OBJECT);
             else
                 new LogError(
                         "Type mismatch:\tboolean and " + DataTypes.getDataType(rightValue).toString().toLowerCase(),
@@ -311,7 +311,7 @@ public class OperatorOverloading {
         var rightValue = right.run();
         if (!(rightValue instanceof Boolean))
             if (rightValue instanceof StructDeclarationNode)
-                return andOperator(leftValue, rightValue, DataTypes.OBJECT);
+                return orOperator(false, rightValue, DataTypes.OBJECT);
             else
                 new LogError(
                         "Type mismatch:\tboolean and " + DataTypes.getDataType(rightValue).toString().toLowerCase(),
@@ -675,6 +675,25 @@ public class OperatorOverloading {
                 return overloadOperator(leftValue, rightValue, "$xor", 2);
             case NOTHING:
                 new LogError("Can't do xor operation with Nothing.", temporaryFileName, temporaryLine);
+            default:
+                return null;
+        }
+    }
+
+    public static Object assignmentModuloOperator(Object leftValue, Object rightValue, DataTypes type) {
+        if (type.equals(DataTypes.OBJECT))
+            return overloadOperator(leftValue, rightValue, "$a_mod", 2);
+
+        var variable = VariableDeclarationNode.toMe(leftValue, temporaryFileName, temporaryLine);
+        switch (type) {
+            case INTEGER:
+            case BIG_INTEGER:
+            case FLOAT:
+                variable.setValue(moduloOperator(variable.getValue(), rightValue, type), temporaryFileName,
+                        temporaryLine);
+                return variable.getValue();
+            case NOTHING:
+                new LogError("Can't divide Nothing.", temporaryFileName, temporaryLine);
             default:
                 return null;
         }

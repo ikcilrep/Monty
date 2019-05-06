@@ -17,12 +17,13 @@ limitations under the License.
 package parser.parsing;
 
 import ast.Block;
-import ast.expressions.ConstantNode;
+import ast.Operator;
 import ast.expressions.IdentifierNode;
 import ast.expressions.OperationNode;
 import lexer.Token;
 import parser.DataTypes;
 import parser.LogError;
+import parser.Recognizer;
 import parser.Tokens;
 import sml.Sml;
 import sml.data.string.StringStruct;
@@ -34,8 +35,8 @@ import java.util.LinkedList;
 import java.util.Stack;
 
 class ExpressionParser {
-    private final static HashMap<String, ConstantNode> LITERALS = new HashMap<>();
-    private final static HashMap<String, ConstantNode> STRING_LITERALS = new HashMap<>();
+    private final static HashMap<String, Object> LITERALS = new HashMap<>();
+    private final static HashMap<String, StringStruct> STRING_LITERALS = new HashMap<>();
     /*
      * Parses list of tokens to abstract syntax tree.
      */
@@ -48,18 +49,17 @@ class ExpressionParser {
             OperationNode node;
             switch (token.getType()) {
                 case OPERATOR: // If token is operator
-                    node = new OperationNode(token.getText(), parent);
+                    var tokenText = token.getText();
+                    node = new OperationNode(Operator.toOperator(tokenText), parent);
                     if (stack.isEmpty())
                         new LogError("There isn't right operand", token);
+                    node.setRight(stack.pop());
 
-                    if (token == Converter.EMPTY_OPERATOR || token.getText().equals("!"))
-                        node.setRight(stack.peek());
-                    else
-                        node.setRight(stack.pop());
-
-                    if (stack.isEmpty())
-                        new LogError("There isn't left operand", token);
-                    node.setLeft(stack.pop());
+                    if (!Recognizer.isUnaryOperator(tokenText)) {
+                        if (stack.isEmpty())
+                            new LogError("There isn't left operand", token);
+                        node.setLeft(stack.pop());
+                    }
                     break;
                 case FUNCTION:
                     node = new OperationNode(new IdentifierNode(token.getText(), true), parent);
@@ -127,7 +127,7 @@ class ExpressionParser {
 
     private static OperationNode recParseEmptyTuple(Block parent, ArrayList<Token> tokens,
                                               Stack<OperationNode> stack, IntegerHolder i) {
-        stack.push(new OperationNode(new ConstantNode(Sml.EMPTY_ARGUMENT_LIST),parent));
+        stack.push(new OperationNode(Sml.EMPTY_ARGUMENT_LIST,parent));
         i.i++;
         return parse(parent, tokens, stack, i);
     }
@@ -137,7 +137,7 @@ class ExpressionParser {
         ExpressionParser.lists = lists;
     }
 
-    private static ConstantNode toDataType(Token token, DataTypes dataType) {
+    private static Object toDataType(Token token, DataTypes dataType) {
         // Returns values with proper data type.
         var literal = token.getText();
         if (dataType != null) {
@@ -145,7 +145,7 @@ class ExpressionParser {
                 if (STRING_LITERALS.containsKey(literal))
                     return STRING_LITERALS.get(literal);
                 else {
-                    var newStringLiteral = new ConstantNode(new StringStruct(literal));
+                    var newStringLiteral = new StringStruct(literal);
                     STRING_LITERALS.put(literal, newStringLiteral);
                     return newStringLiteral;
                 }
@@ -176,7 +176,7 @@ class ExpressionParser {
             default:
                 new LogError("There isn't constant of " + dataType.toString().toLowerCase());
         }
-        var newLiteral = new ConstantNode(valueOfDataType);
+        var newLiteral = valueOfDataType;
         LITERALS.put(literal, newLiteral);
         return newLiteral;
     }

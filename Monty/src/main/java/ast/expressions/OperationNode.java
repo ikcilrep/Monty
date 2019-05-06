@@ -18,6 +18,7 @@ package ast.expressions;
 
 import ast.Block;
 import ast.NodeWithParent;
+import ast.Operator;
 import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import parser.DataTypes;
@@ -26,12 +27,13 @@ import sml.casts.ToFloat;
 import sml.casts.ToInt;
 import sml.data.tuple.Tuple;
 
-import java.awt.image.AreaAveragingScaleFilter;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class OperationNode extends NodeWithParent implements Cloneable {
+import static ast.Operator.*;
+
+public final class OperationNode extends NodeWithParent {
     private OperationNode left;
     private final Object operand;
     private Block parent;
@@ -67,74 +69,76 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
             if (doesGetValueFromVariable && variableOrFunction instanceof VariableDeclarationNode)
                 return ((VariableDeclarationNode) variableOrFunction).getValue();
             return variableOrFunction;
-        } else if (expression instanceof ConstantNode)
-            return ((ConstantNode) expression).getValue();
+        }
         return expression;
     }
 
-    private Object calculate(Object leftValue, Object rightValue, String operator, DataTypes type) {
+    private Object calculate(Object leftValue, Object rightValue, Operator operator, DataTypes type) {
         // Calculates the result of math operation.
         switch (operator) {
-            case "+":
+            case ADDITION:
                 return OperatorOverloading.additionOperator(leftValue, rightValue, type);
-            case "-":
+            case SUBTRACTION:
                 return OperatorOverloading.subtractionOperator(leftValue, rightValue, type);
-            case "*":
+            case MULTIPLICATION:
                 return OperatorOverloading.multiplicationOperator(leftValue, rightValue, type);
-            case "**":
+            case POWER:
                 return OperatorOverloading.powerOperator(leftValue, rightValue, type);
-            case "/":
+            case DIVISION:
                 return OperatorOverloading.divisionOperator(leftValue, rightValue, type);
-            case "%":
+            case MODULO:
                 return OperatorOverloading.moduloOperator(leftValue, rightValue, type);
-            case "!":
-                return OperatorOverloading.negationOperator(rightValue, type);
-            case "<<":
+            case SHIFT_LEFT:
                 return OperatorOverloading.shiftLeftOperator(leftValue, rightValue, type);
-            case ">>":
+            case SHIFT_RIGHT:
                 return OperatorOverloading.shiftRightOperator(leftValue, rightValue, type);
-            case "^":
+            case XOR:
                 return OperatorOverloading.xorOperator(leftValue, rightValue, type);
-            case "&":
+            case AND:
                 return OperatorOverloading.andOperator(leftValue, rightValue, type);
-            case "|":
+            case OR:
                 return OperatorOverloading.orOperator(leftValue, rightValue, type);
-            case "==":
+            case EQUALS:
                 return OperatorOverloading.equalsOperator(leftValue, rightValue);
-            case ">":
+            case GREATER_THAN:
                 return OperatorOverloading.greaterOperator(leftValue, rightValue, type);
-            case "<":
+            case LESS_THAN:
                 return OperatorOverloading.lowerOperator(leftValue, rightValue, type);
-            case "<=":
+            case LESS_EQUALS:
                 return OperatorOverloading.lowerEqualsOperator(leftValue, rightValue, type);
-            case ">=":
+            case GREATER_EQUALS:
                 return OperatorOverloading.greaterEqualsOperator(leftValue, rightValue, type);
-            case "!=":
+            case NOT_EQUALS:
                 return OperatorOverloading.notEqualsOperator(leftValue, rightValue);
-            case "=":
+            case ASSIGNMENT:
                 return OperatorOverloading.assignmentOperator(leftValue, rightValue, type);
-            case "+=":
+            case ASSIGNMENT_ADDITION:
                 return OperatorOverloading.assignmentAdditionOperator(leftValue, rightValue, type);
-            case "-=":
+            case ASSIGNMENT_SUBTRACTION:
                 return OperatorOverloading.assignmentSubtractionOperator(leftValue, rightValue, type);
-            case "**=":
+            case ASSIGNMENT_POWER:
                 return OperatorOverloading.assignmentPowerOperator(leftValue, rightValue, type);
-            case "*=":
+            case ASSIGNMENT_MULTIPLICATION:
                 return OperatorOverloading.assignmentMultiplicationOperator(leftValue, rightValue, type);
-            case "/=":
+            case ASSIGNMENT_DIVISION:
                 return OperatorOverloading.assignmentDivisionOperator(leftValue, rightValue, type);
-            case "<<=":
+            case ASSIGNMENT_MODULO:
+                return OperatorOverloading.assignmentModuloOperator(leftValue, rightValue, type);
+            case ASSIGNMENT_SHIFT_LEFT:
                 return OperatorOverloading.assignmentShiftLeftOperator(leftValue, rightValue, type);
-            case ">>=":
+            case ASSIGNMENT_SHIFT_RIGHT:
                 return OperatorOverloading.assignmentShiftRightOperator(leftValue, rightValue, type);
-            case "^=":
+            case ASSIGNMENT_XOR:
                 return OperatorOverloading.assignmentXorOperator(leftValue, rightValue, type);
-            case "&=":
+            case ASSIGNMENT_AND:
                 return OperatorOverloading.assignmentAndOperator(leftValue, rightValue, type);
-            case "|=":
+            case ASSIGNMENT_OR:
                 return OperatorOverloading.assignmentOrOperator(leftValue, rightValue, type);
         }
         return null;
+    }
+    private Object calculate(Object value, DataTypes type) {
+        return OperatorOverloading.negationOperator(value, type);
     }
 
     @Override
@@ -164,7 +168,7 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
         var fileName = getFileName();
         var line = getLine();
         Object result;
-        if (!(operand instanceof String || operand instanceof IdentifierNode)) {
+        if (!(operand instanceof Operator || operand instanceof IdentifierNode)) {
             OperatorOverloading.setTemporary(fileName, line);
             result = operand;
         }  else
@@ -193,42 +197,21 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
     public final void setRight(OperationNode right) {
         this.right = right;
     }
-
-
-    private Object solve(Block parent) {
+    private Object solveUnaryOperator(Block parent, Operator operator) {
+        var value = getLiteral(right.solve(parent),parent, true, right.getFileName(), right.getLine());
+        return calculate(value, DataTypes.getDataType(value));
+    }
+    @SuppressWarnings("unchecked")
+    private Object solveBinaryOperator(Block parent, Operator operator) {
         var fileName = getFileName();
         var line = getLine();
-        if (operand instanceof IdentifierNode && ((IdentifierNode) operand).isFunctionCall()) {
-            var value = getLiteral(operand,parent, true, fileName, line);
-            if (right == null)
-                return value;
-
-            if (value instanceof FunctionDeclarationNode) {
-
-                    var arguments = right.runWithParent(parent);
-                    if (!(arguments instanceof Tuple))
-                        arguments = new Tuple(arguments);
-                    return ((FunctionDeclarationNode) value).call((Tuple) arguments, fileName, line);
-                    
-            }
-        }else if (operand.equals(""))
-            return right.runWithParent(parent);
-        else if (!(operand instanceof String))
-            return operand;
-        OperatorOverloading.setTemporary(fileName, line);
-
-        var operator = (String) operand;
-        var isComparison = operator.equals("==") || operator.equals("!=") || operator.equals("<=")
-                || operator.equals(">=") || operator.equals(">") || operator.equals("<");
-
-        var isAssignment = operator.contains("=") && !isComparison;
-        var isDot = operator.equals(".");
+        var isAssignment = operator.isAssignment();
+        var isDot = operator.equals(DOT);
         var leftFileName = left.getFileName();
         var leftLine = left.getLine();
         var leftValue = getLiteral(left.solve(parent),parent, !isAssignment, leftFileName, leftLine);
 
-
-        if (operator.equals(",")) {
+        if (operator.equals(COMMA)) {
             var rightValue = getLiteral(right.solve(parent), parent,true, leftFileName, leftLine);
             if (leftValue instanceof ArrayList) {
                 ((ArrayList<Object>) leftValue).add(rightValue);
@@ -246,9 +229,9 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 
         var leftType = DataTypes.getDataType(leftValue);
         if (leftType != null && leftType.equals(DataTypes.BOOLEAN)) {
-            if (operator.equals("&"))
+            if (operator.equals(AND))
                 return OperatorOverloading.booleanAndOperator((boolean) leftValue, right);
-            else if (operator.equals("|"))
+            else if (operator.equals(OR))
                 return OperatorOverloading.booleanOrOperator((boolean) leftValue, right);
         }
 
@@ -273,10 +256,10 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
         var rightType = DataTypes.getDataType(rightValue);
 
 
-        if (operator.equals("=")) {
+        if (operator.equals(ASSIGNMENT)) {
             leftType = rightType;
         }
-        if (!(operator.equals("==") || operator.equals("!="))) {
+        if (!(operator.equals(EQUALS) || operator.equals(NOT_EQUALS))) {
             if (!leftType.equals(rightType)) {
                 switch (leftType) {
                     case INTEGER:
@@ -354,6 +337,37 @@ public final class OperationNode extends NodeWithParent implements Cloneable {
 
 
         return calculate(leftValue, rightValue, operator, leftType);
+    }
 
+    private Object solveFunction(Block parent) {
+        var fileName = getFileName();
+        var line = getLine();
+        var value = getLiteral(operand, parent, true, fileName, line);
+
+        if (value instanceof FunctionDeclarationNode) {
+
+            var arguments = right.runWithParent(parent);
+            if (!(arguments instanceof Tuple))
+                arguments = new Tuple(arguments);
+            return ((FunctionDeclarationNode) value).call((Tuple) arguments, fileName, line);
+
+        }
+        return value;
+    }
+
+
+    private Object solve(Block parent) {
+        if (operand instanceof IdentifierNode && ((IdentifierNode) operand).isFunctionCall())
+            return solveFunction(parent);
+        else if (operand.equals(JUST))
+            return right.runWithParent(parent);
+        else if (!(operand instanceof Operator))
+            return operand;
+        OperatorOverloading.setTemporary(getFileName(), getLine());
+        var operator = (Operator) operand;
+
+        if (operator.equals(NEGATION))
+            return solveUnaryOperator(parent,operator);
+        return solveBinaryOperator(parent,operator);
     }
 }

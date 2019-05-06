@@ -24,7 +24,6 @@ import parser.Recognizer;
 import parser.LogError;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public final class Parser {
 

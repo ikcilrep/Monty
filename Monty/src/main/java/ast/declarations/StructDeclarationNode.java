@@ -25,7 +25,7 @@ import sml.casts.ToBoolean;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StructDeclarationNode extends Block implements Cloneable {
+public class StructDeclarationNode extends Block {
     private static int actualStructNumber = -1;
     private final static HashMap<Integer, Integer> numbers = new HashMap<>();
     private int structNumber;

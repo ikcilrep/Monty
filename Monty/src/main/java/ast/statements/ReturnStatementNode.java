@@ -20,9 +20,9 @@ import ast.Block;
 import ast.NodeWithParent;
 import ast.expressions.OperationNode;
 
-public final class ReturnStatementNode extends NodeWithParent implements Cloneable {
+public final class ReturnStatementNode extends NodeWithParent {
 
-    private OperationNode expression;
+    private final OperationNode expression;
 
     public ReturnStatementNode(OperationNode expression, String fileName, int line) {
         this.expression = expression;
