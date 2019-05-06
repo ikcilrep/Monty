@@ -244,7 +244,7 @@ public final class OperationNode extends NodeWithParent {
         }
         var b = right.solve(parent);
 
-        if (operator.equals("instanceof")) {
+        if (operator.equals(INSTANCEOF)) {
             if (!(b instanceof IdentifierNode))
                 new LogError("Right value have to be type name.", fileName, line);
             return OperatorOverloading.instanceOfOperator(leftValue, b, leftType, parent);
