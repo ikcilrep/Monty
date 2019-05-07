@@ -54,13 +54,13 @@ public class Importing {
     }
 
     @SuppressWarnings("unchecked")
-    private static void importElementFromSml(Block block, String[] splitted, String path,
+    private static void importElementFromSml(Block block, String[] split, String path,
                                                     Token token) {
         var children = Sml.getChildren();
         Object functionVariableOrSubLibrary;
 
-        for (int i = 1; i < splitted.length; i++) {
-            var toImport = splitted[i];
+        for (int i = 1; i < split.length; i++) {
+            var toImport = split[i];
             if (!children.containsKey(toImport))
                 new LogError("There isn't file to import:\t" + path, token);
             else if ((functionVariableOrSubLibrary = children.get(toImport)) instanceof FunctionDeclarationNode) {
@@ -69,7 +69,7 @@ public class Importing {
             } else if (functionVariableOrSubLibrary instanceof VariableDeclarationNode) {
                 block.addVariable((VariableDeclarationNode) functionVariableOrSubLibrary, token);
                 break;
-            } else if (i + 1 >= splitted.length)
+            } else if (i + 1 >= split.length)
                 importAllElementsFromSmlChildren(block, (HashMap<String, Object>) functionVariableOrSubLibrary,
                         token);
             else
@@ -95,10 +95,10 @@ public class Importing {
                             parent_file.getName(), 1, new ArrayList<>(), 0)),
                     parent_file.getPath(), file.getName().substring(0, file.getName().length() - 3), fileName, line);
         } else {
-            var splitted = partOfPath.split("\\.");
-            if (!splitted[0].equals("sml"))
+            var split = partOfPath.split("\\.");
+            if (!split[0].equals("sml"))
                 new LogError("There isn't file to import:\t" + path, tokensBeforeSemicolon.get(1));
-            importElementFromSml(block, splitted, path, tokensBeforeSemicolon.get(1));
+            importElementFromSml(block, split, path, tokensBeforeSemicolon.get(1));
         }
     }
 

@@ -35,7 +35,7 @@ public enum Operator {
     ASSIGNMENT_OR,
     COMMA,
     DOT,
-    INSTANCEOF,
+    INSTANCE_OF,
     JUST;
     private final static Set<Operator> assignmentOperators = Set.of(ASSIGNMENT,
             ASSIGNMENT_ADDITION,
@@ -115,7 +115,7 @@ public enum Operator {
             case "|=":
                 return ASSIGNMENT_OR;
             case "instanceof":
-                return INSTANCEOF;
+                return INSTANCE_OF;
             case ",":
                 return COMMA;
             case ".":

@@ -5,6 +5,8 @@ import ast.declarations.VariableDeclarationNode;
 import parser.LogError;
 import sml.data.string.StringStruct;
 
+import java.util.LinkedList;
+
 public class Tuple extends StructDeclarationNode {
     public Object[] getArray() {
         return array;
@@ -17,10 +19,11 @@ public class Tuple extends StructDeclarationNode {
          new Get(this);
     }
 
-    public Tuple(Object[] array) {
+
+    public Tuple(LinkedList list) {
         super(null, "Tuple");
         addFunctions();
-        this.array = array;
+        this.array = list.toArray();
     }
     public Tuple(Object elem) {
         super(null, "Tuple");

@@ -1,6 +1,5 @@
 package ast.declarations;
 
-import ast.Block;
 import sml.NativeFunctionDeclarationNode;
 import sml.data.tuple.Tuple;
 

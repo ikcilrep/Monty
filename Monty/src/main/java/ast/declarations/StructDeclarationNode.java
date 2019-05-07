@@ -41,7 +41,7 @@ public class StructDeclarationNode extends Block {
         numbers.put(structNumber, -1);
     }
 
-    public StructDeclarationNode(Block parent, String name, int structNumber, ArrayList<RunnableNode> children,HashMap<String,VariableDeclarationNode> variables) {
+    private StructDeclarationNode(Block parent, String name, int structNumber, ArrayList<RunnableNode> children, HashMap<String, VariableDeclarationNode> variables) {
         super(parent);
         this.name = name;
         this.structNumber = structNumber;
