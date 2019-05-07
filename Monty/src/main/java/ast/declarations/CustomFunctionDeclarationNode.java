@@ -91,4 +91,13 @@ public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode
             body.addVariable(variable, callFileName, callLine);
         }
     }
+
+    @Override
+    protected void setArgument(Object value, int index, String fileName, int line) {
+        var name = parameters[index];
+        VariableDeclarationNode variable = new VariableDeclarationNode(name);
+        variable.setValue(value, fileName, line);
+        variable.setConst(Character.isUpperCase(name.charAt(0)));
+        body.addVariable(variable, fileName, line);
+    }
 }
