@@ -28,7 +28,7 @@ import sml.casts.ToInt;
 import sml.data.tuple.Tuple;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static ast.Operator.*;
@@ -174,8 +174,8 @@ public final class OperationNode extends NodeWithParent {
         }  else
             result = solve(parent);
         result = getLiteral(result,parent, doesGetVariableValue, fileName, line);
-        if (result instanceof ArrayList)
-            return new Tuple(((ArrayList) result).toArray());
+        if (result instanceof LinkedList)
+            return new Tuple((LinkedList) result);
         else if (result instanceof VariableDeclarationNode && doesGetVariableValue)
             return ((VariableDeclarationNode) result).getValue();
         return result;
@@ -197,7 +197,7 @@ public final class OperationNode extends NodeWithParent {
     public final void setRight(OperationNode right) {
         this.right = right;
     }
-    private Object solveUnaryOperator(Block parent, Operator operator) {
+    private Object solveUnaryOperator(Block parent) {
         var value = getLiteral(right.solve(parent),parent, true, right.getFileName(), right.getLine());
         return calculate(value, DataTypes.getDataType(value));
     }
@@ -213,19 +213,19 @@ public final class OperationNode extends NodeWithParent {
 
         if (operator.equals(COMMA)) {
             var rightValue = getLiteral(right.solve(parent), parent,true, leftFileName, leftLine);
-            if (leftValue instanceof ArrayList) {
-                ((ArrayList<Object>) leftValue).add(rightValue);
+            if (leftValue instanceof LinkedList) {
+                ((LinkedList<Object>) leftValue).add(rightValue);
                 return leftValue;
             }
-            if (rightValue instanceof ArrayList) {
-                ((ArrayList<Object>) rightValue).add(0, leftValue);
+            if (rightValue instanceof LinkedList) {
+                ((LinkedList<Object>) rightValue).addFirst(leftValue);
                 return rightValue;
             }
-            return new ArrayList<>(List.of(leftValue,rightValue));
+            return new LinkedList<>(List.of(leftValue,rightValue));
         }
 
-        if (leftValue instanceof ArrayList)
-            return new Tuple(((ArrayList) leftValue).toArray());
+        if (leftValue instanceof LinkedList)
+            return new Tuple((LinkedList) leftValue);
 
         var leftType = DataTypes.getDataType(leftValue);
         if (leftType != null && leftType.equals(DataTypes.BOOLEAN)) {
@@ -244,15 +244,15 @@ public final class OperationNode extends NodeWithParent {
         }
         var b = right.solve(parent);
 
-        if (operator.equals(INSTANCEOF)) {
+        if (operator.equals(INSTANCE_OF)) {
             if (!(b instanceof IdentifierNode))
                 new LogError("Right value have to be type name.", fileName, line);
             return OperatorOverloading.instanceOfOperator(leftValue, b, leftType, parent);
         }
 
         var rightValue = getLiteral(b,parent, true, right.getFileName(), right.getLine());
-        if (rightValue instanceof ArrayList)
-            return new Tuple(((ArrayList) rightValue).toArray());
+        if (rightValue instanceof LinkedList)
+            return new Tuple(((LinkedList) rightValue));
         var rightType = DataTypes.getDataType(rightValue);
 
 
@@ -367,7 +367,7 @@ public final class OperationNode extends NodeWithParent {
         var operator = (Operator) operand;
 
         if (operator.equals(NEGATION))
-            return solveUnaryOperator(parent,operator);
+            return solveUnaryOperator(parent);
         return solveBinaryOperator(parent,operator);
     }
 }
