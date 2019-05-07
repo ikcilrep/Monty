@@ -47,6 +47,8 @@ public class Importing {
         for (Object value : addFrom.values())
             if (value instanceof FunctionDeclarationNode)
                 block.addFunction((FunctionDeclarationNode) value, token);
+            else if (value instanceof VariableDeclarationNode)
+                block.addVariable((VariableDeclarationNode) value, token);
             else
                 importAllElementsFromSmlChildren(block, (HashMap<String, Object>) value, token);
     }
@@ -72,7 +74,6 @@ public class Importing {
                         token);
             else
                 children = (HashMap<String, Object>) functionVariableOrSubLibrary;
-            i++;
         }
     }
 

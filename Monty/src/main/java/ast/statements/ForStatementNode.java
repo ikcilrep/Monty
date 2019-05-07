@@ -56,10 +56,11 @@ public final class ForStatementNode extends Block {
 
     @Override
     public ForStatementNode copy() {
-        var copied = (ForStatementNode) super.copy();
-        copied.iterable = iterable.copy();
-        return copied;
+        var copied = new ForStatementNode(variableName,iterable.copy(),getFileName(),getLine(), getParent());
+        copied.setChildren(getChildren());
+        copied.copyChildren();
 
+        return copied;
     }
 
 

@@ -65,7 +65,7 @@ public final class OperationNode extends NodeWithParent {
                 return parent.getFunction(variableNode.getName(), fileName, line);
 
 
-            var variableOrFunction = parent.getVariableOrFunction(((IdentifierNode) expression).getName());
+            var variableOrFunction = parent.getVariableOrFunction(((IdentifierNode) expression).getName(), fileName, line);
             if (doesGetValueFromVariable && variableOrFunction instanceof VariableDeclarationNode)
                 return ((VariableDeclarationNode) variableOrFunction).getValue();
             return variableOrFunction;
@@ -145,9 +145,9 @@ public final class OperationNode extends NodeWithParent {
     public final OperationNode copy() {
         var copied = new OperationNode(operand, parent, getFileName(), getLine());
         if (right != null)
-            copied.setRight(right.copy());
+            copied.right = right.copy();
         if (left != null)
-            copied.setLeft(left.copy());
+            copied.left = left.copy();
         return copied;
     }
 
@@ -346,7 +346,7 @@ public final class OperationNode extends NodeWithParent {
 
         if (value instanceof FunctionDeclarationNode) {
 
-            var arguments = right.runWithParent(parent);
+            var arguments = right.run();
             if (!(arguments instanceof Tuple))
                 arguments = new Tuple(arguments);
             return ((FunctionDeclarationNode) value).call((Tuple) arguments, fileName, line);

@@ -17,11 +17,13 @@ limitations under the License.
 package ast.declarations;
 
 import ast.Block;
+import ast.RunnableNode;
 import ast.expressions.OperatorOverloading;
 import lexer.Token;
 import sml.Sml;
 import sml.casts.ToBoolean;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,6 +41,15 @@ public class StructDeclarationNode extends Block {
         numbers.put(structNumber, -1);
     }
 
+    public StructDeclarationNode(Block parent, String name, int structNumber, ArrayList<RunnableNode> children,HashMap<String,VariableDeclarationNode> variables) {
+        super(parent);
+        this.name = name;
+        this.structNumber = structNumber;
+        setChildren(children);
+        setVariables(variables);
+        numbers.put(structNumber, -1);
+    }
+
     private void addNewStruct(Block block, String fileName, int line) {
         block.addStruct(this, new Constructor(this),fileName, line);
     }
@@ -50,7 +61,20 @@ public class StructDeclarationNode extends Block {
     @Override
     public StructDeclarationNode copy() {
         StructDeclarationNode copied;
-        copied = (StructDeclarationNode) super.copy();
+        copied = new StructDeclarationNode(getParent(),name,structNumber,getChildren(),getVariables());
+        copied.copyChildren();
+        copied.copyVariables();
+
+        var functions = new HashMap<String, FunctionDeclarationNode>();
+        for (Map.Entry<String, FunctionDeclarationNode> entry : this.functions.entrySet()) {
+            var function = entry.getValue().copy();
+            if (!(function instanceof Constructor)) {
+                function.getBody().setParent(copied);
+                functions.put(entry.getKey(), function);
+            }
+        }
+        copied.functions = functions;
+
         var structs = new HashMap<String, StructDeclarationNode>();
         for (Map.Entry<String, StructDeclarationNode> entry : this.structs.entrySet()) {
             var value = entry.getValue().copy();
@@ -59,16 +83,6 @@ public class StructDeclarationNode extends Block {
             copied.functions.put(value.getName(), new Constructor(value));
         }
         copied.structs = structs;
-
-        copied.copyVariables();
-
-        var functions = new HashMap<String, FunctionDeclarationNode>();
-        for (Map.Entry<String, FunctionDeclarationNode> entry : this.functions.entrySet()) {
-            var value = entry.getValue().copy();
-            value.getBody().setParent(copied);
-            functions.put(entry.getKey(), value);
-        }
-        copied.functions = functions;
         return copied;
     }
 

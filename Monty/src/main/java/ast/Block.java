@@ -28,8 +28,22 @@ import java.util.Map;
 public class Block extends NodeWithParent {
 
     private Block parent;
+
+    protected void setChildren(ArrayList<RunnableNode> children) {
+        this.children = children;
+    }
+
     private ArrayList<RunnableNode> children = new ArrayList<>();
     protected HashMap<String, FunctionDeclarationNode> functions = new HashMap<>();
+
+    protected void setVariables(HashMap<String, VariableDeclarationNode> variables) {
+        this.variables = variables;
+    }
+
+    protected HashMap<String, VariableDeclarationNode> getVariables() {
+        return variables;
+    }
+
     private HashMap<String, VariableDeclarationNode> variables = new HashMap<>();
     protected HashMap<String, StructDeclarationNode> structs = new HashMap<>();
 
@@ -133,8 +147,11 @@ public class Block extends NodeWithParent {
         var functionsSet = block.functions.entrySet();
         for (Map.Entry<String, FunctionDeclarationNode> entry : functionsSet) {
             var function = entry.getValue();
-            function.getBody().setParent(this);
+            if (!(function instanceof Constructor))
+                function.getBody().setParent(this);
+
             addFunction(function);
+
         }
 
 
@@ -150,9 +167,9 @@ public class Block extends NodeWithParent {
         return copied;
     }
 
-    private void copyChildren() {
-        var children = new ArrayList<RunnableNode>(getChildren().size());
-        for (var child : getChildren()) {
+    protected void copyChildren() {
+        var children = new ArrayList<RunnableNode>(this.children.size());
+        for (var child : this.children) {
             if (child instanceof NodeWithParent) {
                 var castedChildCopy = ((NodeWithParent) child).copy();
                 castedChildCopy.setParent(this);
@@ -170,7 +187,7 @@ public class Block extends NodeWithParent {
         this.variables = variables;
     }
 
-    private ArrayList<RunnableNode> getChildren() {
+    protected ArrayList<RunnableNode> getChildren() {
         return children;
     }
 
@@ -242,7 +259,7 @@ public class Block extends NodeWithParent {
         return block.variables.get(name);
     }
 
-    public DeclarationNode getVariableOrFunction(String name) {
+    private DeclarationNode getVariableOrFunction(String name) {
         Block block = this;
         while (!block.variables.containsKey(name)) {
             var parent = block.getParent();
@@ -261,6 +278,24 @@ public class Block extends NodeWithParent {
         return block.variables.get(name);
     }
 
+    public DeclarationNode getVariableOrFunction(String name,String fileName, int line) {
+        Block block = this;
+        while (!block.variables.containsKey(name)) {
+            var parent = block.getParent();
+            if (parent == null) {
+                block = this;
+                while (!block.hasFunction(name)) {
+                    parent = block.getParent();
+                    if (parent == null)
+                        new LogError("There isn't any variable or function with name:\t" + name,fileName,line);
+                    block = parent;
+                }
+                return block.functions.get(name);
+            }
+            block = parent;
+        }
+        return block.variables.get(name);
+    }
 
     public Object getVariableValue(String name, String fileName, int line) {
         return getVariable(name, fileName, line).getValue();

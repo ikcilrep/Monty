@@ -10,7 +10,6 @@ public class Constructor extends NativeFunctionDeclarationNode {
     Constructor(StructDeclarationNode struct) {
         super(struct.getName(), FunctionDeclarationNode.EMPTY_PARAMETERS);
         this.struct = struct;
-        setBody(new Block(null));
     }
 
     @Override

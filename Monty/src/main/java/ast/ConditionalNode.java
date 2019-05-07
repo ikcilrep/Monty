@@ -33,8 +33,9 @@ public class ConditionalNode extends Block {
 
     @Override
     public ConditionalNode copy() {
-        var copied = (ConditionalNode) super.copy();
+        var copied = new ConditionalNode(null, getParent());
         copied.condition = condition.copy();
+
         return copied;
     }
 

@@ -43,7 +43,7 @@ public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode
         int[] lines = {callLine, getLine()};
         Object result = null;
         try {
-            result = workingCopy.getBody().run();
+            result = workingCopy.body.run();
         } catch (StackOverflowError e) {
             new LogError("Stack overflow at " + name + " function call", fileNames, lines);
         }
@@ -62,7 +62,33 @@ public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode
     @Override
     public CustomFunctionDeclarationNode copy() {
         var copied = new CustomFunctionDeclarationNode(name, parameters, lastNotNullParameterIndex);
-        copied.setBody(body.copy());
+        copied.body = body.copy();
         return copied;
+    }
+    protected void setArguments(Tuple arguments, String callFileName, int callLine) {
+        var argumentsLength = arguments.length();
+        if (parameters.length == 1 && parameters.length  != argumentsLength) {
+            var name = this.parameters[0];
+            VariableDeclarationNode variable;
+            if (!body.hasVariable(name)) {
+                variable = new VariableDeclarationNode(name);
+                body.addVariable(variable, getFileName(), getLine());
+            } else
+                variable = body.getVariable(name, getFileName(), getLine());
+            variable.setValue(arguments, callFileName,callLine);
+            variable.setConst(Character.isUpperCase(name.charAt(0)));
+            return;
+        } else if (argumentsLength > parameters.length)
+            new LogError("Too many arguments in " + name + " function call.", callFileName, callLine);
+        else if (argumentsLength < parameters.length)
+            new LogError("Too few arguments in " + name + " function call.", callFileName, callLine);
+
+        for (int i = 0; i < arguments.length(); i++) {
+            var name = parameters[i];
+            VariableDeclarationNode variable = new VariableDeclarationNode(name);
+            variable.setValue(arguments.get(i), callFileName, callLine);
+            variable.setConst(Character.isUpperCase(name.charAt(0)));
+            body.addVariable(variable, callFileName, callLine);
+        }
     }
 }

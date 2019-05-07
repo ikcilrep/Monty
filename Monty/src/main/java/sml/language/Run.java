@@ -12,8 +12,8 @@ public final class Run extends NativeFunctionDeclarationNode {
 
     public Run() {
         super("run",new String[1]);
-        addParameter("code");
         setBody(new Block(null));
+        addParameter("code");
     }
 
     @Override

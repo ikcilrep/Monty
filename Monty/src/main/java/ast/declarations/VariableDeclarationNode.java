@@ -41,6 +41,8 @@ public class VariableDeclarationNode extends DeclarationNode {
     public final VariableDeclarationNode copy() {
         var copied = new VariableDeclarationNode(name);
         copied.value = value;
+        copied.isConst = isConst;
+        copied.wasValueChanged = wasValueChanged;
         return copied;
     }
 
