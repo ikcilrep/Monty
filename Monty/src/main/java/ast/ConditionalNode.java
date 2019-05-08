@@ -19,9 +19,13 @@ package ast;
 import ast.expressions.OperationNode;
 import sml.casts.ToBoolean;
 
-public class ConditionalNode extends Block {
+public abstract class ConditionalNode extends Block {
     protected void setCondition(OperationNode condition) {
         this.condition = condition;
+    }
+
+    protected OperationNode getCondition() {
+        return condition;
     }
 
     private OperationNode condition;
@@ -31,14 +35,7 @@ public class ConditionalNode extends Block {
         this.condition = condition;
     }
 
-    @Override
-    public ConditionalNode copy() {
-        var copied = new ConditionalNode(null, getParent());
-        copied.condition = condition.copy();
-
-        return copied;
-    }
-
+    public  abstract  ConditionalNode copy();
 
     protected boolean runCondition() {
         return ToBoolean.toBoolean(condition.run(), getFileName(), getLine());

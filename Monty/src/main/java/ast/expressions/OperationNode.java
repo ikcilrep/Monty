@@ -35,8 +35,18 @@ import static ast.Operator.*;
 
 public final class OperationNode extends NodeWithParent {
     private OperationNode left;
+
+    public Object getOperand() {
+        return operand;
+    }
+
     private final Object operand;
     private Block parent;
+
+    public OperationNode getRight() {
+        return right;
+    }
+
     private OperationNode right;
     public OperationNode(Object operand, Block parent) {
         this.operand = operand;
@@ -339,19 +349,19 @@ public final class OperationNode extends NodeWithParent {
         return calculate(leftValue, rightValue, operator, leftType);
     }
 
+    public static Tuple argumentsToTuple(Object arguments) {
+        if (arguments instanceof Tuple)
+            return (Tuple)arguments;
+        return new Tuple(arguments);
+    }
+
     private Object solveFunction(Block parent) {
         var fileName = getFileName();
         var line = getLine();
         var value = getLiteral(operand, parent, true, fileName, line);
 
-        if (value instanceof FunctionDeclarationNode) {
-
-            var arguments = right.run();
-            if (!(arguments instanceof Tuple))
-                arguments = new Tuple(arguments);
-            return ((FunctionDeclarationNode) value).call((Tuple) arguments, fileName, line);
-
-        }
+        if (value instanceof FunctionDeclarationNode)
+            return ((FunctionDeclarationNode) value).call(argumentsToTuple(right.run()), fileName, line);
         return value;
     }
 

@@ -48,4 +48,14 @@ public final class IfStatementNode extends ConditionalNode {
 
         return null;
     }
+
+    @Override
+    public IfStatementNode copy() {
+        var copied = new IfStatementNode(getParent(), getCondition(), getFileName(), getLine(), false);
+        copied.setChildren(getChildren());
+        copied.copyChildren();
+        copied.setElseBody(elseBody);
+
+        return copied;
+    }
 }

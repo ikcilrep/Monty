@@ -17,7 +17,7 @@ limitations under the License.
 package ast.expressions;
 
 public final class IdentifierNode {
-    boolean isFunctionCall() {
+    public boolean isFunctionCall() {
         return isFunctionCall;
     }
 

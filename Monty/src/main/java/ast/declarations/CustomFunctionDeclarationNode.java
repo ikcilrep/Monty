@@ -16,6 +16,9 @@ limitations under the License.
 
 package ast.declarations;
 
+import ast.Operator;
+import ast.expressions.IdentifierNode;
+import ast.expressions.OperationNode;
 import ast.statements.ContinueStatementNode;
 import parser.LogError;
 import sml.data.returning.BreakType;
@@ -30,9 +33,54 @@ public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode
     }
 
     private CustomFunctionDeclarationNode workingCopy() {
-        var copy = (CustomFunctionDeclarationNode) copy();
-        copy.body.copyVariables();
-        return copy;
+        var copied = copy();
+        copied.body.copyVariables();
+        return copied;
+    }
+    private Object callWithoutChangingTailRecursionToIteration(Tuple arguments, String callFileName, int callLine) {
+        String[] fileNames = {callFileName, getFileName()};
+        int[] lines = {callLine, getLine()};
+        Object result = null;
+        setValuesOfAddedArguments(arguments,callFileName,callLine);
+        try {
+            return getResult(body.run(),fileNames,lines);
+        } catch (StackOverflowError e) {
+            return new LogError("Stack overflow at " + name + " function call", fileNames, lines);
+        }
+    }
+
+    private Object getResult(Object value, String[] fileNames, int[] lines) {
+        if (value == null)
+            value = Nothing.nothing;
+        else {
+            if (value instanceof BreakType)
+                new LogError("Trying to break function " + getName(), fileNames, lines);
+            if (value instanceof ContinueStatementNode)
+                new LogError("Trying to continue function " + getName(), fileNames, lines);
+        }
+        return value;
+    }
+
+    private Object changeTailRecursionToIteration(Object value,String fileName, int line) {
+        while (value instanceof OperationNode) {
+            var operationNodeResult = (OperationNode) value;
+            while (operationNodeResult.getOperand().equals(Operator.JUST))
+                operationNodeResult = operationNodeResult.getRight();
+            var operand = operationNodeResult.getOperand();
+
+            if (operand instanceof IdentifierNode) {
+                var identifierNodeOperand = (IdentifierNode) operand;
+                if (!identifierNodeOperand.isFunctionCall() ||
+                        !identifierNodeOperand.getName().equals(name))
+                    return operationNodeResult.run();
+                var recArguments = operationNodeResult.getRight().run();
+
+                value = callWithoutChangingTailRecursionToIteration
+                        (OperationNode.argumentsToTuple(recArguments), fileName, line);
+            } else
+                value = operationNodeResult.run();
+        }
+        return value;
     }
 
     @Override
@@ -41,23 +89,14 @@ public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode
         workingCopy.setArguments(arguments, callFileName, callLine);
         String[] fileNames = {callFileName, getFileName()};
         int[] lines = {callLine, getLine()};
-        Object result = null;
         try {
-            result = workingCopy.body.run();
+            return getResult(workingCopy.changeTailRecursionToIteration(workingCopy.body.run(),callFileName,callLine),fileNames,lines);
         } catch (StackOverflowError e) {
-            new LogError("Stack overflow at " + name + " function call", fileNames, lines);
+            return  new LogError("Stack overflow at " + name + " function call", fileNames, lines);
         }
 
-        if (result == null)
-            result = Nothing.nothing;
-        else {
-            if (result instanceof BreakType)
-                new LogError("Trying to break function " + getName(), fileNames, lines);
-            if (result instanceof ContinueStatementNode)
-                new LogError("Trying to continue function " + getName(), fileNames, lines);
-        }
-        return result;
     }
+
 
     @Override
     public CustomFunctionDeclarationNode copy() {
@@ -74,4 +113,25 @@ public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode
         variable.setConst(Character.isUpperCase(name.charAt(0)));
         body.addVariable(variable, fileName, line);
     }
+
+    private void setValueOfAddedArgument(Object value, int index, String fileName, int line) {
+        var name = parameters[index];
+        VariableDeclarationNode variable = body.getVariable(name,fileName,line);
+        variable.setConst(false);
+        variable.setValue(value, fileName, line);
+        variable.setConst(Character.isUpperCase(name.charAt(0)));
+    }
+
+    private void setValuesOfAddedArguments(Tuple arguments, String fileName, int line) {
+        var argumentsLength = arguments.length();
+        if (parameters.length == 1 && parameters.length  != argumentsLength)
+            setValueOfAddedArgument(arguments, 0,fileName,line);
+        else
+            checkArgumentsSize(arguments,argumentsLength,fileName,line);
+
+        for (int i = 0; i < argumentsLength; i++)
+            setValueOfAddedArgument(arguments.get(i), i,fileName,line);
+    }
+
+
 }

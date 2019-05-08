@@ -38,8 +38,8 @@ public final class ReturnStatementNode extends NodeWithParent {
 
 
     @Override
-    public Object run() {
-        return expression.run();
+    public OperationNode run() {
+        return expression;
     }
 
     @Override

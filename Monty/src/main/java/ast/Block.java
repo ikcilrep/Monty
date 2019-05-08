@@ -18,6 +18,7 @@ package ast;
 
 import ast.declarations.*;
 import ast.expressions.OperationNode;
+import ast.statements.ReturnStatementNode;
 import lexer.Token;
 import parser.LogError;
 

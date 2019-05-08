@@ -25,7 +25,7 @@ import sml.data.returning.ContinueType;
 public final class WhileStatementNode extends ConditionalNode {
     private final boolean isDoWhile;
 
-    public WhileStatementNode(OperationNode condition, String fileName, int line, boolean isDoWhile, Block parent) {
+    public WhileStatementNode(Block parent, OperationNode condition, boolean isDoWhile, String fileName, int line) {
         super(condition, parent);
         setCondition(condition);
         this.isDoWhile = isDoWhile;
@@ -54,5 +54,14 @@ public final class WhileStatementNode extends ConditionalNode {
             } while (runCondition());
         }
         return null;
+    }
+
+    @Override
+    public WhileStatementNode copy() {
+        var copied = new WhileStatementNode(getParent(), getCondition(), isDoWhile,getFileName(),getLine() );
+        copied.setChildren(getChildren());
+        copied.copyChildren();
+
+        return copied;
     }
 }

@@ -38,8 +38,8 @@ abstract class AdderToBlock {
     }
 
     static Block addDoWhileStatement(Block block, ArrayList<Token> tokens) {
-        var whileStatement = new WhileStatementNode(ExpressionParser.parseInfix(block, tokens, 2),
-                tokens.get(0).getFileName(), tokens.get(0).getLine(), true, block);
+        var whileStatement = new WhileStatementNode(block, ExpressionParser.parseInfix(block, tokens, 2), true, tokens.get(0).getFileName(), tokens.get(0).getLine()
+        );
         block.addChild(whileStatement);
         return whileStatement;
 
@@ -124,8 +124,8 @@ abstract class AdderToBlock {
     }
 
     static Block addWhileStatement(Block block, ArrayList<Token> tokens) {
-        var whileStatement = new WhileStatementNode(ExpressionParser.parseInfix(block, tokens, 1),
-                tokens.get(0).getFileName(), tokens.get(0).getLine(), false, block);
+        var whileStatement = new WhileStatementNode(block, ExpressionParser.parseInfix(block, tokens, 1), false, tokens.get(0).getFileName(), tokens.get(0).getLine()
+        );
         block.addChild(whileStatement);
         return whileStatement;
 
