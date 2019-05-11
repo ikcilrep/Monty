@@ -86,12 +86,6 @@ public class StructDeclarationNode extends Block {
         return copied;
     }
 
-    @Override
-    public boolean equals(Object other) {
-        return ToBoolean.toBoolean(OperatorOverloading.overloadOperator(this, other, "$eq", 2),
-                OperatorOverloading.getTemporaryFileName(), OperatorOverloading.getTemporaryLine());
-    }
-
 
     public String getName() {
         return name;

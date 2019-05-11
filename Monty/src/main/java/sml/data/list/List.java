@@ -1,7 +1,11 @@
 package sml.data.list;
 
+import ast.Block;
 import ast.declarations.StructDeclarationNode;
+import lexer.Lexer;
+import monty.FileIO;
 import parser.LogError;
+import parser.parsing.Parser;
 import sml.data.returning.Nothing;
 import sml.data.string.StringStruct;
 import sml.data.tuple.Tuple;
@@ -9,6 +13,8 @@ import sml.data.tuple.Tuple;
 public class List extends StructDeclarationNode {
     private Object[] array;
     private int length = 0;
+    private final static Block methodsWrittenInMonty = Parser.parse(Lexer.lex(FileIO.readFile(List.class.getResourceAsStream("methods.mt"),
+            "methods.mt"), "methods.mt"));
 
     public List() {
         super(null, "List");
@@ -76,7 +82,7 @@ public class List extends StructDeclarationNode {
         new Replace(this);
         new Set(this);
         new Sublist(this);
-
+        concat(methodsWrittenInMonty);
     }
 
     private int capacity() {

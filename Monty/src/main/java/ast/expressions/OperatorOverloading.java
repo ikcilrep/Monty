@@ -42,7 +42,6 @@ public class OperatorOverloading {
         builtInTypes.put("String", StringStruct.class);
         builtInTypes.put("Boolean", Boolean.class);
         builtInTypes.put("Float", Double.class);
-
     }
 
     private static boolean isInstance(Object value, String name) {
@@ -352,7 +351,10 @@ public class OperatorOverloading {
 
     }
 
-    static Object equalsOperator(Object leftValue, Object rightValue) {
+    static Object equalsOperator(Object leftValue, Object rightValue, DataTypes type) {
+        if (type.equals(DataTypes.OBJECT))
+            return overloadOperator(leftValue, rightValue, "$eq", 2);
+
         return leftValue.equals(rightValue);
     }
 
@@ -524,7 +526,10 @@ public class OperatorOverloading {
         }
     }
 
-    static Object notEqualsOperator(Object leftValue, Object rightValue) {
+    static Object notEqualsOperator(Object leftValue, Object rightValue,DataTypes type) {
+        if (type.equals(DataTypes.OBJECT))
+            return overloadOperator(leftValue, rightValue, "$neq", 2);
+
         return !leftValue.equals(rightValue);
     }
 
@@ -568,7 +573,7 @@ public class OperatorOverloading {
         }
     }
 
-    public static Object overloadOperator(Object leftValue, Object rightValue, String nameOfFunction,
+    private static Object overloadOperator(Object leftValue, Object rightValue, String nameOfFunction,
                                           int numberOfParameters) {
         var arguments = new Tuple(leftValue, rightValue);
         leftValue = OperationNode.getVariableValue(leftValue);
@@ -589,6 +594,9 @@ public class OperatorOverloading {
                     return operator.call(arguments, temporaryFileName, temporaryLine);
             }
         }
+        System.out.println(nameOfFunction);
+        System.out.println(leftValue);
+        System.out.println(rightValue);
         new LogError(
                 "Can't do any operations besides assignment and comparison with \"any\" data type if there isn't any overload.",
                 temporaryFileName, temporaryLine);
@@ -680,7 +688,7 @@ public class OperatorOverloading {
         }
     }
 
-    public static Object assignmentModuloOperator(Object leftValue, Object rightValue, DataTypes type) {
+    static Object assignmentModuloOperator(Object leftValue, Object rightValue, DataTypes type) {
         if (type.equals(DataTypes.OBJECT))
             return overloadOperator(leftValue, rightValue, "$a_mod", 2);
 

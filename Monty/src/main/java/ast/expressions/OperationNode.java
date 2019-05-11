@@ -73,8 +73,6 @@ public final class OperationNode extends NodeWithParent {
             var variableNode = ((IdentifierNode) expression);
             if (variableNode.isFunctionCall())
                 return parent.getFunction(variableNode.getName(), fileName, line);
-
-
             var variableOrFunction = parent.getVariableOrFunction(((IdentifierNode) expression).getName(), fileName, line);
             if (doesGetValueFromVariable && variableOrFunction instanceof VariableDeclarationNode)
                 return ((VariableDeclarationNode) variableOrFunction).getValue();
@@ -109,7 +107,7 @@ public final class OperationNode extends NodeWithParent {
             case OR:
                 return OperatorOverloading.orOperator(leftValue, rightValue, type);
             case EQUALS:
-                return OperatorOverloading.equalsOperator(leftValue, rightValue);
+                return OperatorOverloading.equalsOperator(leftValue, rightValue, type);
             case GREATER_THAN:
                 return OperatorOverloading.greaterOperator(leftValue, rightValue, type);
             case LESS_THAN:
@@ -119,7 +117,7 @@ public final class OperationNode extends NodeWithParent {
             case GREATER_EQUALS:
                 return OperatorOverloading.greaterEqualsOperator(leftValue, rightValue, type);
             case NOT_EQUALS:
-                return OperatorOverloading.notEqualsOperator(leftValue, rightValue);
+                return OperatorOverloading.notEqualsOperator(leftValue, rightValue, type);
             case ASSIGNMENT:
                 return OperatorOverloading.assignmentOperator(leftValue, rightValue, type);
             case ASSIGNMENT_ADDITION:
@@ -219,7 +217,7 @@ public final class OperationNode extends NodeWithParent {
         var isDot = operator.equals(DOT);
         var leftFileName = left.getFileName();
         var leftLine = left.getLine();
-        var leftValue = getLiteral(left.solve(parent),parent, !isAssignment, leftFileName, leftLine);
+        var leftValue = getLiteral(left.solve(this.parent),this.parent, !isAssignment, leftFileName, leftLine);
 
         if (operator.equals(COMMA)) {
             var rightValue = getLiteral(right.solve(parent), parent,true, leftFileName, leftLine);
@@ -252,6 +250,7 @@ public final class OperationNode extends NodeWithParent {
                 new LogError("Variable or function can only be got from struct.", fileName, line);
             return OperatorOverloading.dotOperator(leftValue, right, leftType);
         }
+
         var b = right.solve(parent);
 
         if (operator.equals(INSTANCE_OF)) {
@@ -259,7 +258,6 @@ public final class OperationNode extends NodeWithParent {
                 new LogError("Right value have to be type name.", fileName, line);
             return OperatorOverloading.instanceOfOperator(leftValue, b, leftType, parent);
         }
-
         var rightValue = getLiteral(b,parent, true, right.getFileName(), right.getLine());
         if (rightValue instanceof LinkedList)
             return new Tuple(((LinkedList) rightValue));
@@ -360,8 +358,16 @@ public final class OperationNode extends NodeWithParent {
         var line = getLine();
         var value = getLiteral(operand, parent, true, fileName, line);
 
-        if (value instanceof FunctionDeclarationNode)
+        if (value instanceof FunctionDeclarationNode) {
+            if (right.left != null && right.left.operand.equals(JUST))  {
+                var newNode = new OperationNode(right.operand, right.parent, getFileName(), getLine());
+                newNode.left =  new OperationNode(operand, this.parent, getFileName(), getLine());
+                newNode.left.right = right.left;
+                newNode.right = right.right;
+                return newNode.solve(parent);
+            }
             return ((FunctionDeclarationNode) value).call(argumentsToTuple(right.run()), fileName, line);
+        }
         return value;
     }
 
