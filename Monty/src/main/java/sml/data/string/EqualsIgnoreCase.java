@@ -19,17 +19,18 @@ package sml.data.string;
 import sml.data.Method;
 import sml.data.tuple.Tuple;
 
-final class EqualsIgnoreCase extends Method<StringStruct> {
+final class EqualsIgnoreCase extends Method<MontyString> {
 
-    EqualsIgnoreCase(StringStruct parent) {
+    EqualsIgnoreCase(MontyString parent) {
         super(parent, "equalsIgnoreCase",new String[1]);
-        addParameter("toCompare");
+        addParameter("other");
     }
 
     @Override
     public Boolean call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        return parent.getString().equalsIgnoreCase(getBody().getStringVariableValue("toCompare", callFileName, callLine).toString());
+        return parent.getString().equalsIgnoreCase(getBody().getStringVariableValue("other", callFileName,
+                callLine).toString());
     }
 
 }

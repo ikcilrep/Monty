@@ -2,7 +2,7 @@ package sml.data.list;
 
 import ast.declarations.FunctionDeclarationNode;
 import sml.data.Method;
-import sml.data.string.StringStruct;
+import sml.data.string.MontyString;
 import sml.data.tuple.Tuple;
 
 final class ToString extends Method<List> {
@@ -12,9 +12,9 @@ final class ToString extends Method<List> {
     }
 
     @Override
-    public StringStruct call(Tuple arguments, String callFileName, int callLine) {
+    public MontyString call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        return parent.asString();
+        return parent.asString(callFileName,callLine);
     }
 
 }

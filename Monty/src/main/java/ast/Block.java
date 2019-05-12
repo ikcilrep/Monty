@@ -21,7 +21,7 @@ import ast.expressions.OperationNode;
 import lexer.Token;
 import parser.LogError;
 import sml.casts.ToString;
-import sml.data.string.StringStruct;
+import sml.data.string.MontyString;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -224,7 +224,7 @@ public class Block extends NodeWithParent {
         this.parent = parent;
     }
 
-    public StringStruct getStringVariableValue(String name, String fileName, int line) {
+    public MontyString getStringVariableValue(String name, String fileName, int line) {
         return ToString.toString(getVariable(name, fileName, line).getValue(),fileName,line);
     }
 

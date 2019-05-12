@@ -8,7 +8,7 @@ import monty.IOBlocks;
 import parser.LogError;
 import parser.parsing.Parser;
 import sml.data.returning.Nothing;
-import sml.data.string.StringStruct;
+import sml.data.string.MontyString;
 import sml.data.tuple.Tuple;
 
 public class List extends StructDeclarationNode {
@@ -53,7 +53,7 @@ public class List extends StructDeclarationNode {
         length = array.length;
         for (int i = 0; i < length(); i++)
             if (array[i] instanceof String)
-                set(i, new StringStruct((String) array[i]));
+                set(i, new MontyString((String) array[i]));
             else
                 set(i, array[i]);
 
@@ -180,7 +180,7 @@ public class List extends StructDeclarationNode {
         return sublist;
     }
 
-    public StringStruct asString() {
+    public MontyString asString(String fileName, int line) {
         var length = length();
         var stringBuilder = new StringBuilder(length << 1 + 1);
         stringBuilder.append('[');
@@ -188,17 +188,18 @@ public class List extends StructDeclarationNode {
         if (length > 0)
             while (true) {
                 var value = get(i++);
-                if (value instanceof StringStruct)
-                    stringBuilder.append("\"").append(value).append("\"");
+                var stringValue = sml.casts.ToString.toString(value, fileName, line);
+                if (value instanceof MontyString)
+                    stringBuilder.append("\"").append(stringValue).append("\"");
                 else
-                    stringBuilder.append(value);
+                    stringBuilder.append(stringValue);
                 if (i < length)
                     stringBuilder.append(", ");
                 else
                     break;
             }
         stringBuilder.append(']');
-        return new StringStruct(stringBuilder.toString());
+        return new MontyString(stringBuilder.toString());
 
     }
 

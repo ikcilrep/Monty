@@ -26,7 +26,7 @@ import parser.LogError;
 import parser.Recognizer;
 import parser.Tokens;
 import sml.Sml;
-import sml.data.string.StringStruct;
+import sml.data.string.MontyString;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ import java.util.Stack;
 
 class ExpressionParser {
     private final static HashMap<String, Object> LITERALS = new HashMap<>();
-    private final static HashMap<String, StringStruct> STRING_LITERALS = new HashMap<>();
+    private final static HashMap<String, MontyString> STRING_LITERALS = new HashMap<>();
     /*
      * Parses list of tokens to abstract syntax tree.
      */
@@ -145,7 +145,7 @@ class ExpressionParser {
                 if (STRING_LITERALS.containsKey(literal))
                     return STRING_LITERALS.get(literal);
                 else {
-                    var newStringLiteral = new StringStruct(literal);
+                    var newStringLiteral = new MontyString(literal);
                     STRING_LITERALS.put(literal, newStringLiteral);
                     return newStringLiteral;
                 }

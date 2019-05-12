@@ -19,9 +19,9 @@ package sml.data.string;
 import sml.data.Method;
 import sml.data.tuple.Tuple;
 
-final class EndsWith extends Method<StringStruct> {
+final class EndsWith extends Method<MontyString> {
 
-    EndsWith(StringStruct parent) {
+    EndsWith(MontyString parent) {
         super(parent, "endsWith",new String[1]);
         addParameter("suffix");
     }
@@ -29,7 +29,7 @@ final class EndsWith extends Method<StringStruct> {
     @Override
     public Boolean call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        return parent.getString().endsWith(getBody().getStringVariableValue("suffix", callFileName, callLine).toString());
+        return parent.endsWith(body.getStringVariableValue("suffix", callFileName, callLine));
     }
 
 }

@@ -20,7 +20,7 @@ import ast.Block;
 import parser.LogError;
 import sml.NativeFunctionDeclarationNode;
 import sml.data.returning.VoidType;
-import sml.data.string.StringStruct;
+import sml.data.string.MontyString;
 import sml.data.tuple.Tuple;
 
 import java.math.BigInteger;
@@ -44,8 +44,8 @@ public final class ToBoolean extends NativeFunctionDeclarationNode {
             return fromFloat((double) toBeCasted);
         if (toBeCasted instanceof Boolean)
             return (boolean) toBeCasted;
-        if (toBeCasted instanceof StringStruct)
-            return fromString((StringStruct) toBeCasted);
+        if (toBeCasted instanceof MontyString)
+            return fromString((MontyString) toBeCasted);
         else
             new LogError("Can't cast structure to boolean", callFileName, callLine);
         return null;
@@ -63,7 +63,7 @@ public final class ToBoolean extends NativeFunctionDeclarationNode {
         return floating > 0;
     }
 
-    private static Boolean fromString(StringStruct str) {
+    private static Boolean fromString(MontyString str) {
         return Boolean.parseBoolean(str.getString());
     }
 

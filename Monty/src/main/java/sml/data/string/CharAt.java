@@ -16,41 +16,21 @@ limitations under the License.
 package sml.data.string;
 
 import parser.DataTypes;
-import parser.LogError;
 import sml.data.Method;
 import sml.data.tuple.Tuple;
 
-import java.math.BigInteger;
+final class CharAt extends Method<MontyString> {
 
-final class CharAt extends Method<StringStruct> {
-
-    CharAt(StringStruct parent) {
+    CharAt(MontyString parent) {
         super(parent, "charAt",new String[1]);
         addParameter("index");
     }
 
     @Override
-    public StringStruct call(Tuple arguments, String callFileName, int callLine) {
+    public MontyString call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-
-        var _index = body.getVariableValue("index", callFileName, callLine);
-        int index = 0;
-        if (_index instanceof Integer)
-            index = (int) _index;
-        else if (_index instanceof BigInteger) {
-            var bigIndex = (BigInteger) _index;
-            if (bigIndex.compareTo(DataTypes.INT_MAX) > 0)
-                new LogError("Index have to be less or equals 2^31-1.", callFileName, callLine);
-            else if (bigIndex.compareTo(DataTypes.INT_MIN) < 0)
-                new LogError("Index have to be greater or equals -2^31.", callFileName, callLine);
-            index = bigIndex.intValue();
-        }
-        try {
-            return new StringStruct(String.valueOf(parent.getString().charAt(index)));
-        } catch (IndexOutOfBoundsException e) {
-            new LogError("Index " + index + " out of bounds for length " + parent.getString().length(), callFileName, callLine);
-        }
-        return null;
+        return parent.charAt(DataTypes.getAndCheckSmallInteger(body.getVariableValue("index", callFileName,
+                callLine), "Index", callFileName,callLine),callFileName,callLine);
     }
 
 }

@@ -3,7 +3,7 @@ package sml.data.tuple;
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import parser.LogError;
-import sml.data.string.StringStruct;
+import sml.data.string.MontyString;
 
 import java.util.LinkedList;
 
@@ -59,26 +59,26 @@ public class Tuple extends StructDeclarationNode {
             new LogError("This array doesn't have " + index + " element.", fileName, line);
     }
 
-    public StringStruct asString() {
+    public MontyString asString(String fileName, int line) {
         var length = length();
         var stringBuilder = new StringBuilder(length << 1 + 1);
         stringBuilder.append('(');
-
         int i = 0;
         if (length > 0)
             while (true) {
                 var value = get(i++);
-                if (value instanceof StringStruct)
-                    stringBuilder.append("\"").append(value).append("\"");
+                var stringValue = sml.casts.ToString.toString(value, fileName, line);
+                if (value instanceof MontyString)
+                    stringBuilder.append("\"").append(stringValue).append("\"");
                 else
-                    stringBuilder.append(value);
+                    stringBuilder.append(stringValue);
                 if (i < length)
                     stringBuilder.append(", ");
                 else
                     break;
             }
         stringBuilder.append(')');
-        return new StringStruct(stringBuilder.toString());
+        return new MontyString(stringBuilder.toString());
 
     }
 }

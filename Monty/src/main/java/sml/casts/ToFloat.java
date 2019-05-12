@@ -21,7 +21,7 @@ import ast.declarations.VariableDeclarationNode;
 import parser.LogError;
 import sml.NativeFunctionDeclarationNode;
 import sml.data.returning.VoidType;
-import sml.data.string.StringStruct;
+import sml.data.string.MontyString;
 import sml.data.tuple.Tuple;
 
 import java.math.BigInteger;
@@ -45,8 +45,8 @@ public final class ToFloat extends NativeFunctionDeclarationNode {
             return fromBoolean((Boolean) toBeCasted);
         if (toBeCasted instanceof Double)
             return (double) toBeCasted;
-        if (toBeCasted instanceof StringStruct)
-            return fromString((StringStruct) toBeCasted, callFileName, callLine);
+        if (toBeCasted instanceof MontyString)
+            return fromString((MontyString) toBeCasted, callFileName, callLine);
         else
             new LogError("Can't cast structure to real", callFileName, callLine);
         return null;
@@ -74,7 +74,7 @@ public final class ToFloat extends NativeFunctionDeclarationNode {
         return 0;
     }
 
-    private static Double fromString(StringStruct str, String fileName, int line) {
+    private static Double fromString(MontyString str, String fileName, int line) {
         try {
             return Double.parseDouble(str.getString());
         } catch (NumberFormatException e) {

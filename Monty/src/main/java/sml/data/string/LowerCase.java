@@ -20,16 +20,16 @@ import ast.declarations.FunctionDeclarationNode;
 import sml.data.Method;
 import sml.data.tuple.Tuple;
 
-final class LowerCase extends Method<StringStruct> {
+final class LowerCase extends Method<MontyString> {
 
-    LowerCase(StringStruct parent) {
+    LowerCase(MontyString parent) {
         super(parent, "lowerCase", FunctionDeclarationNode.EMPTY_PARAMETERS);
     }
 
     @Override
-    public StringStruct call(Tuple arguments, String callFileName, int callLine) {
+    public MontyString call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        return new StringStruct(parent.getString().toLowerCase());
+        return parent.lowerCase();
     }
 
 }

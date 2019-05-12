@@ -21,7 +21,7 @@ import ast.declarations.VariableDeclarationNode;
 import parser.LogError;
 import sml.NativeFunctionDeclarationNode;
 import sml.data.returning.VoidType;
-import sml.data.string.StringStruct;
+import sml.data.string.MontyString;
 import sml.data.tuple.Tuple;
 
 import java.math.BigDecimal;
@@ -44,14 +44,14 @@ public final class ToInt extends NativeFunctionDeclarationNode {
             return fromFloat((double) toBeCasted);
         if (toBeCasted instanceof Boolean)
             return fromBoolean((Boolean) toBeCasted);
-        if (toBeCasted instanceof StringStruct)
-            return fromString((StringStruct) toBeCasted, callFileName, callLine);
+        if (toBeCasted instanceof MontyString)
+            return fromString((MontyString) toBeCasted, callFileName, callLine);
         else
             new LogError("Can't cast structure to integer", callFileName, callLine);
         return null;
     }
 
-    private static Object fromString(StringStruct str, String fileName, int line) {
+    private static Object fromString(MontyString str, String fileName, int line) {
         try {
             return Integer.parseInt(str.getString());
         } catch (NumberFormatException e1) {

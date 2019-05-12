@@ -19,9 +19,9 @@ package sml.data.string;
 import sml.data.Method;
 import sml.data.tuple.Tuple;
 
-final class StartsWith extends Method<StringStruct> {
+final class StartsWith extends Method<MontyString> {
 
-    StartsWith(StringStruct parent) {
+    StartsWith(MontyString parent) {
         super(parent, "startsWith",new String[1]);
         addParameter("prefix");
     }
@@ -29,7 +29,7 @@ final class StartsWith extends Method<StringStruct> {
     @Override
     public Boolean call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        return parent.getString().startsWith(getBody().getStringVariableValue("prefix", callFileName, callLine).toString());
+        return parent.startsWith(body.getStringVariableValue("prefix", callFileName, callLine));
     }
 
 }

@@ -19,9 +19,9 @@ package sml.data.string;
 import sml.data.Method;
 import sml.data.tuple.Tuple;
 
-final class Equals extends Method<StringStruct> {
+final class Equals extends Method<MontyString> {
 
-    Equals(StringStruct parent) {
+    Equals(MontyString parent) {
         super(parent, "$eq",new String[2]);
         addParameter("this");
         addParameter("other");
@@ -30,7 +30,7 @@ final class Equals extends Method<StringStruct> {
     @Override
     public Boolean call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        return parent.equals(body.getStringVariableValue("other", callFileName, callLine));
+        return body.getStringVariableValue("this", callFileName, callLine).equals(body.getStringVariableValue("other", callFileName, callLine));
     }
 
 }

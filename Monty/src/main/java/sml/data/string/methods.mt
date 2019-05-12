@@ -23,3 +23,11 @@ end;
 func $r_neq other this;
     return this != other;
 end;
+
+func $r_mul times this;
+    return this * times;
+end;
+
+func $r_a_mul times this;
+    return this *= times;
+end;

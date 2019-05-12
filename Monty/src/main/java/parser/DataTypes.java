@@ -47,4 +47,19 @@ public enum DataTypes {
 
     }
 
+    public static int getAndCheckSmallInteger(Object _index, String nameOfNumber, String fileName, int line) {
+        if (_index instanceof Integer)
+            return (int) _index;
+        if (_index instanceof BigInteger) {
+            var bigIndex = (BigInteger) _index;
+            if (bigIndex.compareTo(DataTypes.INT_MAX) > 0)
+                new LogError(nameOfNumber + " have to be less or equals 2^31-1.", fileName, line);
+            if (bigIndex.compareTo(DataTypes.INT_MIN) < 0)
+                new LogError(nameOfNumber + " have to be greater or equals -2^31.", fileName, line);
+            return  bigIndex.intValue();
+        }
+        new LogError(nameOfNumber + " have to be integer.", fileName, line);
+        return -1;
+    }
+
 }

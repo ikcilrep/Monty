@@ -20,16 +20,16 @@ import ast.declarations.FunctionDeclarationNode;
 import sml.data.Method;
 import sml.data.tuple.Tuple;
 
-final class Length extends Method<StringStruct> {
+final class Length extends Method<MontyString> {
 
-    Length(StringStruct parent) {
+    Length(MontyString parent) {
         super(parent, "length", FunctionDeclarationNode.EMPTY_PARAMETERS);
     }
 
     @Override
     public Integer call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        return parent.getString().length();
+        return parent.length();
     }
 
 }

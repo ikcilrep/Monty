@@ -20,7 +20,7 @@ import ast.Block;
 import ast.RunnableNode;
 import lexer.Token;
 import sml.Sml;
-import sml.data.string.StringStruct;
+import sml.data.string.MontyString;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -105,13 +105,13 @@ public class StructDeclarationNode extends Block {
         return other.structNumber == structNumber;
     }
 
-    public StringStruct toString(String fileName, int line) {
+    public MontyString toString(String fileName, int line) {
         String text;
         if (hasFunction("$str"))
             text = getFunction("$str", fileName, line).call(Sml.EMPTY_ARGUMENT_LIST,  fileName, line).toString();
         else
             text = name + "#" + instanceNumber;
-        return new StringStruct(text);
+        return new MontyString(text);
     }
     public void addThisVariable(String fileName, int line) {
         var thisVariable = new VariableDeclarationNode("This");

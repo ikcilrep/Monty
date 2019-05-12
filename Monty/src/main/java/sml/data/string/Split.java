@@ -20,9 +20,9 @@ import sml.data.Method;
 import sml.data.list.List;
 import sml.data.tuple.Tuple;
 
-final class Split extends Method<StringStruct> {
+final class Split extends Method<MontyString> {
 
-    Split(StringStruct parent) {
+    Split(MontyString parent) {
         super(parent, "split",new String[1]);
         addParameter("regex");
     }
@@ -30,13 +30,7 @@ final class Split extends Method<StringStruct> {
     @Override
     public List call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-
-        var split = parent.getString().split(body.getStringVariableValue("regex", callFileName, callLine).toString());
-        var splitAndCasted = new StringStruct[split.length];
-        var i = 0;
-        for (var string : split)
-            splitAndCasted[i++] = new StringStruct(string);
-        return new List(splitAndCasted);
+        return parent.split(body.getStringVariableValue("regex",callFileName,callLine));
     }
 
 }

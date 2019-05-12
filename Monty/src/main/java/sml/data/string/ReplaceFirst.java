@@ -19,9 +19,9 @@ package sml.data.string;
 import sml.data.Method;
 import sml.data.tuple.Tuple;
 
-final class ReplaceFirst extends Method<StringStruct> {
+final class ReplaceFirst extends Method<MontyString> {
 
-    ReplaceFirst(StringStruct parent) {
+    ReplaceFirst(MontyString parent) {
         super(parent, "replaceFirst",new String[2]);
         addParameter("regex");
         addParameter("replacement");
@@ -29,11 +29,10 @@ final class ReplaceFirst extends Method<StringStruct> {
     }
 
     @Override
-    public StringStruct call(Tuple arguments, String callFileName, int callLine) {
+    public MontyString call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-
-        return new StringStruct(parent.getString().replaceFirst(body.getStringVariableValue("regex", callFileName, callLine).toString(),
-                body.getStringVariableValue("replacement", callFileName, callLine).toString()));
+        return parent.replaceFirst(body.getStringVariableValue("regex", callFileName, callLine),
+                body.getStringVariableValue("replacement", callFileName, callLine));
     }
 
 }

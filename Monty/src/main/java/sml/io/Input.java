@@ -19,7 +19,7 @@ package sml.io;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import sml.NativeFunctionDeclarationNode;
-import sml.data.string.StringStruct;
+import sml.data.string.MontyString;
 import sml.data.tuple.Tuple;
 
 import java.util.NoSuchElementException;
@@ -35,12 +35,12 @@ public final class Input extends NativeFunctionDeclarationNode {
     }
 
     @Override
-    public StringStruct call(Tuple arguments, String callFileName, int callLine) {
+    public MontyString call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
         try {
-            return new StringStruct(scanner.nextLine());
+            return new MontyString(scanner.nextLine());
         } catch (NoSuchElementException e) {
-            return new StringStruct("");
+            return new MontyString("");
         }
     }
 

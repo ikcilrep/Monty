@@ -19,16 +19,16 @@ import ast.declarations.FunctionDeclarationNode;
 import sml.data.Method;
 import sml.data.tuple.Tuple;
 
-final class UpperCase extends Method<StringStruct> {
+final class UpperCase extends Method<MontyString> {
 
-    UpperCase(StringStruct parent) {
+    UpperCase(MontyString parent) {
         super(parent, "upperCase", FunctionDeclarationNode.EMPTY_PARAMETERS);
     }
 
     @Override
-    public StringStruct call(Tuple arguments, String callFileName, int callLine) {
+    public MontyString call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        return new StringStruct(parent.getString().toUpperCase());
+        return parent.upperCase();
     }
 
 }

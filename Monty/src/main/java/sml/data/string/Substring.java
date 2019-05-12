@@ -17,59 +17,24 @@ limitations under the License.
 package sml.data.string;
 
 import parser.DataTypes;
-import parser.LogError;
 import sml.data.Method;
 import sml.data.tuple.Tuple;
 
-import java.math.BigInteger;
+final class Substring extends Method<MontyString> {
 
-final class Substring extends Method<StringStruct> {
-
-    Substring(StringStruct parent) {
+    Substring(MontyString parent) {
         super(parent, "substring",new String[2]);
         addParameter("begin");
         addParameter("end");
     }
 
     @Override
-    public StringStruct call(Tuple arguments, String callFileName, int callLine) {
+    public MontyString call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-
-        var _begin = body.getVariableValue("begin", callFileName, callLine);
-        var _end = body.getVariableValue("end", callFileName, callLine);
-
-        int begin = 0;
-        int end = 0;
-
-        if (_begin instanceof Integer)
-            begin = (int) _begin;
-        else if (_begin instanceof BigInteger) {
-            var bigIndex = (BigInteger) _begin;
-            if (bigIndex.compareTo(DataTypes.INT_MAX) > 0)
-                new LogError("Index have to be less or equals 2^31-1.", callFileName, callLine);
-            else if (bigIndex.compareTo(DataTypes.INT_MIN) < 0)
-                new LogError("Index have to be greater or equals -2^31.", callFileName, callLine);
-            begin = bigIndex.intValue();
-        }
-
-        if (_end instanceof Integer)
-            end = (int) _end;
-        else if (_begin instanceof BigInteger) {
-            var bigIndex = (BigInteger) _end;
-            if (bigIndex.compareTo(DataTypes.INT_MAX) > 0)
-                new LogError("Index have to be less or equals 2^31-1.", callFileName, callLine);
-            else if (bigIndex.compareTo(DataTypes.INT_MIN) < 0)
-                new LogError("Index have to be greater or equals -2^31.", callFileName, callLine);
-            end = bigIndex.intValue();
-        }
-
-        if (begin < 0)
-            new LogError("Begin can't be negative.", callFileName, callLine);
-        if (end > parent.getString().length())
-            new LogError("End can't be greater than length of list.", callFileName, callLine);
-        if (begin > end)
-            new LogError("Begin can't be greater or equals to end.", callFileName, callLine);
-        return new StringStruct(parent.getString().substring(begin, end));
+        return parent.substring(DataTypes.getAndCheckSmallInteger(body.getVariableValue("begin", callFileName,
+                callLine),"Begin",callFileName,callLine),DataTypes.getAndCheckSmallInteger(
+                        body.getVariableValue("end", callFileName, callLine),"End",callFileName,
+                callLine),callFileName,callLine);
     }
 
 }
