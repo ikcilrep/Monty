@@ -29,11 +29,11 @@ final class ReplaceFirst extends Method<StringStruct> {
     }
 
     @Override
-    public String call(Tuple arguments, String callFileName, int callLine) {
+    public StringStruct call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
         var body = getBody();
-        return parent.getString().replaceFirst(body.getStringVariableValue("regex", callFileName, callLine).toString(),
-                body.getStringVariableValue("replacement", callFileName, callLine).toString());
+        return new StringStruct(parent.getString().replaceFirst(body.getStringVariableValue("regex", callFileName, callLine).toString(),
+                body.getStringVariableValue("replacement", callFileName, callLine).toString()));
     }
 
 }

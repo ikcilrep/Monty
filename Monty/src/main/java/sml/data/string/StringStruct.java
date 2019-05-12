@@ -1,9 +1,15 @@
 package sml.data.string;
 
+import ast.Block;
 import ast.declarations.StructDeclarationNode;
+import lexer.Lexer;
+import monty.FileIO;
+import parser.parsing.Parser;
 
 public class StringStruct extends StructDeclarationNode {
     private String string;
+    private final static Block methodsWrittenInMonty = Parser.parse(Lexer.lex(FileIO.readFile(StringStruct.class.getResourceAsStream("methods.mt"),
+            "methods.mt"), "methods.mt"));
 
     public StringStruct(String string) {
         super(null, "String");
@@ -21,13 +27,13 @@ public class StringStruct extends StructDeclarationNode {
         new MultipliedRight(this);
         new MultiplyLeft(this);
         new MultiplyRight(this);
-        new NewIterator(this);
         new Replace(this);
         new ReplaceFirst(this);
         new Split(this);
         new StartsWith(this);
         new Substring(this);
         new UpperCase(this);
+        concat(methodsWrittenInMonty);
     }
 
     public StringStruct mulitply(int times) {

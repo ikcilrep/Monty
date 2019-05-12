@@ -17,7 +17,7 @@ public class AddLeft extends Method<StringStruct> {
         setArguments(arguments, callFileName, callLine);
         parent.setString(parent.getString() + getBody().getVariable("other", callFileName, callLine).getValue()
 );
-        return parent.getString();
+        return parent;
     }
 
 }

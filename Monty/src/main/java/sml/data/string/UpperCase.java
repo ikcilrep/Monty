@@ -26,9 +26,9 @@ final class UpperCase extends Method<StringStruct> {
     }
 
     @Override
-    public String call(Tuple arguments, String callFileName, int callLine) {
+    public StringStruct call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        return parent.getString().toUpperCase();
+        return new StringStruct(parent.getString().toUpperCase());
     }
 
 }

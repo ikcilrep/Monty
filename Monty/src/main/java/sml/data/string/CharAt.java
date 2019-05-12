@@ -30,7 +30,7 @@ final class CharAt extends Method<StringStruct> {
     }
 
     @Override
-    public String call(Tuple arguments, String callFileName, int callLine) {
+    public StringStruct call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
         var body = getBody();
         var _index = body.getVariableValue("index", callFileName, callLine);
@@ -46,7 +46,7 @@ final class CharAt extends Method<StringStruct> {
             index = bigIndex.intValue();
         }
         try {
-            return String.valueOf(parent.getString().charAt(index));
+            return new StringStruct(String.valueOf(parent.getString().charAt(index)));
         } catch (IndexOutOfBoundsException e) {
             new LogError("Index " + index + " out of bounds for length " + parent.getString().length(), callFileName, callLine);
         }

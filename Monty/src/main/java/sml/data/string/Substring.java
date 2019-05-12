@@ -32,7 +32,7 @@ final class Substring extends Method<StringStruct> {
     }
 
     @Override
-    public String call(Tuple arguments, String callFileName, int callLine) {
+    public StringStruct call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
         var body = getBody();
         var _begin = body.getVariableValue("begin", callFileName, callLine);
@@ -69,7 +69,7 @@ final class Substring extends Method<StringStruct> {
             new LogError("End can't be greater than length of list.", callFileName, callLine);
         if (begin > end)
             new LogError("Begin can't be greater or equals to end.", callFileName, callLine);
-        return parent.getString().substring(begin, end);
+        return new StringStruct(parent.getString().substring(begin, end));
     }
 
 }

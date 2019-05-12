@@ -31,7 +31,12 @@ final class Split extends Method<StringStruct> {
     public List call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
         var body = getBody();
-        return new List(parent.getString().split(body.getStringVariableValue("regex", callFileName, callLine).toString()));
+        var split = parent.getString().split(body.getStringVariableValue("regex", callFileName, callLine).toString());
+        var splitAndCasted = new StringStruct[split.length];
+        var i = 0;
+        for (var string : split)
+            splitAndCasted[i++] = new StringStruct(string);
+        return new List(splitAndCasted);
     }
 
 }
