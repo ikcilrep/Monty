@@ -10,3 +10,16 @@ struct Iterator;
         return result;
     end;
 end;
+
+
+func $neq this other;
+    return !(this == other);
+end;
+
+func $r_eq other this;
+    return this == other;
+end;
+
+func $r_neq other this;
+    return this != other;
+end;

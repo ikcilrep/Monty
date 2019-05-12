@@ -18,7 +18,7 @@ final class Set extends Method<List> {
     @Override
     public List call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        var body = getBody();
+
         var _index = body.getVariableValue("index", callFileName, callLine);
         var value = body.getVariableValue("value", callFileName, callLine);
         int index = 0;

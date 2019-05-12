@@ -15,9 +15,8 @@ public class AddRight extends Method<StringStruct> {
     @Override
     public Object call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        parent.setString(getBody().getVariable("other", callFileName, callLine).getValue() +
-                parent.getString());
-        return parent;
+        return body.getStringVariableValue("other", callFileName, callLine).add(parent);
+
     }
 
 }

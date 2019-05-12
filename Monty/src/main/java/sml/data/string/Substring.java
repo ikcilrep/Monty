@@ -34,7 +34,7 @@ final class Substring extends Method<StringStruct> {
     @Override
     public StringStruct call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        var body = getBody();
+
         var _begin = body.getVariableValue("begin", callFileName, callLine);
         var _end = body.getVariableValue("end", callFileName, callLine);
 

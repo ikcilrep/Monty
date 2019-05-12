@@ -20,6 +20,7 @@ public class StringStruct extends StructDeclarationNode {
         new AddLeft(this);
         new AddRight(this);
         new EndsWith(this);
+        new Equals(this);
         new EqualsIgnoreCase(this);
         new Length(this);
         new LowerCase(this);
@@ -33,6 +34,7 @@ public class StringStruct extends StructDeclarationNode {
         new StartsWith(this);
         new Substring(this);
         new UpperCase(this);
+        new ToString(this);
         concat(methodsWrittenInMonty);
     }
 
@@ -48,6 +50,22 @@ public class StringStruct extends StructDeclarationNode {
     public StringStruct mulitplied(int times) {
         setString(mulitply(times).getString());
         return this;
+    }
+
+    public StringStruct added(StringStruct other) {
+        return new StringStruct(string + other.string);
+    }
+
+    public StringStruct add(StringStruct other) {
+        string += other.string;
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof StringStruct))
+            return false;
+        return ((StringStruct) other).string.equals(string);
     }
 
     @Override

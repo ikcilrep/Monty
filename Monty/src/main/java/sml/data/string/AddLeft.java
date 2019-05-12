@@ -15,9 +15,7 @@ public class AddLeft extends Method<StringStruct> {
     @Override
     public Object call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        parent.setString(parent.getString() + getBody().getVariable("other", callFileName, callLine).getValue()
-);
-        return parent;
+        return parent.add(body.getStringVariableValue("other", callFileName, callLine));
     }
 
 }

@@ -19,21 +19,18 @@ package sml.data.string;
 import sml.data.Method;
 import sml.data.tuple.Tuple;
 
-final class Replace extends Method<StringStruct> {
+final class Equals extends Method<StringStruct> {
 
-    Replace(StringStruct parent) {
-        super(parent, "replace",new String[2]);
-        addParameter("regex");
-        addParameter("replacement");
-
+    Equals(StringStruct parent) {
+        super(parent, "$eq",new String[2]);
+        addParameter("this");
+        addParameter("other");
     }
 
     @Override
-    public StringStruct call(Tuple arguments, String callFileName, int callLine) {
+    public Boolean call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-
-        return new StringStruct(parent.getString().replaceAll(body.getStringVariableValue("regex", callFileName, callLine).toString(),
-                body.getStringVariableValue("replacement", callFileName, callLine).toString()));
+        return parent.equals(body.getStringVariableValue("other", callFileName, callLine));
     }
 
 }
