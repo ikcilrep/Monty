@@ -33,7 +33,7 @@ public final class Print extends NativeFunctionDeclarationNode {
     @Override
     public VoidType call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        System.out.print(getBody().getStringVariableValue("toPrint", callFileName, callLine));
+        System.out.print(body.getStringVariableValue("toPrint", callFileName, callLine));
         return Nothing.nothing;
     }
 

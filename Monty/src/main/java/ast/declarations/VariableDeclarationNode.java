@@ -21,8 +21,8 @@ import sml.data.returning.Nothing;
 
 public class VariableDeclarationNode extends DeclarationNode {
 
-    private boolean isConst = false;
-    private boolean wasValueChanged = false;
+    protected boolean isConst = false;
+    protected boolean wasValueChanged = false;
     protected Object value = Nothing.nothing;
 
     public VariableDeclarationNode(String name) {

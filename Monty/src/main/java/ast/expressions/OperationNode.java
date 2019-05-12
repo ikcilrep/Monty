@@ -81,72 +81,72 @@ public final class OperationNode extends NodeWithParent {
         return expression;
     }
 
-    private Object calculate(Object leftValue, Object rightValue, Operator operator, DataTypes type) {
+    private Object calculate(Object leftValue, Object rightValue, Operator operator, DataTypes type, String fileName, int line) {
         // Calculates the result of math operation.
         switch (operator) {
             case ADDITION:
-                return OperatorOverloading.additionOperator(leftValue, rightValue, type);
+                return OperatorOverloading.additionOperator(leftValue, rightValue, type, fileName, line);
             case SUBTRACTION:
-                return OperatorOverloading.subtractionOperator(leftValue, rightValue, type);
+                return OperatorOverloading.subtractionOperator(leftValue, rightValue, type, fileName, line);
             case MULTIPLICATION:
-                return OperatorOverloading.multiplicationOperator(leftValue, rightValue, type);
+                return OperatorOverloading.multiplicationOperator(leftValue, rightValue, type, fileName, line);
             case POWER:
-                return OperatorOverloading.powerOperator(leftValue, rightValue, type);
+                return OperatorOverloading.powerOperator(leftValue, rightValue, type, fileName, line);
             case DIVISION:
-                return OperatorOverloading.divisionOperator(leftValue, rightValue, type);
+                return OperatorOverloading.divisionOperator(leftValue, rightValue, type, fileName, line);
             case MODULO:
-                return OperatorOverloading.moduloOperator(leftValue, rightValue, type);
+                return OperatorOverloading.moduloOperator(leftValue, rightValue, type, fileName, line);
             case SHIFT_LEFT:
-                return OperatorOverloading.shiftLeftOperator(leftValue, rightValue, type);
+                return OperatorOverloading.shiftLeftOperator(leftValue, rightValue, type, fileName, line);
             case SHIFT_RIGHT:
-                return OperatorOverloading.shiftRightOperator(leftValue, rightValue, type);
+                return OperatorOverloading.shiftRightOperator(leftValue, rightValue, type, fileName, line);
             case XOR:
-                return OperatorOverloading.xorOperator(leftValue, rightValue, type);
+                return OperatorOverloading.xorOperator(leftValue, rightValue, type, fileName, line);
             case AND:
-                return OperatorOverloading.andOperator(leftValue, rightValue, type);
+                return OperatorOverloading.andOperator(leftValue, rightValue, type, fileName, line);
             case OR:
-                return OperatorOverloading.orOperator(leftValue, rightValue, type);
+                return OperatorOverloading.orOperator(leftValue, rightValue, type, fileName, line);
             case EQUALS:
-                return OperatorOverloading.equalsOperator(leftValue, rightValue, type);
+                return OperatorOverloading.equalsOperator(leftValue, rightValue, type, fileName, line);
             case GREATER_THAN:
-                return OperatorOverloading.greaterOperator(leftValue, rightValue, type);
+                return OperatorOverloading.greaterOperator(leftValue, rightValue, type, fileName, line);
             case LESS_THAN:
-                return OperatorOverloading.lowerOperator(leftValue, rightValue, type);
+                return OperatorOverloading.lowerOperator(leftValue, rightValue, type, fileName, line);
             case LESS_EQUALS:
-                return OperatorOverloading.lowerEqualsOperator(leftValue, rightValue, type);
+                return OperatorOverloading.lowerEqualsOperator(leftValue, rightValue, type, fileName, line);
             case GREATER_EQUALS:
-                return OperatorOverloading.greaterEqualsOperator(leftValue, rightValue, type);
+                return OperatorOverloading.greaterEqualsOperator(leftValue, rightValue, type, fileName, line);
             case NOT_EQUALS:
-                return OperatorOverloading.notEqualsOperator(leftValue, rightValue, type);
+                return OperatorOverloading.notEqualsOperator(leftValue, rightValue, type, fileName, line);
             case ASSIGNMENT:
-                return OperatorOverloading.assignmentOperator(leftValue, rightValue, type);
+                return OperatorOverloading.assignmentOperator(leftValue, rightValue, type, fileName, line);
             case ASSIGNMENT_ADDITION:
-                return OperatorOverloading.assignmentAdditionOperator(leftValue, rightValue, type);
+                return OperatorOverloading.assignmentAdditionOperator(leftValue, rightValue, type, fileName, line);
             case ASSIGNMENT_SUBTRACTION:
-                return OperatorOverloading.assignmentSubtractionOperator(leftValue, rightValue, type);
+                return OperatorOverloading.assignmentSubtractionOperator(leftValue, rightValue, type, fileName, line);
             case ASSIGNMENT_POWER:
-                return OperatorOverloading.assignmentPowerOperator(leftValue, rightValue, type);
+                return OperatorOverloading.assignmentPowerOperator(leftValue, rightValue, type, fileName, line);
             case ASSIGNMENT_MULTIPLICATION:
-                return OperatorOverloading.assignmentMultiplicationOperator(leftValue, rightValue, type);
+                return OperatorOverloading.assignmentMultiplicationOperator(leftValue, rightValue, type, fileName, line);
             case ASSIGNMENT_DIVISION:
-                return OperatorOverloading.assignmentDivisionOperator(leftValue, rightValue, type);
+                return OperatorOverloading.assignmentDivisionOperator(leftValue, rightValue, type, fileName, line);
             case ASSIGNMENT_MODULO:
-                return OperatorOverloading.assignmentModuloOperator(leftValue, rightValue, type);
+                return OperatorOverloading.assignmentModuloOperator(leftValue, rightValue, type, fileName, line);
             case ASSIGNMENT_SHIFT_LEFT:
-                return OperatorOverloading.assignmentShiftLeftOperator(leftValue, rightValue, type);
+                return OperatorOverloading.assignmentShiftLeftOperator(leftValue, rightValue, type, fileName, line);
             case ASSIGNMENT_SHIFT_RIGHT:
-                return OperatorOverloading.assignmentShiftRightOperator(leftValue, rightValue, type);
+                return OperatorOverloading.assignmentShiftRightOperator(leftValue, rightValue, type, fileName, line);
             case ASSIGNMENT_XOR:
-                return OperatorOverloading.assignmentXorOperator(leftValue, rightValue, type);
+                return OperatorOverloading.assignmentXorOperator(leftValue, rightValue, type, fileName, line);
             case ASSIGNMENT_AND:
-                return OperatorOverloading.assignmentAndOperator(leftValue, rightValue, type);
+                return OperatorOverloading.assignmentAndOperator(leftValue, rightValue, type, fileName, line);
             case ASSIGNMENT_OR:
-                return OperatorOverloading.assignmentOrOperator(leftValue, rightValue, type);
+                return OperatorOverloading.assignmentOrOperator(leftValue, rightValue, type, fileName, line);
         }
         return null;
     }
-    private Object calculate(Object value, DataTypes type) {
-        return OperatorOverloading.negationOperator(value, type);
+    private Object calculate(Object value, DataTypes type, String fileName, int line) {
+        return OperatorOverloading.negationOperator(value, type, fileName, line);
     }
 
     @Override
@@ -177,7 +177,6 @@ public final class OperationNode extends NodeWithParent {
         var line = getLine();
         Object result;
         if (!(operand instanceof Operator || operand instanceof IdentifierNode)) {
-            OperatorOverloading.setTemporary(fileName, line);
             result = operand;
         }  else
             result = solve(parent);
@@ -205,9 +204,9 @@ public final class OperationNode extends NodeWithParent {
     public final void setRight(OperationNode right) {
         this.right = right;
     }
-    private Object solveUnaryOperator(Block parent) {
+    private Object solveUnaryOperator(Block parent, String fileName, int line) {
         var value = getLiteral(right.solve(parent),parent, true, right.getFileName(), right.getLine());
-        return calculate(value, DataTypes.getDataType(value));
+        return calculate(value, DataTypes.getDataType(value), fileName, line);
     }
     @SuppressWarnings("unchecked")
     private Object solveBinaryOperator(Block parent, Operator operator) {
@@ -238,9 +237,9 @@ public final class OperationNode extends NodeWithParent {
         var leftType = DataTypes.getDataType(leftValue);
         if (leftType != null && leftType.equals(DataTypes.BOOLEAN)) {
             if (operator.equals(AND))
-                return OperatorOverloading.booleanAndOperator((boolean) leftValue, right);
+                return OperatorOverloading.booleanAndOperator((boolean) leftValue, right, fileName, line);
             else if (operator.equals(OR))
-                return OperatorOverloading.booleanOrOperator((boolean) leftValue, right);
+                return OperatorOverloading.booleanOrOperator((boolean) leftValue, right, fileName, line);
         }
 
 
@@ -248,7 +247,7 @@ public final class OperationNode extends NodeWithParent {
         if (isDot) {
             if (!(right.operand instanceof IdentifierNode))
                 new LogError("Variable or function can only be got from struct.", fileName, line);
-            return OperatorOverloading.dotOperator(leftValue, right, leftType);
+            return OperatorOverloading.dotOperator(leftValue, right, leftType,fileName, line);
         }
 
         var b = right.solve(parent);
@@ -256,7 +255,7 @@ public final class OperationNode extends NodeWithParent {
         if (operator.equals(INSTANCE_OF)) {
             if (!(b instanceof IdentifierNode))
                 new LogError("Right value have to be type name.", fileName, line);
-            return OperatorOverloading.instanceOfOperator(leftValue, b, leftType, parent);
+            return OperatorOverloading.instanceOfOperator(leftValue, b, leftType, parent,fileName,line);
         }
         var rightValue = getLiteral(b,parent, true, right.getFileName(), right.getLine());
         if (rightValue instanceof LinkedList)
@@ -344,7 +343,7 @@ public final class OperationNode extends NodeWithParent {
                 rightValue = BigInteger.valueOf((int) rightValue);
 
 
-        return calculate(leftValue, rightValue, operator, leftType);
+        return calculate(leftValue, rightValue, operator, leftType, fileName, line);
     }
 
     public static Tuple argumentsToTuple(Object arguments) {
@@ -379,11 +378,10 @@ public final class OperationNode extends NodeWithParent {
             return right.runWithParent(parent);
         else if (!(operand instanceof Operator))
             return operand;
-        OperatorOverloading.setTemporary(getFileName(), getLine());
         var operator = (Operator) operand;
 
         if (operator.equals(NEGATION))
-            return solveUnaryOperator(parent);
+            return solveUnaryOperator(parent, getFileName(), getLine());
         return solveBinaryOperator(parent,operator);
     }
 }

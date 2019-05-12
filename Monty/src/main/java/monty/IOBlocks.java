@@ -27,10 +27,10 @@ import sml.io.Println;
 
 import java.util.ArrayList;
 
-class IOBlocks {
+public class IOBlocks {
     private final static FunctionDeclarationNode abs;
     private final static FunctionDeclarationNode list;
-    private final static VariableDeclarationNode nothing;
+    public final static VariableDeclarationNode nothing;
     private final static FunctionDeclarationNode logError;
     private final static FunctionDeclarationNode print;
     private final static FunctionDeclarationNode println;

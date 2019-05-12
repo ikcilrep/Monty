@@ -17,6 +17,7 @@ public class Tuple extends StructDeclarationNode {
     private void addFunctions() {
          new NewIterator(this);
          new Get(this);
+         new ToString(this);
     }
 
 
@@ -58,8 +59,7 @@ public class Tuple extends StructDeclarationNode {
             new LogError("This array doesn't have " + index + " element.", fileName, line);
     }
 
-    @Override
-    public String toString() {
+    public StringStruct asString() {
         var length = length();
         var stringBuilder = new StringBuilder(length << 1 + 1);
         stringBuilder.append('(');
@@ -78,7 +78,7 @@ public class Tuple extends StructDeclarationNode {
                     break;
             }
         stringBuilder.append(')');
-        return stringBuilder.toString();
+        return new StringStruct(stringBuilder.toString());
 
     }
 }

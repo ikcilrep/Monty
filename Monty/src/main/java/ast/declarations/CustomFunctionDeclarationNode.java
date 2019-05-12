@@ -40,7 +40,6 @@ public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode
     private Object callWithoutChangingTailRecursionToIteration(Tuple arguments, String callFileName, int callLine) {
         String[] fileNames = {callFileName, getFileName()};
         int[] lines = {callLine, getLine()};
-        Object result = null;
         setValuesOfAddedArguments(arguments,callFileName,callLine);
         try {
             return getResult(body.run(),fileNames,lines);
@@ -127,7 +126,7 @@ public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode
         if (parameters.length == 1 && parameters.length  != argumentsLength)
             setValueOfAddedArgument(arguments, 0,fileName,line);
         else
-            checkArgumentsSize(arguments,argumentsLength,fileName,line);
+            checkArgumentsSize(argumentsLength,fileName,line);
 
         for (int i = 0; i < argumentsLength; i++)
             setValueOfAddedArgument(arguments.get(i), i,fileName,line);

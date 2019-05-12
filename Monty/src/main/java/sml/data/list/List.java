@@ -4,6 +4,7 @@ import ast.Block;
 import ast.declarations.StructDeclarationNode;
 import lexer.Lexer;
 import monty.FileIO;
+import monty.IOBlocks;
 import parser.LogError;
 import parser.parsing.Parser;
 import sml.data.returning.Nothing;
@@ -67,34 +68,22 @@ public class List extends StructDeclarationNode {
 
     private void addFunctions() {
         new Add(this);
-        new Count(this);
         new Extend(this);
         new Extended(this);
-        new Find(this);
         new Get(this);
-        new NewIterator(this);
         new Length(this);
         new MultipliedLeft(this);
-        new MultipliedRight(this);
         new Multiply(this);
         new Pop(this);
-        new Remove(this);
-        new Replace(this);
         new Set(this);
-        new Sublist(this);
+        new ToString(this);
+        addFunction(new NewList());
+        addVariable(IOBlocks.nothing, null, -1);
         concat(methodsWrittenInMonty);
     }
 
     private int capacity() {
         return array.length;
-    }
-
-    public int count(Object value) {
-        int counter = 0;
-        for (int i = 0; i < length(); i++)
-            if (get(i).equals(value))
-                counter++;
-        return counter;
     }
 
     public void doesCanBeExtendedWith(Object object, String fileName, int line) {
@@ -133,13 +122,6 @@ public class List extends StructDeclarationNode {
 
     public List extended(List array) {
         return new List(this).extend(array);
-    }
-
-    public int find(Object value) {
-        for (int i = 0; i < length(); i++)
-            if (get(i).equals(value))
-                return i;
-        return -1;
     }
 
     public Object get(int index) {
@@ -186,18 +168,6 @@ public class List extends StructDeclarationNode {
         return element;
     }
 
-    public List remove(Object value) {
-        pop(find(value));
-        return this;
-    }
-
-    public List replace(Object toBeReplaced, Object replacement) {
-        for (int i = 0; i < length(); i++)
-            if (get(i).equals(toBeReplaced))
-                set(i, replacement);
-        return this;
-    }
-
     public List set(int index, Object value) {
         array[index] = value;
         return this;
@@ -210,8 +180,7 @@ public class List extends StructDeclarationNode {
         return sublist;
     }
 
-    @Override
-    public String toString() {
+    public StringStruct asString() {
         var length = length();
         var stringBuilder = new StringBuilder(length << 1 + 1);
         stringBuilder.append('[');
@@ -229,7 +198,7 @@ public class List extends StructDeclarationNode {
                     break;
             }
         stringBuilder.append(']');
-        return stringBuilder.toString();
+        return new StringStruct(stringBuilder.toString());
 
     }
 

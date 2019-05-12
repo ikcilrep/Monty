@@ -19,7 +19,7 @@ public final class Run extends NativeFunctionDeclarationNode {
     @Override
     public VoidType call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        Parser.parse(Lexer.lex(getBody().getStringVariableValue("code", callFileName, callLine), callFileName, callLine)).run();
+        Parser.parse(Lexer.lex(getBody().getStringVariableValue("code", callFileName, callLine).toString(), callFileName, callLine)).run();
         return Nothing.nothing;
     }
 

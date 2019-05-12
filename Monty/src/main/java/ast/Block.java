@@ -18,9 +18,10 @@ package ast;
 
 import ast.declarations.*;
 import ast.expressions.OperationNode;
-import ast.statements.ReturnStatementNode;
 import lexer.Token;
 import parser.LogError;
+import sml.casts.ToString;
+import sml.data.string.StringStruct;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -223,8 +224,8 @@ public class Block extends NodeWithParent {
         this.parent = parent;
     }
 
-    public String getStringVariableValue(String name, String fileName, int line) {
-        return getVariable(name, fileName, line).getValue().toString();
+    public StringStruct getStringVariableValue(String name, String fileName, int line) {
+        return ToString.toString(getVariable(name, fileName, line).getValue(),fileName,line);
     }
 
     public StructDeclarationNode getStructure(String name) {

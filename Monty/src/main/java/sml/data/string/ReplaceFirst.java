@@ -32,8 +32,8 @@ final class ReplaceFirst extends Method<StringStruct> {
     public String call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
         var body = getBody();
-        return parent.getString().replaceFirst(body.getStringVariableValue("regex", callFileName, callLine),
-                body.getStringVariableValue("replacement", callFileName, callLine));
+        return parent.getString().replaceFirst(body.getStringVariableValue("regex", callFileName, callLine).toString(),
+                body.getStringVariableValue("replacement", callFileName, callLine).toString());
     }
 
 }

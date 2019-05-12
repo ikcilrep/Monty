@@ -29,7 +29,7 @@ final class StartsWith extends Method<StringStruct> {
     @Override
     public Boolean call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        return parent.getString().startsWith(getBody().getStringVariableValue("prefix", callFileName, callLine));
+        return parent.getString().startsWith(getBody().getStringVariableValue("prefix", callFileName, callLine).toString());
     }
 
 }

@@ -45,9 +45,7 @@ public class LogError {
     }
 
     public LogError(String message, Token token) {
-        System.out.println(
-                getMessage(message) + "\nLook at " + token.getLine() + " line in " + token.getFileName() + ".");
-        System.exit(0);
+        new LogError(message,token.getFileName(),token.getLine());
     }
 
     private static String getMessage(String message) {

@@ -22,7 +22,8 @@ public final class Pi extends VariableDeclarationNode {
     public Pi() {
         super("Pi");
         value = Math.PI;
-        setConst(true);
+        wasValueChanged = true;
+        isConst = true;
     }
 
 }

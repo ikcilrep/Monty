@@ -14,10 +14,7 @@ public class Constructor extends NativeFunctionDeclarationNode {
     @Override
     public Object call(Tuple arguments, String callFileName, int callLine) {
         var newStruct = struct.getParent().getStructure(struct.getName(), callFileName, callLine).copy();
-        var thisVariable = new VariableDeclarationNode("This");
-        thisVariable.setValue(newStruct, callFileName, callLine);
-        thisVariable.setConst(true);
-        newStruct.addVariable(thisVariable, callFileName, callLine);
+        newStruct.addThisVariable(callFileName,callLine);
         newStruct.incrementNumber();
         newStruct.run();
 

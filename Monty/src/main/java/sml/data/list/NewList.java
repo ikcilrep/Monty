@@ -12,7 +12,9 @@ public class NewList extends NativeFunctionDeclarationNode {
 
     @Override
     public Object call(Tuple arguments, String callFileName, int callLine) {
-        return new List(arguments);
+        var list = new List(arguments);
+        list.addThisVariable(callFileName,callLine);
+        return list;
     }
 
     @Override

@@ -17,6 +17,7 @@ limitations under the License.
 package sml.casts;
 
 import ast.Block;
+import ast.declarations.StructDeclarationNode;
 import sml.NativeFunctionDeclarationNode;
 import sml.data.string.StringStruct;
 import sml.data.tuple.Tuple;
@@ -32,7 +33,12 @@ public final class ToString extends NativeFunctionDeclarationNode {
     @Override
     public StringStruct call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        return new StringStruct(getBody().getVariableValue("toBeCasted", callFileName, callLine).toString());
+        return toString(body.getVariableValue("toBeCasted", callFileName, callLine), callFileName,callLine);
     }
 
+    public static StringStruct toString(Object toBeCasted,String fileName, int line) {
+        if (toBeCasted instanceof StructDeclarationNode)
+            return ((StructDeclarationNode) toBeCasted).toString(fileName,line);
+        return new StringStruct(toBeCasted.toString());
+    }
 }
