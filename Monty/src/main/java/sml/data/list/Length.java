@@ -13,9 +13,9 @@ final class Length extends Method<List> {
     }
 
     @Override
-    public BigInteger call(Tuple arguments, String callFileName, int callLine) {
+    public Integer call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        return BigInteger.valueOf(parent.length());
+        return parent.length();
     }
 
 }

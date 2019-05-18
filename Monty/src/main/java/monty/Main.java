@@ -16,11 +16,20 @@ limitations under the License.
 
 package monty;
 
+/*import ast.Block;
+import lexer.Lexer;
+import parser.parsing.Converter;*/
+
 public class Main {
     public static String[] argv = null;
     static String path;
 
     public static void main(String[] args) {
+/*        var tokens = Lexer.lex("println((1,2,3).length())", "a");
+        for (var token : Converter.infixToSuffix(tokens,new Block(null),0, tokens.size())) {
+            System.out.println(token.getType() + "\t" + token.getText());
+
+        }*/
         if (args.length < 1) {
             System.out.println("To run:\tjava -jar Monty.jar [file_name.mt]");
             System.exit(1);

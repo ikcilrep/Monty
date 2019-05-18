@@ -40,6 +40,8 @@ class OperatorOverloading {
         builtInTypes.put("String", MontyString.class);
         builtInTypes.put("Boolean", Boolean.class);
         builtInTypes.put("Float", Double.class);
+        builtInTypes.put("Tuple", Tuple.class);
+
     }
 
     private static boolean isInstance(Object value, String name) {
@@ -338,13 +340,10 @@ class OperatorOverloading {
     }
 
     static Object dotOperator(Object leftValue, OperationNode rightValue, DataTypes type, String fileName, int line) {
-
-        if (type.equals(DataTypes.OBJECT))
+        if (type.equals(DataTypes.OBJECT)) {
             return rightValue.runWithParent((StructDeclarationNode) leftValue, false);
-
-        else
+        } else
             new LogError("Can't get attributes from simple values.", fileName, line);
-
         return null;
 
     }
@@ -520,7 +519,6 @@ class OperatorOverloading {
     static Object notEqualsOperator(Object leftValue, Object rightValue,DataTypes type, String fileName, int line) {
         if (type.equals(DataTypes.OBJECT))
             return overloadOperator(leftValue, rightValue, "$neq", 2, fileName, line);
-
         return !leftValue.equals(rightValue);
     }
 

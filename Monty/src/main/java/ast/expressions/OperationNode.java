@@ -49,11 +49,13 @@ public final class OperationNode extends NodeWithParent {
 
     private OperationNode right;
     public OperationNode(Object operand, Block parent) {
+        if (operand == null)
+            throw new NullPointerException();
         this.operand = operand;
         this.parent = parent;
     }
 
-    private OperationNode(Object operand, Block parent, String fileName, int line) {
+    public OperationNode(Object operand, Block parent, String fileName, int line) {
         this.operand = operand;
         this.parent = parent;
         setFileName(fileName);
@@ -232,7 +234,7 @@ public final class OperationNode extends NodeWithParent {
         }
 
         if (leftValue instanceof LinkedList)
-            return new Tuple((LinkedList) leftValue);
+            leftValue = new Tuple((LinkedList) leftValue);
 
         var leftType = DataTypes.getDataType(leftValue);
         if (leftType != null && leftType.equals(DataTypes.BOOLEAN)) {
@@ -247,6 +249,7 @@ public final class OperationNode extends NodeWithParent {
         if (isDot) {
             if (!(right.operand instanceof IdentifierNode))
                 new LogError("Variable or function can only be got from struct.", fileName, line);
+            //System.out.println(((IdentifierNode)left.operand).getName());
             return OperatorOverloading.dotOperator(leftValue, right, leftType,fileName, line);
         }
 
@@ -254,18 +257,20 @@ public final class OperationNode extends NodeWithParent {
 
         if (operator.equals(INSTANCE_OF)) {
             if (!(b instanceof IdentifierNode))
-                new LogError("Right value have to be type name.", fileName, line);
+                new LogError("Right value has to be type name.", fileName, line);
             return OperatorOverloading.instanceOfOperator(leftValue, b, leftType, parent,fileName,line);
         }
         var rightValue = getLiteral(b,parent, true, right.getFileName(), right.getLine());
         if (rightValue instanceof LinkedList)
-            return new Tuple(((LinkedList) rightValue));
+            rightValue = new Tuple(((LinkedList) rightValue));
         var rightType = DataTypes.getDataType(rightValue);
 
 
         if (operator.equals(ASSIGNMENT)) {
             leftType = rightType;
         }
+
+
         if (!(operator.equals(EQUALS) || operator.equals(NOT_EQUALS))) {
             if (!leftType.equals(rightType)) {
                 switch (leftType) {
@@ -335,14 +340,13 @@ public final class OperationNode extends NodeWithParent {
                             + rightType.toString().toLowerCase(), fileName, line);
 
             }
-        } else if (!leftType.equals(rightType))
+        } else if (!leftType.equals(rightType)) {
             if (leftType.equals(DataTypes.INTEGER) && rightType.equals(DataTypes.BIG_INTEGER)) {
                 leftValue = BigInteger.valueOf((int) leftValue);
                 leftType = DataTypes.BIG_INTEGER;
             } else if (rightType.equals(DataTypes.INTEGER) && leftType.equals(DataTypes.BIG_INTEGER))
                 rightValue = BigInteger.valueOf((int) rightValue);
-
-
+        }
         return calculate(leftValue, rightValue, operator, leftType, fileName, line);
     }
 
@@ -357,16 +361,9 @@ public final class OperationNode extends NodeWithParent {
         var line = getLine();
         var value = getLiteral(operand, parent, true, fileName, line);
 
-        if (value instanceof FunctionDeclarationNode) {
-            if (right.left != null && right.left.operand.equals(JUST))  {
-                var newNode = new OperationNode(right.operand, right.parent, getFileName(), getLine());
-                newNode.left =  new OperationNode(operand, this.parent, getFileName(), getLine());
-                newNode.left.right = right.left;
-                newNode.right = right.right;
-                return newNode.solve(parent);
-            }
+        if (value instanceof FunctionDeclarationNode)
             return ((FunctionDeclarationNode) value).call(argumentsToTuple(right.run()), fileName, line);
-        }
+
         return value;
     }
 

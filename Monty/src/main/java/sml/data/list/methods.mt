@@ -1,4 +1,5 @@
 func $eq this other;
+    println this, other;
     if !(other instanceof List) | other.length() != this.length();
         return false;
     end;

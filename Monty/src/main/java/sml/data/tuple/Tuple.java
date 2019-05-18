@@ -1,23 +1,32 @@
 package sml.data.tuple;
 
+import ast.Block;
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
+import lexer.Lexer;
+import monty.FileIO;
 import parser.LogError;
+import parser.parsing.Parser;
 import sml.data.string.MontyString;
+import sml.io.Println;
 
+import javax.swing.plaf.synth.SynthScrollBarUI;
 import java.util.LinkedList;
 
 public class Tuple extends StructDeclarationNode {
     public Object[] getArray() {
         return array;
     }
-
+    private final static Block methodsWrittenInMonty = Parser.parse(Lexer.lex(FileIO.readFile(Tuple.class.getResourceAsStream("methods.mt"),
+            "tuple/methods.mt"), "tuple/methods.mt"));
     private final Object[] array;
 
     private void addFunctions() {
-         new NewIterator(this);
          new Get(this);
+         new Length(this);
          new ToString(this);
+         addFunction(new Println());
+         concat(methodsWrittenInMonty);
     }
 
 
@@ -31,6 +40,7 @@ public class Tuple extends StructDeclarationNode {
         addFunctions();
         array = new Object[1];
         array[0] = elem;
+
     }
     public Tuple(Object elem1, Object elem2) {
         super(null, "Tuple");
@@ -38,15 +48,12 @@ public class Tuple extends StructDeclarationNode {
         array = new Object[2];
         array[0] = elem1;
         array[1] = elem2;
-
     }
     public Tuple() {
         super(null, "Tuple");
         array = new Object[0];
     }
     public Object get(int index) {
-        if (array[index] instanceof VariableDeclarationNode)
-            return ((VariableDeclarationNode) array[index]).getValue();
         return array[index];
     }
 

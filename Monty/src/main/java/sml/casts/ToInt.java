@@ -89,7 +89,7 @@ public final class ToInt extends NativeFunctionDeclarationNode {
     @Override
     public Object call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        var toBeCasted = getBody().getVariableValue("toBeCasted", callFileName, callLine);
+        var toBeCasted = body.getVariableValue("toBeCasted", callFileName, callLine);
         return toInt(toBeCasted, callFileName, callLine);
     }
 }

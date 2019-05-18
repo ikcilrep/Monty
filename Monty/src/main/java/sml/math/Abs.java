@@ -34,7 +34,7 @@ public final class Abs extends NativeFunctionDeclarationNode {
     @Override
     public Object call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        var f = getBody().getVariableValue("f", callFileName, callLine);
+        var f = body.getVariableValue("f", callFileName, callLine);
         if (f instanceof Double)
             return Math.abs((double) f);
         else if (f instanceof BigInteger)

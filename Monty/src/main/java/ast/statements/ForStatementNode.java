@@ -20,9 +20,10 @@ import ast.Block;
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
-import sml.Sml;
+import parser.parsing.Parser;
 import sml.data.returning.BreakType;
 import sml.data.returning.ContinueType;
+import sml.data.tuple.Tuple;
 
 public final class ForStatementNode extends Block {
     private final OperationNode iterable;
@@ -40,7 +41,7 @@ public final class ForStatementNode extends Block {
         var iterator = structToCheck.getFunction("Iterator", callFileName, callLine);
         if (iterator.getParametersLength() > 0)
             return false;
-        var iteratorValue = iterator.call(Sml.EMPTY_ARGUMENT_LIST, callFileName, callLine);
+        var iteratorValue = iterator.call(new Tuple(), callFileName, callLine);
         if (!(iteratorValue instanceof StructDeclarationNode))
             return false;
         var iteratorStruct = (StructDeclarationNode) iteratorValue;
@@ -78,14 +79,14 @@ public final class ForStatementNode extends Block {
             addVariable(variable = new VariableDeclarationNode(variableName), getFileName(), getLine());
         if (isIterable(toBeIterated, getFileName(), getLine())) {
             var iterator = (StructDeclarationNode) ((StructDeclarationNode) toBeIterated).getFunction("Iterator", getFileName(), getLine())
-                    .call(Sml.EMPTY_ARGUMENT_LIST, getFileName(), getLine());
+                    .call(new Tuple(), getFileName(), getLine());
             var hasNext = iterator.getFunction("hasNext", getFileName(), getLine());
             var next = iterator.getFunction("next", getFileName(), getLine());
 
             if (isNotNameUnderscore) {
-                while ((boolean) hasNext.call(Sml.EMPTY_ARGUMENT_LIST, fileName, line)) {
+                while ((boolean) hasNext.call(new Tuple(), fileName, line)) {
                     variable.setConst(false);
-                    variable.setValue(next.call(Sml.EMPTY_ARGUMENT_LIST, fileName, line), fileName, line);
+                    variable.setValue(next.call(new Tuple(), fileName, line), fileName, line);
                     variable.setConst(isConst);
                     result = super.run();
                     if (result instanceof BreakType)
@@ -96,8 +97,8 @@ public final class ForStatementNode extends Block {
                         return result;
                 }
             } else
-                while ((boolean) hasNext.call(Sml.EMPTY_ARGUMENT_LIST, getFileName(), getLine())) {
-                    next.call(Sml.EMPTY_ARGUMENT_LIST, getFileName(), getLine());
+                while ((boolean) hasNext.call(new Tuple(), getFileName(), getLine())) {
+                    next.call(new Tuple(), getFileName(), getLine());
                     result = super.run();
                     if (result instanceof BreakType)
                         break;

@@ -14,23 +14,23 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sml.data.string;
+package sml.data.tuple;
 
+import ast.declarations.FunctionDeclarationNode;
+import sml.Sml;
 import sml.data.Method;
-import sml.data.tuple.Tuple;
+import sml.data.string.MontyString;
 
-final class EqualsIgnoreCase extends Method<MontyString> {
+final class Length extends Method<Tuple> {
 
-    EqualsIgnoreCase(MontyString parent) {
-        super(parent, "equalsIgnoreCase",new String[1]);
-        addParameter("other");
+    Length(Tuple parent) {
+        super(parent, "length", FunctionDeclarationNode.EMPTY_PARAMETERS);
     }
 
     @Override
-    public Boolean call(Tuple arguments, String callFileName, int callLine) {
+    public Integer call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        return parent.getString().equalsIgnoreCase(body.getStringVariableValue("other", callFileName,
-                callLine).toString());
+        return parent.length();
     }
 
 }

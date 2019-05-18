@@ -32,11 +32,10 @@ import sml.time.Seconds;
 import java.util.HashMap;
 
 public final class Sml{
-    public static final Tuple EMPTY_ARGUMENT_LIST = new Tuple();
+
     public static String[] paths;
     public final static String[] code;
     public final static short numberOfFiles;
-
     public static HashMap<String, Object> getChildren() {
         return children;
     }

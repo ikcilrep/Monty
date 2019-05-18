@@ -19,8 +19,9 @@ package ast.declarations;
 import ast.Block;
 import ast.RunnableNode;
 import lexer.Token;
-import sml.Sml;
+import parser.parsing.Parser;
 import sml.data.string.MontyString;
+import sml.data.tuple.Tuple;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -91,7 +92,7 @@ public class StructDeclarationNode extends Block {
     }
 
 
-    protected void incrementNumber() {
+    void incrementNumber() {
         var number = numbers.get(structNumber);
         numbers.put(structNumber, number + 1);
         instanceNumber = number + 1;
@@ -108,7 +109,7 @@ public class StructDeclarationNode extends Block {
     public MontyString toString(String fileName, int line) {
         String text;
         if (hasFunction("$str"))
-            text = getFunction("$str", fileName, line).call(Sml.EMPTY_ARGUMENT_LIST,  fileName, line).toString();
+            text = getFunction("$str", fileName, line).call(new Tuple(),  fileName, line).toString();
         else
             text = name + "#" + instanceNumber;
         return new MontyString(text);

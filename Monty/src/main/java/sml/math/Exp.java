@@ -33,7 +33,7 @@ public final class Exp extends NativeFunctionDeclarationNode {
     @Override
     public Object call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        var x = getBody().getVariableValue("x", callFileName, callLine);
+        var x = body.getVariableValue("x", callFileName, callLine);
         if (x instanceof Double)
             return Math.exp((double) x);
         else if (x instanceof Integer)

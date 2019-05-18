@@ -86,7 +86,7 @@ public final class ToFloat extends NativeFunctionDeclarationNode {
     @Override
     public Double call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        var toBeCasted = getBody().getVariableValue("toBeCasted", callFileName, callLine);
+        var toBeCasted = body.getVariableValue("toBeCasted", callFileName, callLine);
         return toFloat(toBeCasted, callFileName, callLine);
     }
 

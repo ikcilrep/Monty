@@ -34,7 +34,7 @@ public final class ToChar extends NativeFunctionDeclarationNode {
     @Override
     public String call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        var integer = getBody().getVariableValue("integer", callFileName, callLine);
+        var integer = body.getVariableValue("integer", callFileName, callLine);
         if (integer instanceof Integer)
             return String.valueOf(Character.valueOf((char) (int) integer));
         else if (integer instanceof BigInteger) {

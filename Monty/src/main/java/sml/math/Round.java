@@ -32,7 +32,7 @@ public final class Round extends NativeFunctionDeclarationNode {
     @Override
     public Object call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        var f = getBody().getVariableValue("f", callFileName, callLine);
+        var f = body.getVariableValue("f", callFileName, callLine);
         if (f instanceof Double)
             return Math.round((double) f);
         return new LogError("Can't round not a number.", callFileName, callLine);

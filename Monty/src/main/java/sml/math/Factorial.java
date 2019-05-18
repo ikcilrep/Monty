@@ -39,7 +39,7 @@ public final class Factorial extends NativeFunctionDeclarationNode {
     @Override
     public Object call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        var n = getBody().getVariableValue("n", callFileName, callLine);
+        var n = body.getVariableValue("n", callFileName, callLine);
         if (n instanceof BigInteger) {
             try {
                 n = ((BigInteger) n).intValueExact();

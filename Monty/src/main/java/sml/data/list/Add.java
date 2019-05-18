@@ -29,7 +29,7 @@ final class Add extends Method<List> {
     @Override
     public List call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        return parent.add(getBody().getVariable("other", callFileName, callLine).getValue());
+        return parent.add(body.getVariable("other", callFileName, callLine).getValue());
     }
 
 }

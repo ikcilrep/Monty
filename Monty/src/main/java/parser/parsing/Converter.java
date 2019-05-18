@@ -7,6 +7,7 @@ import lexer.Token;
 import lexer.TokenTypes;
 import parser.LogError;
 import sml.Sml;
+import sml.data.tuple.Tuple;
 
 import java.util.*;
 
@@ -59,7 +60,7 @@ class Converter {
 
     }
     private static int getPrecedence(Token token) {
-        return precedence.get(token.getText());
+        return token.getType().equals(TokenTypes.FUNCTION) ? 100 :precedence.get(token.getText());
     }
 
     static ArrayList<Token> infixToSuffix(ArrayList<Token> tokens, Block parent, int start, int end) {
@@ -74,7 +75,7 @@ class Converter {
                 case OPERATOR:
                     if (!operatorStack.empty()) {
                         var top = operatorStack.peek();
-                        if (!(top.getType().equals(TokenTypes.OPENING_BRACKET) || top.getType().equals(TokenTypes.FUNCTION))) {
+                        if (!(top.getType().equals(TokenTypes.OPENING_BRACKET))) {
                             int topPrecedence = getPrecedence(top);
                             int thisPrecedence = getPrecedence(token);
                             while (topPrecedence > thisPrecedence
@@ -83,9 +84,10 @@ class Converter {
                                 if (operatorStack.empty())
                                     break;
                                 top = operatorStack.peek();
-                                if (top.getType().equals(TokenTypes.OPENING_BRACKET) ||top.getType().equals(TokenTypes.FUNCTION))
+                                var topType = top.getType();
+                                if (topType.equals(TokenTypes.OPENING_BRACKET))
                                     break;
-                                topPrecedence = getPrecedence(top);
+                                topPrecedence =  getPrecedence(top);
                                 thisPrecedence = getPrecedence(token);
                             }
                         }
@@ -100,14 +102,13 @@ class Converter {
                     if (wasLastOpeningBracket)
                         outputQueue.add(new Token(TokenTypes.EMPTY_TUPLE, "", token.getFileName(), token.getLine()));
                     else
-                        while (!operatorStack.peek().getType().equals(TokenTypes.OPENING_BRACKET))
-                            try {
+                        try {
+                            while (!operatorStack.peek().getType().equals(TokenTypes.OPENING_BRACKET))
                                 outputQueue.add(operatorStack.pop());
-                            } catch (EmptyStackException e) {
-                                new LogError("Mismatched brackets.", token);
-                            }
+                        } catch (EmptyStackException e) {
+                            new LogError("Mismatched brackets.", token);
+                        }
                     operatorStack.pop();
-                    operatorStack.push(EMPTY_OPERATOR);
                     break;
                 case OPENING_BRACKET:
                     operatorStack.push(token);
@@ -168,7 +169,7 @@ class Converter {
             list.setRight(ExpressionParser.parseInfix(parent, tokens,i.i, counter-1));
             i.i = counter - 1;
         } else
-            list.setRight(new OperationNode(Sml.EMPTY_ARGUMENT_LIST,parent));
+            list.setRight(new OperationNode(new Tuple(),parent));
         return list;
 
     }

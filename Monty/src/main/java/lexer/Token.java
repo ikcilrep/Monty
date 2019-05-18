@@ -57,4 +57,8 @@ public final class Token {
     public final TokenTypes getType() {
         return type;
     }
+    @Override
+    public String toString() {
+        return text;
+    }
 }

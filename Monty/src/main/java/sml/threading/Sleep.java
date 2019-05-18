@@ -36,7 +36,7 @@ public final class Sleep extends NativeFunctionDeclarationNode {
     @Override
     public VoidType call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        var _millis = getBody().getVariableValue("millis", callFileName, callLine);
+        var _millis = body.getVariableValue("millis", callFileName, callLine);
         int millis = 0;
         if (_millis instanceof Integer)
             millis = (int) _millis;

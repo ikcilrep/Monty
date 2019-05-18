@@ -27,6 +27,7 @@ import parser.Recognizer;
 import parser.Tokens;
 import sml.Sml;
 import sml.data.string.MontyString;
+import sml.data.tuple.Tuple;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -127,7 +128,7 @@ class ExpressionParser {
 
     private static OperationNode recParseEmptyTuple(Block parent, ArrayList<Token> tokens,
                                               Stack<OperationNode> stack, IntegerHolder i) {
-        stack.push(new OperationNode(Sml.EMPTY_ARGUMENT_LIST,parent));
+        stack.push(new OperationNode(new Tuple(),parent));
         i.i++;
         return parse(parent, tokens, stack, i);
     }

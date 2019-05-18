@@ -22,11 +22,11 @@ import lexer.TokenTypes;
 import monty.Importing;
 import parser.Recognizer;
 import parser.LogError;
+import sml.data.tuple.Tuple;
 
 import java.util.ArrayList;
 
 public final class Parser {
-
     public static Block parse(ArrayList<Token> tokens) {
         var tokensBeforeSemicolon = new ArrayList<Token>();
         var block = new Block(null);

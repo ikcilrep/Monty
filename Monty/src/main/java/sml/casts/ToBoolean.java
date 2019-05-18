@@ -70,7 +70,7 @@ public final class ToBoolean extends NativeFunctionDeclarationNode {
     @Override
     public Boolean call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        var toBeCasted = getBody().getVariableValue("toBeCasted", callFileName, callLine);
+        var toBeCasted = body.getVariableValue("toBeCasted", callFileName, callLine);
         return toBoolean(toBeCasted, callFileName, callLine);
     }
 }

@@ -73,7 +73,6 @@ public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode
                         !identifierNodeOperand.getName().equals(name))
                     return operationNodeResult.run();
                 var recArguments = operationNodeResult.getRight().run();
-
                 value = callWithoutChangingTailRecursionToIteration
                         (OperationNode.argumentsToTuple(recArguments), fileName, line);
             } else

@@ -17,18 +17,8 @@ final class Get extends Method<List> {
     @Override
     public Object call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        var _index = getBody().getVariableValue("index", callFileName, callLine);
-        int index = 0;
-        if (_index instanceof Integer)
-            index = (int) _index;
-        else if (_index instanceof BigInteger) {
-            var bigIndex = (BigInteger) _index;
-            if (bigIndex.compareTo(DataTypes.INT_MAX) > 0)
-                new LogError("Index have to be less or equals 2^31-1.", callFileName, callLine);
-            else if (bigIndex.compareTo(DataTypes.INT_MIN) < 0)
-                new LogError("Index have to be greater or equals -2^31.", callFileName, callLine);
-            index = bigIndex.intValue();
-        }
+        int index = DataTypes.getAndCheckSmallInteger(body.getVariableValue("index", callFileName, callLine),
+                "Index",callFileName,callLine);
         parent.doesHaveElement(index, callFileName, callLine);
         return parent.get(index);
     }

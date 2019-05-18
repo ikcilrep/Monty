@@ -173,13 +173,6 @@ public class List extends StructDeclarationNode {
         return this;
     }
 
-    public List sublist(int begin, int end) {
-        var sublist = new List(end - begin + 1);
-        for (int i = begin, j = 0; i < end; i++, j++)
-            sublist.set(j, get(i));
-        return sublist;
-    }
-
     public MontyString asString(String fileName, int line) {
         var length = length();
         var stringBuilder = new StringBuilder(length << 1 + 1);
