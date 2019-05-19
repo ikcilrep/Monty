@@ -18,9 +18,11 @@ package monty;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
+import ast.expressions.OperationNode;
 import lexer.Lexer;
 import parser.parsing.Parser;
 import sml.Sml;
+import sml.data.tuple.Tuple;
 import sml.io.Input;
 import sml.io.Print;
 import sml.io.Println;
@@ -74,11 +76,12 @@ public class IOBlocks {
             block.concat(parsed);
     }
 
-    static Block readBlockFromFile(String path) {
+    static void readAndRunBlockFromFile(String path) {
         var block = Parser
                 .parse(Lexer.lex(FileIO.readFile(path, "command line", 1), path, 1, new ArrayList<>(), 0));
         autoImport(block);
-        return block;
+        OperationNode.setEmptyTuple(new Tuple());
+        block.run();
     }
 
 }

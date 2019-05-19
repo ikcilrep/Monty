@@ -20,14 +20,13 @@ import ast.Block;
 import ast.Operator;
 import ast.expressions.IdentifierNode;
 import ast.expressions.OperationNode;
+import ast.expressions.Promise;
 import lexer.Token;
 import parser.DataTypes;
 import parser.LogError;
 import parser.Recognizer;
 import parser.Tokens;
-import sml.Sml;
 import sml.data.string.MontyString;
-import sml.data.tuple.Tuple;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -128,7 +127,7 @@ class ExpressionParser {
 
     private static OperationNode recParseEmptyTuple(Block parent, ArrayList<Token> tokens,
                                               Stack<OperationNode> stack, IntegerHolder i) {
-        stack.push(new OperationNode(new Tuple(),parent));
+        stack.push(new OperationNode(Promise.EMPTY_TUPLE,parent));
         i.i++;
         return parse(parent, tokens, stack, i);
     }

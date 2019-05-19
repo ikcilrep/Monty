@@ -17,10 +17,12 @@ public class Tuple extends StructDeclarationNode {
     public Object[] getArray() {
         return array;
     }
-    private final static Block methodsWrittenInMonty = Parser.parse(Lexer.lex(FileIO.readFile(Tuple.class.getResourceAsStream("methods.mt"),
-            "tuple/methods.mt"), "tuple/methods.mt"));
     private final Object[] array;
-
+    public final static Block methodsWrittenInMonty;
+    static {
+        methodsWrittenInMonty= Parser.parse(Lexer.lex(FileIO.readFile(Tuple.class.getResourceAsStream("methods.mt"),
+                "tuple/methods.mt"), "tuple/methods.mt"));
+    }
     private void addFunctions() {
          new Get(this);
          new Length(this);
@@ -51,6 +53,7 @@ public class Tuple extends StructDeclarationNode {
     }
     public Tuple() {
         super(null, "Tuple");
+        addFunctions();
         array = new Object[0];
     }
     public Object get(int index) {

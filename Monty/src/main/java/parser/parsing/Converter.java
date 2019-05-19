@@ -109,6 +109,8 @@ class Converter {
                             new LogError("Mismatched brackets.", token);
                         }
                     operatorStack.pop();
+                    operatorStack.push(EMPTY_OPERATOR);
+
                     break;
                 case OPENING_BRACKET:
                     operatorStack.push(token);

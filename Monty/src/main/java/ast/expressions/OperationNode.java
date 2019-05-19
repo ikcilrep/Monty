@@ -34,6 +34,11 @@ import java.util.List;
 import static ast.Operator.*;
 
 public final class OperationNode extends NodeWithParent {
+    public static void setEmptyTuple(Tuple emptyTuple) {
+        OperationNode.emptyTuple = emptyTuple;
+    }
+
+    private static Tuple emptyTuple;
     private OperationNode left;
 
     public Object getOperand() {
@@ -79,7 +84,9 @@ public final class OperationNode extends NodeWithParent {
             if (doesGetValueFromVariable && variableOrFunction instanceof VariableDeclarationNode)
                 return ((VariableDeclarationNode) variableOrFunction).getValue();
             return variableOrFunction;
-        }
+        } else if (expression.equals(Promise.EMPTY_TUPLE))
+            return new Tuple();
+
         return expression;
     }
 
@@ -207,7 +214,10 @@ public final class OperationNode extends NodeWithParent {
         this.right = right;
     }
     private Object solveUnaryOperator(Block parent, String fileName, int line) {
+
         var value = getLiteral(right.solve(parent),parent, true, right.getFileName(), right.getLine());
+        if (value instanceof LinkedList)
+            value = new Tuple(((LinkedList) value));
         return calculate(value, DataTypes.getDataType(value), fileName, line);
     }
     @SuppressWarnings("unchecked")
@@ -375,10 +385,12 @@ public final class OperationNode extends NodeWithParent {
             return right.runWithParent(parent);
         else if (!(operand instanceof Operator))
             return operand;
+
         var operator = (Operator) operand;
 
         if (operator.equals(NEGATION))
             return solveUnaryOperator(parent, getFileName(), getLine());
+
         return solveBinaryOperator(parent,operator);
     }
 }
