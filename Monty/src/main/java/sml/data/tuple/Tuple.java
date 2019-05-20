@@ -2,7 +2,6 @@ package sml.data.tuple;
 
 import ast.Block;
 import ast.declarations.StructDeclarationNode;
-import ast.declarations.VariableDeclarationNode;
 import lexer.Lexer;
 import monty.FileIO;
 import parser.LogError;
@@ -10,7 +9,6 @@ import parser.parsing.Parser;
 import sml.data.string.MontyString;
 import sml.io.Println;
 
-import javax.swing.plaf.synth.SynthScrollBarUI;
 import java.util.LinkedList;
 
 public class Tuple extends StructDeclarationNode {
@@ -18,17 +16,17 @@ public class Tuple extends StructDeclarationNode {
         return array;
     }
     private final Object[] array;
-    public final static Block methodsWrittenInMonty;
+    private final static Block methodsWrittenInMonty;
     static {
         methodsWrittenInMonty= Parser.parse(Lexer.lex(FileIO.readFile(Tuple.class.getResourceAsStream("methods.mt"),
                 "tuple/methods.mt"), "tuple/methods.mt"));
     }
     private void addFunctions() {
-         new Get(this);
-         new Length(this);
-         new ToString(this);
-         addFunction(new Println());
-         concat(methodsWrittenInMonty);
+        new Get(this);
+        new Length(this);
+        new ToString(this);
+        addFunction(new Println());
+        concat(methodsWrittenInMonty.copy());
     }
 
 

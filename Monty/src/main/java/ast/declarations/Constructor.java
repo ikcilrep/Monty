@@ -6,7 +6,7 @@ import sml.data.tuple.Tuple;
 public class Constructor extends NativeFunctionDeclarationNode {
     private final StructDeclarationNode struct;
 
-    Constructor(StructDeclarationNode struct) {
+    public Constructor(StructDeclarationNode struct) {
         super(struct.getName(), FunctionDeclarationNode.EMPTY_PARAMETERS);
         this.struct = struct;
     }

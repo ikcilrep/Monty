@@ -20,9 +20,8 @@ import ast.Block;
 import lexer.Token;
 import lexer.TokenTypes;
 import monty.Importing;
-import parser.Recognizer;
 import parser.LogError;
-import sml.data.tuple.Tuple;
+import parser.Recognizer;
 
 import java.util.ArrayList;
 

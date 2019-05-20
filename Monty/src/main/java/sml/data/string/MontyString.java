@@ -35,7 +35,7 @@ public class MontyString extends StructDeclarationNode {
         new Substring(this);
         new UpperCase(this);
         new ToString(this);
-        concat(methodsWrittenInMonty);
+        concat(methodsWrittenInMonty.copy());
     }
 
     MontyString multiplied(int times) {
@@ -136,7 +136,7 @@ public class MontyString extends StructDeclarationNode {
         return string;
     }
 
-    public void setString(String string) {
+    private void setString(String string) {
         this.string = string;
     }
 }

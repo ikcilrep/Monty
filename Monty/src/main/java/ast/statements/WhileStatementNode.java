@@ -21,6 +21,7 @@ import ast.ConditionalNode;
 import ast.expressions.OperationNode;
 import sml.data.returning.BreakType;
 import sml.data.returning.ContinueType;
+import sml.data.returning.Nothing;
 
 public final class WhileStatementNode extends ConditionalNode {
     private final boolean isDoWhile;
@@ -42,7 +43,7 @@ public final class WhileStatementNode extends ConditionalNode {
     @Override
     public Object run() {
         Object result;
-        if (isDoWhile() || runCondition()) {
+        if (isDoWhile() || runCondition())
             do {
                 result = super.run();
                 if (result instanceof BreakType)
@@ -52,13 +53,13 @@ public final class WhileStatementNode extends ConditionalNode {
                 if (result != null)
                     return result;
             } while (runCondition());
-        }
-        return null;
+
+        return Nothing.nothing;
     }
 
     @Override
     public WhileStatementNode copy() {
-        var copied = new WhileStatementNode(getParent(), getCondition(), isDoWhile,getFileName(),getLine() );
+        var copied = new WhileStatementNode(getParent(), getCondition().copy(), isDoWhile,getFileName(),getLine() );
         copied.setChildren(getChildren());
         copied.copyChildren();
 

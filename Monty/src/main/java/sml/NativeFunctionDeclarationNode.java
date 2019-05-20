@@ -25,10 +25,6 @@ public abstract  class NativeFunctionDeclarationNode extends FunctionDeclaration
     @Override
     protected void addParameter(String name) {
         super.addParameter(name);
-        try {
-            body.addVariable(new VariableDeclarationNode(name), getFileName(), getLine());
-        } catch (NullPointerException e) {
-            System.out.println(getName());
-        }
+        body.addVariable(new VariableDeclarationNode(name), getFileName(), getLine());
     }
 }

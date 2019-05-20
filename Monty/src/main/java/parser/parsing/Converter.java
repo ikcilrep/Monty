@@ -3,11 +3,10 @@ package parser.parsing;
 import ast.Block;
 import ast.expressions.IdentifierNode;
 import ast.expressions.OperationNode;
+import ast.expressions.Promise;
 import lexer.Token;
 import lexer.TokenTypes;
 import parser.LogError;
-import sml.Sml;
-import sml.data.tuple.Tuple;
 
 import java.util.*;
 
@@ -43,19 +42,19 @@ class Converter {
         precedence.put("&", 7);
         precedence.put("^", 6);
         precedence.put("|", 5);
-        precedence.put("=", 1);
-        precedence.put("+=", 1);
-        precedence.put("-=", 1);
-        precedence.put("*=", 1);
-        precedence.put("/=", 1);
-        precedence.put("%=", 1);
-        precedence.put("&=", 1);
-        precedence.put("^=", 1);
-        precedence.put("|=", 1);
-        precedence.put("<<=", 1);
-        precedence.put(">>=", 1);
-        precedence.put("**=", 1);
-        precedence.put(",", 0);
+        precedence.put(",", 1);
+        precedence.put("=", 0);
+        precedence.put("+=", 0);
+        precedence.put("-=", 0);
+        precedence.put("*=", 0);
+        precedence.put("/=", 0);
+        precedence.put("%=", 0);
+        precedence.put("&=", 0);
+        precedence.put("^=", 0);
+        precedence.put("|=", 0);
+        precedence.put("<<=", 0);
+        precedence.put(">>=", 0);
+        precedence.put("**=", 0);
 
 
     }
@@ -146,10 +145,8 @@ class Converter {
     }
 
     private static OperationNode parseList(ArrayList<Token> tokens, Block parent, IntegerHolder i) {
-        var list = new OperationNode(LIST_CALL, parent);
         var token = tokens.get(i.i);
-        token.setFileName(token.getFileName());
-        token.setLine(token.getLine());
+        var list = new OperationNode(LIST_CALL, parent,token.getFileName(),token.getLine());
         i.i++;
         var openedBrackets = 1;
         var counter = i.i;
@@ -171,7 +168,7 @@ class Converter {
             list.setRight(ExpressionParser.parseInfix(parent, tokens,i.i, counter-1));
             i.i = counter - 1;
         } else
-            list.setRight(new OperationNode(new Tuple(),parent));
+            list.setRight(new OperationNode(Promise.EMPTY_TUPLE,parent));
         return list;
 
     }

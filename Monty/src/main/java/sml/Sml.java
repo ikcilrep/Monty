@@ -18,7 +18,6 @@ package sml;
 
 import monty.FileIO;
 import sml.casts.*;
-import sml.data.tuple.Tuple;
 import sml.language.Run;
 import sml.math.E;
 import sml.math.Exp;

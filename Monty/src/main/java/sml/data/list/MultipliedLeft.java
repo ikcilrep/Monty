@@ -1,11 +1,8 @@
 package sml.data.list;
 
 import parser.DataTypes;
-import parser.LogError;
 import sml.data.Method;
 import sml.data.tuple.Tuple;
-
-import java.math.BigInteger;
 
 final class MultipliedLeft extends Method<List> {
     MultipliedLeft(List parent) {

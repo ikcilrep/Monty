@@ -18,9 +18,9 @@ package lexer;
 
 public final class Token {
     private final String text;
-    private String fileName;
+    private final String fileName;
     private TokenTypes type;
-    private int line;
+    private final int line;
 
 
     public Token(TokenTypes type, String text, String fileName, int line) {
@@ -38,16 +38,8 @@ public final class Token {
         return fileName;
     }
 
-    public final void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
     public final int getLine() {
         return line;
-    }
-
-    public final void setLine(int line) {
-        this.line = line;
     }
 
     public final String getText() {

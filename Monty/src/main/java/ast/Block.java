@@ -36,7 +36,13 @@ public class Block extends NodeWithParent {
     }
 
     private ArrayList<RunnableNode> children = new ArrayList<>();
-    protected HashMap<String, FunctionDeclarationNode> functions = new HashMap<>();
+
+
+    protected HashMap<String, FunctionDeclarationNode> getFunctions() {
+        return functions;
+    }
+
+    private HashMap<String, FunctionDeclarationNode> functions = new HashMap<>();
 
     protected void setVariables(HashMap<String, VariableDeclarationNode> variables) {
         this.variables = variables;
@@ -47,7 +53,20 @@ public class Block extends NodeWithParent {
     }
 
     private HashMap<String, VariableDeclarationNode> variables = new HashMap<>();
-    protected HashMap<String, StructDeclarationNode> structs = new HashMap<>();
+
+    protected HashMap<String, StructDeclarationNode> getStructs() {
+        return structs;
+    }
+
+    protected void setFunctions(HashMap<String, FunctionDeclarationNode> functions) {
+        this.functions = functions;
+    }
+
+    protected void setStructs(HashMap<String, StructDeclarationNode> structs) {
+        this.structs = structs;
+    }
+
+    private HashMap<String, StructDeclarationNode> structs = new HashMap<>();
 
     public Block(Block parent) {
         this.parent = parent;
@@ -166,6 +185,9 @@ public class Block extends NodeWithParent {
         copied.children = children;
         copied.structs = structs;
         copied.copyChildren();
+        copied.copyVariables();
+        copied.copyFunctions();
+        copied.copyStructs();
         return copied;
     }
 
@@ -187,6 +209,29 @@ public class Block extends NodeWithParent {
         for (Map.Entry<String, VariableDeclarationNode> entry : this.variables.entrySet())
             variables.put(entry.getKey(), entry.getValue().copy());
         this.variables = variables;
+    }
+
+    public void copyFunctions() {
+        var functions = new HashMap<String, FunctionDeclarationNode>();
+        for (Map.Entry<String, FunctionDeclarationNode> entry : this.functions.entrySet()) {
+            var function = entry.getValue().copy();
+            if (!(function instanceof Constructor)) {
+                function.getBody().setParent(this);
+                functions.put(entry.getKey(), function);
+            }
+        }
+        this.functions = functions;
+    }
+
+    public void copyStructs() {
+        var structs = new HashMap<String, StructDeclarationNode>();
+        for (Map.Entry<String, StructDeclarationNode> entry : this.structs.entrySet()) {
+            var value = entry.getValue().copy();
+            value.setParent(this);
+            structs.put(entry.getKey(), value);
+            this.functions.put(value.getName(), new Constructor(value));
+        }
+        this.structs = structs;
     }
 
     protected ArrayList<RunnableNode> getChildren() {

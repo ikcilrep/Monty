@@ -32,11 +32,6 @@ public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode
         super(name, parameters, lastNotNullParameterIndex);
     }
 
-    private CustomFunctionDeclarationNode workingCopy() {
-        var copied = copy();
-        copied.body.copyVariables();
-        return copied;
-    }
     private Object callWithoutChangingTailRecursionToIteration(Tuple arguments, String callFileName, int callLine) {
         String[] fileNames = {callFileName, getFileName()};
         int[] lines = {callLine, getLine()};
@@ -83,7 +78,7 @@ public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode
 
     @Override
     public final Object call(Tuple arguments, String callFileName, int callLine) {
-        var workingCopy = workingCopy();
+        var workingCopy = copy();
         workingCopy.setArguments(arguments, callFileName, callLine);
         String[] fileNames = {callFileName, getFileName()};
         int[] lines = {callLine, getLine()};

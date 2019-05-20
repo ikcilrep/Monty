@@ -30,13 +30,10 @@ import sml.data.string.MontyString;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Stack;
 
 class ExpressionParser {
-    private final static HashMap<String, Object> LITERALS = new HashMap<>();
-    private final static HashMap<String, MontyString> STRING_LITERALS = new HashMap<>();
     /*
      * Parses list of tokens to abstract syntax tree.
      */
@@ -50,7 +47,7 @@ class ExpressionParser {
             switch (token.getType()) {
                 case OPERATOR: // If token is operator
                     var tokenText = token.getText();
-                    node = new OperationNode(Operator.toOperator(tokenText), parent);
+                    node = new OperationNode(Operator.toOperator(tokenText), parent, token.getFileName(), token.getLine());
                     if (stack.isEmpty())
                         new LogError("There isn't right operand", token);
                     node.setRight(stack.pop());
@@ -62,26 +59,25 @@ class ExpressionParser {
                     }
                     break;
                 case FUNCTION:
-                    node = new OperationNode(new IdentifierNode(token.getText(), true), parent);
+                    node = new OperationNode(new IdentifierNode(token.getText(), true), parent, token.getFileName(), token.getLine());
                     if (stack.isEmpty())
                         new LogError("There isn't right operand", token);
                     node.setRight(stack.pop());
                     break;
                 case IDENTIFIER: // If token is identifier
-                    return recParseIdentifier(parent, tokens, stack, i);
+                    node = new OperationNode(new IdentifierNode(token.getText(), false), parent,token.getFileName(), token.getLine());
+                    break;
                 case OPENING_SQUARE_BRACKET:
-                    return recParseList(parent, tokens, stack, i);
+                    node = lists.poll();
+                    break;
                 case EMPTY_TUPLE:
-                    return recParseEmptyTuple(parent, tokens, stack,i);
+                    node = new OperationNode(Promise.EMPTY_TUPLE, parent,token.getFileName(),token.getLine());
+                    break;
                 default:
-                    // Otherwise token in expression can be only constant.
-                    var dataType = Tokens.getDataType(token.getType());
-                    node = new OperationNode(toDataType(token, dataType), parent);
+                    node = new OperationNode(toDataType(token, Tokens.getDataType(token.getType())), parent, token.getFileName(), token.getLine());
                     break;
             }
             stack.push(node);
-            node.setFileName(token.getFileName());
-            node.setLine(token.getLine());
             i.i++;
             return parse(parent, tokens, stack, i);
         }
@@ -91,45 +87,16 @@ class ExpressionParser {
     }
 
 
-     static OperationNode parseInfix(Block parent, ArrayList<Token> tokens) {
-        return parseInfix(parent, tokens, 0,tokens.size());
+    static OperationNode parseInfix(Block parent, ArrayList<Token> tokens) {
+        return parseInfix(parent, tokens, 0, tokens.size());
     }
+
     static OperationNode parseInfix(Block parent, ArrayList<Token> tokens, int start) {
         return parseInfix(parent, tokens, start, tokens.size());
     }
 
     static OperationNode parseInfix(Block parent, ArrayList<Token> tokens, int start, int end) {
         return parse(parent, Converter.infixToSuffix(tokens, parent, start, end), new Stack<>(), new IntegerHolder(0));
-    }
-
-    private static OperationNode parseIdentifier(Block parent, ArrayList<Token> array, IntegerHolder i) {
-        var token = array.get(i.i);
-        var variable = new IdentifierNode(token.getText(), false);
-        var node = new OperationNode(variable, parent);
-        node.setFileName(token.getFileName());
-        node.setLine(token.getLine());
-        return node;
-    }
-
-    private static OperationNode recParseIdentifier(Block parent, ArrayList<Token> tokens,
-                                                    Stack<OperationNode> stack, IntegerHolder i) {
-        stack.push(parseIdentifier(parent, tokens, i));
-        i.i++;
-        return parse(parent, tokens, stack, i);
-    }
-
-    private static OperationNode recParseList(Block parent, ArrayList<Token> tokens,
-                                              Stack<OperationNode> stack, IntegerHolder i) {
-        stack.push(lists.poll());
-        i.i++;
-        return parse(parent, tokens, stack, i);
-    }
-
-    private static OperationNode recParseEmptyTuple(Block parent, ArrayList<Token> tokens,
-                                              Stack<OperationNode> stack, IntegerHolder i) {
-        stack.push(new OperationNode(Promise.EMPTY_TUPLE,parent));
-        i.i++;
-        return parse(parent, tokens, stack, i);
     }
 
 
@@ -140,45 +107,30 @@ class ExpressionParser {
     private static Object toDataType(Token token, DataTypes dataType) {
         // Returns values with proper data type.
         var literal = token.getText();
-        if (dataType != null) {
-            if (dataType.equals(DataTypes.OBJECT))
-                if (STRING_LITERALS.containsKey(literal))
-                    return STRING_LITERALS.get(literal);
-                else {
-                    var newStringLiteral = new MontyString(literal);
-                    STRING_LITERALS.put(literal, newStringLiteral);
-                    return newStringLiteral;
-                }
-        } else
+        if (dataType == null)
             new LogError("Unexpected token \"" + literal + "\"", token);
 
-        if (LITERALS.containsKey(literal))
-            return LITERALS.get(literal);
-        Object valueOfDataType = null;
+
         switch (dataType) {
             case INTEGER:
                 try {
-                    valueOfDataType = Integer.parseInt(literal);
+                    return Integer.parseInt(literal);
                 } catch (NumberFormatException e) {
-                    valueOfDataType = new BigInteger(literal);
+                    return new BigInteger(literal);
                 }
-                break;
             case FLOAT:
                 try {
-                    valueOfDataType = Double.parseDouble(literal);
+                    return  Double.parseDouble(literal);
                 } catch (NumberFormatException e) {
-                    new LogError("Float overflow.", token);
+                    return new LogError("Float overflow.", token);
                 }
-                break;
             case BOOLEAN:
-                valueOfDataType = Boolean.parseBoolean(literal);
-                break;
+                return Boolean.parseBoolean(literal);
+            case OBJECT:
+                return new MontyString(literal);
             default:
-                new LogError("There isn't constant of " + dataType.toString().toLowerCase());
+                return new LogError("There isn't constant of " + dataType.toString().toLowerCase());
         }
-        var newLiteral = valueOfDataType;
-        LITERALS.put(literal, newLiteral);
-        return newLiteral;
     }
 
 }

@@ -80,7 +80,7 @@ public class IOBlocks {
         var block = Parser
                 .parse(Lexer.lex(FileIO.readFile(path, "command line", 1), path, 1, new ArrayList<>(), 0));
         autoImport(block);
-        OperationNode.setEmptyTuple(new Tuple());
+        OperationNode.emptyTuple = new Tuple();
         block.run();
     }
 

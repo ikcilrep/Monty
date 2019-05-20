@@ -17,9 +17,7 @@ limitations under the License.
 package sml.data.tuple;
 
 import ast.declarations.FunctionDeclarationNode;
-import sml.Sml;
 import sml.data.Method;
-import sml.data.string.MontyString;
 
 final class Length extends Method<Tuple> {
 

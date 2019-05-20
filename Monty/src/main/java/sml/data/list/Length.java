@@ -4,8 +4,6 @@ import ast.declarations.FunctionDeclarationNode;
 import sml.data.Method;
 import sml.data.tuple.Tuple;
 
-import java.math.BigInteger;
-
 final class Length extends Method<List> {
 
     Length(List parent) {

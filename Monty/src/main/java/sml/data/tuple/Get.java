@@ -1,10 +1,7 @@
 package sml.data.tuple;
 
 import parser.DataTypes;
-import parser.LogError;
 import sml.data.Method;
-
-import java.math.BigInteger;
 
 final class Get extends Method<Tuple> {
 

@@ -51,7 +51,7 @@ public final class IfStatementNode extends ConditionalNode {
 
     @Override
     public IfStatementNode copy() {
-        var copied = new IfStatementNode(getParent(), getCondition(), getFileName(), getLine(), false);
+        var copied = new IfStatementNode(getParent(), getCondition().copy(), getFileName(), getLine(), false);
         copied.setChildren(getChildren());
         copied.copyChildren();
         copied.setElseBody(elseBody);

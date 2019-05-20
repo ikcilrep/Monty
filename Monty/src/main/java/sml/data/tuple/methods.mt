@@ -2,7 +2,6 @@ func $eq this other;
     if !(other instanceof Tuple) | other.length() != this.length();
         return false;
     end;
-
     var i = 0;
     for x in this;
         if x != other.get i;

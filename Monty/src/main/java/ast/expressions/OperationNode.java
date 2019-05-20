@@ -34,11 +34,8 @@ import java.util.List;
 import static ast.Operator.*;
 
 public final class OperationNode extends NodeWithParent {
-    public static void setEmptyTuple(Tuple emptyTuple) {
-        OperationNode.emptyTuple = emptyTuple;
-    }
 
-    private static Tuple emptyTuple;
+    public static Tuple emptyTuple;
     private OperationNode left;
 
     public Object getOperand() {
@@ -85,7 +82,7 @@ public final class OperationNode extends NodeWithParent {
                 return ((VariableDeclarationNode) variableOrFunction).getValue();
             return variableOrFunction;
         } else if (expression.equals(Promise.EMPTY_TUPLE))
-            return new Tuple();
+            return emptyTuple;
 
         return expression;
     }

@@ -18,14 +18,12 @@ package ast.declarations;
 
 import ast.Block;
 import ast.RunnableNode;
+import ast.expressions.OperationNode;
 import lexer.Token;
-import parser.parsing.Parser;
 import sml.data.string.MontyString;
-import sml.data.tuple.Tuple;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class StructDeclarationNode extends Block {
     private static int actualStructNumber = -1;
@@ -41,12 +39,15 @@ public class StructDeclarationNode extends Block {
         numbers.put(structNumber, -1);
     }
 
-    private StructDeclarationNode(Block parent, String name, int structNumber, ArrayList<RunnableNode> children, HashMap<String, VariableDeclarationNode> variables) {
+    private StructDeclarationNode(Block parent, String name, int structNumber, ArrayList<RunnableNode> children,
+                                  HashMap<String, VariableDeclarationNode> variables, HashMap<String, FunctionDeclarationNode> functions, HashMap<String, StructDeclarationNode> structs) {
         super(parent);
         this.name = name;
         this.structNumber = structNumber;
         setChildren(children);
         setVariables(variables);
+        setFunctions(functions);
+        setStructs(structs);
         numbers.put(structNumber, -1);
     }
 
@@ -61,28 +62,11 @@ public class StructDeclarationNode extends Block {
     @Override
     public StructDeclarationNode copy() {
         StructDeclarationNode copied;
-        copied = new StructDeclarationNode(getParent(),name,structNumber,getChildren(),getVariables());
+        copied = new StructDeclarationNode(getParent(),name,structNumber,getChildren(),getVariables(),getFunctions(),getStructs());
         copied.copyChildren();
         copied.copyVariables();
-
-        var functions = new HashMap<String, FunctionDeclarationNode>();
-        for (Map.Entry<String, FunctionDeclarationNode> entry : this.functions.entrySet()) {
-            var function = entry.getValue().copy();
-            if (!(function instanceof Constructor)) {
-                function.getBody().setParent(copied);
-                functions.put(entry.getKey(), function);
-            }
-        }
-        copied.functions = functions;
-
-        var structs = new HashMap<String, StructDeclarationNode>();
-        for (Map.Entry<String, StructDeclarationNode> entry : this.structs.entrySet()) {
-            var value = entry.getValue().copy();
-            value.setParent(copied);
-            structs.put(entry.getKey(), value);
-            copied.functions.put(value.getName(), new Constructor(value));
-        }
-        copied.structs = structs;
+        copied.copyFunctions();
+        copied.copyStructs();
         return copied;
     }
 
@@ -109,7 +93,7 @@ public class StructDeclarationNode extends Block {
     public MontyString toString(String fileName, int line) {
         String text;
         if (hasFunction("$str"))
-            text = getFunction("$str", fileName, line).call(new Tuple(),  fileName, line).toString();
+            text = getFunction("$str", fileName, line).call(OperationNode.emptyTuple,  fileName, line).toString();
         else
             text = name + "#" + instanceNumber;
         return new MontyString(text);

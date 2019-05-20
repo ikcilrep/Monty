@@ -20,10 +20,8 @@ import ast.Block;
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
-import parser.parsing.Parser;
 import sml.data.returning.BreakType;
 import sml.data.returning.ContinueType;
-import sml.data.tuple.Tuple;
 
 public final class ForStatementNode extends Block {
     private final OperationNode iterable;
@@ -32,20 +30,22 @@ public final class ForStatementNode extends Block {
     private static boolean isIterable(Object toCheck, String callFileName, int callLine) {
         if (toCheck instanceof String)
             return true;
-        if (!(toCheck instanceof StructDeclarationNode))
+        if (!(toCheck instanceof StructDeclarationNode)){
             return false;
+        }
         var structToCheck = (StructDeclarationNode) toCheck;
-        if (!structToCheck.hasFunction("Iterator"))
+        if (!(structToCheck.hasFunction("Iterator") || structToCheck.hasStructure("Iterator"))) {
             return false;
+        }
 
-        var iterator = structToCheck.getFunction("Iterator", callFileName, callLine);
-        if (iterator.getParametersLength() > 0)
+        var iteratorStruct = structToCheck.getStructure("Iterator") ;
+        if (iteratorStruct.hasFunction("init") && iteratorStruct.getFunction("init",callFileName,callLine).getParametersLength() > 0){
             return false;
-        var iteratorValue = iterator.call(new Tuple(), callFileName, callLine);
-        if (!(iteratorValue instanceof StructDeclarationNode))
-            return false;
-        var iteratorStruct = (StructDeclarationNode) iteratorValue;
-        return iteratorStruct.hasFunction("hasNext") && iteratorStruct.hasFunction("next");
+        }
+
+        return (iteratorStruct.hasFunction("hasNext") && iteratorStruct.getFunction("hasNext",callFileName,
+                callLine).getParametersLength() == 0) && (iteratorStruct.hasFunction("next") && iteratorStruct.
+                getFunction("next",callFileName, callLine).getParametersLength() == 0);
     }
     public ForStatementNode(String variableName, OperationNode iterable, String fileName, int line, Block parent) {
         super(parent);
@@ -79,14 +79,14 @@ public final class ForStatementNode extends Block {
             addVariable(variable = new VariableDeclarationNode(variableName), getFileName(), getLine());
         if (isIterable(toBeIterated, getFileName(), getLine())) {
             var iterator = (StructDeclarationNode) ((StructDeclarationNode) toBeIterated).getFunction("Iterator", getFileName(), getLine())
-                    .call(new Tuple(), getFileName(), getLine());
+                    .call(OperationNode.emptyTuple, getFileName(), getLine());
             var hasNext = iterator.getFunction("hasNext", getFileName(), getLine());
             var next = iterator.getFunction("next", getFileName(), getLine());
 
             if (isNotNameUnderscore) {
-                while ((boolean) hasNext.call(new Tuple(), fileName, line)) {
+                while ((boolean) hasNext.call(OperationNode.emptyTuple, fileName, line)) {
                     variable.setConst(false);
-                    variable.setValue(next.call(new Tuple(), fileName, line), fileName, line);
+                    variable.setValue(next.call(OperationNode.emptyTuple, fileName, line), fileName, line);
                     variable.setConst(isConst);
                     result = super.run();
                     if (result instanceof BreakType)
@@ -97,8 +97,8 @@ public final class ForStatementNode extends Block {
                         return result;
                 }
             } else
-                while ((boolean) hasNext.call(new Tuple(), getFileName(), getLine())) {
-                    next.call(new Tuple(), getFileName(), getLine());
+                while ((boolean) hasNext.call(OperationNode.emptyTuple, getFileName(), getLine())) {
+                    next.call(OperationNode.emptyTuple, getFileName(), getLine());
                     result = super.run();
                     if (result instanceof BreakType)
                         break;
