@@ -46,7 +46,7 @@ public final class WhileStatementNode extends ConditionalNode {
                     return result;
             } while (runCondition());
 
-        return Nothing.NOTHING;
+        return null;
     }
 
     @Override

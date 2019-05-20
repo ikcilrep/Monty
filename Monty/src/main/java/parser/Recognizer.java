@@ -64,7 +64,7 @@ public abstract class Recognizer {
         if (!tokens.get(0).getType().equals(TokenTypes.ELSE_KEYWORD))
             return false;
         if (tokens.size() > 1 && !isIfStatement(tokens, 1))
-            new LogError("Expected if statement or NOTHING after \"else\" keyword.",
+            new LogError("Expected if statement or nothing after \"else\" keyword.",
                     tokens.get(tokens.size() > 1 ? 1 : 0));
         return true;
 

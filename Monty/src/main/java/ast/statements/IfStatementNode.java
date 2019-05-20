@@ -44,7 +44,7 @@ public final class IfStatementNode extends ConditionalNode {
         else if (elseBody != null)
             return elseBody.run();
 
-        return Nothing.NOTHING;
+        return null;
     }
 
     @Override
