@@ -19,7 +19,6 @@ package ast.statements;
 import ast.Block;
 import ast.ConditionalNode;
 import ast.expressions.OperationNode;
-import sml.data.returning.Nothing;
 
 public final class IfStatementNode extends ConditionalNode {
 

@@ -21,7 +21,6 @@ import ast.ConditionalNode;
 import ast.expressions.OperationNode;
 import sml.data.returning.BreakType;
 import sml.data.returning.ContinueType;
-import sml.data.returning.Nothing;
 
 public final class WhileStatementNode extends ConditionalNode {
     private final boolean isDoWhile;

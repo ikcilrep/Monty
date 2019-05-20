@@ -20,7 +20,7 @@ import ast.expressions.OperationNode;
 import sml.casts.ToBoolean;
 
 public abstract class ConditionalNode extends Block {
-    private OperationNode condition;
+    private final OperationNode condition;
 
     protected ConditionalNode(OperationNode condition, Block parent, String fileName, int line) {
         super(parent);
@@ -31,10 +31,6 @@ public abstract class ConditionalNode extends Block {
 
     protected OperationNode getCondition() {
         return condition;
-    }
-
-    protected void setCondition(OperationNode condition) {
-        this.condition = condition;
     }
 
     public abstract ConditionalNode copy();
