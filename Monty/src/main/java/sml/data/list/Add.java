@@ -22,7 +22,7 @@ import sml.data.tuple.Tuple;
 final class Add extends Method<List> {
 
     Add(List array) {
-        super(array, "add",new String[1]);
+        super(array, "add", new String[1]);
         addParameter("other");
     }
 

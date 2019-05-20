@@ -22,7 +22,7 @@ import sml.data.tuple.Tuple;
 final class EqualsIgnoreCase extends Method<MontyString> {
 
     EqualsIgnoreCase(MontyString parent) {
-        super(parent, "equalsIgnoreCase",new String[1]);
+        super(parent, "equalsIgnoreCase", new String[1]);
         addParameter("other");
     }
 

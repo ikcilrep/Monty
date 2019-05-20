@@ -22,7 +22,7 @@ import sml.data.tuple.Tuple;
 final class CharAt extends Method<MontyString> {
 
     CharAt(MontyString parent) {
-        super(parent, "charAt",new String[1]);
+        super(parent, "charAt", new String[1]);
         addParameter("index");
     }
 
@@ -30,7 +30,7 @@ final class CharAt extends Method<MontyString> {
     public MontyString call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
         return parent.charAt(DataTypes.getAndCheckSmallInteger(body.getVariableValue("index", callFileName,
-                callLine), "Index", callFileName,callLine),callFileName,callLine);
+                callLine), "Index", callFileName, callLine), callFileName, callLine);
     }
 
 }

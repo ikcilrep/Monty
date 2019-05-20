@@ -23,14 +23,14 @@ import sml.data.tuple.Tuple;
 final class Split extends Method<MontyString> {
 
     Split(MontyString parent) {
-        super(parent, "split",new String[1]);
+        super(parent, "split", new String[1]);
         addParameter("regex");
     }
 
     @Override
     public List call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        return parent.split(body.getStringVariableValue("regex",callFileName,callLine));
+        return parent.split(body.getStringVariableValue("regex", callFileName, callLine));
     }
 
 }

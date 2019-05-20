@@ -27,23 +27,15 @@ public final class WhileStatementNode extends ConditionalNode {
     private final boolean isDoWhile;
 
     public WhileStatementNode(Block parent, OperationNode condition, boolean isDoWhile, String fileName, int line) {
-        super(condition, parent);
-        setCondition(condition);
+        super(condition, parent, fileName, line);
         this.isDoWhile = isDoWhile;
-        setFileName(fileName);
-        setLine(line);
     }
-
-    private boolean isDoWhile() {
-        return isDoWhile;
-    }
-
 
 
     @Override
     public Object run() {
         Object result;
-        if (isDoWhile() || runCondition())
+        if (isDoWhile || runCondition())
             do {
                 result = super.run();
                 if (result instanceof BreakType)
@@ -59,7 +51,7 @@ public final class WhileStatementNode extends ConditionalNode {
 
     @Override
     public WhileStatementNode copy() {
-        var copied = new WhileStatementNode(getParent(), getCondition().copy(), isDoWhile,getFileName(),getLine() );
+        var copied = new WhileStatementNode(getParent(), getCondition().copy(), isDoWhile, getFileName(), getLine());
         copied.setChildren(getChildren());
         copied.copyChildren();
 

@@ -35,9 +35,9 @@ public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode
     private Object callWithoutChangingTailRecursionToIteration(Tuple arguments, String callFileName, int callLine) {
         String[] fileNames = {callFileName, getFileName()};
         int[] lines = {callLine, getLine()};
-        setValuesOfAddedArguments(arguments,callFileName,callLine);
+        setValuesOfAddedArguments(arguments, callFileName, callLine);
         try {
-            return getResult(body.run(),fileNames,lines);
+            return getResult(body.run(), fileNames, lines);
         } catch (StackOverflowError e) {
             return new LogError("Stack overflow at " + name + " function call", fileNames, lines);
         }
@@ -55,7 +55,7 @@ public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode
         return value;
     }
 
-    private Object changeTailRecursionToIteration(Object value,String fileName, int line) {
+    private Object changeTailRecursionToIteration(Object value, String fileName, int line) {
         while (value instanceof OperationNode) {
             var operationNodeResult = (OperationNode) value;
             while (operationNodeResult.getOperand().equals(Operator.JUST))
@@ -83,9 +83,9 @@ public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode
         String[] fileNames = {callFileName, getFileName()};
         int[] lines = {callLine, getLine()};
         try {
-            return getResult(workingCopy.changeTailRecursionToIteration(workingCopy.body.run(),callFileName,callLine),fileNames,lines);
+            return getResult(workingCopy.changeTailRecursionToIteration(workingCopy.body.run(), callFileName, callLine), fileNames, lines);
         } catch (StackOverflowError e) {
-            return  new LogError("Stack overflow at " + name + " function call", fileNames, lines);
+            return new LogError("Stack overflow at " + name + " function call", fileNames, lines);
         }
 
     }
@@ -109,7 +109,7 @@ public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode
 
     private void setValueOfAddedArgument(Object value, int index, String fileName, int line) {
         var name = parameters[index];
-        VariableDeclarationNode variable = body.getVariable(name,fileName,line);
+        VariableDeclarationNode variable = body.getVariable(name, fileName, line);
         variable.setConst(false);
         variable.setValue(value, fileName, line);
         variable.setConst(Character.isUpperCase(name.charAt(0)));
@@ -117,13 +117,13 @@ public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode
 
     private void setValuesOfAddedArguments(Tuple arguments, String fileName, int line) {
         var argumentsLength = arguments.length();
-        if (parameters.length == 1 && parameters.length  != argumentsLength)
-            setValueOfAddedArgument(arguments, 0,fileName,line);
+        if (parameters.length == 1 && parameters.length != argumentsLength)
+            setValueOfAddedArgument(arguments, 0, fileName, line);
         else
-            checkArgumentsSize(argumentsLength,fileName,line);
+            checkArgumentsSize(argumentsLength, fileName, line);
 
         for (int i = 0; i < argumentsLength; i++)
-            setValueOfAddedArgument(arguments.get(i), i,fileName,line);
+            setValueOfAddedArgument(arguments.get(i), i, fileName, line);
     }
 
 

@@ -11,7 +11,7 @@ import sml.data.tuple.Tuple;
 public final class Run extends NativeFunctionDeclarationNode {
 
     public Run() {
-        super("run",new String[1]);
+        super("run", new String[1]);
         setBody(new Block(null));
         addParameter("code");
     }

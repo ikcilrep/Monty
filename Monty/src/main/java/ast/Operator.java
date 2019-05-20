@@ -49,9 +49,7 @@ public enum Operator {
             ASSIGNMENT_XOR,
             ASSIGNMENT_AND,
             ASSIGNMENT_OR);
-    public boolean isAssignment() {
-        return assignmentOperators.contains(this);
-    }
+
     public static Operator toOperator(String operator) {
         switch (operator) {
             case "+":
@@ -70,7 +68,7 @@ public enum Operator {
                 return SHIFT_LEFT;
             case ">>":
                 return SHIFT_RIGHT;
-                case "^":
+            case "^":
                 return XOR;
             case "&":
                 return AND;
@@ -124,6 +122,10 @@ public enum Operator {
                 return JUST;
         }
         return null;
+    }
+
+    public boolean isAssignment() {
+        return assignmentOperators.contains(this);
     }
 
 }

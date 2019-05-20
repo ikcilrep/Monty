@@ -28,7 +28,7 @@ import java.math.BigInteger;
 public final class Sleep extends NativeFunctionDeclarationNode {
 
     public Sleep() {
-        super("sleep",new String[1]);
+        super("sleep", new String[1]);
         setBody(new Block(null));
         addParameter("millis");
     }

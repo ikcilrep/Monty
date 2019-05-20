@@ -101,7 +101,7 @@ class OperatorOverloading {
             case INTEGER:
             case BIG_INTEGER:
             case FLOAT:
-                variable.setValue(additionOperator(variable.getValue(), rightValue, type,fileName, line), fileName,
+                variable.setValue(additionOperator(variable.getValue(), rightValue, type, fileName, line), fileName,
                         line);
                 return variable.getValue();
             case BOOLEAN:
@@ -122,7 +122,7 @@ class OperatorOverloading {
             case INTEGER:
             case BIG_INTEGER:
             case FLOAT:
-                variable.setValue(andOperator(variable.getValue(), rightValue, type,fileName,line), fileName, line);
+                variable.setValue(andOperator(variable.getValue(), rightValue, type, fileName, line), fileName, line);
                 return variable.getValue();
             case NOTHING:
                 new LogError("Can't do and operation with Nothing.", fileName, line);
@@ -159,7 +159,7 @@ class OperatorOverloading {
             case INTEGER:
             case BIG_INTEGER:
             case FLOAT:
-                variable.setValue(multiplicationOperator(variable.getValue(), rightValue, type,fileName,line), fileName,
+                variable.setValue(multiplicationOperator(variable.getValue(), rightValue, type, fileName, line), fileName,
                         line);
                 return variable.getValue();
             case NOTHING:
@@ -193,7 +193,7 @@ class OperatorOverloading {
             case INTEGER:
             case BIG_INTEGER:
             case FLOAT:
-                variable.setValue(orOperator(variable.getValue(), rightValue, type,fileName,line), fileName, line);
+                variable.setValue(orOperator(variable.getValue(), rightValue, type, fileName, line), fileName, line);
                 return variable.getValue();
             case NOTHING:
                 new LogError("Can't do or operation with Nothing.", fileName, line);
@@ -210,7 +210,7 @@ class OperatorOverloading {
             case INTEGER:
             case BIG_INTEGER:
             case FLOAT:
-                variable.setValue(powerOperator(variable.getValue(), rightValue, type,fileName,line), fileName, line);
+                variable.setValue(powerOperator(variable.getValue(), rightValue, type, fileName, line), fileName, line);
                 return variable.getValue();
             case NOTHING:
                 new LogError("Can't do or operation with Nothing.", fileName, line);
@@ -227,7 +227,7 @@ class OperatorOverloading {
             case INTEGER:
             case BIG_INTEGER:
             case FLOAT:
-                variable.setValue(shiftLeftOperator(variable.getValue(), rightValue, type,fileName,line), fileName,
+                variable.setValue(shiftLeftOperator(variable.getValue(), rightValue, type, fileName, line), fileName,
                         line);
                 return variable.getValue();
             case NOTHING:
@@ -245,7 +245,7 @@ class OperatorOverloading {
             case INTEGER:
             case BIG_INTEGER:
             case FLOAT:
-                variable.setValue(shiftRightOperator(variable.getValue(), rightValue, type,fileName,line), fileName,
+                variable.setValue(shiftRightOperator(variable.getValue(), rightValue, type, fileName, line), fileName,
                         line);
                 return variable.getValue();
             case NOTHING:
@@ -263,7 +263,7 @@ class OperatorOverloading {
             case INTEGER:
             case BIG_INTEGER:
             case FLOAT:
-                variable.setValue(subtractionOperator(variable.getValue(), rightValue, type,fileName,line), fileName,
+                variable.setValue(subtractionOperator(variable.getValue(), rightValue, type, fileName, line), fileName,
                         line);
                 return variable.getValue();
             case NOTHING:
@@ -281,7 +281,7 @@ class OperatorOverloading {
             case INTEGER:
             case BIG_INTEGER:
             case FLOAT:
-                variable.setValue(xorOperator(variable.getValue(), rightValue, type,fileName,line), fileName, line);
+                variable.setValue(xorOperator(variable.getValue(), rightValue, type, fileName, line), fileName, line);
                 return variable.getValue();
             case NOTHING:
                 new LogError("Can't xor Nothing.", fileName, line);
@@ -290,13 +290,13 @@ class OperatorOverloading {
         }
     }
 
-    static Object booleanAndOperator(boolean leftValue, OperationNode right,String fileName,int line) {
+    static Object booleanAndOperator(boolean leftValue, OperationNode right, String fileName, int line) {
         if (!leftValue)
             return false;
         var rightValue = right.run();
         if (!(rightValue instanceof Boolean))
             if (rightValue instanceof StructDeclarationNode)
-                return andOperator(true, rightValue, DataTypes.OBJECT,fileName, line);
+                return andOperator(true, rightValue, DataTypes.OBJECT, fileName, line);
             else
                 new LogError(
                         "Type mismatch:\tboolean and " + DataTypes.getDataType(rightValue).toString().toLowerCase(),
@@ -304,7 +304,7 @@ class OperatorOverloading {
         return rightValue;
     }
 
-    static Object booleanOrOperator(boolean leftValue, OperationNode right,String fileName, int line) {
+    static Object booleanOrOperator(boolean leftValue, OperationNode right, String fileName, int line) {
         if (leftValue)
             return true;
         var rightValue = right.run();
@@ -395,7 +395,7 @@ class OperatorOverloading {
         }
     }
 
-    static Object instanceOfOperator(Object leftValue, Object rightValue, DataTypes type, Block parent,String fileName, int line) {
+    static Object instanceOfOperator(Object leftValue, Object rightValue, DataTypes type, Block parent, String fileName, int line) {
         var rightName = ((IdentifierNode) rightValue).getName();
 
         if (builtInTypes.containsKey(rightName))
@@ -508,7 +508,7 @@ class OperatorOverloading {
             case BOOLEAN:
                 return !(boolean) value;
             case OBJECT:
-                return overloadOperator(null, value, "$not", 1,fileName,line);
+                return overloadOperator(null, value, "$not", 1, fileName, line);
             case NOTHING:
                 new LogError("Void hasn't got any value:\t" + value + " !", fileName, line);
             default:
@@ -516,7 +516,7 @@ class OperatorOverloading {
         }
     }
 
-    static Object notEqualsOperator(Object leftValue, Object rightValue,DataTypes type, String fileName, int line) {
+    static Object notEqualsOperator(Object leftValue, Object rightValue, DataTypes type, String fileName, int line) {
         if (type.equals(DataTypes.OBJECT))
             return overloadOperator(leftValue, rightValue, "$neq", 2, fileName, line);
         return !leftValue.equals(rightValue);
@@ -553,7 +553,7 @@ class OperatorOverloading {
             case FLOAT:
                 return Math.pow((double) leftValue, (double) rightValue);
             case OBJECT:
-                return overloadOperator(leftValue, rightValue, "$pow", 2,fileName,line);
+                return overloadOperator(leftValue, rightValue, "$pow", 2, fileName, line);
             case NOTHING:
                 new LogError("Void hasn't got any value:\t" + leftValue + " " + rightValue + " |", fileName,
                         line);
@@ -563,7 +563,7 @@ class OperatorOverloading {
     }
 
     private static Object overloadOperator(Object leftValue, Object rightValue, String nameOfFunction,
-                                          int numberOfParameters, String fileName, int line) {
+                                           int numberOfParameters, String fileName, int line) {
         var arguments = new Tuple(leftValue, rightValue);
         leftValue = OperationNode.getVariableValue(leftValue);
         if (leftValue instanceof StructDeclarationNode) {
@@ -588,7 +588,7 @@ class OperatorOverloading {
                 fileName, line);
         return null;
     }
-    
+
     static Object shiftLeftOperator(Object leftValue, Object rightValue, DataTypes type, String fileName, int line) {
         switch (type) {
             case INTEGER:
@@ -678,7 +678,7 @@ class OperatorOverloading {
             case INTEGER:
             case BIG_INTEGER:
             case FLOAT:
-                variable.setValue(moduloOperator(variable.getValue(), rightValue, type,fileName,line), fileName,
+                variable.setValue(moduloOperator(variable.getValue(), rightValue, type, fileName, line), fileName,
                         line);
                 return variable.getValue();
             case NOTHING:

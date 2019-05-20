@@ -22,7 +22,7 @@ import sml.data.tuple.Tuple;
 final class Equals extends Method<MontyString> {
 
     Equals(MontyString parent) {
-        super(parent, "$eq",new String[2]);
+        super(parent, "$eq", new String[2]);
         addParameter("this");
         addParameter("other");
     }

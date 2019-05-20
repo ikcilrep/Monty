@@ -22,7 +22,7 @@ import sml.data.tuple.Tuple;
 final class EndsWith extends Method<MontyString> {
 
     EndsWith(MontyString parent) {
-        super(parent, "endsWith",new String[1]);
+        super(parent, "endsWith", new String[1]);
         addParameter("suffix");
     }
 

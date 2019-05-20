@@ -32,9 +32,8 @@ public final class ReturnStatementNode extends NodeWithParent {
 
     @Override
     public NodeWithParent copy() {
-        return new ReturnStatementNode(expression.copy(),getFileName(), getLine());
+        return new ReturnStatementNode(expression.copy(), getFileName(), getLine());
     }
-
 
 
     @Override

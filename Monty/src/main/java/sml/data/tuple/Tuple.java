@@ -12,15 +12,48 @@ import sml.io.Println;
 import java.util.LinkedList;
 
 public class Tuple extends StructDeclarationNode {
+    private final static Block methodsWrittenInMonty;
+
+    static {
+        methodsWrittenInMonty = Parser.parse(Lexer.lex(FileIO.readFile(Tuple.class.getResourceAsStream("methods.mt"),
+                "tuple/methods.mt"), "tuple/methods.mt"));
+    }
+
+    private final Object[] array;
+
+    public Tuple(LinkedList list) {
+        super(null, "Tuple");
+        addFunctions();
+        this.array = list.toArray();
+    }
+
+    public Tuple(Object elem) {
+        super(null, "Tuple");
+        addFunctions();
+        array = new Object[1];
+        array[0] = elem;
+
+    }
+
+
+    public Tuple(Object elem1, Object elem2) {
+        super(null, "Tuple");
+        addFunctions();
+        array = new Object[2];
+        array[0] = elem1;
+        array[1] = elem2;
+    }
+
+    public Tuple() {
+        super(null, "Tuple");
+        addFunctions();
+        array = new Object[0];
+    }
+
     public Object[] getArray() {
         return array;
     }
-    private final Object[] array;
-    private final static Block methodsWrittenInMonty;
-    static {
-        methodsWrittenInMonty= Parser.parse(Lexer.lex(FileIO.readFile(Tuple.class.getResourceAsStream("methods.mt"),
-                "tuple/methods.mt"), "tuple/methods.mt"));
-    }
+
     private void addFunctions() {
         new Get(this);
         new Length(this);
@@ -29,31 +62,6 @@ public class Tuple extends StructDeclarationNode {
         concat(methodsWrittenInMonty.copy());
     }
 
-
-    public Tuple(LinkedList list) {
-        super(null, "Tuple");
-        addFunctions();
-        this.array = list.toArray();
-    }
-    public Tuple(Object elem) {
-        super(null, "Tuple");
-        addFunctions();
-        array = new Object[1];
-        array[0] = elem;
-
-    }
-    public Tuple(Object elem1, Object elem2) {
-        super(null, "Tuple");
-        addFunctions();
-        array = new Object[2];
-        array[0] = elem1;
-        array[1] = elem2;
-    }
-    public Tuple() {
-        super(null, "Tuple");
-        addFunctions();
-        array = new Object[0];
-    }
     public Object get(int index) {
         return array[index];
     }

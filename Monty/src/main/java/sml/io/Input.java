@@ -30,7 +30,7 @@ public final class Input extends NativeFunctionDeclarationNode {
     private final static Scanner scanner = new Scanner(System.in);
 
     public Input() {
-        super("input",FunctionDeclarationNode.EMPTY_PARAMETERS);
+        super("input", FunctionDeclarationNode.EMPTY_PARAMETERS);
         setBody(new Block(null));
     }
 

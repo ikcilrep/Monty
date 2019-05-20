@@ -30,9 +30,9 @@ import sml.io.Println;
 import java.util.ArrayList;
 
 public class IOBlocks {
+    public final static VariableDeclarationNode nothing;
     private final static FunctionDeclarationNode abs;
     private final static FunctionDeclarationNode list;
-    public final static VariableDeclarationNode nothing;
     private final static FunctionDeclarationNode logError;
     private final static FunctionDeclarationNode print;
     private final static FunctionDeclarationNode println;
@@ -62,15 +62,15 @@ public class IOBlocks {
     private static void autoImport(Block block) {
         var fileName = "command line";
         var line = 1;
-        block.addVariable(nothing,fileName,line);
-        block.addFunction(abs,fileName,line);
-        block.addFunction(list,fileName,line);
-        block.addFunction(print,fileName,line);
-        block.addFunction(println,fileName,line);
-        block.addFunction(round,fileName,line);
-        block.addFunction(input,fileName,line);
-        block.addFunction(logError,fileName,line);
-        block.addFunction(tuple,fileName,line);
+        block.addVariable(nothing, fileName, line);
+        block.addFunction(abs, fileName, line);
+        block.addFunction(list, fileName, line);
+        block.addFunction(print, fileName, line);
+        block.addFunction(println, fileName, line);
+        block.addFunction(round, fileName, line);
+        block.addFunction(input, fileName, line);
+        block.addFunction(logError, fileName, line);
+        block.addFunction(tuple, fileName, line);
 
         for (var parsed : writtenInMonty)
             block.concat(parsed);

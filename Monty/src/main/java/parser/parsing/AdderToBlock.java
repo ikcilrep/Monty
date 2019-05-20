@@ -78,8 +78,8 @@ abstract class AdderToBlock {
         var functionName = tokens.get(1).getText();
         if (Character.isUpperCase(functionName.charAt(0)))
             new LogError("Function name " + functionName + " can't start with upper case.", tokens.get(2));
-        var identifiers = parseIdentifiers(tokens,2);
-        var function = new CustomFunctionDeclarationNode(functionName, identifiers, identifiers.length-1);
+        var identifiers = parseIdentifiers(tokens, 2);
+        var function = new CustomFunctionDeclarationNode(functionName, identifiers, identifiers.length - 1);
         function.setBody(new Block(block));
         block.addFunction(function, tokens.get(1));
         return function.getBody();
@@ -98,7 +98,7 @@ abstract class AdderToBlock {
         if (tokens.size() > 1)
             expression = ExpressionParser.parseInfix(block, tokens, 1);
         else
-            expression = new OperationNode(new IdentifierNode("Nothing",false), block);
+            expression = new OperationNode(new IdentifierNode("Nothing", false), block);
         block.addChild(new ReturnStatementNode(expression, tokens.get(0).getFileName(), tokens.get(0).getLine()));
     }
 
@@ -132,7 +132,7 @@ abstract class AdderToBlock {
     }
 
     private static String[] parseIdentifiers(ArrayList<Token> tokens, int start) {
-        var result = new String[tokens.size() -start];
+        var result = new String[tokens.size() - start];
         for (int i = start, j = 0; i < tokens.size(); i++, j++)
             result[j] = tokens.get(i).getText();
         return result;

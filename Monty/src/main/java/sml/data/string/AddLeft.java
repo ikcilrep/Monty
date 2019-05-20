@@ -6,7 +6,7 @@ import sml.data.tuple.Tuple;
 public class AddLeft extends Method<MontyString> {
 
     AddLeft(MontyString parent) {
-        super(parent, "$a_add",new String[2]);
+        super(parent, "$a_add", new String[2]);
         addParameter("this");
         addParameter("other");
 

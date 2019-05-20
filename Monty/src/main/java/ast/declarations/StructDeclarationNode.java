@@ -26,11 +26,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class StructDeclarationNode extends Block {
-    private static int actualStructNumber = -1;
     private final static HashMap<Integer, Integer> numbers = new HashMap<>();
+    private static int actualStructNumber = -1;
+    private final String name;
     private int structNumber;
     private int instanceNumber;
-    private final String name;
 
     public StructDeclarationNode(Block parent, String name) {
         super(parent);
@@ -52,7 +52,7 @@ public class StructDeclarationNode extends Block {
     }
 
     private void addNewStruct(Block block, String fileName, int line) {
-        block.addStruct(this, new Constructor(this),fileName, line);
+        block.addStruct(this, new Constructor(this), fileName, line);
     }
 
     public void addNewStruct(Block block, Token token) {
@@ -62,7 +62,7 @@ public class StructDeclarationNode extends Block {
     @Override
     public StructDeclarationNode copy() {
         StructDeclarationNode copied;
-        copied = new StructDeclarationNode(getParent(),name,structNumber,getChildren(),getVariables(),getFunctions(),getStructs());
+        copied = new StructDeclarationNode(getParent(), name, structNumber, getChildren(), getVariables(), getFunctions(), getStructs());
         copied.copyChildren();
         copied.copyVariables();
         copied.copyFunctions();
@@ -93,11 +93,12 @@ public class StructDeclarationNode extends Block {
     public MontyString toString(String fileName, int line) {
         String text;
         if (hasFunction("$str"))
-            text = getFunction("$str", fileName, line).call(OperationNode.emptyTuple,  fileName, line).toString();
+            text = getFunction("$str", fileName, line).call(OperationNode.emptyTuple, fileName, line).toString();
         else
             text = name + "#" + instanceNumber;
         return new MontyString(text);
     }
+
     public void addThisVariable(String fileName, int line) {
         var thisVariable = new VariableDeclarationNode("This");
         thisVariable.setValue(this, fileName, line);

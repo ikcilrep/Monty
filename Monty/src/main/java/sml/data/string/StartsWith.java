@@ -22,7 +22,7 @@ import sml.data.tuple.Tuple;
 final class StartsWith extends Method<MontyString> {
 
     StartsWith(MontyString parent) {
-        super(parent, "startsWith",new String[1]);
+        super(parent, "startsWith", new String[1]);
         addParameter("prefix");
     }
 

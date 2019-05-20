@@ -56,7 +56,7 @@ public enum DataTypes {
                 new LogError(nameOfNumber + " have to be less or equals 2^31-1.", fileName, line);
             if (bigIndex.compareTo(DataTypes.INT_MIN) < 0)
                 new LogError(nameOfNumber + " have to be greater or equals -2^31.", fileName, line);
-            return  bigIndex.intValue();
+            return bigIndex.intValue();
         }
         new LogError(nameOfNumber + " have to be integer.", fileName, line);
         return -1;

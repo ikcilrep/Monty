@@ -55,7 +55,7 @@ public class Importing {
 
     @SuppressWarnings("unchecked")
     private static void importElementFromSml(Block block, String[] split, String path,
-                                                    Token token) {
+                                             Token token) {
         var children = Sml.getChildren();
         Object functionVariableOrSubLibrary;
 
@@ -127,7 +127,7 @@ public class Importing {
                 var function = importedBlock.getFunction(name, fileName, line);
                 if (Character.isUpperCase(name.charAt(0))) {
                     var struct = importedBlock.getStructure(name);
-                    block.addStruct(struct,(Constructor)function, struct.getFileName(), struct.getLine());
+                    block.addStruct(struct, (Constructor) function, struct.getFileName(), struct.getLine());
                 } else
                     block.addFunction(function, function.getFileName(), function.getLine());
 

@@ -26,9 +26,11 @@ import java.util.regex.Pattern;
 public abstract class Recognizer {
     private static final Pattern IMPORT_REGEX = Pattern.compile("^[A-Z_]+ (DOT [A-Z_]+ )*$");
     private static final Set<String> UNARY_OPERATORS = Set.of("!", "");
+
     public static boolean isUnaryOperator(String operator) {
         return UNARY_OPERATORS.contains(operator);
     }
+
     public static boolean isBreakStatement(ArrayList<Token> tokens) {
         if (!tokens.get(0).getType().equals(TokenTypes.BREAK_KEYWORD))
             return false;
@@ -131,6 +133,7 @@ public abstract class Recognizer {
         return true;
 
     }
+
     public static boolean isIfStatement(ArrayList<Token> tokens) {
         return isIfStatement(tokens, 0);
 

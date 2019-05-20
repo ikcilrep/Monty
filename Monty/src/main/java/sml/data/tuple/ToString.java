@@ -13,7 +13,7 @@ final class ToString extends Method<Tuple> {
     @Override
     public MontyString call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        return parent.asString(callFileName,callLine);
+        return parent.asString(callFileName, callLine);
     }
 
 }

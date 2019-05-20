@@ -31,7 +31,7 @@ public final class Factorial extends NativeFunctionDeclarationNode {
     private static final int MAX = 12;
 
     public Factorial() {
-        super("factorial",new String[1]);
+        super("factorial", new String[1]);
         setBody(new Block(null));
         addParameter("n");
     }

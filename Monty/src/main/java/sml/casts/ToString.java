@@ -30,15 +30,15 @@ public final class ToString extends NativeFunctionDeclarationNode {
         addParameter("toBeCasted");
     }
 
+    public static MontyString toString(Object toBeCasted, String fileName, int line) {
+        if (toBeCasted instanceof StructDeclarationNode)
+            return ((StructDeclarationNode) toBeCasted).toString(fileName, line);
+        return new MontyString(toBeCasted.toString());
+    }
+
     @Override
     public MontyString call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        return toString(body.getVariableValue("toBeCasted", callFileName, callLine), callFileName,callLine);
-    }
-
-    public static MontyString toString(Object toBeCasted, String fileName, int line) {
-        if (toBeCasted instanceof StructDeclarationNode)
-            return ((StructDeclarationNode) toBeCasted).toString(fileName,line);
-        return new MontyString(toBeCasted.toString());
+        return toString(body.getVariableValue("toBeCasted", callFileName, callLine), callFileName, callLine);
     }
 }

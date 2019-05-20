@@ -25,7 +25,7 @@ import sml.data.tuple.Tuple;
 public final class Println extends NativeFunctionDeclarationNode {
 
     public Println() {
-        super("println",new String[1]);
+        super("println", new String[1]);
         setBody(new Block(null));
         addParameter("toPrint");
     }

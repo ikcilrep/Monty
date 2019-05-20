@@ -45,7 +45,7 @@ public class LogError {
     }
 
     public LogError(String message, Token token) {
-        new LogError(message,token.getFileName(),token.getLine());
+        new LogError(message, token.getFileName(), token.getLine());
     }
 
     private static String getMessage(String message) {

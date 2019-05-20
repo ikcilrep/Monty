@@ -22,7 +22,7 @@ import sml.data.tuple.Tuple;
 final class ReplaceFirst extends Method<MontyString> {
 
     ReplaceFirst(MontyString parent) {
-        super(parent, "replaceFirst",new String[2]);
+        super(parent, "replaceFirst", new String[2]);
         addParameter("regex");
         addParameter("replacement");
 

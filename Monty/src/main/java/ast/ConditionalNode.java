@@ -20,22 +20,24 @@ import ast.expressions.OperationNode;
 import sml.casts.ToBoolean;
 
 public abstract class ConditionalNode extends Block {
-    protected void setCondition(OperationNode condition) {
+    private OperationNode condition;
+
+    protected ConditionalNode(OperationNode condition, Block parent, String fileName, int line) {
+        super(parent);
         this.condition = condition;
+        setFileName(fileName);
+        setLine(line);
     }
 
     protected OperationNode getCondition() {
         return condition;
     }
 
-    private OperationNode condition;
-
-    protected ConditionalNode(OperationNode condition, Block parent) {
-        super(parent);
+    protected void setCondition(OperationNode condition) {
         this.condition = condition;
     }
 
-    public  abstract  ConditionalNode copy();
+    public abstract ConditionalNode copy();
 
     protected boolean runCondition() {
         return ToBoolean.toBoolean(condition.run(), getFileName(), getLine());

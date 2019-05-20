@@ -30,16 +30,13 @@ import sml.time.Seconds;
 
 import java.util.HashMap;
 
-public final class Sml{
+public final class Sml {
 
-    public static String[] paths;
     public final static String[] code;
     public final static short numberOfFiles;
-    public static HashMap<String, Object> getChildren() {
-        return children;
-    }
-
     private final static HashMap<String, Object> children;
+    public static String[] paths;
+
     static {
         String[] paths_ = {"iterations/range/range.mt", "functional/iterable/iterable.mt",
                 "functional/iterable/iterableFunctions.mt"};
@@ -93,6 +90,10 @@ public final class Sml{
 
 
         language.put("run", new Run());
+    }
+
+    public static HashMap<String, Object> getChildren() {
+        return children;
     }
 
 }

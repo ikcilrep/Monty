@@ -9,9 +9,9 @@ import parser.parsing.Parser;
 import sml.data.list.List;
 
 public class MontyString extends StructDeclarationNode {
-    private String string;
     private final static Block methodsWrittenInMonty = Parser.parse(Lexer.lex(FileIO.readFile(MontyString.class.getResourceAsStream("methods.mt"),
             "methods.mt"), "methods.mt"));
+    private String string;
 
     public MontyString(String string) {
         super(null, "String");
@@ -91,6 +91,7 @@ public class MontyString extends StructDeclarationNode {
     boolean endsWith(MontyString suffix) {
         return string.endsWith(suffix.string);
     }
+
     boolean startsWith(MontyString prefix) {
         return string.startsWith(prefix.string);
     }
@@ -98,6 +99,7 @@ public class MontyString extends StructDeclarationNode {
     MontyString lowerCase() {
         return new MontyString(string.toLowerCase());
     }
+
     MontyString upperCase() {
         return new MontyString(string.toUpperCase());
     }
@@ -111,6 +113,7 @@ public class MontyString extends StructDeclarationNode {
             new LogError("Begin can't be greater or equals to end.", fileName, line);
         return new MontyString(string.substring(begin, end));
     }
+
     int length() {
         return string.length();
     }

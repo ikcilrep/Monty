@@ -17,16 +17,15 @@ limitations under the License.
 package ast.expressions;
 
 public final class IdentifierNode {
-    public boolean isFunctionCall() {
-        return isFunctionCall;
-    }
-
     private final boolean isFunctionCall;
     private final String name;
-
     public IdentifierNode(String name, boolean isFunctionCall) {
         this.name = name;
         this.isFunctionCall = isFunctionCall;
+    }
+
+    public boolean isFunctionCall() {
+        return isFunctionCall;
     }
 
     public String getName() {

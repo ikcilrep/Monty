@@ -12,10 +12,10 @@ import sml.data.string.MontyString;
 import sml.data.tuple.Tuple;
 
 public class List extends StructDeclarationNode {
-    private Object[] array;
-    private int length = 0;
     private final static Block methodsWrittenInMonty = Parser.parse(Lexer.lex(FileIO.readFile(List.class.getResourceAsStream("methods.mt"),
             "methods.mt"), "methods.mt"));
+    private Object[] array;
+    private int length = 0;
 
     public List() {
         super(null, "List");

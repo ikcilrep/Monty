@@ -22,30 +22,31 @@ import sml.data.tuple.Tuple;
 
 public abstract class FunctionDeclarationNode extends DeclarationNode {
     public final static String[] EMPTY_PARAMETERS = new String[0];
-
-    private void setParameters(String[] parameters, int lastNotNullParameterIndex) {
-        this.parameters = parameters;
-        this.lastNotNullParameterIndex = lastNotNullParameterIndex;
-    }
     protected String[] parameters;
-    int lastNotNullParameterIndex;
     protected Block body;
-   
+    int lastNotNullParameterIndex;
     public FunctionDeclarationNode(String name, String[] parameters, int lastNotNullParameterIndex) {
         super(name);
-        setParameters(parameters,lastNotNullParameterIndex);
+        setParameters(parameters, lastNotNullParameterIndex);
     }
 
     public FunctionDeclarationNode(String name, String[] parameters) {
         super(name);
         setParameters(parameters, -1);
     }
+
+    private void setParameters(String[] parameters, int lastNotNullParameterIndex) {
+        this.parameters = parameters;
+        this.lastNotNullParameterIndex = lastNotNullParameterIndex;
+    }
+
     void checkArgumentsSize(int argumentsLength, String fileName, int line) {
         if (argumentsLength > parameters.length)
             new LogError("Too many arguments in " + getName() + " function call.", fileName, line);
         else if (argumentsLength < parameters.length)
             new LogError("Too few arguments in " + getName() + " function call.", fileName, line);
     }
+
     protected void addParameter(String name) {
         getParameters()[++lastNotNullParameterIndex] = name;
     }
@@ -65,8 +66,8 @@ public abstract class FunctionDeclarationNode extends DeclarationNode {
     private String[] getParameters() {
         return parameters;
     }
-    public int getParametersLength()
-    {
+
+    public int getParametersLength() {
         if (parameters == null)
             return 0;
         return parameters.length;
@@ -75,7 +76,7 @@ public abstract class FunctionDeclarationNode extends DeclarationNode {
 
     protected void setArguments(Tuple arguments, String callFileName, int callLine) {
         var argumentsLength = arguments.length();
-        if (parameters.length == 1 && parameters.length  != argumentsLength)
+        if (parameters.length == 1 && parameters.length != argumentsLength)
             setArgument(arguments, 0, callFileName, callLine);
         else if (argumentsLength > parameters.length)
             new LogError("Too many arguments in " + getName() + " function call.", callFileName, callLine);
@@ -83,8 +84,9 @@ public abstract class FunctionDeclarationNode extends DeclarationNode {
             new LogError("Too few arguments in " + getName() + " function call.", callFileName, callLine);
         else
             for (int i = 0; i < argumentsLength; i++)
-                setArgument(arguments.get(i), i,callFileName,callLine);
+                setArgument(arguments.get(i), i, callFileName, callLine);
     }
+
     protected abstract void setArgument(Object value, int index, String fileName, int line);
    /* @Override
     public String toString() {

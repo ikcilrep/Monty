@@ -14,7 +14,7 @@ public class Constructor extends NativeFunctionDeclarationNode {
     @Override
     public Object call(Tuple arguments, String callFileName, int callLine) {
         var newStruct = struct.getParent().getStructure(struct.getName(), callFileName, callLine).copy();
-        newStruct.addThisVariable(callFileName,callLine);
+        newStruct.addThisVariable(callFileName, callLine);
         newStruct.incrementNumber();
         newStruct.run();
 
@@ -32,7 +32,7 @@ public class Constructor extends NativeFunctionDeclarationNode {
 
     @Override
     public String toString() {
-        return "Constructor<"+getName()+">";
+        return "Constructor<" + getName() + ">";
     }
 
 }

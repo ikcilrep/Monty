@@ -23,7 +23,7 @@ import sml.data.tuple.Tuple;
 final class Substring extends Method<MontyString> {
 
     Substring(MontyString parent) {
-        super(parent, "substring",new String[2]);
+        super(parent, "substring", new String[2]);
         addParameter("begin");
         addParameter("end");
     }
@@ -32,9 +32,9 @@ final class Substring extends Method<MontyString> {
     public MontyString call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
         return parent.substring(DataTypes.getAndCheckSmallInteger(body.getVariableValue("begin", callFileName,
-                callLine),"Begin",callFileName,callLine),DataTypes.getAndCheckSmallInteger(
-                        body.getVariableValue("end", callFileName, callLine),"End",callFileName,
-                callLine),callFileName,callLine);
+                callLine), "Begin", callFileName, callLine), DataTypes.getAndCheckSmallInteger(
+                body.getVariableValue("end", callFileName, callLine), "End", callFileName,
+                callLine), callFileName, callLine);
     }
 
 }

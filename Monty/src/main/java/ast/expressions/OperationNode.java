@@ -36,20 +36,11 @@ import static ast.Operator.*;
 public final class OperationNode extends NodeWithParent {
 
     public static Tuple emptyTuple;
-    private OperationNode left;
-
-    public Object getOperand() {
-        return operand;
-    }
-
     private final Object operand;
+    private OperationNode left;
     private Block parent;
-
-    public OperationNode getRight() {
-        return right;
-    }
-
     private OperationNode right;
+
     public OperationNode(Object operand, Block parent) {
         if (operand == null)
             throw new NullPointerException();
@@ -65,7 +56,7 @@ public final class OperationNode extends NodeWithParent {
     }
 
     static Object getVariableValue(Object canBeVariable) {
-        if (canBeVariable instanceof  VariableDeclarationNode)
+        if (canBeVariable instanceof VariableDeclarationNode)
             return ((VariableDeclarationNode) canBeVariable).getValue();
         return canBeVariable;
     }
@@ -85,6 +76,24 @@ public final class OperationNode extends NodeWithParent {
             return emptyTuple;
 
         return expression;
+    }
+
+    public static Tuple argumentsToTuple(Object arguments) {
+        if (arguments instanceof Tuple)
+            return (Tuple) arguments;
+        return new Tuple(arguments);
+    }
+
+    public Object getOperand() {
+        return operand;
+    }
+
+    public OperationNode getRight() {
+        return right;
+    }
+
+    public final void setRight(OperationNode right) {
+        this.right = right;
     }
 
     private Object calculate(Object leftValue, Object rightValue, Operator operator, DataTypes type, String fileName, int line) {
@@ -151,6 +160,7 @@ public final class OperationNode extends NodeWithParent {
         }
         return null;
     }
+
     private Object calculate(Object value, DataTypes type, String fileName, int line) {
         return OperatorOverloading.negationOperator(value, type, fileName, line);
     }
@@ -165,8 +175,6 @@ public final class OperationNode extends NodeWithParent {
         return copied;
     }
 
-
-
     @Override
     public final void setParent(Block parent) {
         this.parent = parent;
@@ -176,7 +184,6 @@ public final class OperationNode extends NodeWithParent {
             right.setParent(parent);
     }
 
-
     final Object runWithParent(Block parent, boolean doesGetVariableValue) {
         // Returns calculated value.
         var fileName = getFileName();
@@ -184,39 +191,38 @@ public final class OperationNode extends NodeWithParent {
         Object result;
         if (!(operand instanceof Operator || operand instanceof IdentifierNode)) {
             result = operand;
-        }  else
+        } else
             result = solve(parent);
-        result = getLiteral(result,parent, doesGetVariableValue, fileName, line);
+        result = getLiteral(result, parent, doesGetVariableValue, fileName, line);
         if (result instanceof LinkedList)
             return new Tuple((LinkedList) result);
         else if (result instanceof VariableDeclarationNode && doesGetVariableValue)
             return ((VariableDeclarationNode) result).getValue();
         return result;
     }
+
     private Object runWithParent(Block parent) {
         // Returns calculated value.
-        return runWithParent(parent,true);
+        return runWithParent(parent, true);
     }
+
     @Override
     public final Object run() {
         return runWithParent(parent);
     }
 
-
     public final void setLeft(OperationNode left) {
         this.left = left;
     }
 
-    public final void setRight(OperationNode right) {
-        this.right = right;
-    }
     private Object solveUnaryOperator(Block parent, String fileName, int line) {
 
-        var value = getLiteral(right.solve(parent),parent, true, right.getFileName(), right.getLine());
+        var value = getLiteral(right.solve(parent), parent, true, right.getFileName(), right.getLine());
         if (value instanceof LinkedList)
             value = new Tuple(((LinkedList) value));
         return calculate(value, DataTypes.getDataType(value), fileName, line);
     }
+
     @SuppressWarnings("unchecked")
     private Object solveBinaryOperator(Block parent, Operator operator) {
         var fileName = getFileName();
@@ -225,10 +231,10 @@ public final class OperationNode extends NodeWithParent {
         var isDot = operator.equals(DOT);
         var leftFileName = left.getFileName();
         var leftLine = left.getLine();
-        var leftValue = getLiteral(left.solve(this.parent),this.parent, !isAssignment, leftFileName, leftLine);
+        var leftValue = getLiteral(left.solve(this.parent), this.parent, !isAssignment, leftFileName, leftLine);
 
         if (operator.equals(COMMA)) {
-            var rightValue = getLiteral(right.solve(parent), parent,true, leftFileName, leftLine);
+            var rightValue = getLiteral(right.solve(parent), parent, true, leftFileName, leftLine);
             if (leftValue instanceof LinkedList) {
                 ((LinkedList<Object>) leftValue).add(rightValue);
                 return leftValue;
@@ -237,7 +243,7 @@ public final class OperationNode extends NodeWithParent {
                 ((LinkedList<Object>) rightValue).addFirst(leftValue);
                 return rightValue;
             }
-            return new LinkedList<>(List.of(leftValue,rightValue));
+            return new LinkedList<>(List.of(leftValue, rightValue));
         }
 
         if (leftValue instanceof LinkedList)
@@ -252,12 +258,11 @@ public final class OperationNode extends NodeWithParent {
         }
 
 
-
         if (isDot) {
             if (!(right.operand instanceof IdentifierNode))
                 new LogError("Variable or function can only be got from struct.", fileName, line);
             //System.out.println(((IdentifierNode)left.operand).getName());
-            return OperatorOverloading.dotOperator(leftValue, right, leftType,fileName, line);
+            return OperatorOverloading.dotOperator(leftValue, right, leftType, fileName, line);
         }
 
         var b = right.solve(parent);
@@ -265,9 +270,9 @@ public final class OperationNode extends NodeWithParent {
         if (operator.equals(INSTANCE_OF)) {
             if (!(b instanceof IdentifierNode))
                 new LogError("Right value has to be type name.", fileName, line);
-            return OperatorOverloading.instanceOfOperator(leftValue, b, leftType, parent,fileName,line);
+            return OperatorOverloading.instanceOfOperator(leftValue, b, leftType, parent, fileName, line);
         }
-        var rightValue = getLiteral(b,parent, true, right.getFileName(), right.getLine());
+        var rightValue = getLiteral(b, parent, true, right.getFileName(), right.getLine());
         if (rightValue instanceof LinkedList)
             rightValue = new Tuple(((LinkedList) rightValue));
         var rightType = DataTypes.getDataType(rightValue);
@@ -357,12 +362,6 @@ public final class OperationNode extends NodeWithParent {
         return calculate(leftValue, rightValue, operator, leftType, fileName, line);
     }
 
-    public static Tuple argumentsToTuple(Object arguments) {
-        if (arguments instanceof Tuple)
-            return (Tuple)arguments;
-        return new Tuple(arguments);
-    }
-
     private Object solveFunction(Block parent) {
         var fileName = getFileName();
         var line = getLine();
@@ -388,6 +387,6 @@ public final class OperationNode extends NodeWithParent {
         if (operator.equals(NEGATION))
             return solveUnaryOperator(parent, getFileName(), getLine());
 
-        return solveBinaryOperator(parent,operator);
+        return solveBinaryOperator(parent, operator);
     }
 }

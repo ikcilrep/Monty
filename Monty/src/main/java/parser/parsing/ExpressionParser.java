@@ -65,13 +65,13 @@ class ExpressionParser {
                     node.setRight(stack.pop());
                     break;
                 case IDENTIFIER: // If token is identifier
-                    node = new OperationNode(new IdentifierNode(token.getText(), false), parent,token.getFileName(), token.getLine());
+                    node = new OperationNode(new IdentifierNode(token.getText(), false), parent, token.getFileName(), token.getLine());
                     break;
                 case OPENING_SQUARE_BRACKET:
                     node = lists.poll();
                     break;
                 case EMPTY_TUPLE:
-                    node = new OperationNode(Promise.EMPTY_TUPLE, parent,token.getFileName(),token.getLine());
+                    node = new OperationNode(Promise.EMPTY_TUPLE, parent, token.getFileName(), token.getLine());
                     break;
                 default:
                     node = new OperationNode(toDataType(token, Tokens.getDataType(token.getType())), parent, token.getFileName(), token.getLine());
@@ -120,7 +120,7 @@ class ExpressionParser {
                 }
             case FLOAT:
                 try {
-                    return  Double.parseDouble(literal);
+                    return Double.parseDouble(literal);
                 } catch (NumberFormatException e) {
                     return new LogError("Float overflow.", token);
                 }

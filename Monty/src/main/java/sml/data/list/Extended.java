@@ -22,7 +22,7 @@ import sml.data.tuple.Tuple;
 final class Extended extends Method<List> {
 
     Extended(List array) {
-        super(array, "$add",new String[2]);
+        super(array, "$add", new String[2]);
         addParameter("this");
         addParameter("other");
     }

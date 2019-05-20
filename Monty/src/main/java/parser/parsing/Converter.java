@@ -19,6 +19,7 @@ class Converter {
             ">>=", "**", "**=");
     private final static Set<String> notAssociative = Set.of("<", "<=", ">=", ">", "instanceof");
     private final static IdentifierNode LIST_CALL = new IdentifierNode("List", true);
+
     static {
         precedence = new HashMap<>();
         precedence.put("", 18);
@@ -58,8 +59,9 @@ class Converter {
 
 
     }
+
     private static int getPrecedence(Token token) {
-        return token.getType().equals(TokenTypes.FUNCTION) ? 100 :precedence.get(token.getText());
+        return token.getType().equals(TokenTypes.FUNCTION) ? 100 : precedence.get(token.getText());
     }
 
     static ArrayList<Token> infixToSuffix(ArrayList<Token> tokens, Block parent, int start, int end) {
@@ -86,7 +88,7 @@ class Converter {
                                 var topType = top.getType();
                                 if (topType.equals(TokenTypes.OPENING_BRACKET))
                                     break;
-                                topPrecedence =  getPrecedence(top);
+                                topPrecedence = getPrecedence(top);
                                 thisPrecedence = getPrecedence(token);
                             }
                         }
@@ -116,7 +118,7 @@ class Converter {
                     break;
                 case IDENTIFIER:
                     if (i.i + 1 < tokens.size()) {
-                        var nextType =tokens.get(i.i + 1).getType();
+                        var nextType = tokens.get(i.i + 1).getType();
                         if (!(nextType.equals(TokenTypes.OPERATOR) || nextType.equals(TokenTypes.CLOSING_BRACKET)
                                 || nextType.equals(TokenTypes.CLOSING_SQUARE_BRACKET))) {
                             token.setType(TokenTypes.FUNCTION);
@@ -146,7 +148,7 @@ class Converter {
 
     private static OperationNode parseList(ArrayList<Token> tokens, Block parent, IntegerHolder i) {
         var token = tokens.get(i.i);
-        var list = new OperationNode(LIST_CALL, parent,token.getFileName(),token.getLine());
+        var list = new OperationNode(LIST_CALL, parent, token.getFileName(), token.getLine());
         i.i++;
         var openedBrackets = 1;
         var counter = i.i;
@@ -159,16 +161,16 @@ class Converter {
                 case CLOSING_SQUARE_BRACKET:
                     openedBrackets--;
                     break;
-                    default:
-                        break;
+                default:
+                    break;
             }
             counter++;
         }
-        if (counter -1 > i.i) {
-            list.setRight(ExpressionParser.parseInfix(parent, tokens,i.i, counter-1));
+        if (counter - 1 > i.i) {
+            list.setRight(ExpressionParser.parseInfix(parent, tokens, i.i, counter - 1));
             i.i = counter - 1;
         } else
-            list.setRight(new OperationNode(Promise.EMPTY_TUPLE,parent));
+            list.setRight(new OperationNode(Promise.EMPTY_TUPLE, parent));
         return list;
 
     }

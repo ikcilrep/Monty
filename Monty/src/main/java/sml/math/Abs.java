@@ -26,7 +26,7 @@ import java.math.BigInteger;
 public final class Abs extends NativeFunctionDeclarationNode {
 
     public Abs() {
-        super("abs",new String[1]);
+        super("abs", new String[1]);
         setBody(new Block(null));
         addParameter("f");
     }

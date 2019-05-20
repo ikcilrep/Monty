@@ -30,46 +30,37 @@ import java.util.Map;
 public class Block extends NodeWithParent {
 
     private Block parent;
-
-    protected void setChildren(ArrayList<RunnableNode> children) {
-        this.children = children;
-    }
-
     private ArrayList<RunnableNode> children = new ArrayList<>();
+    private HashMap<String, FunctionDeclarationNode> functions = new HashMap<>();
+    private HashMap<String, VariableDeclarationNode> variables = new HashMap<>();
+    private HashMap<String, StructDeclarationNode> structs = new HashMap<>();
 
+    public Block(Block parent) {
+        this.parent = parent;
+    }
 
     protected HashMap<String, FunctionDeclarationNode> getFunctions() {
         return functions;
-    }
-
-    private HashMap<String, FunctionDeclarationNode> functions = new HashMap<>();
-
-    protected void setVariables(HashMap<String, VariableDeclarationNode> variables) {
-        this.variables = variables;
-    }
-
-    protected HashMap<String, VariableDeclarationNode> getVariables() {
-        return variables;
-    }
-
-    private HashMap<String, VariableDeclarationNode> variables = new HashMap<>();
-
-    protected HashMap<String, StructDeclarationNode> getStructs() {
-        return structs;
     }
 
     protected void setFunctions(HashMap<String, FunctionDeclarationNode> functions) {
         this.functions = functions;
     }
 
-    protected void setStructs(HashMap<String, StructDeclarationNode> structs) {
-        this.structs = structs;
+    protected HashMap<String, VariableDeclarationNode> getVariables() {
+        return variables;
     }
 
-    private HashMap<String, StructDeclarationNode> structs = new HashMap<>();
+    protected void setVariables(HashMap<String, VariableDeclarationNode> variables) {
+        this.variables = variables;
+    }
 
-    public Block(Block parent) {
-        this.parent = parent;
+    protected HashMap<String, StructDeclarationNode> getStructs() {
+        return structs;
+    }
+
+    protected void setStructs(HashMap<String, StructDeclarationNode> structs) {
+        this.structs = structs;
     }
 
     public void addChild(RunnableNode child) {
@@ -238,6 +229,9 @@ public class Block extends NodeWithParent {
         return children;
     }
 
+    protected void setChildren(ArrayList<RunnableNode> children) {
+        this.children = children;
+    }
 
     public FunctionDeclarationNode getFunction(String name, String fileName, int line) {
         Block block = this;
@@ -270,7 +264,7 @@ public class Block extends NodeWithParent {
     }
 
     public MontyString getStringVariableValue(String name, String fileName, int line) {
-        return ToString.toString(getVariable(name, fileName, line).getValue(),fileName,line);
+        return ToString.toString(getVariable(name, fileName, line).getValue(), fileName, line);
     }
 
     public StructDeclarationNode getStructure(String name) {
@@ -325,7 +319,7 @@ public class Block extends NodeWithParent {
         return block.variables.get(name);
     }
 
-    public DeclarationNode getVariableOrFunction(String name,String fileName, int line) {
+    public DeclarationNode getVariableOrFunction(String name, String fileName, int line) {
         Block block = this;
         while (!block.variables.containsKey(name)) {
             var parent = block.getParent();
@@ -334,7 +328,7 @@ public class Block extends NodeWithParent {
                 while (!block.hasFunction(name)) {
                     parent = block.getParent();
                     if (parent == null)
-                        new LogError("There isn't any variable or function with name:\t" + name,fileName,line);
+                        new LogError("There isn't any variable or function with name:\t" + name, fileName, line);
                     block = parent;
                 }
                 return block.functions.get(name);

@@ -13,12 +13,12 @@ public class NewList extends NativeFunctionDeclarationNode {
     @Override
     public Object call(Tuple arguments, String callFileName, int callLine) {
         var list = new List(arguments);
-        list.addThisVariable(callFileName,callLine);
+        list.addThisVariable(callFileName, callLine);
         return list;
     }
 
     @Override
     public String toString() {
-        return "Constructor<"+getName()+">";
+        return "Constructor<" + getName() + ">";
     }
 }

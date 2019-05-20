@@ -19,6 +19,7 @@ package ast.statements;
 import ast.Block;
 import ast.ConditionalNode;
 import ast.expressions.OperationNode;
+import sml.data.returning.Nothing;
 
 public final class IfStatementNode extends ConditionalNode {
 
@@ -26,12 +27,9 @@ public final class IfStatementNode extends ConditionalNode {
 
 
     public IfStatementNode(Block parent, OperationNode condition, String fileName, int line, boolean isInElse) {
-        super(condition, parent);
+        super(condition, parent, fileName, line);
         if (isInElse)
             setParent(parent.getParent());
-        setCondition(condition);
-        setFileName(fileName);
-        setLine(line);
     }
 
     public void setElseBody(Block elseBody) {
@@ -46,7 +44,7 @@ public final class IfStatementNode extends ConditionalNode {
         else if (elseBody != null)
             return elseBody.run();
 
-        return null;
+        return Nothing.nothing;
     }
 
     @Override

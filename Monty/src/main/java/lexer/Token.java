@@ -19,8 +19,8 @@ package lexer;
 public final class Token {
     private final String text;
     private final String fileName;
-    private TokenTypes type;
     private final int line;
+    private TokenTypes type;
 
 
     public Token(TokenTypes type, String text, String fileName, int line) {
@@ -28,10 +28,6 @@ public final class Token {
         this.text = text;
         this.fileName = fileName;
         this.line = line;
-    }
-
-    public void setType(TokenTypes type) {
-        this.type = type;
     }
 
     public final String getFileName() {
@@ -49,6 +45,11 @@ public final class Token {
     public final TokenTypes getType() {
         return type;
     }
+
+    public void setType(TokenTypes type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return text;

@@ -6,7 +6,7 @@ import sml.NativeFunctionDeclarationNode;
 public class NewTuple extends NativeFunctionDeclarationNode {
 
     public NewTuple() {
-        super("Tuple",FunctionDeclarationNode.EMPTY_PARAMETERS);
+        super("Tuple", FunctionDeclarationNode.EMPTY_PARAMETERS);
     }
 
     @Override

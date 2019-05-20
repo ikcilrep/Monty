@@ -9,7 +9,7 @@ import sml.data.tuple.Tuple;
 public final class LogError extends NativeFunctionDeclarationNode {
 
     public LogError() {
-        super("logError",new String[1]);
+        super("logError", new String[1]);
         setBody(new Block(null));
         addParameter("message");
     }

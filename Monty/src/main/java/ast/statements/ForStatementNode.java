@@ -27,26 +27,6 @@ public final class ForStatementNode extends Block {
     private final OperationNode iterable;
     private final String variableName;
 
-    private static boolean isIterable(Object toCheck, String callFileName, int callLine) {
-        if (toCheck instanceof String)
-            return true;
-        if (!(toCheck instanceof StructDeclarationNode)){
-            return false;
-        }
-        var structToCheck = (StructDeclarationNode) toCheck;
-        if (!(structToCheck.hasFunction("Iterator") || structToCheck.hasStructure("Iterator"))) {
-            return false;
-        }
-
-        var iteratorStruct = structToCheck.getStructure("Iterator") ;
-        if (iteratorStruct.hasFunction("init") && iteratorStruct.getFunction("init",callFileName,callLine).getParametersLength() > 0){
-            return false;
-        }
-
-        return (iteratorStruct.hasFunction("hasNext") && iteratorStruct.getFunction("hasNext",callFileName,
-                callLine).getParametersLength() == 0) && (iteratorStruct.hasFunction("next") && iteratorStruct.
-                getFunction("next",callFileName, callLine).getParametersLength() == 0);
-    }
     public ForStatementNode(String variableName, OperationNode iterable, String fileName, int line, Block parent) {
         super(parent);
         this.iterable = iterable;
@@ -55,15 +35,35 @@ public final class ForStatementNode extends Block {
         setLine(line);
     }
 
+    private static boolean isIterable(Object toCheck, String callFileName, int callLine) {
+        if (toCheck instanceof String)
+            return true;
+        if (!(toCheck instanceof StructDeclarationNode)) {
+            return false;
+        }
+        var structToCheck = (StructDeclarationNode) toCheck;
+        if (!(structToCheck.hasFunction("Iterator") || structToCheck.hasStructure("Iterator"))) {
+            return false;
+        }
+
+        var iteratorStruct = structToCheck.getStructure("Iterator");
+        if (iteratorStruct.hasFunction("init") && iteratorStruct.getFunction("init", callFileName, callLine).getParametersLength() > 0) {
+            return false;
+        }
+
+        return (iteratorStruct.hasFunction("hasNext") && iteratorStruct.getFunction("hasNext", callFileName,
+                callLine).getParametersLength() == 0) && (iteratorStruct.hasFunction("next") && iteratorStruct.
+                getFunction("next", callFileName, callLine).getParametersLength() == 0);
+    }
+
     @Override
     public ForStatementNode copy() {
-        var copied = new ForStatementNode(variableName,iterable.copy(),getFileName(),getLine(), getParent());
+        var copied = new ForStatementNode(variableName, iterable.copy(), getFileName(), getLine(), getParent());
         copied.setChildren(getChildren());
         copied.copyChildren();
 
         return copied;
     }
-
 
 
     @Override
