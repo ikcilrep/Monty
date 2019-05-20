@@ -134,7 +134,7 @@ public class List extends StructDeclarationNode {
         for (int i = 0; i < length(); i++)
             newArray[i] = get(i);
         for (int i = length(); i < capacity; i++)
-            newArray[i] = Nothing.nothing;
+            newArray[i] = Nothing.NOTHING;
         this.array = newArray;
     }
 

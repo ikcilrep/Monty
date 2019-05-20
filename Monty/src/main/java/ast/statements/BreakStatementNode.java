@@ -28,6 +28,6 @@ public final class BreakStatementNode extends RunnableNode {
 
     @Override
     public Object run() {
-        return Nothing.breakType;
+        return Nothing.BREAK_TYPE;
     }
 }

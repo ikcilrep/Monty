@@ -35,11 +35,11 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class Importing {
-    private final static Path fileAbsolutePath = Paths.get(Main.path).getParent();
-    private final static String mainPath = new File(Main.path).isAbsolute() ? "" : Paths.get("").toAbsolutePath().toString();
-    private final static String mainFileLocation = mainPath
-            + (mainPath.endsWith(File.separator) || mainPath.isEmpty() ? "" : File.separator)
-            + (fileAbsolutePath == null ? "" : fileAbsolutePath) + File.separator;
+    private final static Path FILE_ABSOLUTE_PATH = Paths.get(Main.path).getParent();
+    private final static String MAIN_PATH = new File(Main.path).isAbsolute() ? "" : Paths.get("").toAbsolutePath().toString();
+    private final static String MAIN_FILE_LOCATION = MAIN_PATH
+            + (MAIN_PATH.endsWith(File.separator) || MAIN_PATH.isEmpty() ? "" : File.separator)
+            + (FILE_ABSOLUTE_PATH == null ? "" : FILE_ABSOLUTE_PATH) + File.separator;
 
 
     @SuppressWarnings("unchecked")
@@ -79,7 +79,7 @@ public class Importing {
 
     public static void importFile(Block block, ArrayList<Token> tokensBeforeSemicolon) {
         var partOfPath = Tokens.getText(tokensBeforeSemicolon.subList(1, tokensBeforeSemicolon.size()));
-        var path = mainFileLocation + partOfPath.replace('.', File.separatorChar);
+        var path = MAIN_FILE_LOCATION + partOfPath.replace('.', File.separatorChar);
         var file = new File(path + ".mt");
         var parent_file = new File(file.getParent() + ".mt");
         var directory = new File(path);

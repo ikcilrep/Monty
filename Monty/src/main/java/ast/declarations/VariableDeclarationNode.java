@@ -23,7 +23,7 @@ public class VariableDeclarationNode extends DeclarationNode {
 
     protected boolean isConst = false;
     protected boolean wasValueChanged = false;
-    protected Object value = Nothing.nothing;
+    protected Object value = Nothing.NOTHING;
 
     public VariableDeclarationNode(String name) {
         super(name);

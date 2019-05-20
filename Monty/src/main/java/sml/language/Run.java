@@ -13,14 +13,14 @@ public final class Run extends NativeFunctionDeclarationNode {
     public Run() {
         super("run", new String[1]);
         setBody(new Block(null));
-        addParameter("code");
+        addParameter("CODE");
     }
 
     @Override
     public VoidType call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
-        Parser.parse(Lexer.lex(body.getStringVariableValue("code", callFileName, callLine).toString(), callFileName, callLine)).run();
-        return Nothing.nothing;
+        Parser.parse(Lexer.lex(body.getStringVariableValue("CODE", callFileName, callLine).toString(), callFileName, callLine)).run();
+        return Nothing.NOTHING;
     }
 
 }

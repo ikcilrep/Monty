@@ -47,7 +47,7 @@ public final class Sleep extends NativeFunctionDeclarationNode {
         } catch (InterruptedException e) {
             new LogError("Sleep for " + millis + " was interrupted", callFileName, callLine);
         }
-        return Nothing.nothing;
+        return Nothing.NOTHING;
     }
 
 }

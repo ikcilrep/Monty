@@ -47,9 +47,9 @@ public class IOBlocks {
         list = new sml.data.list.NewList();
         logError = new sml.errors.LogError();
         nothing = new sml.data.returning.Nothing();
-        writtenInMonty = new Block[Sml.numberOfFiles];
+        writtenInMonty = new Block[Sml.NUMBER_OF_FILES];
         int i = 0;
-        for (var code : Sml.code)
+        for (var code : Sml.CODE)
             writtenInMonty[i] = Parser.parse(Lexer.lex(code, Sml.paths[i++]));
 
         print = new Print();

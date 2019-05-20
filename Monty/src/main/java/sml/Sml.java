@@ -32,21 +32,21 @@ import java.util.HashMap;
 
 public final class Sml {
 
-    public final static String[] code;
-    public final static short numberOfFiles;
+    public final static String[] CODE;
+    public final static short NUMBER_OF_FILES;
     private final static HashMap<String, Object> children;
     public static String[] paths;
 
     static {
         String[] paths_ = {"iterations/range/range.mt", "functional/iterable/iterable.mt",
                 "functional/iterable/iterableFunctions.mt"};
-        numberOfFiles = (short) paths_.length;
-        paths = new String[numberOfFiles];
-        code = new String[numberOfFiles];
+        NUMBER_OF_FILES = (short) paths_.length;
+        paths = new String[NUMBER_OF_FILES];
+        CODE = new String[NUMBER_OF_FILES];
         paths = paths_;
         int i = 0;
         for (var path : paths)
-            code[i++] = FileIO.readFile(Sml.class.getResourceAsStream(path), path);
+            CODE[i++] = FileIO.readFile(Sml.class.getResourceAsStream(path), path);
         children = new HashMap<>();
         var casts = new HashMap<String, Object>();
         var math = new HashMap<String, Object>();

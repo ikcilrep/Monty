@@ -28,6 +28,6 @@ public final class ContinueStatementNode extends RunnableNode {
 
     @Override
     public Object run() {
-        return Nothing.continueType;
+        return Nothing.CONTINUE_TYPE;
     }
 }

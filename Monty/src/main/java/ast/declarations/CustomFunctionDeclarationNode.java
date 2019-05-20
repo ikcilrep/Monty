@@ -45,7 +45,7 @@ public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode
 
     private Object getResult(Object value, String[] fileNames, int[] lines) {
         if (value == null)
-            value = Nothing.nothing;
+            value = Nothing.NOTHING;
         else {
             if (value instanceof BreakType)
                 new LogError("Trying to break function " + getName(), fileNames, lines);

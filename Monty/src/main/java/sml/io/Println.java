@@ -34,7 +34,7 @@ public final class Println extends NativeFunctionDeclarationNode {
     public VoidType call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
         System.out.println(body.getStringVariableValue("toPrint", callFileName, callLine));
-        return Nothing.nothing;
+        return Nothing.NOTHING;
     }
 
 }

@@ -18,7 +18,7 @@ public final class LogError extends NativeFunctionDeclarationNode {
     public VoidType call(Tuple arguments, String callFileName, int callLine) {
         setArguments(arguments, callFileName, callLine);
         new parser.LogError(body.getStringVariableValue("message", callFileName, callLine).toString());
-        return Nothing.nothing;
+        return Nothing.NOTHING;
     }
 
 }
