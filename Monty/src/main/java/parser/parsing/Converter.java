@@ -14,85 +14,77 @@ class Converter {
 
 
     private final static Token EMPTY_OPERATOR = new Token(TokenTypes.OPERATOR, "", null, -1);
-    private final static HashMap<String, Integer> precedence;
-    private final static Set<String> rightAssociative = Set.of("=", "+=", "-=", "*=", "/=", "%=", "&=", "^=", "|=", "<<=",
+    private final static HashMap<String, Integer> PRECEDENCES_OF_OPERATORS;
+    private final static Set<String> RIGHT_ASSOCIATIVE_OPERATORS = Set.of("=", "+=", "-=", "*=", "/=", "%=", "&=", "^=", "|=", "<<=",
             ">>=", "**", "**=");
-    private final static Set<String> notAssociative = Set.of("<", "<=", ">=", ">", "instanceof");
+    private final static Set<String> NOT_ASSOCIATIVE_OPERATORS = Set.of("<", "<=", ">=", ">", "instanceof");
     private final static IdentifierNode LIST_CALL = new IdentifierNode("List", true);
 
     static {
-        precedence = new HashMap<>();
-        precedence.put("", 18);
-        precedence.put(".", 17);
-        precedence.put("!", 16);
-        precedence.put("**", 15);
-        precedence.put("*", 14);
-        precedence.put("/", 14);
-        precedence.put("%", 14);
-        precedence.put("+", 13);
-        precedence.put("-", 13);
-        precedence.put("<<", 10);
-        precedence.put(">>", 10);
-        precedence.put("<", 9);
-        precedence.put("<=", 9);
-        precedence.put(">", 9);
-        precedence.put(">=", 9);
-        precedence.put("instanceof", 9);
-        precedence.put("==", 8);
-        precedence.put("!=", 8);
-        precedence.put("&", 7);
-        precedence.put("^", 6);
-        precedence.put("|", 5);
-        precedence.put(",", 1);
-        precedence.put("=", 0);
-        precedence.put("+=", 0);
-        precedence.put("-=", 0);
-        precedence.put("*=", 0);
-        precedence.put("/=", 0);
-        precedence.put("%=", 0);
-        precedence.put("&=", 0);
-        precedence.put("^=", 0);
-        precedence.put("|=", 0);
-        precedence.put("<<=", 0);
-        precedence.put(">>=", 0);
-        precedence.put("**=", 0);
+        PRECEDENCES_OF_OPERATORS = new HashMap<>();
+        PRECEDENCES_OF_OPERATORS.put("", 18);
+        PRECEDENCES_OF_OPERATORS.put(".", 17);
+        PRECEDENCES_OF_OPERATORS.put("!", 16);
+        PRECEDENCES_OF_OPERATORS.put("**", 15);
+        PRECEDENCES_OF_OPERATORS.put("*", 14);
+        PRECEDENCES_OF_OPERATORS.put("/", 14);
+        PRECEDENCES_OF_OPERATORS.put("%", 14);
+        PRECEDENCES_OF_OPERATORS.put("+", 13);
+        PRECEDENCES_OF_OPERATORS.put("-", 13);
+        PRECEDENCES_OF_OPERATORS.put("<<", 10);
+        PRECEDENCES_OF_OPERATORS.put(">>", 10);
+        PRECEDENCES_OF_OPERATORS.put("<", 9);
+        PRECEDENCES_OF_OPERATORS.put("<=", 9);
+        PRECEDENCES_OF_OPERATORS.put(">", 9);
+        PRECEDENCES_OF_OPERATORS.put(">=", 9);
+        PRECEDENCES_OF_OPERATORS.put("instanceof", 9);
+        PRECEDENCES_OF_OPERATORS.put("==", 8);
+        PRECEDENCES_OF_OPERATORS.put("!=", 8);
+        PRECEDENCES_OF_OPERATORS.put("&", 7);
+        PRECEDENCES_OF_OPERATORS.put("^", 6);
+        PRECEDENCES_OF_OPERATORS.put("|", 5);
+        PRECEDENCES_OF_OPERATORS.put(",", 1);
+        PRECEDENCES_OF_OPERATORS.put("=", 0);
+        PRECEDENCES_OF_OPERATORS.put("+=", 0);
+        PRECEDENCES_OF_OPERATORS.put("-=", 0);
+        PRECEDENCES_OF_OPERATORS.put("*=", 0);
+        PRECEDENCES_OF_OPERATORS.put("/=", 0);
+        PRECEDENCES_OF_OPERATORS.put("%=", 0);
+        PRECEDENCES_OF_OPERATORS.put("&=", 0);
+        PRECEDENCES_OF_OPERATORS.put("^=", 0);
+        PRECEDENCES_OF_OPERATORS.put("|=", 0);
+        PRECEDENCES_OF_OPERATORS.put("<<=", 0);
+        PRECEDENCES_OF_OPERATORS.put(">>=", 0);
+        PRECEDENCES_OF_OPERATORS.put("**=", 0);
 
 
     }
 
     private static int getPrecedence(Token token) {
-        return token.getType().equals(TokenTypes.FUNCTION) ? 100 : precedence.get(token.getText());
+        return token.getType().equals(TokenTypes.FUNCTION) ? 100 : PRECEDENCES_OF_OPERATORS.get(token.getText());
+    }
+
+    private static boolean shouldPopFromOperatorStackToOutputQueue(Token actualToken, Token tokenAtTheTop) {
+        if (tokenAtTheTop.getType().equals(TokenTypes.OPENING_BRACKET))
+            return false;
+        var actualPrecedence = getPrecedence(actualToken);
+        var topPrecedence = getPrecedence(tokenAtTheTop);
+        return topPrecedence > actualPrecedence
+                || (topPrecedence ==  actualPrecedence && isLeftAssociative(tokenAtTheTop));
     }
 
     static ArrayList<Token> infixToSuffix(ArrayList<Token> tokens, Block parent, int start, int end) {
         var outputQueue = new ArrayList<Token>();
         var operatorStack = new Stack<Token>();
         var lists = new LinkedList<OperationNode>();
-        var wasLastOpeningBracket = false;
         for (var i = new IntegerHolder(start); i.i < end; i.i++) {
             var token = tokens.get(i.i);
             var type = token.getType();
             switch (type) {
                 case OPERATOR:
-                    if (!operatorStack.empty()) {
-                        var top = operatorStack.peek();
-                        if (!(top.getType().equals(TokenTypes.OPENING_BRACKET))) {
-                            int topPrecedence = getPrecedence(top);
-                            int thisPrecedence = getPrecedence(token);
-                            while (topPrecedence > thisPrecedence
-                                    || (topPrecedence == thisPrecedence && isLeftAssociative(top))) {
-                                outputQueue.add(operatorStack.pop());
-                                if (operatorStack.empty())
-                                    break;
-                                top = operatorStack.peek();
-                                var topType = top.getType();
-                                if (topType.equals(TokenTypes.OPENING_BRACKET))
-                                    break;
-                                topPrecedence = getPrecedence(top);
-                                thisPrecedence = getPrecedence(token);
-                            }
-                        }
-                    }
+                    while (!operatorStack.isEmpty() &&
+                            shouldPopFromOperatorStackToOutputQueue(token,operatorStack.peek()))
+                        outputQueue.add(operatorStack.pop());
                     operatorStack.push(token);
                     break;
                 case OPENING_SQUARE_BRACKET:
@@ -100,15 +92,15 @@ class Converter {
                     outputQueue.add(token);
                     break;
                 case CLOSING_BRACKET:
-                    if (wasLastOpeningBracket)
+                    var outputQueueSize = outputQueue.size();
+                    try {
+                        while (!operatorStack.peek().getType().equals(TokenTypes.OPENING_BRACKET))
+                            outputQueue.add(operatorStack.pop());
+                    } catch (EmptyStackException e) {
+                        new LogError("Mismatched brackets.", token);
+                    }
+                    if (outputQueueSize == outputQueue.size())
                         outputQueue.add(new Token(TokenTypes.EMPTY_TUPLE, "", token.getFileName(), token.getLine()));
-                    else
-                        try {
-                            while (!operatorStack.peek().getType().equals(TokenTypes.OPENING_BRACKET))
-                                outputQueue.add(operatorStack.pop());
-                        } catch (EmptyStackException e) {
-                            new LogError("Mismatched brackets.", token);
-                        }
                     operatorStack.pop();
                     operatorStack.push(EMPTY_OPERATOR);
 
@@ -132,8 +124,6 @@ class Converter {
                     outputQueue.add(token);
                     break;
             }
-            wasLastOpeningBracket = type.equals(TokenTypes.OPENING_BRACKET);
-
         }
         while (!operatorStack.empty())
             outputQueue.add(operatorStack.pop());
@@ -143,7 +133,7 @@ class Converter {
 
     private static boolean isLeftAssociative(Token token) {
         var operator = token.getText();
-        return !(rightAssociative.contains(operator) || notAssociative.contains(operator));
+        return !(RIGHT_ASSOCIATIVE_OPERATORS.contains(operator) || NOT_ASSOCIATIVE_OPERATORS.contains(operator));
     }
 
     private static OperationNode parseList(ArrayList<Token> tokens, Block parent, IntegerHolder i) {
