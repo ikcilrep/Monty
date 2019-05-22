@@ -13,7 +13,7 @@ import java.util.*;
 class Converter {
 
 
-    private final static Token EMPTY_OPERATOR = new Token(TokenTypes.OPERATOR, "", null, -1);
+    private final static Token JUST_OPERATOR = new Token(TokenTypes.OPERATOR, "", null, -1);
     private final static HashMap<String, Integer> PRECEDENCES_OF_OPERATORS;
     private final static Set<String> RIGHT_ASSOCIATIVE_OPERATORS = Set.of("=", "+=", "-=", "*=", "/=", "%=", "&=", "^=", "|=", "<<=",
             ">>=", "**", "**=");
@@ -61,12 +61,15 @@ class Converter {
     }
 
     private static int getPrecedence(Token token) {
-        return token.getType().equals(TokenTypes.FUNCTION) ? 100 : PRECEDENCES_OF_OPERATORS.get(token.getText());
+        return PRECEDENCES_OF_OPERATORS.get(token.getText());
     }
 
     private static boolean shouldPopFromOperatorStackToOutputQueue(Token actualToken, Token tokenAtTheTop) {
-        if (tokenAtTheTop.getType().equals(TokenTypes.OPENING_BRACKET))
+        var topType = tokenAtTheTop.getType();
+        if (topType.equals(TokenTypes.OPENING_BRACKET))
             return false;
+        if (topType.equals(TokenTypes.FUNCTION))
+            return true;
         var actualPrecedence = getPrecedence(actualToken);
         var topPrecedence = getPrecedence(tokenAtTheTop);
         return topPrecedence > actualPrecedence
@@ -102,7 +105,7 @@ class Converter {
                     if (outputQueueSize == outputQueue.size())
                         outputQueue.add(new Token(TokenTypes.EMPTY_TUPLE, "", token.getFileName(), token.getLine()));
                     operatorStack.pop();
-                    operatorStack.push(EMPTY_OPERATOR);
+                    operatorStack.push(JUST_OPERATOR);
 
                     break;
                 case OPENING_BRACKET:
