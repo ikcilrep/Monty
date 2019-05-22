@@ -88,8 +88,8 @@ public abstract class FunctionDeclarationNode extends DeclarationNode {
     }
 
     protected abstract void setArgument(Object value, int index, String fileName, int line);
-   /* @Override
+    @Override
     public String toString() {
         return "Function<" + getName() + "> <- " + getParametersLength();
-    }*/
+    }
 }

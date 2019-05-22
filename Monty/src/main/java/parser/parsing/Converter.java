@@ -56,8 +56,6 @@ class Converter {
         PRECEDENCES_OF_OPERATORS.put("<<=", 0);
         PRECEDENCES_OF_OPERATORS.put(">>=", 0);
         PRECEDENCES_OF_OPERATORS.put("**=", 0);
-
-
     }
 
     private static int getPrecedence(Token token) {

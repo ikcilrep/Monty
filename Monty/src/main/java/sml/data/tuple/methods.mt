@@ -24,6 +24,7 @@ func $r_neq other this;
     return this != other;
 end;
 
+
 struct Iterator;
     var counter = 0;
     func hasNext;
