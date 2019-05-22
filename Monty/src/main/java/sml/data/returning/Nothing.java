@@ -26,9 +26,9 @@ public final class Nothing extends VariableDeclarationNode {
 
     public Nothing() {
         super("Nothing");
-        value = NOTHING;
-        wasValueChanged = true;
-        isConst = true;
+        setValue(NOTHING);
+        setHasValueChanged(true);
+        setConst(true);
     }
 
 }

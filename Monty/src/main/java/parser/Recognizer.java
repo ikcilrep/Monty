@@ -175,18 +175,6 @@ public abstract class Recognizer {
         return true;
     }
 
-    public static boolean isVariableDeclaration(ArrayList<Token> tokens) {
-        if (!tokens.get(0).getType().equals(TokenTypes.VAR_KEYWORD))
-            return false;
-        if (tokens.size() == 1
-                || !tokens.get(1).getType().equals(TokenTypes.IDENTIFIER))
-            new LogError("Expected identifier after \"var\" keyword.", tokens.get(1));
-        if (tokens.size() > 2
-                && !isExpression(tokens, 1, tokens.size()))
-            new LogError("Expected expression after \"var\" keyword.", tokens.get(1));
-
-        return true;
-    }
 
     public static boolean isWhileStatement(ArrayList<Token> tokens) {
         if (!tokens.get(0).getType().equals(TokenTypes.WHILE_KEYWORD))

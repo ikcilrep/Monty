@@ -1,7 +1,5 @@
 struct Range;
-    var min;
-    var max;
-    var step;
+    min; max; step;
 
     func init min max step;
         This.min = min;
@@ -10,7 +8,7 @@ struct Range;
     end;
 
     struct Iterator;
-        var counter = 0;
+        counter = 0;
         func hasNext;
             counter += step;
             return counter < max;

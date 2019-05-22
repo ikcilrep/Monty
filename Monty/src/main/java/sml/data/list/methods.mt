@@ -3,7 +3,7 @@ func $eq this other;
     if !(other instanceof List) | other.length() != this.length();
         return false;
     end;
-    var i = 0;
+    i = 0;
     for x in this;
         if x != other.get i;
             return false;
@@ -34,7 +34,7 @@ func $r_a_mul other this;
 end;
 
 func replace toBeReplaced replacement;
-    var i = 0;
+    i = 0;
     for x in This;
         if toBeReplaced == x;
            set(i, replacement);
@@ -45,7 +45,7 @@ func replace toBeReplaced replacement;
 end;
 
 func find value;
-    var i = 0;
+    i = 0;
     for x in This;
         if value == x;
             return i;
@@ -61,7 +61,7 @@ func remove value;
 end;
 
 func count value;
-    var counter = 0;
+    counter = 0;
     for x in This;
         if value == x;
             counter += 1;
@@ -71,8 +71,8 @@ func count value;
 end;
 
 func sublist first last;
-    var result = [Nothing] * (last - first + 1);
-    var i = 0;
+    result = [Nothing] * (last - first + 1);
+    i = 0;
     while first <= last;
         result.set(i, get first);
         first += 1;
@@ -82,13 +82,13 @@ func sublist first last;
 end;
 
 struct Iterator;
-    var counter = 0;
+     counter = 0;
     func hasNext;
         return counter < length();
     end;
 
     func next;
-        var result = get counter;
+         result = get counter;
         counter += 1;
         return result;
     end;

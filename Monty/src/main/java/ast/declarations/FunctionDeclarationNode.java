@@ -40,7 +40,7 @@ public abstract class FunctionDeclarationNode extends DeclarationNode {
         this.lastNotNullParameterIndex = lastNotNullParameterIndex;
     }
 
-    void checkArgumentsSize(int argumentsLength, String fileName, int line) {
+    private void checkArgumentsSize(int argumentsLength, String fileName, int line) {
         if (argumentsLength > parameters.length)
             new LogError("Too many arguments in " + getName() + " function call.", fileName, line);
         else if (argumentsLength < parameters.length)
@@ -78,13 +78,11 @@ public abstract class FunctionDeclarationNode extends DeclarationNode {
         var argumentsLength = arguments.length();
         if (parameters.length == 1 && parameters.length != argumentsLength)
             setArgument(arguments, 0, callFileName, callLine);
-        else if (argumentsLength > parameters.length)
-            new LogError("Too many arguments in " + getName() + " function call.", callFileName, callLine);
-        else if (argumentsLength < parameters.length)
-            new LogError("Too few arguments in " + getName() + " function call.", callFileName, callLine);
         else
-            for (int i = 0; i < argumentsLength; i++)
-                setArgument(arguments.get(i), i, callFileName, callLine);
+            checkArgumentsSize(argumentsLength,callFileName,callLine);
+
+        for (int i = 0; i < argumentsLength; i++)
+            setArgument(arguments.get(i), i, callFileName, callLine);
     }
 
     protected abstract void setArgument(Object value, int index, String fileName, int line);

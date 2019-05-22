@@ -68,7 +68,7 @@ public final class OperationNode extends NodeWithParent {
             var variableNode = ((IdentifierNode) expression);
             if (variableNode.isFunctionCall())
                 return parent.getFunction(variableNode.getName(), fileName, line);
-            var variableOrFunction = parent.getVariableOrFunction(((IdentifierNode) expression).getName(), fileName, line);
+            var variableOrFunction = parent.getVariableOrFunction(((IdentifierNode) expression).getName());
             if (doesGetValueFromVariable && variableOrFunction instanceof VariableDeclarationNode)
                 return ((VariableDeclarationNode) variableOrFunction).getValue();
             return variableOrFunction;
@@ -261,7 +261,6 @@ public final class OperationNode extends NodeWithParent {
         if (isDot) {
             if (!(right.operand instanceof IdentifierNode))
                 new LogError("Variable or function can only be got from struct.", fileName, line);
-            //System.out.println(((IdentifierNode)left.operand).getName());
             return OperatorOverloading.dotOperator(leftValue, right, leftType, fileName, line);
         }
 

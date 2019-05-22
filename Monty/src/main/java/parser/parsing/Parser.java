@@ -33,9 +33,7 @@ public final class Parser {
             if (token.getType().equals(TokenTypes.SEMICOLON)) {
                 if (tokensBeforeSemicolon.size() == 0)
                     continue;
-                if (Recognizer.isVariableDeclaration(tokensBeforeSemicolon)) {
-                    AdderToBlock.addVariableDeclaration(block, tokensBeforeSemicolon);
-                } else if (Recognizer.isReturnStatement(tokensBeforeSemicolon)) {
+                if (Recognizer.isReturnStatement(tokensBeforeSemicolon)) {
                     AdderToBlock.addReturnStatement(block, tokensBeforeSemicolon);
                 } else if (Recognizer.isFunctionDeclaration(tokensBeforeSemicolon)) {
                     block = AdderToBlock.addFunctionDeclaration(block, tokensBeforeSemicolon);

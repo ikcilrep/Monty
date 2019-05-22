@@ -35,7 +35,7 @@ public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode
     private Object callWithoutChangingTailRecursionToIteration(Tuple arguments, String callFileName, int callLine) {
         String[] fileNames = {callFileName, getFileName()};
         int[] lines = {callLine, getLine()};
-        setValuesOfAddedArguments(arguments, callFileName, callLine);
+        setArguments(arguments, callFileName, callLine);
         try {
             return getResult(body.run(), fileNames, lines);
         } catch (StackOverflowError e) {
@@ -98,33 +98,17 @@ public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode
         return copied;
     }
 
+
     @Override
     protected void setArgument(Object value, int index, String fileName, int line) {
         var name = parameters[index];
-        VariableDeclarationNode variable = new VariableDeclarationNode(name);
-        variable.setValue(value, fileName, line);
-        variable.setConst(Character.isUpperCase(name.charAt(0)));
-        body.addVariable(variable, fileName, line);
-    }
-
-    private void setValueOfAddedArgument(Object value, int index, String fileName, int line) {
-        var name = parameters[index];
-        VariableDeclarationNode variable = body.getVariable(name, fileName, line);
+        var variable = body.getVariable(name, fileName, line);
+        var isConst = variable.isConst();
         variable.setConst(false);
         variable.setValue(value, fileName, line);
-        variable.setConst(Character.isUpperCase(name.charAt(0)));
+        variable.setConst(isConst);
     }
 
-    private void setValuesOfAddedArguments(Tuple arguments, String fileName, int line) {
-        var argumentsLength = arguments.length();
-        if (parameters.length == 1 && parameters.length != argumentsLength)
-            setValueOfAddedArgument(arguments, 0, fileName, line);
-        else
-            checkArgumentsSize(argumentsLength, fileName, line);
-
-        for (int i = 0; i < argumentsLength; i++)
-            setValueOfAddedArgument(arguments.get(i), i, fileName, line);
-    }
 
 
 }

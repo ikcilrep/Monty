@@ -1,5 +1,5 @@
 func filter function iterable;
-	var list = [];
+	list = [];
 	for x in iterable;
 		if function x;
 			list.add x;
@@ -9,8 +9,8 @@ func filter function iterable;
 end;
 
 func map function iterable;
-	var list = [Nothing] * length iterable;
-	var i = 0;
+	list = [Nothing] * length iterable;
+	i = 0;
 	for x in iterable;
 		list.set(i, function x);
 		i += 1;
@@ -19,7 +19,7 @@ func map function iterable;
 end;
 
 func length iterable;
-	var counter = 0;
+	counter = 0;
 	for _ in iterable;
 		counter += 1;
 	end;
@@ -34,8 +34,8 @@ func isEmpty iterable;
 end;
 
 func foldl function start iterable;
-	var iterator = iterable.Iterator();
-	var result;
+	iterator = iterable.Iterator();
+	result;
 	if iterator.hasNext();
 		result = function(start, iterator.next());
 	end;
@@ -46,8 +46,8 @@ func foldl function start iterable;
 end;
 
 func foldr function start iterable;
-	var iterator = iterable.Iterator();
-	var result;
+	iterator = iterable.Iterator();
+	result;
 	if iterator.hasNext();
 		result = iterator.next();
 	end;

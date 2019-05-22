@@ -1,13 +1,13 @@
 struct Iterable;
-	var iterable;
-	var begin = 0;
+	iterable;
+	begin = 0;
 
 	func init iterable;
 		This.iterable = iterable;
 	end;
 	
 	func get index;
-		var counter = 0;
+		 counter = 0;
 		for x in This;
 			if counter == index;
 				return x;
@@ -18,8 +18,8 @@ struct Iterable;
 	end;
 
 	func toList;
-		var list = [Nothing] * length This;
-		var i = 0;
+		list = [Nothing] * length This;
+		i = 0;
 		for x in This;
 			list.set(i, x);
 			i += 1;
@@ -28,16 +28,16 @@ struct Iterable;
 	end;
 	
 	func tail;
-		var result = Iterable iterable;
+		 result = Iterable iterable;
 		result.begin = begin + 1;
 		return result;
 	end;
 	
 	struct Iterator;
-		var iterator = iterable.Iterator();
+		 iterator = iterable.Iterator();
 		
 		func init;
-			var i = 0;
+			 i = 0;
 			while i != begin & iterator.hasNext();
 				iterator.next();
 				i += 1;

@@ -21,9 +21,9 @@ import ast.declarations.VariableDeclarationNode;
 public final class E extends VariableDeclarationNode {
     public E() {
         super("E");
-        value = Math.E;
-        wasValueChanged = true;
-        isConst = true;
+        setValue(Math.E);
+        setHasValueChanged(true);
+        setConst(true);
     }
 
 }

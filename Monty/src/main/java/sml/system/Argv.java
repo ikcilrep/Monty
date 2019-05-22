@@ -23,7 +23,8 @@ import sml.data.list.List;
 public final class Argv extends VariableDeclarationNode {
     public Argv() {
         super("Argv");
-        value = new List(Main.argv);
+        setValue(new List(Main.argv));
+        setHasValueChanged(true);
         setConst(true);
     }
 

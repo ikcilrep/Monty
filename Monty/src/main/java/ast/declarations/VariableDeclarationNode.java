@@ -21,9 +21,22 @@ import sml.data.returning.Nothing;
 
 public class VariableDeclarationNode extends DeclarationNode {
 
-    protected boolean isConst = false;
-    protected boolean wasValueChanged = false;
-    protected Object value = Nothing.NOTHING;
+    boolean isConst() {
+        return isConst;
+    }
+
+    private boolean isConst = false;
+    private boolean hasValueChanged = false;
+
+    protected void setHasValueChanged(boolean hasValueChanged) {
+        this.hasValueChanged = hasValueChanged;
+    }
+
+    public void setValue(Object value) {
+        this.value = value;
+    }
+
+    private Object value = Nothing.NOTHING;
 
     public VariableDeclarationNode(String name) {
         super(name);
@@ -42,7 +55,7 @@ public class VariableDeclarationNode extends DeclarationNode {
         var copied = new VariableDeclarationNode(name);
         copied.value = value;
         copied.isConst = isConst;
-        copied.wasValueChanged = wasValueChanged;
+        copied.hasValueChanged = hasValueChanged;
         return copied;
     }
 
@@ -55,10 +68,10 @@ public class VariableDeclarationNode extends DeclarationNode {
     }
 
     public final void setValue(Object value, String fileName, int line) {
-        if (isConst && wasValueChanged)
+        if (isConst && hasValueChanged)
             new LogError("Can't change value of const.", fileName, line);
         this.value = value;
-        wasValueChanged = true;
+        hasValueChanged = true;
     }
 
 }

@@ -111,18 +111,6 @@ abstract class AdderToBlock {
         return struct;
     }
 
-    static void addVariableDeclaration(Block block, ArrayList<Token> tokens) {
-        var name = tokens.get(1).getText();
-        var isConst = Character.isUpperCase(name.charAt(0));
-        var variable = new VariableDeclarationNode(name);
-        block.addVariable(variable, tokens.get(0));
-        if (tokens.size() > 2)
-            addExpression(block, tokens, 1);
-        else if (isConst)
-            new LogError("Const value must be declared at the same time as whole variable.", tokens.get(1));
-        variable.setConst(isConst);
-    }
-
     static Block addWhileStatement(Block block, ArrayList<Token> tokens) {
         var whileStatement = new WhileStatementNode(block, ExpressionParser.parseInfix(block, tokens, 1), false, tokens.get(0).getFileName(), tokens.get(0).getLine()
         );

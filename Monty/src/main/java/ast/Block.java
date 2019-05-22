@@ -243,7 +243,7 @@ public class Block extends NodeWithParent {
                         && block.variables.get(name).getValue() instanceof FunctionDeclarationNode)) {
                     parent = block.getParent();
                     if (parent == null)
-                        new LogError("There isn't any variable or function with name:\t" + name, fileName, line);
+                        new LogError("There isn't any function with name:\t" + name, fileName, line);
                     block = parent;
                 }
                 return (FunctionDeclarationNode) block.variables.get(name).getValue();
@@ -294,13 +294,20 @@ public class Block extends NodeWithParent {
         while (!block.variables.containsKey(name)) {
             var parent = block.getParent();
             if (parent == null)
-                new LogError("There isn't any variable or function with name:\t" + name, fileName, line);
+                return newVariable(name);
             block = parent;
         }
         return block.variables.get(name);
     }
 
-    private DeclarationNode getVariableOrFunction(String name) {
+    private VariableDeclarationNode newVariable(String name) {
+        var newVariable = new VariableDeclarationNode(name);
+        newVariable.setConst(Character.isUpperCase(name.charAt(0)));
+        variables.put(name,newVariable);
+        return newVariable;
+    }
+
+    public DeclarationNode getVariableOrFunction(String name) {
         Block block = this;
         while (!block.variables.containsKey(name)) {
             var parent = block.getParent();
@@ -309,26 +316,7 @@ public class Block extends NodeWithParent {
                 while (!block.hasFunction(name)) {
                     parent = block.getParent();
                     if (parent == null)
-                        new LogError("There isn't any variable or function with name:\t" + name);
-                    block = parent;
-                }
-                return block.functions.get(name);
-            }
-            block = parent;
-        }
-        return block.variables.get(name);
-    }
-
-    public DeclarationNode getVariableOrFunction(String name, String fileName, int line) {
-        Block block = this;
-        while (!block.variables.containsKey(name)) {
-            var parent = block.getParent();
-            if (parent == null) {
-                block = this;
-                while (!block.hasFunction(name)) {
-                    parent = block.getParent();
-                    if (parent == null)
-                        new LogError("There isn't any variable or function with name:\t" + name, fileName, line);
+                        return newVariable(name);
                     block = parent;
                 }
                 return block.functions.get(name);
