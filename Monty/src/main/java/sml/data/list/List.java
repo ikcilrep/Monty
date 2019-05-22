@@ -24,9 +24,9 @@ public class List extends StructDeclarationNode {
     public List(Tuple arguments) {
         super(null, "List");
         addFunctions();
-        increaseCapacity((arguments.length() << 1) + 1);
-        length = arguments.length();
         array = arguments.getArray();
+        length = arguments.length();
+        increaseCapacity((length << 1) + 1);
     }
 
     public List(int length) {
@@ -39,8 +39,8 @@ public class List extends StructDeclarationNode {
     public List(List array) {
         super(null, "List");
         addFunctions();
-        this.array = new Object[array.length()];
         length = array.length();
+        this.array = new Object[length];
         for (int i = 0; i < length(); i++)
             set(i, array.get(i));
 
@@ -49,14 +49,9 @@ public class List extends StructDeclarationNode {
     public List(Object[] array) {
         super(null, "List");
         addFunctions();
-        increaseCapacity((array.length << 1) + 1);
+        this.array = array;
         length = array.length;
-        for (int i = 0; i < length(); i++)
-            if (array[i] instanceof String)
-                set(i, new MontyString((String) array[i]));
-            else
-                set(i, array[i]);
-
+        increaseCapacity((array.length << 1) + 1);
     }
 
     public List add(Object value) {
