@@ -93,14 +93,13 @@ class Converter {
                     outputQueue.add(token);
                     break;
                 case CLOSING_BRACKET:
-                    var outputQueueSize = outputQueue.size();
                     try {
                         while (!operatorStack.peek().getType().equals(TokenTypes.OPENING_BRACKET))
                             outputQueue.add(operatorStack.pop());
                     } catch (EmptyStackException e) {
                         new LogError("Mismatched brackets.", token);
                     }
-                    if (outputQueueSize == outputQueue.size())
+                    if (tokens.get(i.i-1).getType().equals(TokenTypes.OPENING_BRACKET))
                         outputQueue.add(new Token(TokenTypes.EMPTY_TUPLE, "", token.getFileName(), token.getLine()));
                     operatorStack.pop();
                     operatorStack.push(JUST_OPERATOR);
