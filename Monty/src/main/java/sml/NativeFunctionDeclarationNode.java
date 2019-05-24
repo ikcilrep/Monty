@@ -11,7 +11,7 @@ public abstract class NativeFunctionDeclarationNode extends FunctionDeclarationN
 
     @Override
     public NativeFunctionDeclarationNode copy() {
-        return null;
+        return this;
     }
 
 

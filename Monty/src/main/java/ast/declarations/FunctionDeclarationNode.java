@@ -22,7 +22,7 @@ import sml.data.tuple.Tuple;
 
 public abstract class FunctionDeclarationNode extends DeclarationNode {
     public final static String[] EMPTY_PARAMETERS = new String[0];
-    protected String[] parameters;
+    String[] parameters;
     protected Block body;
     int lastNotNullParameterIndex;
     public FunctionDeclarationNode(String name, String[] parameters, int lastNotNullParameterIndex) {
@@ -68,8 +68,6 @@ public abstract class FunctionDeclarationNode extends DeclarationNode {
     }
 
     public int getParametersLength() {
-        if (parameters == null)
-            return 0;
         return parameters.length;
     }
 
