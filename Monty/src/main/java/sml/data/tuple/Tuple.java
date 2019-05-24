@@ -2,6 +2,7 @@ package sml.data.tuple;
 
 import ast.Block;
 import ast.declarations.StructDeclarationNode;
+import ast.declarations.VariableDeclarationNode;
 import lexer.Lexer;
 import monty.FileIO;
 import parser.LogError;
@@ -63,6 +64,12 @@ public class Tuple extends StructDeclarationNode {
     }
 
     public Object get(int index) {
+        var result = array[index];
+        if (result instanceof VariableDeclarationNode)
+            return ((VariableDeclarationNode) result).getValue();
+        return result;
+    }
+    public Object justGet(int index) {
         return array[index];
     }
 

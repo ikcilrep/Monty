@@ -76,16 +76,25 @@ public abstract class FunctionDeclarationNode extends DeclarationNode {
 
     protected void setArguments(Tuple arguments, String callFileName, int callLine) {
         var argumentsLength = arguments.length();
-        if (parameters.length == 1 && parameters.length != argumentsLength)
+        if (parameters.length == 1 && parameters.length != argumentsLength) {
             setArgument(arguments, 0, callFileName, callLine);
-        else
+            return;
+        } else
             checkArgumentsSize(argumentsLength,callFileName,callLine);
 
         for (int i = 0; i < argumentsLength; i++)
             setArgument(arguments.get(i), i, callFileName, callLine);
     }
 
-    protected abstract void setArgument(Object value, int index, String fileName, int line);
+    private void setArgument(Object value, int index, String fileName, int line) {
+        var name = parameters[index];
+        var variable = body.getVariable(name, fileName, line);
+        var isConst = variable.isConst();
+        variable.setConst(false);
+        variable.setValue(value, fileName, line);
+        variable.setConst(isConst);
+    }
+
     @Override
     public String toString() {
         return "Function<" + getName() + "> <- " + getParametersLength();

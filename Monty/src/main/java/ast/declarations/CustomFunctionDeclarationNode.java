@@ -99,16 +99,6 @@ public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode
     }
 
 
-    @Override
-    protected void setArgument(Object value, int index, String fileName, int line) {
-        var name = parameters[index];
-        var variable = body.getVariable(name, fileName, line);
-        var isConst = variable.isConst();
-        variable.setConst(false);
-        variable.setValue(value, fileName, line);
-        variable.setConst(isConst);
-    }
-
 
 
 }

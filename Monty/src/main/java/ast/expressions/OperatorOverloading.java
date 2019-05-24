@@ -169,20 +169,18 @@ class OperatorOverloading {
         }
     }
 
-    static Object assignmentOperator(Object leftValue, Object rightValue, DataTypes type, String fileName, int line) {
-        var variable = VariableDeclarationNode.toMe(leftValue, fileName, line);
-        switch (type) {
-            case INTEGER:
-            case BIG_INTEGER:
-            case FLOAT:
-            case BOOLEAN:
-            case OBJECT:
-            case NOTHING:
-                variable.setValue(rightValue, fileName, line);
-                return variable.getValue();
-            default:
-                return null;
+    static Object assignmentOperator(Object leftValue, Object rightValue, String fileName, int line) {
+        if (!(leftValue instanceof VariableDeclarationNode) && leftValue instanceof Tuple && rightValue instanceof Tuple) {
+            var leftTuple = (Tuple) leftValue;
+            var rightTuple = (Tuple) rightValue;
+            if (leftTuple.length() == rightTuple.length())
+                for (int i = 0; i < leftTuple.length(); i++)
+                    assignmentOperator(leftTuple.justGet(i), rightTuple.get(i),fileName,line);
+            return leftTuple;
         }
+        var variable = VariableDeclarationNode.toMe(leftValue, fileName, line);
+        variable.setValue(rightValue, fileName, line);
+        return variable.getValue();
     }
 
     static Object assignmentOrOperator(Object leftValue, Object rightValue, DataTypes type, String fileName, int line) {

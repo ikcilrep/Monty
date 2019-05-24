@@ -134,7 +134,7 @@ public final class OperationNode extends NodeWithParent {
             case NOT_EQUALS:
                 return OperatorOverloading.notEqualsOperator(leftValue, rightValue, type, fileName, line);
             case ASSIGNMENT:
-                return OperatorOverloading.assignmentOperator(leftValue, rightValue, type, fileName, line);
+                return OperatorOverloading.assignmentOperator(leftValue, rightValue, fileName, line);
             case ASSIGNMENT_ADDITION:
                 return OperatorOverloading.assignmentAdditionOperator(leftValue, rightValue, type, fileName, line);
             case ASSIGNMENT_SUBTRACTION:
@@ -229,12 +229,13 @@ public final class OperationNode extends NodeWithParent {
         var line = getLine();
         var isAssignment = operator.isAssignment();
         var isDot = operator.equals(DOT);
+        var isComma =operator.equals(COMMA);
         var leftFileName = left.getFileName();
         var leftLine = left.getLine();
-        var leftValue = getLiteral(left.solve(this.parent), this.parent, !isAssignment, leftFileName, leftLine);
+        var leftValue = getLiteral(left.solve(this.parent), this.parent, !(isAssignment || isComma), leftFileName, leftLine);
 
-        if (operator.equals(COMMA)) {
-            var rightValue = getLiteral(right.solve(parent), parent, true, leftFileName, leftLine);
+        if (isComma) {
+            var rightValue = getLiteral(right.solve(parent), parent, false, leftFileName, leftLine);
             if (leftValue instanceof LinkedList) {
                 ((LinkedList<Object>) leftValue).add(rightValue);
                 return leftValue;
@@ -277,12 +278,9 @@ public final class OperationNode extends NodeWithParent {
         var rightType = DataTypes.getDataType(rightValue);
 
 
-        if (operator.equals(ASSIGNMENT)) {
+        if (operator.equals(ASSIGNMENT))
             leftType = rightType;
-        }
-
-
-        if (!(operator.equals(EQUALS) || operator.equals(NOT_EQUALS))) {
+        else if (!(operator.equals(EQUALS) || operator.equals(NOT_EQUALS))) {
             if (!leftType.equals(rightType)) {
                 switch (leftType) {
                     case INTEGER:
