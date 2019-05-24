@@ -36,12 +36,10 @@ class OperatorOverloading {
     static {
         builtInTypes.put("List", List.class);
         builtInTypes.put("Function", FunctionDeclarationNode.class);
-        builtInTypes.put("Integer", null);
         builtInTypes.put("String", MontyString.class);
         builtInTypes.put("Boolean", Boolean.class);
         builtInTypes.put("Float", Double.class);
         builtInTypes.put("Tuple", Tuple.class);
-
     }
 
     private static boolean isInstance(Object value, String name) {

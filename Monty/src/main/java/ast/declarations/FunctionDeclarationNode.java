@@ -77,8 +77,8 @@ public abstract class FunctionDeclarationNode extends DeclarationNode {
         if (parameters.length == 1 && parameters.length != argumentsLength) {
             setArgument(arguments, 0, callFileName, callLine);
             return;
-        } else
-            checkArgumentsSize(argumentsLength,callFileName,callLine);
+        }
+        checkArgumentsSize(argumentsLength, callFileName, callLine);
 
         for (int i = 0; i < argumentsLength; i++)
             setArgument(arguments.get(i), i, callFileName, callLine);

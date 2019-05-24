@@ -46,7 +46,7 @@ public class VariableDeclarationNode extends DeclarationNode {
         try {
             return (VariableDeclarationNode) object;
         } catch (ClassCastException e) {
-            new LogError("Can't cast any value to variable.", fileName, line);
+            new LogError("Can't assign to "+ object, fileName, line);
         }
         return null;
     }
