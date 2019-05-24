@@ -35,6 +35,12 @@ public class Tuple extends StructDeclarationNode {
         array[0] = elem;
 
     }
+    public Tuple(Object[] array) {
+        super(null, "Tuple");
+        addFunctions();
+        this.array = array;
+
+    }
 
 
     public Tuple(Object elem1, Object elem2) {

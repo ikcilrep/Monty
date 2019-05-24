@@ -24,15 +24,17 @@ public class List extends StructDeclarationNode {
     public List(Tuple arguments) {
         super(null, "List");
         addFunctions();
-        array = arguments.getArray();
+        array = new Object[arguments.length()];
         length = arguments.length();
+        for (int i = 0; i < length; i++)
+            array[i] = arguments.get(i);
         increaseCapacity((length << 1) + 1);
     }
 
     public List(int length) {
         super(null, "List");
         addFunctions();
-        increaseCapacity(length << 1);
+        increaseCapacity((length << 1) + 1);
         this.length = length;
     }
 
@@ -123,14 +125,16 @@ public class List extends StructDeclarationNode {
         return array[index];
     }
 
-
-    private void increaseCapacity(int capacity) {
+    private Object[] getArrayWithGivenCapacity(int capacity) {
         var newArray = new Object[capacity];
         for (int i = 0; i < length(); i++)
             newArray[i] = get(i);
         for (int i = length(); i < capacity; i++)
             newArray[i] = Nothing.NOTHING;
-        this.array = newArray;
+        return newArray;
+    }
+    private void increaseCapacity(int capacity) {
+        this.array = getArrayWithGivenCapacity(capacity);
     }
 
     public int length() {
@@ -191,4 +195,7 @@ public class List extends StructDeclarationNode {
 
     }
 
+    public Object[] toArray() {
+        return getArrayWithGivenCapacity(length());
+    }
 }

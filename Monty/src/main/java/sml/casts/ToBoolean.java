@@ -48,7 +48,7 @@ public final class ToBoolean extends NativeFunctionDeclarationNode {
             return fromString((MontyString) toBeCasted);
         else
             new LogError("Can't cast structure to boolean", callFileName, callLine);
-        return null;
+        return false;
     }
 
     private static Boolean fromInt(BigInteger integer) {

@@ -20,6 +20,7 @@ import ast.Block;
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
+import sml.casts.ToBoolean;
 import sml.data.returning.BreakType;
 import sml.data.returning.ContinueType;
 
@@ -35,7 +36,7 @@ public final class ForStatementNode extends Block {
         setLine(line);
     }
 
-    private static boolean isIterable(Object toCheck, String callFileName, int callLine) {
+    public static boolean isIterable(Object toCheck, String callFileName, int callLine) {
         if (toCheck instanceof String)
             return true;
         if (!(toCheck instanceof StructDeclarationNode)) {
@@ -84,7 +85,7 @@ public final class ForStatementNode extends Block {
             var next = iterator.getFunction("next", getFileName(), getLine());
 
             if (isNotNameUnderscore) {
-                while ((boolean) hasNext.call(OperationNode.emptyTuple, fileName, line)) {
+                while (ToBoolean.toBoolean(hasNext.call(OperationNode.emptyTuple, fileName, line),fileName,line)) {
                     variable.setConst(false);
                     variable.setValue(next.call(OperationNode.emptyTuple, fileName, line), fileName, line);
                     variable.setConst(isConst);
@@ -97,7 +98,7 @@ public final class ForStatementNode extends Block {
                         return result;
                 }
             } else
-                while ((boolean) hasNext.call(OperationNode.emptyTuple, getFileName(), getLine())) {
+                while (ToBoolean.toBoolean(hasNext.call(OperationNode.emptyTuple, fileName, line),fileName,line)) {
                     next.call(OperationNode.emptyTuple, getFileName(), getLine());
                     result = super.run();
                     if (result instanceof BreakType)

@@ -23,6 +23,7 @@ import lexer.Lexer;
 import parser.parsing.Parser;
 import sml.Sml;
 import sml.data.tuple.Tuple;
+import sml.data.tuple.ToTuple;
 import sml.io.Input;
 import sml.io.Print;
 import sml.io.Println;
@@ -55,7 +56,7 @@ public class IOBlocks {
         print = new Print();
         println = new Println();
         round = new sml.math.Round();
-        tuple = new sml.data.tuple.NewTuple();
+        tuple = new ToTuple();
         input = new Input();
     }
 
