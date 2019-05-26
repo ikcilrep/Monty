@@ -102,16 +102,6 @@ public class Block extends NodeWithParent {
         addFunction(function, token.getFileName(), token.getLine());
     }
 
-    private void addStruct(StructDeclarationNode struct) {
-        String name = struct.getName();
-        if (hasStructure(name)) {
-            var existing_structure = structs.get(name);
-            new LogError("Struct " + name + " already exists", existing_structure.getFileName(),
-                    existing_structure.getLine());
-        }
-        structs.put(name, struct);
-    }
-
     public void addStruct(StructDeclarationNode structure, Constructor constructor, String fileName, int line) {
         String name = structure.getName();
         structure.setFileName(fileName);
@@ -124,13 +114,6 @@ public class Block extends NodeWithParent {
         }
         structs.put(name, structure);
         functions.put(name, constructor);
-    }
-
-    private void addVariable(VariableDeclarationNode variable) {
-        String name = variable.getName();
-        if (has(name))
-            new LogError("Variable or function with name " + name + " already exists");
-        variables.put(name, variable);
     }
 
     public void addVariable(VariableDeclarationNode variable, String fileName, int line) {
@@ -155,13 +138,6 @@ public class Block extends NodeWithParent {
             String[] fileNames = {existing.getFileName(), fileName};
             new LogError("Namespace with name " + name + " already exists", fileNames, lines);
         }
-        namespaces.put(name, namespace);
-    }
-
-    public void addNamespace(String name, Block namespace) {
-        if (hasNamespace(name))
-            new LogError("Namespace with name " + name + " already exists");
-
         namespaces.put(name, namespace);
     }
 
