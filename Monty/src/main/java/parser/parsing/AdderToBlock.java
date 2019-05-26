@@ -24,6 +24,7 @@ import ast.expressions.IdentifierNode;
 import ast.expressions.OperationNode;
 import ast.statements.*;
 import lexer.Token;
+import monty.Importing;
 import parser.LogError;
 
 import java.util.ArrayList;
@@ -114,6 +115,12 @@ abstract class AdderToBlock {
         block.addChild(whileStatement);
         return whileStatement;
 
+    }
+
+    static void addImportStatement(Block block, ArrayList<Token> tokens) {
+        var firstToken = tokens.get(0);
+        block.addChild(new ImportStatementNode(Importing.tokensToPath(tokens),tokens.get(tokens.size()-1).getText(),
+                block, firstToken.getFileName(),firstToken.getLine()));
     }
 
     private static String[] parseIdentifiers(ArrayList<Token> tokens, int start) {

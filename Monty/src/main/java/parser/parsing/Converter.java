@@ -13,7 +13,6 @@ import java.util.*;
 class Converter {
 
 
-    private final static Token JUST_OPERATOR = new Token(TokenTypes.OPERATOR, "", null, -1);
     private final static HashMap<String, Integer> PRECEDENCES_OF_OPERATORS;
     private final static Set<String> RIGHT_ASSOCIATIVE_OPERATORS = Set.of("=", "+=", "-=", "*=", "/=", "%=", "&=", "^=", "|=", "<<=",
             ">>=", "**", "**=");
@@ -99,10 +98,12 @@ class Converter {
                     } catch (EmptyStackException e) {
                         new LogError("Mismatched brackets.", token);
                     }
+                    var fileName = token.getFileName();
+                    var line = token.getLine();
                     if (tokens.get(i.i-1).getType().equals(TokenTypes.OPENING_BRACKET))
-                        outputQueue.add(new Token(TokenTypes.EMPTY_TUPLE, "", token.getFileName(), token.getLine()));
+                        outputQueue.add(new Token(TokenTypes.EMPTY_TUPLE, "", fileName,line));
                     operatorStack.pop();
-                    operatorStack.push(JUST_OPERATOR);
+                    operatorStack.push(new Token(TokenTypes.OPERATOR, "", fileName,line));
 
                     break;
                 case OPENING_BRACKET:
@@ -138,6 +139,8 @@ class Converter {
 
     private static OperationNode parseList(ArrayList<Token> tokens, Block parent, IntegerHolder i) {
         var token = tokens.get(i.i);
+        var fileName = token.getFileName();
+        var line = token.getLine();
         var list = new OperationNode(LIST_CALL, parent, token.getFileName(), token.getLine());
         i.i++;
         var openedBrackets = 1;
@@ -160,7 +163,7 @@ class Converter {
             list.setRight(ExpressionParser.parseInfix(parent, tokens, i.i, counter - 1));
             i.i = counter - 1;
         } else
-            list.setRight(new OperationNode(Promise.EMPTY_TUPLE, parent));
+            list.setRight(new OperationNode(Promise.EMPTY_TUPLE, parent,fileName,line ));
         return list;
 
     }

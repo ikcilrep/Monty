@@ -42,8 +42,6 @@ public final class OperationNode extends NodeWithParent {
     private OperationNode right;
 
     public OperationNode(Object operand, Block parent) {
-        if (operand == null)
-            throw new NullPointerException();
         this.operand = operand;
         this.parent = parent;
     }
@@ -67,14 +65,14 @@ public final class OperationNode extends NodeWithParent {
         if (expression instanceof IdentifierNode) {
             var variableNode = ((IdentifierNode) expression);
             if (variableNode.isFunctionCall())
+
                 return parent.getFunction(variableNode.getName(), fileName, line);
-            var namedNode = parent.get(((IdentifierNode) expression).getName(),fileName, line);
+            var namedNode = parent.get(((IdentifierNode) expression).getName(), fileName, line);
             if (doesGetValueFromVariable && namedNode instanceof VariableDeclarationNode)
                 return ((VariableDeclarationNode) namedNode).getValue();
             return namedNode;
         } else if (expression.equals(Promise.EMPTY_TUPLE))
             return emptyTuple;
-
         return expression;
     }
 

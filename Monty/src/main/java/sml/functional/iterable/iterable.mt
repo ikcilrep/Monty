@@ -14,7 +14,7 @@ struct Iterable;
 			end;
 			counter += 1;
 		end;
-		logError "Iterable doesn't have " +  index + " element";
+		logError("Iterable doesn't have " +  index + " element");
 	end;
 
 	func toList;
@@ -37,7 +37,7 @@ struct Iterable;
 		iterator = iterable.Iterator();
 		
 		func init;
-			 i = 0;
+			i = 0;
 			while i != begin & iterator.hasNext();
 				iterator.next();
 				i += 1;

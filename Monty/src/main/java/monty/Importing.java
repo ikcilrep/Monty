@@ -43,47 +43,46 @@ public class Importing {
 
 
     @SuppressWarnings("unchecked")
-    private static void importAllElementsFromSmlChildren(Block block, HashMap<String, Object> addFrom,String name, Token token) {
+    private static void importAllElementsFromSmlChildren(Block block, HashMap<String, Object> addFrom,String name, String fileName, int line) {
         Block sml;
         if (!block.hasNamespace(name))
-            block.addNamespace(name, sml = new Block(block), token.getFileName(),token.getLine());
+            block.addNamespace(name, sml = new Block(block), fileName,line);
         else {
             sml = block.getNamespace(name);
         }
         for (Object value : addFrom.values())
             if (value instanceof FunctionDeclarationNode)
-                sml.addFunction((FunctionDeclarationNode) value, token);
+                sml.addFunction((FunctionDeclarationNode) value, fileName,line);
             else if (value instanceof VariableDeclarationNode)
-                sml.addVariable((VariableDeclarationNode) value, token);
+                sml.addVariable((VariableDeclarationNode) value, fileName,line);
             else
-                importAllElementsFromSmlChildren(sml, (HashMap<String, Object>) value,name, token);
+                importAllElementsFromSmlChildren(sml, (HashMap<String, Object>) value,name, fileName,line);
     }
 
     @SuppressWarnings("unchecked")
-    private static void importElementFromSml(Block block, String[] split, String path, String name,
-                                             Token token) {
+    private static void importElementFromSml(Block block, String[] split, String path, String name,String fileName, int line) {
         var children = Sml.getChildren();
         Object functionVariableOrSubLibrary;
 
         for (int i = 1; i < split.length; i++) {
             var toImport = split[i];
             if (!children.containsKey(toImport))
-                new LogError("There isn't file to import:\t" + path, token);
+                new LogError("There isn't file to import:\t" + path, fileName, line);
             else if ((functionVariableOrSubLibrary = children.get(toImport)) instanceof FunctionDeclarationNode) {
-                block.addFunction((FunctionDeclarationNode) functionVariableOrSubLibrary, token);
+                block.addFunction((FunctionDeclarationNode) functionVariableOrSubLibrary, fileName, line);
                 break;
             } else if (functionVariableOrSubLibrary instanceof VariableDeclarationNode) {
-                block.addVariable((VariableDeclarationNode) functionVariableOrSubLibrary, token);
+                block.addVariable((VariableDeclarationNode) functionVariableOrSubLibrary, fileName,line);
                 break;
             } else if (i + 1 >= split.length)
                 importAllElementsFromSmlChildren(block, (HashMap<String, Object>) functionVariableOrSubLibrary,name,
-                        token);
+                        fileName,line);
             else
                 children = (HashMap<String, Object>) functionVariableOrSubLibrary;
         }
     }
 
-    private static String tokensToPath(ArrayList<Token> tokensBeforeSemicolon) {
+    public static String tokensToPath(ArrayList<Token> tokensBeforeSemicolon) {
         var stringBuilder = new StringBuilder();
         for(int i = 1; i < tokensBeforeSemicolon.size()-3;i++) {
             stringBuilder.append(tokensBeforeSemicolon.get(i).getText());
@@ -93,15 +92,12 @@ public class Importing {
         return stringBuilder.toString();
     }
 
-    public static void importFile(Block block, ArrayList<Token> tokensBeforeSemicolon) {
-        var partOfPath = tokensToPath(tokensBeforeSemicolon);
-        var path = MAIN_FILE_LOCATION + partOfPath.replace('.', File.separatorChar);
-        var name = tokensBeforeSemicolon.get(tokensBeforeSemicolon.size()-1).getText();
+    public static void importFile(Block block, String partOfPath,String name, String fileName, int line) {
+        var path = MAIN_FILE_LOCATION + partOfPath;
         var file = new File(path + ".mt");
         var parent_file = new File(file.getParent() + ".mt");
         var directory = new File(path);
-        var fileName = tokensBeforeSemicolon.get(1).getFileName();
-        var line = tokensBeforeSemicolon.get(1).getLine();
+
         if (directory.exists() && directory.isDirectory())
             importFilesFromDirectory(block, directory, name, fileName, line);
         else if (file.exists() && file.isFile())
@@ -113,8 +109,8 @@ public class Importing {
         } else {
             var split = partOfPath.split("\\.");
             if (!split[0].equals("sml"))
-                new LogError("There isn't file to import:\t" + path, tokensBeforeSemicolon.get(1));
-            importElementFromSml(block, split, path, name,tokensBeforeSemicolon.get(1));
+                new LogError("There isn't file to import:\t" + path, fileName, line);
+            importElementFromSml(block, split, path, name,fileName,line);
         }
     }
 
@@ -154,7 +150,9 @@ public class Importing {
     }
 
     private static void importWholeFile(Block block, String path,String name, String fileName, int line) {
-        block.addNamespace(name,IOBlocks.readBlockFromFile(new File(path).getAbsolutePath()),fileName,line);
+        var importedBlock =IOBlocks.readBlockFromFile(new File(path).getAbsolutePath());
+        importedBlock.run();
+        block.addNamespace(name,importedBlock,fileName,line);
     }
 
 
