@@ -28,11 +28,11 @@ public class VariableDeclarationNode extends DeclarationNode {
     private boolean isConst = false;
     private boolean hasValueChanged = false;
 
-    protected void setHasValueChanged(boolean hasValueChanged) {
-        this.hasValueChanged = hasValueChanged;
+    protected void setHasValueChanged() {
+        this.hasValueChanged = true;
     }
 
-    public void setValue(Object value) {
+    protected void setValue(Object value) {
         this.value = value;
     }
 

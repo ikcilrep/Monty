@@ -18,7 +18,6 @@ package parser;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
-import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import sml.data.returning.VoidType;
 

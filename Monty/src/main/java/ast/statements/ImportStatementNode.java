@@ -5,9 +5,9 @@ import ast.RunnableNode;
 import monty.Importing;
 
 public class ImportStatementNode extends RunnableNode {
-    private String path;
-    private String name;
-    private Block block;
+    private final String path;
+    private final String name;
+    private final Block block;
     public ImportStatementNode(String path,String name,Block block,String fileName, int line) {
         this.path = path;
         this.name = name;

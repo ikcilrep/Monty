@@ -29,7 +29,7 @@ public final class Lexer {
             "<<", ">>", "!=", "+=", "-=", "*=", "/=", "<=", ">=", "&=", "|=", "^=", "==", "<<=", ">>=", "%", "%=", "**=", ",");
 
     private final static Set<TokenTypes> hasValue = Set.of(TokenTypes.BOOLEAN_LITERAL, TokenTypes.INTEGER_LITERAL,
-            TokenTypes.STRING_LITERAL, TokenTypes.REAL_LITERAL, TokenTypes.IDENTIFIER, TokenTypes.CLOSING_BRACKET,
+            TokenTypes.STRING_LITERAL, TokenTypes.FLOAT_LITERAL, TokenTypes.IDENTIFIER, TokenTypes.CLOSING_BRACKET,
             TokenTypes.CLOSING_SQUARE_BRACKET);
 
     private static ArrayList<Token> identifierOrKeyword(String code, String fileName, int line,
@@ -167,7 +167,7 @@ public final class Lexer {
         var tokenText = new StringBuilder(integer);
         while (++i < code.length() && Character.isDigit(code.charAt(i)))
             tokenText.append(code.charAt(i));
-        tokens.add(new Token(TokenTypes.REAL_LITERAL, tokenText.toString(), fileName, line));
+        tokens.add(new Token(TokenTypes.FLOAT_LITERAL, tokenText.toString(), fileName, line));
         return lex(code, fileName, line, tokens, i);
     }
 

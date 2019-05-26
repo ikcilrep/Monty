@@ -24,7 +24,7 @@ public final class Argv extends VariableDeclarationNode {
     public Argv() {
         super("Argv");
         setValue(new List(Main.argv));
-        setHasValueChanged(true);
+        setHasValueChanged();
         setConst(true);
     }
 

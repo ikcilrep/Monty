@@ -168,7 +168,7 @@ class OperatorOverloading {
     }
 
     static Object assignmentOperator(Object leftValue, Object rightValue, String fileName, int line) {
-        if (!(leftValue instanceof VariableDeclarationNode) && leftValue instanceof Tuple && rightValue instanceof Tuple) {
+        if (leftValue instanceof Tuple && rightValue instanceof Tuple) {
             var leftTuple = (Tuple) leftValue;
             var rightTuple = (Tuple) rightValue;
             if (leftTuple.length() == rightTuple.length())

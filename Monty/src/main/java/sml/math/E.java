@@ -22,7 +22,7 @@ public final class E extends VariableDeclarationNode {
     public E() {
         super("E");
         setValue(Math.E);
-        setHasValueChanged(true);
+        setHasValueChanged();
         setConst(true);
     }
 

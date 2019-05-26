@@ -19,7 +19,6 @@ package parser.parsing;
 import ast.Block;
 import ast.declarations.CustomFunctionDeclarationNode;
 import ast.declarations.StructDeclarationNode;
-import ast.declarations.VariableDeclarationNode;
 import ast.expressions.IdentifierNode;
 import ast.expressions.OperationNode;
 import ast.statements.*;
@@ -76,7 +75,7 @@ abstract class AdderToBlock {
         var functionName = tokens.get(1).getText();
         if (Character.isUpperCase(functionName.charAt(0)))
             new LogError("Function name " + functionName + " can't start with upper case.", tokens.get(2));
-        var identifiers = parseIdentifiers(tokens, 2);
+        var identifiers = parseIdentifiers(tokens);
         var function = new CustomFunctionDeclarationNode(functionName, identifiers, identifiers.length - 1);
         function.setBody(new Block(block));
         block.addFunction(function, tokens.get(1));
@@ -123,9 +122,9 @@ abstract class AdderToBlock {
                 block, firstToken.getFileName(),firstToken.getLine()));
     }
 
-    private static String[] parseIdentifiers(ArrayList<Token> tokens, int start) {
-        var result = new String[tokens.size() - start];
-        for (int i = start, j = 0; i < tokens.size(); i++, j++)
+    private static String[] parseIdentifiers(ArrayList<Token> tokens) {
+        var result = new String[tokens.size() - 2];
+        for (int i = 2, j = 0; i < tokens.size(); i++, j++)
             result[j] = tokens.get(i).getText();
         return result;
     }

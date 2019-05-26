@@ -21,7 +21,6 @@ import lexer.TokenTypes;
 
 import java.util.ArrayList;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 public abstract class Recognizer {
     private static final Set<String> UNARY_OPERATORS = Set.of("!", "");
@@ -83,7 +82,7 @@ public abstract class Recognizer {
             switch (token.getType()) {
                 case OPERATOR:
                 case INTEGER_LITERAL:
-                case REAL_LITERAL:
+                case FLOAT_LITERAL:
                 case BOOLEAN_LITERAL:
                 case STRING_LITERAL:
                 case IDENTIFIER:
@@ -151,7 +150,7 @@ public abstract class Recognizer {
     public static boolean isImportStatement(ArrayList<Token> tokens) {
         if (!tokens.get(0).getType().equals(TokenTypes.IMPORT_KEYWORD))
             return false;
-        Token token = null;
+        Token token;
         var i = 1;
         try {
             while (!(token = tokens.get(i++)).getType().equals(TokenTypes.IN_KEYWORD))

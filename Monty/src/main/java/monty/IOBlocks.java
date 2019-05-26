@@ -78,15 +78,13 @@ public class IOBlocks {
     }
 
     static void readAndRunBlockFromFile(String path) {
-        var block = Parser
-                .parse(Lexer.lex(FileIO.readFile(path, "command line", 1), path, 1, new ArrayList<>(), 0));
-        autoImport(block);
+        var block = readBlockFromFile(path,"command line", 1);
         OperationNode.emptyTuple = new Tuple();
         block.run();
     }
-    static Block readBlockFromFile(String path) {
+    static Block readBlockFromFile(String path,String fileName, int line) {
         var block = Parser
-                .parse(Lexer.lex(FileIO.readFile(path, "command line", 1), path, 1, new ArrayList<>(), 0));
+                .parse(Lexer.lex(FileIO.readFile(path, fileName,line), path, 1, new ArrayList<>(), 0));
         autoImport(block);
         return block;
     }

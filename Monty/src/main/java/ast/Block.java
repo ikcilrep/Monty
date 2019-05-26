@@ -149,16 +149,12 @@ public class Block extends NodeWithParent {
         namespaces.put(name, namespace);
     }
 
-    public boolean hasNamespace(String name) {
+    private boolean hasNamespace(String name) {
         return namespaces.containsKey(name);
     }
 
     private boolean has(String name) {
         return variables.containsKey(name) || functions.containsKey(name);
-    }
-
-    public void addVariable(VariableDeclarationNode variable, Token token) {
-        addVariable(variable, token.getFileName(), token.getLine());
     }
 
     public void concat(Block block) {
@@ -295,17 +291,6 @@ public class Block extends NodeWithParent {
             block = parent;
         }
         return block.structs.get(name);
-    }
-
-    public Block getNamespace(String name) {
-        Block block = this;
-        while (!block.namespaces.containsKey(name)) {
-            var parent = block.getParent();
-            if (parent == null)
-                new LogError("There isn't any struct with name:\t" + name);
-            block = parent;
-        }
-        return block.namespaces.get(name);
     }
 
     public StructDeclarationNode getStructure(String name, String fileName, int line) {

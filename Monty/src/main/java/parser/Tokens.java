@@ -16,17 +16,14 @@ limitations under the License.
 
 package parser;
 
-import lexer.Token;
 import lexer.TokenTypes;
-
-import java.util.List;
 
 public class Tokens {
     public static DataTypes getDataType(TokenTypes type) {
         switch (type) {
             case INTEGER_LITERAL:
                 return DataTypes.INTEGER;
-            case REAL_LITERAL:
+            case FLOAT_LITERAL:
                 return DataTypes.FLOAT;
             case BOOLEAN_LITERAL:
                 return DataTypes.BOOLEAN;
@@ -37,23 +34,4 @@ public class Tokens {
         }
     }
 
-    public static String getText(List<Token> array) {
-        var result = new StringBuilder();
-        for (Token token : array)
-            result.append(token.getText());
-        return result.toString();
-    }
-
-    static String getTypesToString(List<Token> array) {
-        var result = new StringBuilder();
-        for (Token token : array) {
-            if (token.getType().equals(TokenTypes.OPERATOR) && token.getText().equals("."))
-                result.append("DOT");
-            else
-                result.append(token.getType());
-
-            result.append(' ');
-        }
-        return result.toString();
-    }
 }

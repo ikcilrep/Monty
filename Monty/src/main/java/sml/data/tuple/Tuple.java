@@ -57,10 +57,6 @@ public class Tuple extends StructDeclarationNode {
         array = new Object[0];
     }
 
-    public Object[] getArray() {
-        return array;
-    }
-
     private void addFunctions() {
         new Get(this);
         new Length(this);
