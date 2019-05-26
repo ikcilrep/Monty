@@ -144,7 +144,7 @@ public class Block extends NodeWithParent {
             var existing = get(name,fileName,line);
             int[] lines = {existing.getLine(), line};
             String[] fileNames = {existing.getFileName(), fileName};
-            new LogError("Variable or function with name " + name + " already exists", fileNames, lines);
+            new LogError("Namespace with name " + name + " already exists", fileNames, lines);
         }
         namespaces.put(name, namespace);
     }

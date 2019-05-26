@@ -150,18 +150,14 @@ public abstract class Recognizer {
     public static boolean isImportStatement(ArrayList<Token> tokens) {
         if (!tokens.get(0).getType().equals(TokenTypes.IMPORT_KEYWORD))
             return false;
-        Token token;
-        var i = 1;
-        try {
-            while (!(token = tokens.get(i++)).getType().equals(TokenTypes.IN_KEYWORD))
-                if (!token.getType().equals(TokenTypes.IDENTIFIER))
-                    new LogError("Expected identifier, got " + token.getText(), token);
-        } catch (IndexOutOfBoundsException e) {
-            new LogError("Expected in keyword after import location.", tokens.get(i-2));
-        }
-        token = tokens.get(i);
-        if (!token.getType().equals(TokenTypes.IDENTIFIER))
-            new LogError("Expected identifier after as keyword, got " + token.getText(), token);
+        if (tokens.size() == 1 || !tokens.get(1).getType().equals(TokenTypes.STRING_LITERAL))
+            new LogError("Expected string after \"import\" keyword, got " + tokens.get(1).getText(), tokens.get(1));
+
+        if (tokens.size() == 2 || !tokens.get(2).getType().equals(TokenTypes.IN_KEYWORD))
+            new LogError("Expected in keyword after location, got " + tokens.get(2).getText(), tokens.get(2));
+
+        if (tokens.size() == 3 || !tokens.get(3).getType().equals(TokenTypes.IDENTIFIER))
+            new LogError("Expected identifier as in keyword, got " + tokens.get(2).getText(), tokens.get(2));
 
         return true;
     }

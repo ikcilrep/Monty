@@ -79,20 +79,12 @@ public class Importing {
         }
     }
 
-    public static String tokensToPath(ArrayList<Token> tokensBeforeSemicolon) {
-        var stringBuilder = new StringBuilder();
-        for(int i = 1; i < tokensBeforeSemicolon.size()-3;i++) {
-            stringBuilder.append(tokensBeforeSemicolon.get(i).getText());
-            stringBuilder.append(File.separator);
-        }
-        stringBuilder.append(tokensBeforeSemicolon.get(tokensBeforeSemicolon.size() -3));
-        return stringBuilder.toString();
-    }
 
     public static void importFile(Block block, String partOfPath,String name, String fileName, int line) {
-        var path = MAIN_FILE_LOCATION + partOfPath;
-        var file = new File(path + ".mt");
-        var parent_file = new File(file.getParent() + ".mt");
+        var isAbsolute = new File(partOfPath).isAbsolute();
+        var path = isAbsolute ? partOfPath : MAIN_FILE_LOCATION + partOfPath;
+        var file = new File(path);
+        var parent_file = new File(file.getParent());
         var directory = new File(path);
         if (directory.exists() && directory.isDirectory())
             importFilesFromDirectory(addAndGetNamespace(block,name,fileName,line), directory, fileName, line);
@@ -104,8 +96,8 @@ public class Importing {
                     parent_file.getPath(), file.getName().substring(0, file.getName().length() - 3), fileName, line);
         } else {
             var split = partOfPath.split(File.separator);
-            if (!split[0].equals("sml"))
-                new LogError("There isn't file to import:\t" + path, fileName, line);
+            if (!(isAbsolute || split[0].equals("sml")))
+                new LogError("There1 isn't file to import:\t" + path, fileName, line);
             importElementFromSml(addAndGetNamespace(block,name,fileName,line), split, path, fileName,line);
         }
     }

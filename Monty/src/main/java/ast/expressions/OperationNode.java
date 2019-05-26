@@ -65,14 +65,17 @@ public final class OperationNode extends NodeWithParent {
         if (expression instanceof IdentifierNode) {
             var variableNode = ((IdentifierNode) expression);
             if (variableNode.isFunctionCall())
-
                 return parent.getFunction(variableNode.getName(), fileName, line);
             var namedNode = parent.get(((IdentifierNode) expression).getName(), fileName, line);
             if (doesGetValueFromVariable && namedNode instanceof VariableDeclarationNode)
                 return ((VariableDeclarationNode) namedNode).getValue();
+
             return namedNode;
-        } else if (expression.equals(Promise.EMPTY_TUPLE))
+        }else if (expression instanceof VariableDeclarationNode && doesGetValueFromVariable)
+            return ((VariableDeclarationNode) expression).getValue();
+        else if (expression.equals(Promise.EMPTY_TUPLE))
             return emptyTuple;
+
         return expression;
     }
 
@@ -194,8 +197,6 @@ public final class OperationNode extends NodeWithParent {
         result = getLiteral(result, parent, doesGetVariableValue, fileName, line);
         if (result instanceof LinkedList)
             return new Tuple((LinkedList) result);
-        else if (result instanceof VariableDeclarationNode && doesGetVariableValue)
-            return ((VariableDeclarationNode) result).getValue();
         return result;
     }
 

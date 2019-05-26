@@ -118,7 +118,7 @@ abstract class AdderToBlock {
 
     static void addImportStatement(Block block, ArrayList<Token> tokens) {
         var firstToken = tokens.get(0);
-        block.addChild(new ImportStatementNode(Importing.tokensToPath(tokens),tokens.get(tokens.size()-1).getText(),
+        block.addChild(new ImportStatementNode(tokens.get(1).getText(),tokens.get(3).getText(),
                 block, firstToken.getFileName(),firstToken.getLine()));
     }
 
