@@ -20,14 +20,12 @@ import ast.Block;
 import ast.declarations.Constructor;
 import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
-import lexer.Token;
 import parser.LogError;
 import sml.Sml;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -37,10 +35,16 @@ public class Importing {
     private final static String MAIN_FILE_LOCATION = MAIN_PATH
             + (MAIN_PATH.endsWith(File.separator) || MAIN_PATH.isEmpty() ? "" : File.separator)
             + (FILE_ABSOLUTE_PATH == null ? "" : FILE_ABSOLUTE_PATH) + File.separator;
-    private  static Block addAndGetNamespace(Block block, String name, String fileName, int line) {
+    private static Block addAndGetNamespace(Block block, String name, String fileName, int line) {
         Block sml;
         block.addNamespace(name, sml = new Block(block), fileName, line);
         return sml;
+    }
+
+    private static Block addIfNotAddedAndGetNamespace(Block block, String name, String fileName, int line) {
+        if (block.hasNamespace(name))
+            return block.getNamespace(name);
+        return addAndGetNamespace(block,name,fileName,line);
     }
 
     @SuppressWarnings("unchecked")
@@ -57,22 +61,21 @@ public class Importing {
     }
 
     @SuppressWarnings("unchecked")
-    private static void importElementFromSml(Block namespace, String[] split, String path, String fileName, int line) {
+    private static void importSpecifiedElementFromSml(Block block,String name, String[] split, String path, String fileName, int line) {
         var children = Sml.getChildren();
         Object functionVariableOrSubLibrary;
-
         for (int i = 1; i < split.length; i++) {
             var toImport = split[i];
             if (!children.containsKey(toImport))
                 new LogError("There isn't file to import:\t" + path, fileName, line);
             else if ((functionVariableOrSubLibrary = children.get(toImport)) instanceof FunctionDeclarationNode) {
-                namespace.addFunction((FunctionDeclarationNode) functionVariableOrSubLibrary, fileName, line);
-                break;
+                addIfNotAddedAndGetNamespace(block,name,fileName,line).addFunction((FunctionDeclarationNode) functionVariableOrSubLibrary, fileName, line);
+                return;
             } else if (functionVariableOrSubLibrary instanceof VariableDeclarationNode) {
-                namespace.addVariable((VariableDeclarationNode) functionVariableOrSubLibrary, fileName,line);
-                break;
+                addIfNotAddedAndGetNamespace(block,name,fileName,line).addVariable((VariableDeclarationNode) functionVariableOrSubLibrary, fileName,line);
+                return;
             } else if (i + 1 >= split.length)
-                importAllElementsFromSmlChildren(namespace, (HashMap<String, Object>) functionVariableOrSubLibrary,
+                importAllElementsFromSmlChildren(addAndGetNamespace(block,name,fileName,line), (HashMap<String, Object>) functionVariableOrSubLibrary,
                         fileName,line);
             else
                 children = (HashMap<String, Object>) functionVariableOrSubLibrary;
@@ -91,14 +94,14 @@ public class Importing {
         else if (file.exists() && file.isFile())
             importWholeFile(block, file.getPath(), name, fileName, line);
         else if (parent_file.exists() && parent_file.isFile()) {
-            importSpecifiedElementFromBlock(addAndGetNamespace(block,name,fileName,line),
+            importSpecifiedElementFromBlock(addIfNotAddedAndGetNamespace(block, name, fileName, line),
                     IOBlocks.readBlockFromFile(parent_file.getAbsolutePath(),fileName,line),
-                    parent_file.getPath(), file.getName().substring(0, file.getName().length() - 3), fileName, line);
+                    parent_file.getPath(), file.getName(), fileName, line);
         } else {
             var split = partOfPath.split(File.separator);
             if (!(isAbsolute || split[0].equals("sml")))
                 new LogError("There1 isn't file to import:\t" + path, fileName, line);
-            importElementFromSml(addAndGetNamespace(block,name,fileName,line), split, path, fileName,line);
+            importSpecifiedElementFromSml(block,name, split, path, fileName,line);
         }
     }
 
@@ -140,7 +143,6 @@ public class Importing {
     }
 
     private static void importWholeFile(Block block, String path,String name, String fileName, int line) {
-        System.out.println(path);
         var importedBlock =IOBlocks.readBlockFromFile(new File(path).getAbsolutePath(),fileName,line);
         importedBlock.run();
         block.addNamespace(name,importedBlock,fileName,line);

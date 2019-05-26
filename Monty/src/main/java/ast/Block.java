@@ -149,7 +149,7 @@ public class Block extends NodeWithParent {
         namespaces.put(name, namespace);
     }
 
-    private boolean hasNamespace(String name) {
+    public boolean hasNamespace(String name) {
         return namespaces.containsKey(name);
     }
 
@@ -325,15 +325,19 @@ public class Block extends NodeWithParent {
     }
 
     public Node get(String name,String fileName, int line) {
+        if (hasNamespace(name))
+            return namespaces.get(name);
         if (hasVariable(name))
             return variables.get(name);
         if (hasFunction(name))
             return functions.get(name);
-        if (hasNamespace(name))
-            return namespaces.get(name);
         if (parent == null)
             return newVariable(name,fileName,line);
         return parent.get(name,fileName, line);
+    }
+
+    public Block getNamespace(String name) {
+        return namespaces.get(name);
     }
 
     public Object getVariableValue(String name, String fileName, int line) {
