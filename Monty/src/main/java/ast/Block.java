@@ -33,6 +33,15 @@ public class Block extends NodeWithParent {
     private HashMap<String, FunctionDeclarationNode> functions = new HashMap<>();
     private HashMap<String, VariableDeclarationNode> variables = new HashMap<>();
     private HashMap<String, StructDeclarationNode> structs = new HashMap<>();
+
+    protected void setNamespaces(HashMap<String, Block> namespaces) {
+        this.namespaces = namespaces;
+    }
+
+    protected HashMap<String, Block> getNamespaces() {
+        return namespaces;
+    }
+
     private HashMap<String, Block> namespaces = new HashMap<>();
 
 
@@ -149,6 +158,13 @@ public class Block extends NodeWithParent {
         namespaces.put(name, namespace);
     }
 
+    public void addNamespace(String name, Block namespace) {
+        if (hasNamespace(name))
+            new LogError("Namespace with name " + name + " already exists");
+
+        namespaces.put(name, namespace);
+    }
+
     public boolean hasNamespace(String name) {
         return namespaces.containsKey(name);
     }
@@ -157,30 +173,34 @@ public class Block extends NodeWithParent {
         return variables.containsKey(name) || functions.containsKey(name);
     }
 
-    public void concat(Block block) {
+    public void concat(Block block,String fileName, int line) {
         block.run();
         var variablesSet = block.variables.entrySet();
         for (Map.Entry<String, VariableDeclarationNode> entry : variablesSet)
-            addVariable(entry.getValue());
+            addVariable(entry.getValue(), fileName, line);
 
         var structSet = block.structs.entrySet();
         for (Map.Entry<String, StructDeclarationNode> entry : structSet) {
             var struct = entry.getValue();
             struct.setParent(this);
-            addStruct(struct);
+            addStruct(struct,new Constructor(struct),fileName,line);
         }
 
         var functionsSet = block.functions.entrySet();
         for (Map.Entry<String, FunctionDeclarationNode> entry : functionsSet) {
             var function = entry.getValue();
-            if (!(function instanceof Constructor))
+            if (!(function instanceof Constructor)) {
                 function.getBody().setParent(this);
-
-            addFunction(function);
-
+                addFunction(function);
+            }
         }
 
-
+        var namespacesSet = block.namespaces.entrySet();
+        for (Map.Entry<String, Block> entry : namespacesSet) {
+            var namespace = entry.getValue();
+            namespace.setParent(this);
+            addNamespace(entry.getKey(),namespace,fileName,line);
+        }
     }
 
     public Block copy() {
@@ -194,6 +214,7 @@ public class Block extends NodeWithParent {
         copied.copyVariables();
         copied.copyFunctions();
         copied.copyStructs();
+        copied.copyNamespaces();
         return copied;
     }
 
@@ -232,12 +253,22 @@ public class Block extends NodeWithParent {
     public void copyStructs() {
         var structs = new HashMap<String, StructDeclarationNode>();
         for (Map.Entry<String, StructDeclarationNode> entry : this.structs.entrySet()) {
-            var value = entry.getValue().copy();
-            value.setParent(this);
-            structs.put(entry.getKey(), value);
-            this.functions.put(value.getName(), new Constructor(value));
+            var struct = entry.getValue().copy();
+            struct.setParent(this);
+            structs.put(entry.getKey(), struct);
+            this.functions.put(struct.getName(), new Constructor(struct));
         }
         this.structs = structs;
+    }
+
+    public void copyNamespaces() {
+        var namespaces = new HashMap<String, Block>();
+        for (Map.Entry<String, Block> entry : this.namespaces.entrySet()) {
+            var namespace = entry.getValue().copy();
+            namespace.setParent(this);
+            namespaces.put(entry.getKey(), namespace);
+        }
+        this.namespaces = namespaces;
     }
 
     protected ArrayList<RunnableNode> getChildren() {
@@ -249,24 +280,16 @@ public class Block extends NodeWithParent {
     }
 
     public FunctionDeclarationNode getFunction(String name, String fileName, int line) {
-        Block block = this;
-        while (!block.functions.containsKey(name)) {
-            var parent = block.getParent();
-            if (parent == null) {
-                block = this;
-                while (!(block.variables.containsKey(name)
-                        && block.variables.get(name).getValue() instanceof FunctionDeclarationNode)) {
-                    parent = block.getParent();
-                    if (parent == null)
-                        new LogError("There isn't any function with name:\t" + name, fileName, line);
-                    block = parent;
-                }
-                return (FunctionDeclarationNode) block.variables.get(name).getValue();
-            }
-            block = parent;
+        if (hasFunction(name))
+            return functions.get(name);
+        if (hasVariable(name)) {
+            var variableValue = variables.get(name).getValue();
+            if (variableValue instanceof FunctionDeclarationNode)
+                return (FunctionDeclarationNode)variableValue;
         }
-        return block.functions.get(name);
-
+        if (parent == null)
+            new LogError("There isn't any function with name:\t" + name, fileName, line);
+        return parent.getFunction(name,fileName,line);
     }
 
     public Block getParent() {
@@ -283,36 +306,27 @@ public class Block extends NodeWithParent {
     }
 
     public StructDeclarationNode getStructure(String name) {
-        Block block = this;
-        while (!block.structs.containsKey(name)) {
-            var parent = block.getParent();
-            if (parent == null)
-                new LogError("There isn't any struct with name:\t" + name);
-            block = parent;
-        }
-        return block.structs.get(name);
+        if (hasStructure(name))
+            return structs.get(name);
+        if (parent == null)
+            new LogError("There isn't any struct with name:\t" + name);
+        return parent.getStructure(name);
     }
 
     public StructDeclarationNode getStructure(String name, String fileName, int line) {
-        Block block = this;
-        while (!block.structs.containsKey(name)) {
-            var parent = block.getParent();
-            if (parent == null)
-                new LogError("There isn't any struct with name:\t" + name, fileName, line);
-            block = parent;
-        }
-        return block.structs.get(name);
+        if (hasStructure(name))
+            return structs.get(name);
+        if (parent == null)
+            new LogError("There isn't any struct with name:\t" + name,fileName,line);
+        return parent.getStructure(name,fileName,line);
     }
 
     public VariableDeclarationNode getVariable(String name, String fileName, int line) {
-        Block block = this;
-        while (!block.variables.containsKey(name)) {
-            var parent = block.getParent();
-            if (parent == null)
-                return newVariable(name,fileName,line);
-            block = parent;
-        }
-        return block.variables.get(name);
+        if (hasVariable(name))
+            return variables.get(name);
+        if (parent == null)
+            return newVariable(name,fileName,line);
+        return parent.getVariable(name, fileName, line);
     }
 
     private VariableDeclarationNode newVariable(String name, String fileName, int line) {

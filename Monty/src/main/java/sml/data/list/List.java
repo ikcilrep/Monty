@@ -76,7 +76,7 @@ public class List extends StructDeclarationNode {
         new ToString(this);
         addFunction(new NewList());
         addVariable(IOBlocks.nothing, null, -1);
-        concat(methodsWrittenInMonty.copy());
+        concat(methodsWrittenInMonty.copy(),"List.java", 79);
     }
 
     private int capacity() {

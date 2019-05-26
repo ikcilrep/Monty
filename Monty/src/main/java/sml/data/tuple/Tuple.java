@@ -62,7 +62,7 @@ public class Tuple extends StructDeclarationNode {
         new Length(this);
         new ToString(this);
         addFunction(new Println());
-        concat(methodsWrittenInMonty.copy());
+        concat(methodsWrittenInMonty.copy(),"Tuple.java",65);
     }
 
     public Object get(int index) {

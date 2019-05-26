@@ -40,7 +40,9 @@ public class StructDeclarationNode extends Block {
     }
 
     private StructDeclarationNode(Block parent, String name, int structNumber, ArrayList<RunnableNode> children,
-                                  HashMap<String, VariableDeclarationNode> variables, HashMap<String, FunctionDeclarationNode> functions, HashMap<String, StructDeclarationNode> structs) {
+                                  HashMap<String, VariableDeclarationNode> variables,
+                                  HashMap<String, FunctionDeclarationNode> functions,
+                                  HashMap<String,StructDeclarationNode> structs, HashMap<String,Block> namespaces) {
         super(parent);
         this.name = name;
         this.structNumber = structNumber;
@@ -48,6 +50,7 @@ public class StructDeclarationNode extends Block {
         setVariables(variables);
         setFunctions(functions);
         setStructs(structs);
+        setNamespaces(namespaces);
         numbers.put(structNumber, -1);
     }
 
@@ -62,11 +65,12 @@ public class StructDeclarationNode extends Block {
     @Override
     public StructDeclarationNode copy() {
         StructDeclarationNode copied;
-        copied = new StructDeclarationNode(getParent(), name, structNumber, getChildren(), getVariables(), getFunctions(), getStructs());
+        copied = new StructDeclarationNode(getParent(), name, structNumber, getChildren(), getVariables(), getFunctions(), getStructs(),getNamespaces());
         copied.copyChildren();
         copied.copyVariables();
         copied.copyFunctions();
         copied.copyStructs();
+        copied.copyNamespaces();
         return copied;
     }
 

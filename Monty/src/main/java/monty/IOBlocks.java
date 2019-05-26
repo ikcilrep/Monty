@@ -74,7 +74,7 @@ public class IOBlocks {
         block.addFunction(tuple, fileName, line);
 
         for (var parsed : writtenInMonty)
-            block.concat(parsed);
+            block.concat(parsed,fileName,line);
     }
 
     static void readAndRunBlockFromFile(String path) {
