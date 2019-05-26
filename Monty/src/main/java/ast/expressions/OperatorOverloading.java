@@ -291,7 +291,7 @@ class OperatorOverloading {
             return false;
         var rightValue = right.run();
         if (!(rightValue instanceof Boolean))
-            if (rightValue instanceof StructDeclarationNode)
+            if (rightValue instanceof Block)
                 return andOperator(true, rightValue, DataTypes.OBJECT, fileName, line);
             else
                 new LogError(
@@ -305,7 +305,7 @@ class OperatorOverloading {
             return true;
         var rightValue = right.run();
         if (!(rightValue instanceof Boolean))
-            if (rightValue instanceof StructDeclarationNode)
+            if (rightValue instanceof Block)
                 return orOperator(false, rightValue, DataTypes.OBJECT, fileName, line);
             else
                 new LogError(
@@ -337,7 +337,7 @@ class OperatorOverloading {
 
     static Object dotOperator(Object leftValue, OperationNode rightValue, DataTypes type, String fileName, int line) {
         if (type.equals(DataTypes.OBJECT)) {
-            return rightValue.runWithParent((StructDeclarationNode) leftValue, false);
+            return rightValue.runWithParent((Block) leftValue, false);
         } else
             new LogError("Can't get attributes from simple values.", fileName, line);
         return null;
@@ -562,16 +562,16 @@ class OperatorOverloading {
                                            int numberOfParameters, String fileName, int line) {
         var arguments = new Tuple(leftValue, rightValue);
         leftValue = OperationNode.getVariableValue(leftValue);
-        if (leftValue instanceof StructDeclarationNode) {
-            var struct = (StructDeclarationNode) leftValue;
+        if (leftValue instanceof Block) {
+            var struct = (Block) leftValue;
             if (struct.hasFunction(nameOfFunction)) {
                 var operator = struct.getFunction(nameOfFunction, fileName, line);
                 if (operator.getParametersLength() == numberOfParameters)
                     return operator.call(arguments, fileName, line);
             }
         }
-        if (rightValue instanceof StructDeclarationNode) {
-            var struct = (StructDeclarationNode) rightValue;
+        if (rightValue instanceof Block) {
+            var struct = (Block) rightValue;
             var name = "$r_" + nameOfFunction.substring(1);
             if (struct.hasFunction(name)) {
                 var operator = struct.getFunction(name, fileName, line);

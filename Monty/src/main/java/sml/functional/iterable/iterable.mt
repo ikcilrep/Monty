@@ -34,7 +34,7 @@ struct Iterable;
 	end;
 	
 	struct Iterator;
-		 iterator = iterable.Iterator();
+		iterator = iterable.Iterator();
 		
 		func init;
 			 i = 0;

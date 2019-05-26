@@ -24,7 +24,6 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 public abstract class Recognizer {
-    private static final Pattern IMPORT_REGEX = Pattern.compile("^[A-Z_]+ (DOT [A-Z_]+ )*$");
     private static final Set<String> UNARY_OPERATORS = Set.of("!", "");
 
     public static boolean isUnaryOperator(String operator) {
@@ -149,9 +148,23 @@ public abstract class Recognizer {
 
     }
 
-    public static boolean isImport(ArrayList<Token> tokens) {
-        return tokens.get(0).getType().equals(TokenTypes.IMPORT_KEYWORD)
-                && IMPORT_REGEX.matcher(Tokens.getTypesToString(tokens.subList(1, tokens.size()))).matches();
+    public static boolean isImportStatement(ArrayList<Token> tokens) {
+        if (!tokens.get(0).getType().equals(TokenTypes.IMPORT_KEYWORD))
+            return false;
+        Token token = null;
+        var i = 1;
+        try {
+            while (!(token = tokens.get(i++)).getType().equals(TokenTypes.IN_KEYWORD))
+                if (!token.getType().equals(TokenTypes.IDENTIFIER))
+                    new LogError("Expected identifier, got " + token.getText(), token);
+        } catch (IndexOutOfBoundsException e) {
+            new LogError("Expected in keyword after import location.", tokens.get(i-2));
+        }
+        token = tokens.get(i);
+        if (!token.getType().equals(TokenTypes.IDENTIFIER))
+            new LogError("Expected identifier after as keyword, got " + token.getText(), token);
+
+        return true;
     }
 
     public static boolean isReturnStatement(ArrayList<Token> tokens) {

@@ -51,7 +51,7 @@ public final class Parser {
                     block = AdderToBlock.addWhileStatement(block, tokensBeforeSemicolon);
                 } else if (Recognizer.isDoWhileStatement(tokensBeforeSemicolon)) {
                     block = AdderToBlock.addDoWhileStatement(block, tokensBeforeSemicolon);
-                } else if (Recognizer.isImport(tokensBeforeSemicolon)) {
+                } else if (Recognizer.isImportStatement(tokensBeforeSemicolon)) {
                     Importing.importFile(block, tokensBeforeSemicolon);
                 } else if (Recognizer.isBreakStatement(tokensBeforeSemicolon)) {
                     AdderToBlock.addBreakStatement(block, tokensBeforeSemicolon.get(0).getFileName(),

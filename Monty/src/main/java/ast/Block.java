@@ -28,12 +28,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Block extends NodeWithParent {
-
     private Block parent;
     private ArrayList<RunnableNode> children = new ArrayList<>();
     private HashMap<String, FunctionDeclarationNode> functions = new HashMap<>();
     private HashMap<String, VariableDeclarationNode> variables = new HashMap<>();
     private HashMap<String, StructDeclarationNode> structs = new HashMap<>();
+    private HashMap<String, Block> namespaces = new HashMap<>();
+
+
 
     public Block(Block parent) {
         this.parent = parent;
@@ -79,9 +81,9 @@ public class Block extends NodeWithParent {
         function.setFileName(fileName);
         function.setLine(line);
         if (has(name)) {
-            var existing = getVariableOrFunction(name);
-            int[] lines = {existing.getLine(), function.getLine()};
-            String[] fileNames = {existing.getFileName(), function.getFileName()};
+            var existing = get(name,fileName,line);
+            int[] lines = {existing.getLine(), line};
+            String[] fileNames = {existing.getFileName(), fileName};
             new LogError("Variable or function with name  " + name + " already exists", fileNames, lines);
         }
         functions.put(name, function);
@@ -107,8 +109,8 @@ public class Block extends NodeWithParent {
         structure.setLine(line);
         if (hasStructure(name)) {
             var existing_structure = structs.get(name);
-            int[] lines = {existing_structure.getLine(), structure.getLine()};
-            String[] fileNames = {existing_structure.getFileName(), structure.getFileName()};
+            int[] lines = {existing_structure.getLine(), line};
+            String[] fileNames = {existing_structure.getFileName(), fileName};
             new LogError("Struct " + name + " already exists", fileNames, lines);
         }
         structs.put(name, structure);
@@ -127,12 +129,28 @@ public class Block extends NodeWithParent {
         variable.setFileName(fileName);
         variable.setLine(line);
         if (has(name)) {
-            var existing = getVariableOrFunction(name);
-            int[] lines = {existing.getLine(), variable.getLine()};
-            String[] fileNames = {existing.getFileName(), variable.getFileName()};
+            var existing = get(name,fileName,line);
+            int[] lines = {existing.getLine(), line};
+            String[] fileNames = {existing.getFileName(), fileName};
             new LogError("Variable or function with name " + name + " already exists", fileNames, lines);
         }
         variables.put(name, variable);
+    }
+
+    public void addNamespace(String name, Block namespace, String fileName, int line) {
+        namespace.setFileName(fileName);
+        namespace.setLine(line);
+        if (hasNamespace(name)) {
+            var existing = get(name,fileName,line);
+            int[] lines = {existing.getLine(), line};
+            String[] fileNames = {existing.getFileName(), fileName};
+            new LogError("Variable or function with name " + name + " already exists", fileNames, lines);
+        }
+        namespaces.put(name, namespace);
+    }
+
+    public boolean hasNamespace(String name) {
+        return namespaces.containsKey(name);
     }
 
     private boolean has(String name) {
@@ -175,6 +193,7 @@ public class Block extends NodeWithParent {
         copied.variables = variables;
         copied.children = children;
         copied.structs = structs;
+        copied.namespaces = namespaces;
         copied.copyChildren();
         copied.copyVariables();
         copied.copyFunctions();
@@ -278,6 +297,17 @@ public class Block extends NodeWithParent {
         return block.structs.get(name);
     }
 
+    public Block getNamespace(String name) {
+        Block block = this;
+        while (!block.namespaces.containsKey(name)) {
+            var parent = block.getParent();
+            if (parent == null)
+                new LogError("There isn't any struct with name:\t" + name);
+            block = parent;
+        }
+        return block.namespaces.get(name);
+    }
+
     public StructDeclarationNode getStructure(String name, String fileName, int line) {
         Block block = this;
         while (!block.structs.containsKey(name)) {
@@ -294,36 +324,31 @@ public class Block extends NodeWithParent {
         while (!block.variables.containsKey(name)) {
             var parent = block.getParent();
             if (parent == null)
-                return newVariable(name);
+                return newVariable(name,fileName,line);
             block = parent;
         }
         return block.variables.get(name);
     }
 
-    private VariableDeclarationNode newVariable(String name) {
+    private VariableDeclarationNode newVariable(String name, String fileName, int line) {
         var newVariable = new VariableDeclarationNode(name);
         newVariable.setConst(Character.isUpperCase(name.charAt(0)));
+        newVariable.setFileName(fileName);
+        newVariable.setLine(line);
         variables.put(name,newVariable);
         return newVariable;
     }
 
-    public DeclarationNode getVariableOrFunction(String name) {
-        Block block = this;
-        while (!block.variables.containsKey(name)) {
-            var parent = block.getParent();
-            if (parent == null) {
-                block = this;
-                while (!block.hasFunction(name)) {
-                    parent = block.getParent();
-                    if (parent == null)
-                        return newVariable(name);
-                    block = parent;
-                }
-                return block.functions.get(name);
-            }
-            block = parent;
-        }
-        return block.variables.get(name);
+    public Node get(String name,String fileName, int line) {
+        if (hasVariable(name))
+            return variables.get(name);
+        if (hasFunction(name))
+            return functions.get(name);
+        if (hasNamespace(name))
+            return namespaces.get(name);
+        if (parent == null)
+            return newVariable(name,fileName,line);
+        return parent.get(name,fileName, line);
     }
 
     public Object getVariableValue(String name, String fileName, int line) {

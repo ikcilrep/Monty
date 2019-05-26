@@ -43,18 +43,24 @@ public class Importing {
 
 
     @SuppressWarnings("unchecked")
-    private static void importAllElementsFromSmlChildren(Block block, HashMap<String, Object> addFrom, Token token) {
+    private static void importAllElementsFromSmlChildren(Block block, HashMap<String, Object> addFrom,String name, Token token) {
+        Block sml;
+        if (!block.hasNamespace(name))
+            block.addNamespace(name, sml = new Block(block), token.getFileName(),token.getLine());
+        else {
+            sml = block.getNamespace(name);
+        }
         for (Object value : addFrom.values())
             if (value instanceof FunctionDeclarationNode)
-                block.addFunction((FunctionDeclarationNode) value, token);
+                sml.addFunction((FunctionDeclarationNode) value, token);
             else if (value instanceof VariableDeclarationNode)
-                block.addVariable((VariableDeclarationNode) value, token);
+                sml.addVariable((VariableDeclarationNode) value, token);
             else
-                importAllElementsFromSmlChildren(block, (HashMap<String, Object>) value, token);
+                importAllElementsFromSmlChildren(sml, (HashMap<String, Object>) value,name, token);
     }
 
     @SuppressWarnings("unchecked")
-    private static void importElementFromSml(Block block, String[] split, String path,
+    private static void importElementFromSml(Block block, String[] split, String path, String name,
                                              Token token) {
         var children = Sml.getChildren();
         Object functionVariableOrSubLibrary;
@@ -70,44 +76,54 @@ public class Importing {
                 block.addVariable((VariableDeclarationNode) functionVariableOrSubLibrary, token);
                 break;
             } else if (i + 1 >= split.length)
-                importAllElementsFromSmlChildren(block, (HashMap<String, Object>) functionVariableOrSubLibrary,
+                importAllElementsFromSmlChildren(block, (HashMap<String, Object>) functionVariableOrSubLibrary,name,
                         token);
             else
                 children = (HashMap<String, Object>) functionVariableOrSubLibrary;
         }
     }
 
+    private static String tokensToPath(ArrayList<Token> tokensBeforeSemicolon) {
+        var stringBuilder = new StringBuilder();
+        for(int i = 1; i < tokensBeforeSemicolon.size()-3;i++) {
+            stringBuilder.append(tokensBeforeSemicolon.get(i).getText());
+            stringBuilder.append(File.separator);
+        }
+        stringBuilder.append(tokensBeforeSemicolon.get(tokensBeforeSemicolon.size() -3));
+        return stringBuilder.toString();
+    }
+
     public static void importFile(Block block, ArrayList<Token> tokensBeforeSemicolon) {
-        var partOfPath = Tokens.getText(tokensBeforeSemicolon.subList(1, tokensBeforeSemicolon.size()));
+        var partOfPath = tokensToPath(tokensBeforeSemicolon);
         var path = MAIN_FILE_LOCATION + partOfPath.replace('.', File.separatorChar);
+        var name = tokensBeforeSemicolon.get(tokensBeforeSemicolon.size()-1).getText();
         var file = new File(path + ".mt");
         var parent_file = new File(file.getParent() + ".mt");
         var directory = new File(path);
         var fileName = tokensBeforeSemicolon.get(1).getFileName();
         var line = tokensBeforeSemicolon.get(1).getLine();
         if (directory.exists() && directory.isDirectory())
-            importFilesFromDirectory(block, directory, fileName, line);
+            importFilesFromDirectory(block, directory, name, fileName, line);
         else if (file.exists() && file.isFile())
-            importWholeFile(block, file.getPath(), fileName, line);
+            importWholeFile(block, file.getPath(), name, fileName, line);
         else if (parent_file.exists() && parent_file.isFile()) {
             importSpecifiedElementFromBlock(block,
-                    Parser.parse(Lexer.lex(FileIO.readFile(parent_file.getAbsolutePath(), fileName, line),
-                            parent_file.getName(), 1, new ArrayList<>(), 0)),
+                    IOBlocks.readBlockFromFile(parent_file.getAbsolutePath()),
                     parent_file.getPath(), file.getName().substring(0, file.getName().length() - 3), fileName, line);
         } else {
             var split = partOfPath.split("\\.");
             if (!split[0].equals("sml"))
                 new LogError("There isn't file to import:\t" + path, tokensBeforeSemicolon.get(1));
-            importElementFromSml(block, split, path, tokensBeforeSemicolon.get(1));
+            importElementFromSml(block, split, path, name,tokensBeforeSemicolon.get(1));
         }
     }
 
-    private static void importFilesFromDirectory(Block block, File directory, String fileName, int line) {
+    private static void importFilesFromDirectory(Block block, File directory, String name,String fileName, int line) {
         for (File fileEntry : Objects.requireNonNull(directory.listFiles())) {
             if (fileEntry.isDirectory())
-                importFilesFromDirectory(block, fileEntry, fileName, line);
+                importFilesFromDirectory(block, fileEntry,name, fileName, line);
             else if (fileEntry.getName().endsWith(".mt"))
-                importWholeFile(block, fileEntry.getAbsolutePath(), fileName, line);
+                importWholeFile(block, fileEntry.getAbsolutePath(),name, fileName, line);
             else
                 new LogError(
                         "File with wrong extension: " + directory.getPath() + File.separator + fileEntry.getName());
@@ -130,7 +146,6 @@ public class Importing {
                     block.addStruct(struct, (Constructor) function, struct.getFileName(), struct.getLine());
                 } else
                     block.addFunction(function, function.getFileName(), function.getLine());
-
             }
         } else {
             new LogError("There aren't any function or variable with this name to import:\t" + name
@@ -138,10 +153,8 @@ public class Importing {
         }
     }
 
-    private static void importWholeFile(Block block, String path, String fileName, int line) {
-        var file = new File(path);
-        block.concat(Parser.parse(Lexer.lex(FileIO.readFile(file.getAbsolutePath(), fileName, line), path, 1,
-                new ArrayList<>(), 0)));
+    private static void importWholeFile(Block block, String path,String name, String fileName, int line) {
+        block.addNamespace(name,IOBlocks.readBlockFromFile(new File(path).getAbsolutePath()),fileName,line);
     }
 
 

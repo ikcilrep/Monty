@@ -62,9 +62,6 @@ abstract class AdderToBlock {
         block.addChild(ExpressionParser.parseInfix(block, tokens));
     }
 
-    private static void addExpression(Block block, ArrayList<Token> tokens, int start) {
-        block.addChild(ExpressionParser.parseInfix(block, tokens, start));
-    }
 
     static Block addForStatement(Block block, ArrayList<Token> tokens) {
         var variableName = tokens.get(1).getText();

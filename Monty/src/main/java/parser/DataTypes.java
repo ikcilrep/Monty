@@ -16,6 +16,7 @@ limitations under the License.
 
 package parser;
 
+import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
@@ -39,7 +40,7 @@ public enum DataTypes {
             return FLOAT;
         if (value instanceof Boolean)
             return BOOLEAN;
-        if (value instanceof StructDeclarationNode || value instanceof FunctionDeclarationNode)
+        if (value instanceof Block || value instanceof FunctionDeclarationNode)
             return OBJECT;
         if (value instanceof VariableDeclarationNode)
             return getDataType(((VariableDeclarationNode) value).getValue());

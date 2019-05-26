@@ -68,10 +68,10 @@ public final class OperationNode extends NodeWithParent {
             var variableNode = ((IdentifierNode) expression);
             if (variableNode.isFunctionCall())
                 return parent.getFunction(variableNode.getName(), fileName, line);
-            var variableOrFunction = parent.getVariableOrFunction(((IdentifierNode) expression).getName());
-            if (doesGetValueFromVariable && variableOrFunction instanceof VariableDeclarationNode)
-                return ((VariableDeclarationNode) variableOrFunction).getValue();
-            return variableOrFunction;
+            var namedNode = parent.get(((IdentifierNode) expression).getName(),fileName, line);
+            if (doesGetValueFromVariable && namedNode instanceof VariableDeclarationNode)
+                return ((VariableDeclarationNode) namedNode).getValue();
+            return namedNode;
         } else if (expression.equals(Promise.EMPTY_TUPLE))
             return emptyTuple;
 
