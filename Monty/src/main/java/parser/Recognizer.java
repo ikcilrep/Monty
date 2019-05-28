@@ -154,11 +154,19 @@ public abstract class Recognizer {
             new LogError("Expected string after \"import\" keyword, got " + tokens.get(1).getText(), tokens.get(1));
 
         if (tokens.size() == 2 || !tokens.get(2).getType().equals(TokenTypes.IN_KEYWORD))
-            new LogError("Expected in keyword after location, got " + tokens.get(2).getText(), tokens.get(2));
+            new LogError("Expected \"in\" keyword after location, got " + tokens.get(2).getText(), tokens.get(2));
 
         if (tokens.size() == 3 || !tokens.get(3).getType().equals(TokenTypes.IDENTIFIER))
-            new LogError("Expected identifier as in keyword, got " + tokens.get(2).getText(), tokens.get(2));
+            new LogError("Expected identifier after \"in\" keyword, got " + tokens.get(2).getText(), tokens.get(2));
 
+        return true;
+    }
+
+    public static boolean isNamespaceDeclaration(ArrayList<Token> tokens) {
+        if (!tokens.get(0).getType().equals(TokenTypes.NAMESPACE_KEYWORD))
+            return false;
+        if (tokens.size() == 1 || !tokens.get(1).getType().equals(TokenTypes.IDENTIFIER))
+            new LogError("Expected identifier after \"in\" keyword, got " + tokens.get(1).getText(), tokens.get(2));
         return true;
     }
 

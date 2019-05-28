@@ -91,6 +91,8 @@ public final class Lexer {
                 return TokenTypes.BOOLEAN_LITERAL;
             case "instanceof":
                 return TokenTypes.OPERATOR;
+            case "namespace":
+                return TokenTypes.NAMESPACE_KEYWORD;
             default:
                 return TokenTypes.IDENTIFIER;
         }

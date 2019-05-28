@@ -28,6 +28,7 @@ public final class Parser {
     public static Block parse(ArrayList<Token> tokens) {
         var tokensBeforeSemicolon = new ArrayList<Token>();
         var block = new Block(null);
+        var mainBlock = block;
         for (Token token : tokens) {
             if (token.getType().equals(TokenTypes.SEMICOLON)) {
                 if (tokensBeforeSemicolon.size() == 0)
@@ -60,11 +61,14 @@ public final class Parser {
                             tokensBeforeSemicolon.get(0).getLine());
                 } else if (Recognizer.isForStatement(tokensBeforeSemicolon)) {
                     block = AdderToBlock.addForStatement(block, tokensBeforeSemicolon);
+                } else if (Recognizer.isNamespaceDeclaration(tokensBeforeSemicolon)) {
+                    block = AdderToBlock.addNamespace(block,tokensBeforeSemicolon);
                 } else if (Recognizer.isEndKeyword(tokensBeforeSemicolon)) {
                     var parent = block.getParent();
                     if (parent == null)
                         new LogError("Nothing to end!", tokensBeforeSemicolon.get(0));
                     block = block.getParent();
+
                 } else if (Recognizer.isExpression(tokensBeforeSemicolon, 0, tokensBeforeSemicolon.size())) {
                     AdderToBlock.addExpression(block, tokensBeforeSemicolon);
                 }
@@ -72,13 +76,7 @@ public final class Parser {
             } else
                 tokensBeforeSemicolon.add(token);
         }
-        while (true) {
-            var parent = block.getParent();
-            if (parent == null)
-                break;
-            block = parent;
-        }
-        return block;
+        return mainBlock;
 
     }
 }

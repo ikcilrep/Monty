@@ -315,6 +315,11 @@ public class Block extends NodeWithParent {
     }
 
     public Node get(String name,String fileName, int line) {
+        var result = partOfRecursionGet(name,fileName,line);
+        return result == null ? newVariable(name,fileName,line) : result;
+    }
+
+    private Node partOfRecursionGet(String name,String fileName, int line) {
         if (hasNamespace(name))
             return namespaces.get(name);
         if (hasVariable(name))
@@ -322,7 +327,7 @@ public class Block extends NodeWithParent {
         if (hasFunction(name))
             return functions.get(name);
         if (parent == null)
-            return newVariable(name,fileName,line);
+            return null;
         return parent.get(name,fileName, line);
     }
 
@@ -345,9 +350,9 @@ public class Block extends NodeWithParent {
     public boolean hasVariable(String name) {
         return variables.containsKey(name);
     }
-
     @Override
     public Object run() {
+
         Object result;
         for (RunnableNode child : children) {
             result = child.run();
