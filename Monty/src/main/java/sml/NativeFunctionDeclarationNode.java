@@ -1,7 +1,6 @@
 package sml;
 
 import ast.declarations.NamedFunctionDeclarationNode;
-import ast.declarations.VariableDeclarationNode;
 
 
 public abstract class NativeFunctionDeclarationNode extends NamedFunctionDeclarationNode {
@@ -14,10 +13,4 @@ public abstract class NativeFunctionDeclarationNode extends NamedFunctionDeclara
         return this;
     }
 
-
-    @Override
-    protected void addParameter(String name) {
-        super.addParameter(name);
-        body.addVariable(new VariableDeclarationNode(name), getFileName(), getLine());
-    }
 }

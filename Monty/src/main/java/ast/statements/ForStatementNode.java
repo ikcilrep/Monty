@@ -73,11 +73,9 @@ public final class ForStatementNode extends Block {
         var isNotNameUnderscore = !variableName.equals("_");
         var isConst = Character.isUpperCase(variableName.charAt(0));
         var toBeIterated = iterable.run();
-        VariableDeclarationNode variable = null;
+        var variable = getVariable(variableName,getFileName(),getLine());
         var fileName = getFileName();
         var line = getLine();
-        if (isNotNameUnderscore)
-            addVariable(variable = new VariableDeclarationNode(variableName), getFileName(), getLine());
         if (isIterable(toBeIterated, getFileName(), getLine())) {
             var iterator = (StructDeclarationNode) ((StructDeclarationNode) toBeIterated).getFunction("Iterator", getFileName(), getLine())
                     .call(OperationNode.emptyTuple, getFileName(), getLine());
