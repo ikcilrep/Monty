@@ -19,6 +19,7 @@ package monty;
 import ast.Block;
 import ast.declarations.Constructor;
 import ast.declarations.FunctionDeclarationNode;
+import ast.declarations.NamedFunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import parser.LogError;
 import sml.Sml;
@@ -52,8 +53,8 @@ public class Importing {
 
 
         for (Object value : addFrom.values())
-            if (value instanceof FunctionDeclarationNode)
-                sml.addFunction((FunctionDeclarationNode) value, fileName,line);
+            if (value instanceof NamedFunctionDeclarationNode)
+                sml.addFunction((NamedFunctionDeclarationNode) value, fileName,line);
             else if (value instanceof VariableDeclarationNode)
                 sml.addVariable((VariableDeclarationNode) value, fileName,line);
             else
@@ -69,7 +70,7 @@ public class Importing {
             if (!children.containsKey(toImport))
                 new LogError("There isn't file to import:\t" + path, fileName, line);
             else if ((functionVariableOrSubLibrary = children.get(toImport)) instanceof FunctionDeclarationNode) {
-                addIfNotAddedAndGetNamespace(block,name,fileName,line).addFunction((FunctionDeclarationNode) functionVariableOrSubLibrary, fileName, line);
+                addIfNotAddedAndGetNamespace(block,name,fileName,line).addFunction((NamedFunctionDeclarationNode) functionVariableOrSubLibrary, fileName, line);
                 return;
             } else if (functionVariableOrSubLibrary instanceof VariableDeclarationNode) {
                 addIfNotAddedAndGetNamespace(block,name,fileName,line).addVariable((VariableDeclarationNode) functionVariableOrSubLibrary, fileName,line);

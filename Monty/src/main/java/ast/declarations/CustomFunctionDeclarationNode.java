@@ -25,11 +25,11 @@ import sml.data.returning.BreakType;
 import sml.data.returning.Nothing;
 import sml.data.tuple.Tuple;
 
-public final class CustomFunctionDeclarationNode extends FunctionDeclarationNode {
+public final class CustomFunctionDeclarationNode extends NamedFunctionDeclarationNode {
 
 
     public CustomFunctionDeclarationNode(String name, String[] parameters, int lastNotNullParameterIndex) {
-        super(name, parameters, lastNotNullParameterIndex);
+        super(name,parameters, lastNotNullParameterIndex);
     }
 
     private Object callWithoutChangingTailRecursionToIteration(Tuple arguments, String callFileName, int callLine) {

@@ -30,7 +30,7 @@ import java.util.Map;
 public class Block extends NodeWithParent {
     private Block parent;
     private ArrayList<RunnableNode> children = new ArrayList<>();
-    private HashMap<String, FunctionDeclarationNode> functions = new HashMap<>();
+    private HashMap<String, NamedFunctionDeclarationNode> functions = new HashMap<>();
     private HashMap<String, VariableDeclarationNode> variables = new HashMap<>();
     private HashMap<String, StructDeclarationNode> structs = new HashMap<>();
 
@@ -50,11 +50,11 @@ public class Block extends NodeWithParent {
         this.parent = parent;
     }
 
-    protected HashMap<String, FunctionDeclarationNode> getFunctions() {
+    protected HashMap<String, NamedFunctionDeclarationNode> getFunctions() {
         return functions;
     }
 
-    protected void setFunctions(HashMap<String, FunctionDeclarationNode> functions) {
+    protected void setFunctions(HashMap<String, NamedFunctionDeclarationNode> functions) {
         this.functions = functions;
     }
 
@@ -78,14 +78,14 @@ public class Block extends NodeWithParent {
         children.add(child);
     }
 
-    public void addFunction(FunctionDeclarationNode function) {
+    public void addFunction(NamedFunctionDeclarationNode function) {
         String name = function.getName();
         if (has(name))
             new LogError("Variable or function with name  " + name + " already exists");
         functions.put(name, function);
     }
 
-    public void addFunction(FunctionDeclarationNode function, String fileName, int line) {
+    public void addFunction(NamedFunctionDeclarationNode function, String fileName, int line) {
         String name = function.getName();
         function.setFileName(fileName);
         function.setLine(line);
@@ -98,7 +98,7 @@ public class Block extends NodeWithParent {
         functions.put(name, function);
     }
 
-    public void addFunction(FunctionDeclarationNode function, Token token) {
+    public void addFunction(NamedFunctionDeclarationNode function, Token token) {
         addFunction(function, token.getFileName(), token.getLine());
     }
 
@@ -163,7 +163,7 @@ public class Block extends NodeWithParent {
         }
 
         var functionsSet = block.functions.entrySet();
-        for (Map.Entry<String, FunctionDeclarationNode> entry : functionsSet) {
+        for (Map.Entry<String, NamedFunctionDeclarationNode> entry : functionsSet) {
             var function = entry.getValue();
             if (!(function instanceof Constructor)) {
                 function.getBody().setParent(this);
@@ -215,8 +215,8 @@ public class Block extends NodeWithParent {
     }
 
     public void copyFunctions() {
-        var functions = new HashMap<String, FunctionDeclarationNode>();
-        for (Map.Entry<String, FunctionDeclarationNode> entry : this.functions.entrySet()) {
+        var functions = new HashMap<String, NamedFunctionDeclarationNode>();
+        for (Map.Entry<String, NamedFunctionDeclarationNode> entry : this.functions.entrySet()) {
             var function = entry.getValue().copy();
             if (!(function instanceof Constructor)) {
                 function.getBody().setParent(this);
@@ -255,13 +255,13 @@ public class Block extends NodeWithParent {
         this.children = children;
     }
 
-    public FunctionDeclarationNode getFunction(String name, String fileName, int line) {
+    public NamedFunctionDeclarationNode getFunction(String name, String fileName, int line) {
         if (hasFunction(name))
             return functions.get(name);
         if (hasVariable(name)) {
             var variableValue = variables.get(name).getValue();
             if (variableValue instanceof FunctionDeclarationNode)
-                return (FunctionDeclarationNode)variableValue;
+                return (NamedFunctionDeclarationNode)variableValue;
         }
         if (parent == null)
             new LogError("There isn't any function with name:\t" + name, fileName, line);

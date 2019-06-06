@@ -17,21 +17,30 @@ limitations under the License.
 package ast.declarations;
 
 import ast.Block;
-import parser.LogError;
+import ast.Node;
 import sml.data.tuple.Tuple;
 
-public abstract class FunctionDeclarationNode extends DeclarationNode {
+public abstract class FunctionDeclarationNode extends Node {
+
     public final static String[] EMPTY_PARAMETERS = new String[0];
     String[] parameters;
     protected Block body;
     int lastNotNullParameterIndex;
-    public FunctionDeclarationNode(String name, String[] parameters, int lastNotNullParameterIndex) {
-        super(name);
+
+    @Override
+    public abstract String toString();
+
+    protected abstract void checkArgumentsSize(int argumentsLength, String fileName, int line);
+
+    public abstract Object call(Tuple arguments, String callFileName, int callLine);
+
+    public abstract FunctionDeclarationNode copy();
+
+    public FunctionDeclarationNode(String[] parameters, int lastNotNullParameterIndex) {
         setParameters(parameters, lastNotNullParameterIndex);
     }
 
-    public FunctionDeclarationNode(String name, String[] parameters) {
-        super(name);
+    public FunctionDeclarationNode(String[] parameters) {
         setParameters(parameters, -1);
     }
 
@@ -40,20 +49,9 @@ public abstract class FunctionDeclarationNode extends DeclarationNode {
         this.lastNotNullParameterIndex = lastNotNullParameterIndex;
     }
 
-    private void checkArgumentsSize(int argumentsLength, String fileName, int line) {
-        if (argumentsLength > parameters.length)
-            new LogError("Too many arguments in " + getName() + " function call.", fileName, line);
-        else if (argumentsLength < parameters.length)
-            new LogError("Too few arguments in " + getName() + " function call.", fileName, line);
-    }
-
     protected void addParameter(String name) {
         getParameters()[++lastNotNullParameterIndex] = name;
     }
-
-    public abstract Object call(Tuple arguments, String callFileName, int callLine);
-
-    public abstract FunctionDeclarationNode copy();
 
     public Block getBody() {
         return body;
@@ -93,8 +91,5 @@ public abstract class FunctionDeclarationNode extends DeclarationNode {
         variable.setConst(isConst);
     }
 
-    @Override
-    public String toString() {
-        return "Function<" + getName() + "> <- " + getParametersLength();
-    }
+
 }

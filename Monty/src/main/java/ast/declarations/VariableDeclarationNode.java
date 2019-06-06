@@ -16,11 +16,16 @@ limitations under the License.
 
 package ast.declarations;
 
+import ast.Node;
 import parser.LogError;
 import sml.data.returning.Nothing;
 
-public class VariableDeclarationNode extends DeclarationNode {
+public class VariableDeclarationNode extends Node {
+    public String getName() {
+        return name;
+    }
 
+    private String name;
     boolean isConst() {
         return isConst;
     }
@@ -39,7 +44,7 @@ public class VariableDeclarationNode extends DeclarationNode {
     private Object value = Nothing.NOTHING;
 
     public VariableDeclarationNode(String name) {
-        super(name);
+        this.name = name;
     }
 
     public static VariableDeclarationNode toMe(Object object, String fileName, int line) {

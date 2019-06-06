@@ -41,7 +41,7 @@ public class StructDeclarationNode extends Block {
 
     private StructDeclarationNode(Block parent, String name, int structNumber, ArrayList<RunnableNode> children,
                                   HashMap<String, VariableDeclarationNode> variables,
-                                  HashMap<String, FunctionDeclarationNode> functions,
+                                  HashMap<String, NamedFunctionDeclarationNode> functions,
                                   HashMap<String,StructDeclarationNode> structs, HashMap<String,Block> namespaces) {
         super(parent);
         this.name = name;

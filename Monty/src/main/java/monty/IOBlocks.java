@@ -21,6 +21,7 @@ import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import lexer.Lexer;
 import parser.parsing.Parser;
+import sml.NativeFunctionDeclarationNode;
 import sml.Sml;
 import sml.data.tuple.Tuple;
 import sml.data.tuple.ToTuple;
@@ -32,15 +33,15 @@ import java.util.ArrayList;
 
 public class IOBlocks {
     public final static VariableDeclarationNode nothing;
-    private final static FunctionDeclarationNode abs;
-    private final static FunctionDeclarationNode list;
-    private final static FunctionDeclarationNode logError;
-    private final static FunctionDeclarationNode print;
-    private final static FunctionDeclarationNode println;
-    private final static FunctionDeclarationNode round;
-    private final static FunctionDeclarationNode tuple;
+    private final static NativeFunctionDeclarationNode abs;
+    private final static NativeFunctionDeclarationNode list;
+    private final static NativeFunctionDeclarationNode logError;
+    private final static NativeFunctionDeclarationNode print;
+    private final static NativeFunctionDeclarationNode println;
+    private final static NativeFunctionDeclarationNode round;
+    private final static NativeFunctionDeclarationNode tuple;
 
-    private final static FunctionDeclarationNode input;
+    private final static NativeFunctionDeclarationNode input;
     private final static Block[] writtenInMonty;
 
     static {
