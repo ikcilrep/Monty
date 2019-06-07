@@ -19,6 +19,7 @@ package ast.statements;
 import ast.Block;
 import ast.NodeWithParent;
 import ast.expressions.OperationNode;
+import lexer.Token;
 
 public final class ReturnStatementNode extends NodeWithParent {
 
@@ -28,6 +29,12 @@ public final class ReturnStatementNode extends NodeWithParent {
         this.expression = expression;
         setFileName(fileName);
         setLine(line);
+    }
+
+    public ReturnStatementNode(OperationNode expression, Token token) {
+        this.expression = expression;
+        setFileName(token.getFileName());
+        setLine(token.getLine());
     }
 
     @Override

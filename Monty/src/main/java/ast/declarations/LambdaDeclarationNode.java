@@ -11,23 +11,23 @@ public class LambdaDeclarationNode extends FunctionDeclarationNode {
     private int lambdaNumber;
 
     public LambdaDeclarationNode(String[] parameters, OperationNode expression, String fileName, int line) {
-        super(parameters, parameters.length - 1);
+        super(parameters, parameters.length-1);
         lambdaNumber = ++lambdasCounter;
         body = new Block(null);
         expression.setParent(body);
-        body.addChild(new ReturnStatementNode(expression, fileName, line));
+        body.addChild(new ReturnStatementNode(expression,fileName,line));
         setFileName(fileName);
         setLine(line);
     }
 
     @Override
     public String toString() {
-        return "Lambda#" + lambdaNumber;
+        return "Lambda#"+lambdaNumber;
     }
 
     @Override
     public Object call(Tuple arguments, String callFileName, int callLine) {
-        setArguments(arguments, callFileName, callLine);
+        setArguments(arguments,callFileName,callLine);
         var result = body.run();
         if (result instanceof OperationNode)
             return ((OperationNode) result).run();

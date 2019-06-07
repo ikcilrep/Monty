@@ -12,25 +12,16 @@ func $eq this other;
     return true;
 end;
 
-func $neq this other;
-    return !(this == other);
-end;
+func $neq this other -> !(this == other);
 
-func $r_eq other this;
-    return this == other;
-end;
+func $r_eq other this -> this == other;
 
-func $r_neq other this;
-    return this != other;
-end;
+func $r_neq other this -> this != other;
 
 
 struct Iterator;
     counter = 0;
-    #hasNext = () -> counter < length();
-    func hasNext;
-        return counter < length();
-    end;
+    func hasNext -> counter < length();
 
     func next;
         result = get counter;

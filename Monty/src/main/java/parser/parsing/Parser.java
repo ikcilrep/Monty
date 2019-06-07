@@ -35,9 +35,7 @@ public final class Parser {
                     continue;
                 if (Recognizer.isReturnStatement(tokensBeforeSemicolon)) {
                     AdderToBlock.addReturnStatement(block, tokensBeforeSemicolon);
-                } else if (Recognizer.isFunctionDeclaration(tokensBeforeSemicolon)) {
-                    block = AdderToBlock.addFunctionDeclaration(block, tokensBeforeSemicolon);
-                } else if (Recognizer.isStructDeclaration(tokensBeforeSemicolon)) {
+                }  else if (Recognizer.isStructDeclaration(tokensBeforeSemicolon)) {
                     block = AdderToBlock.addStructDeclaration(block, tokensBeforeSemicolon);
                 } else if (Recognizer.isIfStatement(tokensBeforeSemicolon)) {
                     block = AdderToBlock.addIfStatement(block, tokensBeforeSemicolon, false);
@@ -71,6 +69,11 @@ public final class Parser {
 
                 } else if (Recognizer.isExpression(tokensBeforeSemicolon, 0, tokensBeforeSemicolon.size())) {
                     AdderToBlock.addExpression(block, tokensBeforeSemicolon);
+                } else {
+                    var recognizedFunction = Recognizer.isFunctionDeclaration(tokensBeforeSemicolon);
+                    if (recognizedFunction.isAnyFunction())
+                        block = AdderToBlock.addFunctionDeclaration(block, tokensBeforeSemicolon,recognizedFunction);
+
                 }
                 tokensBeforeSemicolon.clear();
             } else

@@ -13,25 +13,15 @@ func $eq this other;
     return true;
 end;
 
-func $neq this other;
-    return !(this == other);
-end;
+func $neq this other -> !(this == other);
 
-func $r_eq other this;
-    return this == other;
-end;
+func $r_eq other this -> this == other;
 
-func $r_neq other this;
-    return this != other;
-end;
+func $r_neq other this -> this != other;
 
-func $r_mul other this;
-    return this * other;
-end;
+func $r_mul other this -> this * other;
 
-func $r_a_mul other this;
-    return this *= other;
-end;
+func $r_a_mul other this -> this *= other;
 
 func replace toBeReplaced replacement;
     i = 0;
@@ -82,13 +72,11 @@ func sublist first last;
 end;
 
 struct Iterator;
-     counter = 0;
-    func hasNext;
-        return counter < length();
-    end;
+    counter = 0;
+    func hasNext -> counter < length();
 
     func next;
-         result = get counter;
+        result = get counter;
         counter += 1;
         return result;
     end;

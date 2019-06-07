@@ -47,6 +47,7 @@ public final class CustomFunctionDeclarationNode extends NamedFunctionDeclaratio
         if (value == null)
             value = Nothing.NOTHING;
         else {
+
             if (value instanceof BreakType)
                 new LogError("Trying to break function " + getName(), fileNames, lines);
             if (value instanceof ContinueStatementNode)

@@ -50,7 +50,7 @@ public abstract class FunctionDeclarationNode extends Node {
     }
 
     protected void addParameter(String name) {
-        getParameters()[++lastNotNullParameterIndex] = name;
+        parameters[++lastNotNullParameterIndex] = name;
     }
 
     public Block getBody() {
@@ -61,7 +61,7 @@ public abstract class FunctionDeclarationNode extends Node {
         this.body = body;
     }
 
-    private String[] getParameters() {
+    public String[] getParameters() {
         return parameters;
     }
 

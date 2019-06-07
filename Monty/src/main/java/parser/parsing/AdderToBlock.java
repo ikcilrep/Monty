@@ -24,6 +24,7 @@ import ast.expressions.OperationNode;
 import ast.statements.*;
 import lexer.Token;
 import parser.LogError;
+import parser.RecognizedFunctionPrototype;
 
 import java.util.ArrayList;
 
@@ -70,15 +71,25 @@ abstract class AdderToBlock {
         return forStatement;
     }
 
-    static Block addFunctionDeclaration(Block block, ArrayList<Token> tokens) {
+    private static CustomFunctionDeclarationNode parseFunctionPrototype(ArrayList<Token> tokens, int endOfParameters) {
         var functionName = tokens.get(1).getText();
         if (Character.isUpperCase(functionName.charAt(0)))
             new LogError("Function name " + functionName + " can't start with upper case.", tokens.get(2));
-        var identifiers = parseIdentifiers(tokens);
-        var function = new CustomFunctionDeclarationNode(functionName, identifiers, identifiers.length - 1);
-        function.setBody(new Block(block));
+        var identifiers = parseIdentifiers(tokens,endOfParameters);
+        return new CustomFunctionDeclarationNode(functionName, identifiers, identifiers.length - 1);
+    }
+    static Block addFunctionDeclaration(Block block, ArrayList<Token> tokens,
+                                        RecognizedFunctionPrototype recognizedFunction) {
+        var function = parseFunctionPrototype(tokens,recognizedFunction.getEndOfParameters());
+        var body = new Block(block);
+        function.setBody(body);
         block.addFunction(function, tokens.get(1));
-        return function.getBody();
+        if (recognizedFunction.isLongFunction())
+            return body;
+        var startOfExpression = recognizedFunction.getEndOfParameters()+1;
+        body.addChild(new ReturnStatementNode(ExpressionParser.parseInfix(body,tokens,startOfExpression),
+                tokens.get(startOfExpression)));
+        return block;
     }
 
     static Block addIfStatement(Block block, ArrayList<Token> tokens, boolean isInElse) {
@@ -129,10 +140,11 @@ abstract class AdderToBlock {
         return namespace;
     }
 
-    private static String[] parseIdentifiers(ArrayList<Token> tokens) {
-        var result = new String[tokens.size() - 2];
-        for (int i = 2, j = 0; i < tokens.size(); i++, j++)
+    private static String[] parseIdentifiers(ArrayList<Token> tokens, int end) {
+        var result = new String[end - 2];
+        for (int i = 2, j = 0; i < end; i++, j++) {
             result[j] = tokens.get(i).getText();
+        }
         return result;
     }
 }
