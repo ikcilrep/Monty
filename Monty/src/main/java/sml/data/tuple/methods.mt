@@ -1,9 +1,8 @@
 func $eq this other;
     if !(other instanceof Tuple) | other.length() != this.length(); => false;
-    i = 0;
+    i = -1;
     for x in this;
-        if x != other.get i; => false;
-        i += 1;
+        if x != other.get(i += 1); => false;
     end;
     => true;
 
