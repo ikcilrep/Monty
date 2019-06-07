@@ -33,21 +33,18 @@ public class Block extends NodeWithParent {
     private HashMap<String, NamedFunctionDeclarationNode> functions = new HashMap<>();
     private HashMap<String, VariableDeclarationNode> variables = new HashMap<>();
     private HashMap<String, StructDeclarationNode> structs = new HashMap<>();
+    private HashMap<String, Block> namespaces = new HashMap<>();
 
-    protected void setNamespaces(HashMap<String, Block> namespaces) {
-        this.namespaces = namespaces;
+    public Block(Block parent) {
+        this.parent = parent;
     }
 
     protected HashMap<String, Block> getNamespaces() {
         return namespaces;
     }
 
-    private HashMap<String, Block> namespaces = new HashMap<>();
-
-
-
-    public Block(Block parent) {
-        this.parent = parent;
+    protected void setNamespaces(HashMap<String, Block> namespaces) {
+        this.namespaces = namespaces;
     }
 
     protected HashMap<String, NamedFunctionDeclarationNode> getFunctions() {
@@ -58,12 +55,8 @@ public class Block extends NodeWithParent {
         this.functions = functions;
     }
 
-    protected HashMap<String, VariableDeclarationNode> getVariables() {
+    public HashMap<String, VariableDeclarationNode> getVariables() {
         return variables;
-    }
-
-    protected void setVariables(HashMap<String, VariableDeclarationNode> variables) {
-        this.variables = variables;
     }
 
     protected HashMap<String, StructDeclarationNode> getStructs() {
@@ -90,7 +83,7 @@ public class Block extends NodeWithParent {
         function.setFileName(fileName);
         function.setLine(line);
         if (has(name)) {
-            var existing = get(name,fileName,line);
+            var existing = get(name, fileName, line);
             int[] lines = {existing.getLine(), line};
             String[] fileNames = {existing.getFileName(), fileName};
             new LogError("Variable or function with name  " + name + " already exists", fileNames, lines);
@@ -121,7 +114,7 @@ public class Block extends NodeWithParent {
         variable.setFileName(fileName);
         variable.setLine(line);
         if (has(name)) {
-            var existing = get(name,fileName,line);
+            var existing = get(name, fileName, line);
             int[] lines = {existing.getLine(), line};
             String[] fileNames = {existing.getFileName(), fileName};
             new LogError("Variable or function with name " + name + " already exists", fileNames, lines);
@@ -133,7 +126,7 @@ public class Block extends NodeWithParent {
         namespace.setFileName(fileName);
         namespace.setLine(line);
         if (hasNamespace(name)) {
-            var existing = get(name,fileName,line);
+            var existing = get(name, fileName, line);
             int[] lines = {existing.getLine(), line};
             String[] fileNames = {existing.getFileName(), fileName};
             new LogError("Namespace with name " + name + " already exists", fileNames, lines);
@@ -149,17 +142,14 @@ public class Block extends NodeWithParent {
         return variables.containsKey(name) || functions.containsKey(name);
     }
 
-    public void concat(Block block,String fileName, int line) {
+    public void concat(Block block, String fileName, int line) {
         block.run();
-        var variablesSet = block.variables.entrySet();
-        for (Map.Entry<String, VariableDeclarationNode> entry : variablesSet)
-            addVariable(entry.getValue(), fileName, line);
 
         var structSet = block.structs.entrySet();
         for (Map.Entry<String, StructDeclarationNode> entry : structSet) {
             var struct = entry.getValue();
             struct.setParent(this);
-            addStruct(struct,new Constructor(struct),fileName,line);
+            addStruct(struct, new Constructor(struct), fileName, line);
         }
 
         var functionsSet = block.functions.entrySet();
@@ -171,11 +161,16 @@ public class Block extends NodeWithParent {
             }
         }
 
+        var variablesSet = block.variables.entrySet();
+        for (Map.Entry<String, VariableDeclarationNode> entry : variablesSet)
+            addVariable(entry.getValue(), fileName, line);
+
+
         var namespacesSet = block.namespaces.entrySet();
         for (Map.Entry<String, Block> entry : namespacesSet) {
             var namespace = entry.getValue();
             namespace.setParent(this);
-            addNamespace(entry.getKey(),namespace,fileName,line);
+            addNamespace(entry.getKey(), namespace, fileName, line);
         }
     }
 
@@ -187,9 +182,9 @@ public class Block extends NodeWithParent {
         copied.structs = structs;
         copied.namespaces = namespaces;
         copied.copyChildren();
-        copied.copyVariables();
         copied.copyFunctions();
         copied.copyStructs();
+        copied.copyVariables();
         copied.copyNamespaces();
         return copied;
     }
@@ -207,10 +202,11 @@ public class Block extends NodeWithParent {
         this.children = children;
     }
 
-    public void copyVariables() {
+    private void copyVariables() {
         var variables = new HashMap<String, VariableDeclarationNode>();
         for (Map.Entry<String, VariableDeclarationNode> entry : this.variables.entrySet())
             variables.put(entry.getKey(), entry.getValue().copy());
+
         this.variables = variables;
     }
 
@@ -255,17 +251,25 @@ public class Block extends NodeWithParent {
         this.children = children;
     }
 
-    public NamedFunctionDeclarationNode getFunction(String name, String fileName, int line) {
+    public FunctionDeclarationNode getFunction(String name, String fileName, int line) {
         if (hasFunction(name))
             return functions.get(name);
         if (hasVariable(name)) {
             var variableValue = variables.get(name).getValue();
             if (variableValue instanceof FunctionDeclarationNode)
-                return (NamedFunctionDeclarationNode)variableValue;
+                return (FunctionDeclarationNode) variableValue;
         }
         if (parent == null)
             new LogError("There isn't any function with name:\t" + name, fileName, line);
-        return parent.getFunction(name,fileName,line);
+        return parent.getFunction(name, fileName, line);
+    }
+
+    public NamedFunctionDeclarationNode getNamedFunction(String name, String fileName, int line) {
+        if (hasFunction(name))
+            return functions.get(name);
+        if (parent == null)
+            new LogError("There isn't any function with name:\t" + name, fileName, line);
+        return parent.getNamedFunction(name, fileName, line);
     }
 
     public Block getParent() {
@@ -293,16 +297,13 @@ public class Block extends NodeWithParent {
         if (hasStructure(name))
             return structs.get(name);
         if (parent == null)
-            new LogError("There isn't any struct with name:\t" + name,fileName,line);
-        return parent.getStructure(name,fileName,line);
+            new LogError("There isn't any struct with name:\t" + name, fileName, line);
+        return parent.getStructure(name, fileName, line);
     }
 
     public VariableDeclarationNode getVariable(String name, String fileName, int line) {
-        if (hasVariable(name))
-            return variables.get(name);
-        if (parent == null)
-            return newVariable(name,fileName,line);
-        return parent.getVariable(name, fileName, line);
+        var result = partOfRecursionGetVariable(name);
+        return result == null ? newVariable(name, fileName, line) : result;
     }
 
     private VariableDeclarationNode newVariable(String name, String fileName, int line) {
@@ -310,16 +311,16 @@ public class Block extends NodeWithParent {
         newVariable.setConst(Character.isUpperCase(name.charAt(0)));
         newVariable.setFileName(fileName);
         newVariable.setLine(line);
-        variables.put(name,newVariable);
+        variables.put(name, newVariable);
         return newVariable;
     }
 
-    public Node get(String name,String fileName, int line) {
-        var result = partOfRecursionGet(name,fileName,line);
-        return result == null ? newVariable(name,fileName,line) : result;
+    public Node get(String name, String fileName, int line) {
+        var result = partOfRecursionGet(name);
+        return result == null ? newVariable(name, fileName, line) : result;
     }
 
-    private Node partOfRecursionGet(String name,String fileName, int line) {
+    private Node partOfRecursionGet(String name) {
         if (hasNamespace(name))
             return namespaces.get(name);
         if (hasVariable(name))
@@ -328,7 +329,15 @@ public class Block extends NodeWithParent {
             return functions.get(name);
         if (parent == null)
             return null;
-        return parent.get(name,fileName, line);
+        return parent.partOfRecursionGet(name);
+    }
+
+    private VariableDeclarationNode partOfRecursionGetVariable(String name) {
+        if (hasVariable(name))
+            return variables.get(name);
+        if (parent == null)
+            return null;
+        return parent.partOfRecursionGetVariable(name);
     }
 
     public Block getNamespace(String name) {
@@ -350,6 +359,8 @@ public class Block extends NodeWithParent {
     public boolean hasVariable(String name) {
         return variables.containsKey(name);
     }
+
+
     @Override
     public Object run() {
 

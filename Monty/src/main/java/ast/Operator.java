@@ -36,6 +36,7 @@ public enum Operator {
     COMMA,
     DOT,
     INSTANCE_OF,
+    LAMBDA,
     JUST;
     private final static Set<Operator> assignmentOperators = Set.of(ASSIGNMENT,
             ASSIGNMENT_ADDITION,
@@ -120,6 +121,8 @@ public enum Operator {
                 return DOT;
             case "":
                 return JUST;
+            case "->":
+                return LAMBDA;
         }
         return null;
     }

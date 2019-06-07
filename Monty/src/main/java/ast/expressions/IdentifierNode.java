@@ -19,6 +19,7 @@ package ast.expressions;
 public final class IdentifierNode {
     private final boolean isFunctionCall;
     private final String name;
+
     public IdentifierNode(String name, boolean isFunctionCall) {
         this.name = name;
         this.isFunctionCall = isFunctionCall;

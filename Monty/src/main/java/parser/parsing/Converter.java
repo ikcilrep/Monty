@@ -42,7 +42,8 @@ class Converter {
         PRECEDENCES_OF_OPERATORS.put("&", 7);
         PRECEDENCES_OF_OPERATORS.put("^", 6);
         PRECEDENCES_OF_OPERATORS.put("|", 5);
-        PRECEDENCES_OF_OPERATORS.put(",", 1);
+        PRECEDENCES_OF_OPERATORS.put(",", 2);
+        PRECEDENCES_OF_OPERATORS.put("->", 2);
         PRECEDENCES_OF_OPERATORS.put("=", 0);
         PRECEDENCES_OF_OPERATORS.put("+=", 0);
         PRECEDENCES_OF_OPERATORS.put("-=", 0);
@@ -70,7 +71,7 @@ class Converter {
         var actualPrecedence = getPrecedence(actualToken);
         var topPrecedence = getPrecedence(tokenAtTheTop);
         return topPrecedence > actualPrecedence
-                || (topPrecedence ==  actualPrecedence && isLeftAssociative(tokenAtTheTop));
+                || (topPrecedence == actualPrecedence && isLeftAssociative(tokenAtTheTop));
     }
 
     static ArrayList<Token> infixToSuffix(ArrayList<Token> tokens, Block parent, int start, int end) {
@@ -83,7 +84,7 @@ class Converter {
             switch (type) {
                 case OPERATOR:
                     while (!operatorStack.isEmpty() &&
-                            shouldPopFromOperatorStackToOutputQueue(token,operatorStack.peek()))
+                            shouldPopFromOperatorStackToOutputQueue(token, operatorStack.peek()))
                         outputQueue.add(operatorStack.pop());
                     operatorStack.push(token);
                     break;
@@ -100,10 +101,10 @@ class Converter {
                     }
                     var fileName = token.getFileName();
                     var line = token.getLine();
-                    if (tokens.get(i.i-1).getType().equals(TokenTypes.OPENING_BRACKET))
-                        outputQueue.add(new Token(TokenTypes.EMPTY_TUPLE, "", fileName,line));
+                    if (tokens.get(i.i - 1).getType().equals(TokenTypes.OPENING_BRACKET))
+                        outputQueue.add(new Token(TokenTypes.EMPTY_TUPLE, "", fileName, line));
                     operatorStack.pop();
-                    operatorStack.push(new Token(TokenTypes.OPERATOR, "", fileName,line));
+                    operatorStack.push(new Token(TokenTypes.OPERATOR, "", fileName, line));
 
                     break;
                 case OPENING_BRACKET:
@@ -163,7 +164,7 @@ class Converter {
             list.setRight(ExpressionParser.parseInfix(parent, tokens, i.i, counter - 1));
             i.i = counter - 1;
         } else
-            list.setRight(new OperationNode(Promise.EMPTY_TUPLE, parent,fileName,line ));
+            list.setRight(new OperationNode(Promise.EMPTY_TUPLE, parent, fileName, line));
         return list;
 
     }

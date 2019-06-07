@@ -35,7 +35,7 @@ public class MontyString extends StructDeclarationNode {
         new Substring(this);
         new UpperCase(this);
         new ToString(this);
-        concat(methodsWrittenInMonty.copy(),"MontyString.java",38);
+        concat(methodsWrittenInMonty.copy(), "MontyString.java", 38);
     }
 
     MontyString multiplied(int times) {

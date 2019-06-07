@@ -18,10 +18,12 @@ package ast.expressions;
 
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
+import ast.declarations.LambdaDeclarationNode;
 import ast.declarations.StructDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import parser.DataTypes;
 import parser.LogError;
+import sml.casts.ToString;
 import sml.data.list.List;
 import sml.data.string.MontyString;
 import sml.data.tuple.Tuple;
@@ -173,7 +175,7 @@ class OperatorOverloading {
             var rightTuple = (Tuple) rightValue;
             if (leftTuple.length() == rightTuple.length())
                 for (int i = 0; i < leftTuple.length(); i++)
-                    assignmentOperator(leftTuple.justGet(i), rightTuple.get(i),fileName,line);
+                    assignmentOperator(leftTuple.justGet(i), rightTuple.get(i), fileName, line);
             return leftTuple;
         }
         var variable = VariableDeclarationNode.toMe(leftValue, fileName, line);
@@ -682,5 +684,21 @@ class OperatorOverloading {
             default:
                 return null;
         }
+    }
+
+    static LambdaDeclarationNode lambdaOperator(Object leftValue, OperationNode rightExpression) {
+        var tupleOfVariablesNamedAfterParameters = OperationNode.argumentsToTuple(leftValue);
+        var parameters = new String[tupleOfVariablesNamedAfterParameters.length()];
+        var fileName = rightExpression.getFileName();
+        var line = rightExpression.getLine();
+        for (int i = 0; i < parameters.length; i++) {
+            var valueAtIndex = tupleOfVariablesNamedAfterParameters.justGet(i);
+            if (!(valueAtIndex instanceof VariableDeclarationNode))
+                new LogError("Only variables can be passed as parameter to function, but passed " +
+                        ToString.toString(valueAtIndex, fileName, line), fileName, line);
+            else
+                parameters[i] = ((VariableDeclarationNode) tupleOfVariablesNamedAfterParameters.justGet(i)).getName();
+        }
+        return new LambdaDeclarationNode(parameters, rightExpression, fileName, line);
     }
 }

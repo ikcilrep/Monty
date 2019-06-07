@@ -26,7 +26,8 @@ public final class Lexer {
     private final static Set<Character> OPERATORS_PARTS = Set.of('+', '-', '*', '/', '!', '<', '>', '=', '|', '&', '%',
             '^', '.', ',');
     private final static Set<String> OPERATORS = Set.of(".", "!", "+", "-", "*", "**", "/", "<", ">", "&", "|", "^", "=",
-            "<<", ">>", "!=", "+=", "-=", "*=", "/=", "<=", ">=", "&=", "|=", "^=", "==", "<<=", ">>=", "%", "%=", "**=", ",");
+            "<<", ">>", "!=", "+=", "-=", "*=", "/=", "<=", ">=", "&=", "|=", "^=", "==", "<<=", ">>=", "%", "%=", "**=",
+            ",", "->");
 
     private final static Set<TokenTypes> hasValue = Set.of(TokenTypes.BOOLEAN_LITERAL, TokenTypes.INTEGER_LITERAL,
             TokenTypes.STRING_LITERAL, TokenTypes.FLOAT_LITERAL, TokenTypes.IDENTIFIER, TokenTypes.CLOSING_BRACKET,

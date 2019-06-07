@@ -18,31 +18,31 @@ package ast.declarations;
 
 import ast.Block;
 import ast.Node;
+import parser.LogError;
 import sml.data.tuple.Tuple;
 
 public abstract class FunctionDeclarationNode extends Node {
 
     public final static String[] EMPTY_PARAMETERS = new String[0];
-    String[] parameters;
     protected Block body;
+    String[] parameters;
     int lastNotNullParameterIndex;
-
-    @Override
-    public abstract String toString();
-
-    protected abstract void checkArgumentsSize(int argumentsLength, String fileName, int line);
-
-    public abstract Object call(Tuple arguments, String callFileName, int callLine);
-
-    public abstract FunctionDeclarationNode copy();
 
     public FunctionDeclarationNode(String[] parameters, int lastNotNullParameterIndex) {
         setParameters(parameters, lastNotNullParameterIndex);
     }
 
+
     public FunctionDeclarationNode(String[] parameters) {
         setParameters(parameters, -1);
     }
+
+    @Override
+    public abstract String toString();
+
+    public abstract Object call(Tuple arguments, String callFileName, int callLine);
+
+    public abstract FunctionDeclarationNode copy();
 
     private void setParameters(String[] parameters, int lastNotNullParameterIndex) {
         this.parameters = parameters;
@@ -69,6 +69,12 @@ public abstract class FunctionDeclarationNode extends Node {
         return parameters.length;
     }
 
+    protected void checkArgumentsSize(int argumentsLength, String fileName, int line) {
+        if (argumentsLength > parameters.length)
+            new LogError("Too many arguments in" + toString() + "call.", fileName, line);
+        if (argumentsLength < parameters.length)
+            new LogError("Too few arguments in " + toString() + " function call.", fileName, line);
+    }
 
     protected void setArguments(Tuple arguments, String callFileName, int callLine) {
         var argumentsLength = arguments.length();

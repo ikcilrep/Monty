@@ -40,7 +40,6 @@ public final class OperationNode extends NodeWithParent {
     private OperationNode left;
     private Block parent;
     private OperationNode right;
-
     public OperationNode(Object operand, Block parent) {
         this.operand = operand;
         this.parent = parent;
@@ -71,7 +70,7 @@ public final class OperationNode extends NodeWithParent {
                 return ((VariableDeclarationNode) namedNode).getValue();
 
             return namedNode;
-        }else if (expression instanceof VariableDeclarationNode && doesGetValueFromVariable)
+        } else if (expression instanceof VariableDeclarationNode && doesGetValueFromVariable)
             return ((VariableDeclarationNode) expression).getValue();
         else if (expression.equals(Promise.EMPTY_TUPLE))
             return emptyTuple;
@@ -83,6 +82,19 @@ public final class OperationNode extends NodeWithParent {
         if (arguments instanceof Tuple)
             return (Tuple) arguments;
         return new Tuple(arguments);
+    }
+
+    public Block getParent() {
+        return parent;
+    }
+
+    @Override
+    public final void setParent(Block parent) {
+        this.parent = parent;
+        if (left != null)
+            left.setParent(parent);
+        if (right != null)
+            right.setParent(parent);
     }
 
     public Object getOperand() {
@@ -176,15 +188,6 @@ public final class OperationNode extends NodeWithParent {
         return copied;
     }
 
-    @Override
-    public final void setParent(Block parent) {
-        this.parent = parent;
-        if (left != null)
-            left.setParent(parent);
-        if (right != null)
-            right.setParent(parent);
-    }
-
     final Object runWithParent(Block parent, boolean doesGetVariableValue) {
         // Returns calculated value.
         var fileName = getFileName();
@@ -228,10 +231,11 @@ public final class OperationNode extends NodeWithParent {
         var line = getLine();
         var isAssignment = operator.isAssignment();
         var isDot = operator.equals(DOT);
-        var isComma =operator.equals(COMMA);
+        var isComma = operator.equals(COMMA);
+        var isLambda = operator.equals(LAMBDA);
         var leftFileName = left.getFileName();
         var leftLine = left.getLine();
-        var leftValue = getLiteral(left.solve(this.parent), this.parent, !(isAssignment || isComma), leftFileName, leftLine);
+        var leftValue = getLiteral(left.solve(this.parent), this.parent, !(isAssignment || isComma || isLambda), leftFileName, leftLine);
 
         if (isComma) {
             var rightValue = getLiteral(right.solve(parent), parent, false, leftFileName, leftLine);
@@ -248,6 +252,10 @@ public final class OperationNode extends NodeWithParent {
 
         if (leftValue instanceof LinkedList)
             leftValue = new Tuple((LinkedList) leftValue);
+
+        if (operator.equals(LAMBDA))
+            return OperatorOverloading.lambdaOperator(leftValue, right);
+
 
         var leftType = DataTypes.getDataType(leftValue);
         if (leftType != null && leftType.equals(DataTypes.BOOLEAN)) {

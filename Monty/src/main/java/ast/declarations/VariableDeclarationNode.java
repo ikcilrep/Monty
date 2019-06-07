@@ -21,28 +21,10 @@ import parser.LogError;
 import sml.data.returning.Nothing;
 
 public class VariableDeclarationNode extends Node {
-    public String getName() {
-        return name;
-    }
-
     private String name;
-    boolean isConst() {
-        return isConst;
-    }
-
     private boolean isConst = false;
     private boolean hasValueChanged = false;
-
-    protected void setHasValueChanged() {
-        this.hasValueChanged = true;
-    }
-
-    protected void setValue(Object value) {
-        this.value = value;
-    }
-
     private Object value = Nothing.NOTHING;
-
     public VariableDeclarationNode(String name) {
         this.name = name;
     }
@@ -51,9 +33,25 @@ public class VariableDeclarationNode extends Node {
         try {
             return (VariableDeclarationNode) object;
         } catch (ClassCastException e) {
-            new LogError("Can't assign to "+ object, fileName, line);
+            new LogError("Can't assign to " + object, fileName, line);
         }
         return null;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    boolean isConst() {
+        return isConst;
+    }
+
+    public void setConst(boolean isConst) {
+        this.isConst = isConst;
+    }
+
+    protected void setHasValueChanged() {
+        this.hasValueChanged = true;
     }
 
     public final VariableDeclarationNode copy() {
@@ -68,8 +66,8 @@ public class VariableDeclarationNode extends Node {
         return value;
     }
 
-    public void setConst(boolean isConst) {
-        this.isConst = isConst;
+    public void setValue(Object value) {
+        this.value = value;
     }
 
     public final void setValue(Object value, String fileName, int line) {

@@ -28,7 +28,7 @@ public abstract class NamedFunctionDeclarationNode extends FunctionDeclarationNo
 
     @Override
     public String toString() {
-        return "Function<"+name+">";
+        return "Function<" + name + ">";
     }
 
     protected void checkArgumentsSize(int argumentsLength, String fileName, int line) {

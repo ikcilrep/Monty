@@ -76,7 +76,7 @@ public class List extends StructDeclarationNode {
         new ToString(this);
         addFunction(new NewList());
         addVariable(IOBlocks.nothing, null, -1);
-        concat(methodsWrittenInMonty.copy(),"List.java", 79);
+        concat(methodsWrittenInMonty.copy(), "List.java", 79);
     }
 
     private int capacity() {
@@ -133,6 +133,7 @@ public class List extends StructDeclarationNode {
             newArray[i] = Nothing.NOTHING;
         return newArray;
     }
+
     private void increaseCapacity(int capacity) {
         this.array = getArrayWithGivenCapacity(capacity);
     }

@@ -35,6 +35,7 @@ public class Tuple extends StructDeclarationNode {
         array[0] = elem;
 
     }
+
     public Tuple(Object[] array) {
         super(null, "Tuple");
         addFunctions();
@@ -62,7 +63,7 @@ public class Tuple extends StructDeclarationNode {
         new Length(this);
         new ToString(this);
         addFunction(new Println());
-        concat(methodsWrittenInMonty.copy(),"Tuple.java",65);
+        concat(methodsWrittenInMonty.copy(), "Tuple.java", 65);
     }
 
     public Object get(int index) {
@@ -71,6 +72,7 @@ public class Tuple extends StructDeclarationNode {
             return ((VariableDeclarationNode) result).getValue();
         return result;
     }
+
     public Object justGet(int index) {
         return array[index];
     }

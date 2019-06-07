@@ -29,7 +29,7 @@ public final class CustomFunctionDeclarationNode extends NamedFunctionDeclaratio
 
 
     public CustomFunctionDeclarationNode(String name, String[] parameters, int lastNotNullParameterIndex) {
-        super(name,parameters, lastNotNullParameterIndex);
+        super(name, parameters, lastNotNullParameterIndex);
     }
 
     private Object callWithoutChangingTailRecursionToIteration(Tuple arguments, String callFileName, int callLine) {
@@ -97,8 +97,6 @@ public final class CustomFunctionDeclarationNode extends NamedFunctionDeclaratio
         copied.body = body.copy();
         return copied;
     }
-
-
 
 
 }

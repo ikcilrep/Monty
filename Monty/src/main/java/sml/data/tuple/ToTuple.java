@@ -17,16 +17,16 @@ public class ToTuple extends NativeFunctionDeclarationNode {
 
     @Override
     public Tuple call(Tuple arguments, String callFileName, int callLine) {
-        setArguments(arguments,callFileName,callLine);
-        var value = body.getVariableValue("value", callFileName,callLine);
-        if (ForStatementNode.isIterable(value,callFileName,callLine)) {
+        setArguments(arguments, callFileName, callLine);
+        var value = body.getVariableValue("value", callFileName, callLine);
+        if (ForStatementNode.isIterable(value, callFileName, callLine)) {
             var iterator = (StructDeclarationNode) ((StructDeclarationNode) value).getFunction("Iterator", getFileName(), getLine())
-                    .call(OperationNode.emptyTuple, callFileName,callLine);
-            var next = iterator.getFunction("next", callFileName,callLine);
-            var hasNext = iterator.getFunction("hasNext", callFileName,callLine);
+                    .call(OperationNode.emptyTuple, callFileName, callLine);
+            var next = iterator.getFunction("next", callFileName, callLine);
+            var hasNext = iterator.getFunction("hasNext", callFileName, callLine);
             List list = new List(0);
-            while (ToBoolean.toBoolean(hasNext.call(OperationNode.emptyTuple, callFileName, callLine),callFileName,callLine))
-                list.add(next.call(OperationNode.emptyTuple,callFileName,callLine));
+            while (ToBoolean.toBoolean(hasNext.call(OperationNode.emptyTuple, callFileName, callLine), callFileName, callLine))
+                list.add(next.call(OperationNode.emptyTuple, callFileName, callLine));
 
             return new Tuple(list.toArray());
         }

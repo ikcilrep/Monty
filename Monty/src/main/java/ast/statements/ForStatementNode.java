@@ -18,7 +18,6 @@ package ast.statements;
 
 import ast.Block;
 import ast.declarations.StructDeclarationNode;
-import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import sml.casts.ToBoolean;
 import sml.data.returning.BreakType;
@@ -73,7 +72,7 @@ public final class ForStatementNode extends Block {
         var isNotNameUnderscore = !variableName.equals("_");
         var isConst = Character.isUpperCase(variableName.charAt(0));
         var toBeIterated = iterable.run();
-        var variable = getVariable(variableName,getFileName(),getLine());
+        var variable = getVariable(variableName, getFileName(), getLine());
         var fileName = getFileName();
         var line = getLine();
         if (isIterable(toBeIterated, getFileName(), getLine())) {
@@ -83,7 +82,7 @@ public final class ForStatementNode extends Block {
             var next = iterator.getFunction("next", getFileName(), getLine());
 
             if (isNotNameUnderscore) {
-                while (ToBoolean.toBoolean(hasNext.call(OperationNode.emptyTuple, fileName, line),fileName,line)) {
+                while (ToBoolean.toBoolean(hasNext.call(OperationNode.emptyTuple, fileName, line), fileName, line)) {
                     variable.setConst(false);
                     variable.setValue(next.call(OperationNode.emptyTuple, fileName, line), fileName, line);
                     variable.setConst(isConst);
@@ -96,7 +95,7 @@ public final class ForStatementNode extends Block {
                         return result;
                 }
             } else
-                while (ToBoolean.toBoolean(hasNext.call(OperationNode.emptyTuple, fileName, line),fileName,line)) {
+                while (ToBoolean.toBoolean(hasNext.call(OperationNode.emptyTuple, fileName, line), fileName, line)) {
                     next.call(OperationNode.emptyTuple, getFileName(), getLine());
                     result = super.run();
                     if (result instanceof BreakType)

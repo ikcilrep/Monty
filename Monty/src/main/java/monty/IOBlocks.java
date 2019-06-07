@@ -16,15 +16,14 @@ limitations under the License.
 package monty;
 
 import ast.Block;
-import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import ast.expressions.OperationNode;
 import lexer.Lexer;
 import parser.parsing.Parser;
 import sml.NativeFunctionDeclarationNode;
 import sml.Sml;
-import sml.data.tuple.Tuple;
 import sml.data.tuple.ToTuple;
+import sml.data.tuple.Tuple;
 import sml.io.Input;
 import sml.io.Print;
 import sml.io.Println;
@@ -75,17 +74,18 @@ public class IOBlocks {
         block.addFunction(tuple, fileName, line);
 
         for (var parsed : writtenInMonty)
-            block.concat(parsed,fileName,line);
+            block.concat(parsed, fileName, line);
     }
 
     static void readAndRunBlockFromFile(String path) {
-        var block = readBlockFromFile(path,"command line", 1);
+        var block = readBlockFromFile(path, "command line", 1);
         OperationNode.emptyTuple = new Tuple();
         block.run();
     }
-    static Block readBlockFromFile(String path,String fileName, int line) {
+
+    static Block readBlockFromFile(String path, String fileName, int line) {
         var block = Parser
-                .parse(Lexer.lex(FileIO.readFile(path, fileName,line), path, 1, new ArrayList<>(), 0));
+                .parse(Lexer.lex(FileIO.readFile(path, fileName, line), path, 1, new ArrayList<>(), 0));
         autoImport(block);
         return block;
     }

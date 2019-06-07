@@ -52,7 +52,7 @@ public final class Parser {
                 } else if (Recognizer.isDoWhileStatement(tokensBeforeSemicolon)) {
                     block = AdderToBlock.addDoWhileStatement(block, tokensBeforeSemicolon);
                 } else if (Recognizer.isImportStatement(tokensBeforeSemicolon)) {
-                    AdderToBlock.addImportStatement(block,tokensBeforeSemicolon);
+                    AdderToBlock.addImportStatement(block, tokensBeforeSemicolon);
                 } else if (Recognizer.isBreakStatement(tokensBeforeSemicolon)) {
                     AdderToBlock.addBreakStatement(block, tokensBeforeSemicolon.get(0).getFileName(),
                             tokensBeforeSemicolon.get(0).getLine());
@@ -62,7 +62,7 @@ public final class Parser {
                 } else if (Recognizer.isForStatement(tokensBeforeSemicolon)) {
                     block = AdderToBlock.addForStatement(block, tokensBeforeSemicolon);
                 } else if (Recognizer.isNamespaceDeclaration(tokensBeforeSemicolon)) {
-                    block = AdderToBlock.addNamespace(block,tokensBeforeSemicolon);
+                    block = AdderToBlock.addNamespace(block, tokensBeforeSemicolon);
                 } else if (Recognizer.isEndKeyword(tokensBeforeSemicolon)) {
                     var parent = block.getParent();
                     if (parent == null)

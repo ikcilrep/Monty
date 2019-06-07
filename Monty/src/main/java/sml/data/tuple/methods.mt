@@ -27,12 +27,13 @@ end;
 
 struct Iterator;
     counter = 0;
+    #hasNext = () -> counter < length();
     func hasNext;
         return counter < length();
     end;
 
     func next;
-         result = get counter;
+        result = get counter;
         counter += 1;
         return result;
     end;

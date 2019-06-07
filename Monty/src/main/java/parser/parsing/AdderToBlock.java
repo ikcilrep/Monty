@@ -117,13 +117,14 @@ abstract class AdderToBlock {
 
     static void addImportStatement(Block block, ArrayList<Token> tokens) {
         var firstToken = tokens.get(0);
-        block.addChild(new ImportStatementNode(tokens.get(1).getText(),tokens.get(3).getText(),
-                block, firstToken.getFileName(),firstToken.getLine()));
+        block.addChild(new ImportStatementNode(tokens.get(1).getText(), tokens.get(3).getText(),
+                block, firstToken.getFileName(), firstToken.getLine()));
     }
+
     static Block addNamespace(Block block, ArrayList<Token> tokens) {
         var namespace = new Block(block);
         var firstToken = tokens.get(1);
-        block.addNamespace(tokens.get(1).getText(),namespace,firstToken.getFileName(),firstToken.getLine());
+        block.addNamespace(tokens.get(1).getText(), namespace, firstToken.getFileName(), firstToken.getLine());
         block.addChild(namespace);
         return namespace;
     }
