@@ -36,20 +36,17 @@ public final class ForStatementNode extends Block {
     }
 
     public static boolean isIterable(Object toCheck, String callFileName, int callLine) {
-        if (toCheck instanceof String)
-            return true;
-        if (!(toCheck instanceof TypeDeclarationNode)) {
+        if (!(toCheck instanceof TypeDeclarationNode))
             return false;
-        }
+
         var structToCheck = (TypeDeclarationNode) toCheck;
-        if (!(structToCheck.hasFunction("Iterator") || structToCheck.hasType("Iterator"))) {
+        if (!(structToCheck.hasFunction("Iterator") || structToCheck.hasType("Iterator")))
             return false;
-        }
 
         var iteratorStruct = structToCheck.getType("Iterator");
-        if (iteratorStruct.hasFunction("init") && iteratorStruct.getFunction("init", callFileName, callLine).getParametersLength() > 0) {
+        if (iteratorStruct.hasFunction("init") && iteratorStruct.getFunction("init", callFileName, callLine).getParametersLength() > 0)
             return false;
-        }
+
 
         return (iteratorStruct.hasFunction("hasNext") && iteratorStruct.getFunction("hasNext", callFileName,
                 callLine).getParametersLength() == 0) && (iteratorStruct.hasFunction("next") && iteratorStruct.
