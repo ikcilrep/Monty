@@ -7,11 +7,9 @@ struct Iterable;
 	end;
 	
 	func get index;
-		 counter = 0;
+		counter = 0;
 		for x in This;
-			if counter == index;
-				return x;
-			end;
+			if counter == index; => x;
 			counter += 1;
 		end;
 		logError("Iterable doesn't have " +  index + " element");
@@ -28,11 +26,10 @@ struct Iterable;
 	end;
 	
 	func tail;
-		 result = Iterable iterable;
+		result = Iterable iterable;
 		result.begin = begin + 1;
-		return result;
-	end;
-	
+		=> result;
+
 	struct Iterator;
 		iterator = iterable.Iterator();
 		
@@ -44,12 +41,8 @@ struct Iterable;
 			end;
 		end;
 		
-		func next;
-			return iterator.next();
-		end;
+		func next; => iterator.next();
 		
-		func hasNext;
-			return iterator.hasNext();
-		end;
+		func hasNext; => iterator.hasNext();
 	end;
 end;

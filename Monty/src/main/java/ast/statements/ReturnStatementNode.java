@@ -31,11 +31,6 @@ public final class ReturnStatementNode extends NodeWithParent {
         setLine(line);
     }
 
-    public ReturnStatementNode(OperationNode expression, Token token) {
-        this.expression = expression;
-        setFileName(token.getFileName());
-        setLine(token.getLine());
-    }
 
     @Override
     public NodeWithParent copy() {

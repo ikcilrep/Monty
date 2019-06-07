@@ -16,11 +16,9 @@ limitations under the License.
 
 package parser;
 
-import ast.Operator;
 import lexer.Token;
 import lexer.TokenTypes;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -117,33 +115,34 @@ public abstract class Recognizer {
         return true;
     }
 
-    public static RecognizedFunctionPrototype isFunctionDeclaration(ArrayList<Token> tokens) {
+    public static boolean isFunctionDeclaration(ArrayList<Token> tokens) {
         var isFirstTokenFuncKeyword = tokens.get(0).getType().equals(TokenTypes.FUNC_KEYWORD);
         var isSecondTokenIdentifier = tokens.size() > 1
                 && tokens.get(1).getType().equals(TokenTypes.IDENTIFIER);
         if (!isFirstTokenFuncKeyword)
-            return new RecognizedFunctionPrototype();
+            return false;
         if (!isSecondTokenIdentifier)
             new LogError("Expected identifier after \"func\" keyword.", tokens.get(1));
         for (int i = 2; i < tokens.size(); i++) {
             var token = tokens.get(i);
-            var tokenType = token.getType();
-            var tokenText = token.getText();
-            if (!tokenType.equals(TokenTypes.IDENTIFIER)) {
-                if (tokenType.equals(TokenTypes.OPERATOR) && Operator.toOperator(tokenText) == Operator.LAMBDA) {
-                    if (!(i+1 < tokens.size() &&  isExpression(tokens, i+1 ,tokens.size())))
-                        new LogError("Expected expression after arrow operator.",token);
-                    return new RecognizedFunctionPrototype(i,true);
-                } else
-                new LogError("Unexpected token:\t\"" + tokenText + "\"", token);
-            }
+            if (!token.getType().equals(TokenTypes.IDENTIFIER))
+                new LogError("Unexpected token:\t\"" + token.getText() + "\"", token);
         }
-        return new RecognizedFunctionPrototype(tokens.size(),false);
+        return true;
 
     }
 
     public static boolean isIfStatement(ArrayList<Token> tokens) {
         return isIfStatement(tokens, 0);
+
+    }
+
+    public static boolean isArrowStatement(ArrayList<Token> tokens) {
+        if (!tokens.get(0).getType().equals(TokenTypes.ARROW))
+            return false;
+        if (tokens.size() == 1 || !isExpression(tokens, 1, tokens.size()))
+            new LogError("Expected expression after arrow.", tokens.get(tokens.size() > 1 ? 1 : 0));
+        return true;
 
     }
 

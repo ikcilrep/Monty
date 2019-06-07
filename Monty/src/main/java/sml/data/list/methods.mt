@@ -10,18 +10,17 @@ func $eq this other;
         end;
         i += 1;
     end;
-    return true;
-end;
+    => true;
 
-func $neq this other -> !(this == other);
+func $neq this other; => !(this == other);
 
-func $r_eq other this -> this == other;
+func $r_eq other this; => this == other;
 
-func $r_neq other this -> this != other;
+func $r_neq other this; => this != other;
 
-func $r_mul other this -> this * other;
+func $r_mul other this; => this * other;
 
-func $r_a_mul other this -> this *= other;
+func $r_a_mul other this; => this *= other;
 
 func replace toBeReplaced replacement;
     i = 0;
@@ -31,24 +30,19 @@ func replace toBeReplaced replacement;
         end;
         i += 1;
     end;
-    return This;
-end;
+    => This;
 
 func find value;
     i = 0;
     for x in This;
-        if value == x;
-            return i;
-        end;
+        if value == x; => i;
         i += 1;
     end;
-    return -1;
-end;
+    => -1;
 
 func remove value;
     pop find value;
-    return This;
-end;
+    => This;
 
 func count value;
     counter = 0;
@@ -57,8 +51,7 @@ func count value;
             counter += 1;
         end;
     end;
-    return counter;
-end;
+    => counter;
 
 func sublist first last;
     result = [Nothing] * (last - first + 1);
@@ -68,16 +61,14 @@ func sublist first last;
         first += 1;
         i += 1;
     end;
-    return result;
-end;
+    => result;
 
 struct Iterator;
     counter = 0;
-    func hasNext -> counter < length();
+    func hasNext; => counter < length();
 
     func next;
         result = get counter;
         counter += 1;
-        return result;
-    end;
+        => result;
 end;

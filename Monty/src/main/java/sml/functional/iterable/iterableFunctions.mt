@@ -15,23 +15,20 @@ func map function iterable;
 		list.set(i, function x);
 		i += 1;
 	end;
-	return Iterable list;
-end;
+	=> Iterable list;
+
 
 func length iterable;
 	counter = 0;
 	for _ in iterable;
 		counter += 1;
 	end;
-	return counter;
-end;
+	=> counter;
 
 func isEmpty iterable;
 	for _ in iterable;
-		return false;
-	end;
-	return true;
-end;
+		=> false;
+	=> true;
 
 func foldl function start iterable;
 	iterator = iterable.Iterator();
@@ -42,8 +39,7 @@ func foldl function start iterable;
 	while iterator.hasNext();
 		result = function(result, iterator.next());
 	end;
-	return result;
-end;
+	=> result;
 
 func foldr function start iterable;
 	iterator = iterable.Iterator();
@@ -54,5 +50,4 @@ func foldr function start iterable;
 	while iterator.hasNext();
 		result = function(iterator.next(), result);
 	end;
-	return function(result, start);
-end;
+	=> function(result, start);

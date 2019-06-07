@@ -159,6 +159,8 @@ public final class Lexer {
     }
 
     private static TokenTypes operatorToTokenType(String tokenText, String fileName, int line) {
+        if (tokenText.equals("=>"))
+            return TokenTypes.ARROW;
         if (OPERATORS.contains(tokenText))
             return TokenTypes.OPERATOR;
         new LogError("Unknown operator:\t" + tokenText, fileName, line);

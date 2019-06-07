@@ -25,6 +25,12 @@ import parser.Recognizer;
 import java.util.ArrayList;
 
 public final class Parser {
+    private static Block endAndReturnParent(Block block, String errorMessage,Token token) {
+        var parent = block.getParent();
+        if (parent == null)
+            new LogError(errorMessage, token);
+        return block.getParent();
+    }
     public static Block parse(ArrayList<Token> tokens) {
         var tokensBeforeSemicolon = new ArrayList<Token>();
         var block = new Block(null);
@@ -35,7 +41,9 @@ public final class Parser {
                     continue;
                 if (Recognizer.isReturnStatement(tokensBeforeSemicolon)) {
                     AdderToBlock.addReturnStatement(block, tokensBeforeSemicolon);
-                }  else if (Recognizer.isStructDeclaration(tokensBeforeSemicolon)) {
+                } else if (Recognizer.isFunctionDeclaration(tokensBeforeSemicolon)) {
+                    block = AdderToBlock.addFunctionDeclaration(block, tokensBeforeSemicolon);
+                } else if (Recognizer.isStructDeclaration(tokensBeforeSemicolon)) {
                     block = AdderToBlock.addStructDeclaration(block, tokensBeforeSemicolon);
                 } else if (Recognizer.isIfStatement(tokensBeforeSemicolon)) {
                     block = AdderToBlock.addIfStatement(block, tokensBeforeSemicolon, false);
@@ -61,19 +69,14 @@ public final class Parser {
                     block = AdderToBlock.addForStatement(block, tokensBeforeSemicolon);
                 } else if (Recognizer.isNamespaceDeclaration(tokensBeforeSemicolon)) {
                     block = AdderToBlock.addNamespace(block, tokensBeforeSemicolon);
-                } else if (Recognizer.isEndKeyword(tokensBeforeSemicolon)) {
-                    var parent = block.getParent();
-                    if (parent == null)
-                        new LogError("Nothing to end!", tokensBeforeSemicolon.get(0));
-                    block = block.getParent();
-
-                } else if (Recognizer.isExpression(tokensBeforeSemicolon, 0, tokensBeforeSemicolon.size())) {
+                } else if (Recognizer.isArrowStatement(tokensBeforeSemicolon)) {
+                    AdderToBlock.addReturnStatement(block, tokensBeforeSemicolon);
+                    block = endAndReturnParent(block,"Arrow statement returns value and ends block," +
+                            " but there is nothing to end!", tokens.get(0));
+                } else if (Recognizer.isEndKeyword(tokensBeforeSemicolon))
+                    block = endAndReturnParent(block,"There is nothing to end!", tokens.get(0));
+                else if (Recognizer.isExpression(tokensBeforeSemicolon, 0, tokensBeforeSemicolon.size())) {
                     AdderToBlock.addExpression(block, tokensBeforeSemicolon);
-                } else {
-                    var recognizedFunction = Recognizer.isFunctionDeclaration(tokensBeforeSemicolon);
-                    if (recognizedFunction.isAnyFunction())
-                        block = AdderToBlock.addFunctionDeclaration(block, tokensBeforeSemicolon,recognizedFunction);
-
                 }
                 tokensBeforeSemicolon.clear();
             } else
