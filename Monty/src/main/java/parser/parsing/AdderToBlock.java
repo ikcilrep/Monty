@@ -18,7 +18,7 @@ package parser.parsing;
 
 import ast.Block;
 import ast.declarations.CustomFunctionDeclarationNode;
-import ast.declarations.StructDeclarationNode;
+import ast.declarations.TypeDeclarationNode;
 import ast.expressions.IdentifierNode;
 import ast.expressions.OperationNode;
 import ast.statements.*;
@@ -101,10 +101,10 @@ abstract class AdderToBlock {
     static Block addStructDeclaration(Block block, ArrayList<Token> tokens) {
         var name = tokens.get(1).getText();
         if (!Character.isUpperCase(name.charAt(0)))
-            new LogError("Struct name have to start with upper case.", tokens.get(0));
-        var struct = new StructDeclarationNode(block, name);
-        struct.addNewStruct(block, tokens.get(0));
-        return struct;
+            new LogError("Type name have to start with upper case.", tokens.get(0));
+        var type = new TypeDeclarationNode(block, name);
+        type.addNewType(block, tokens.get(0));
+        return type;
     }
 
     static Block addWhileStatement(Block block, ArrayList<Token> tokens) {

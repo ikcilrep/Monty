@@ -1,7 +1,7 @@
 package sml.data.tuple;
 
 import ast.Block;
-import ast.declarations.StructDeclarationNode;
+import ast.declarations.TypeDeclarationNode;
 import ast.expressions.OperationNode;
 import ast.statements.ForStatementNode;
 import sml.NativeFunctionDeclarationNode;
@@ -20,7 +20,7 @@ public class ToTuple extends NativeFunctionDeclarationNode {
         setArguments(arguments, callFileName, callLine);
         var value = body.getVariableValue("value", callFileName, callLine);
         if (ForStatementNode.isIterable(value, callFileName, callLine)) {
-            var iterator = (StructDeclarationNode) ((StructDeclarationNode) value).getFunction("Iterator", getFileName(), getLine())
+            var iterator = (TypeDeclarationNode) ((TypeDeclarationNode) value).getFunction("Iterator", getFileName(), getLine())
                     .call(OperationNode.emptyTuple, callFileName, callLine);
             var next = iterator.getFunction("next", callFileName, callLine);
             var hasNext = iterator.getFunction("hasNext", callFileName, callLine);

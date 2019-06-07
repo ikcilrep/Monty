@@ -1,7 +1,7 @@
 package sml.data.list;
 
 import ast.Block;
-import ast.declarations.StructDeclarationNode;
+import ast.declarations.TypeDeclarationNode;
 import lexer.Lexer;
 import monty.FileIO;
 import monty.IOBlocks;
@@ -11,7 +11,7 @@ import sml.data.returning.Nothing;
 import sml.data.string.MontyString;
 import sml.data.tuple.Tuple;
 
-public class List extends StructDeclarationNode {
+public class List extends TypeDeclarationNode {
     private final static Block methodsWrittenInMonty = Parser.parse(Lexer.lex(FileIO.readFile(List.class.getResourceAsStream("methods.mt"),
             "methods.mt"), "methods.mt"));
     private Object[] array;

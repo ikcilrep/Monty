@@ -1,12 +1,12 @@
-struct Iterable;
+type Iterable;
 	iterable;
 	begin = 0;
 
-	func init iterable;
+	fn init iterable;
 		This.iterable = iterable;
 	end;
 	
-	func get index;
+	fn get index;
 		counter = 0;
 		for x in This;
 			if counter == index; => x;
@@ -15,7 +15,7 @@ struct Iterable;
 		logError("Iterable doesn't have " +  index + " element");
 	end;
 
-	func toList;
+	fn toList;
 		list = [Nothing] * length This;
 		i = 0;
 		for x in This;
@@ -25,15 +25,15 @@ struct Iterable;
 		return list;
 	end;
 	
-	func tail;
+	fn tail;
 		result = Iterable iterable;
 		result.begin = begin + 1;
 		=> result;
 
-	struct Iterator;
+	type Iterator;
 		iterator = iterable.Iterator();
 		
-		func init;
+		fn init;
 			i = 0;
 			while i != begin & iterator.hasNext();
 				iterator.next();
@@ -41,8 +41,8 @@ struct Iterable;
 			end;
 		end;
 		
-		func next; => iterator.next();
+		fn next; => iterator.next();
 		
-		func hasNext; => iterator.hasNext();
+		fn hasNext; => iterator.hasNext();
 	end;
 end;

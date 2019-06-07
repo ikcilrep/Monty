@@ -1,14 +1,14 @@
 package sml.data.string;
 
 import ast.Block;
-import ast.declarations.StructDeclarationNode;
+import ast.declarations.TypeDeclarationNode;
 import lexer.Lexer;
 import monty.FileIO;
 import parser.LogError;
 import parser.parsing.Parser;
 import sml.data.list.List;
 
-public class MontyString extends StructDeclarationNode {
+public class MontyString extends TypeDeclarationNode {
     private final static Block methodsWrittenInMonty = Parser.parse(Lexer.lex(FileIO.readFile(MontyString.class.getResourceAsStream("methods.mt"),
             "methods.mt"), "methods.mt"));
     private String string;

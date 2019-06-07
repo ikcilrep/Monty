@@ -17,10 +17,10 @@ limitations under the License.
 package sml.data;
 
 import ast.Block;
-import ast.declarations.StructDeclarationNode;
+import ast.declarations.TypeDeclarationNode;
 import sml.NativeFunctionDeclarationNode;
 
-public abstract class Method<T extends StructDeclarationNode> extends NativeFunctionDeclarationNode {
+public abstract class Method<T extends TypeDeclarationNode> extends NativeFunctionDeclarationNode {
     protected final T parent;
 
     protected Method(T parent, String name, String[] parameters) {

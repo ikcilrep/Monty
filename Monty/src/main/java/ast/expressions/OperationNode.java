@@ -268,7 +268,7 @@ public final class OperationNode extends NodeWithParent {
 
         if (isDot) {
             if (!(right.operand instanceof IdentifierNode))
-                new LogError("Variable or function can only be got from struct.", fileName, line);
+                new LogError("Variable or function can only be got from type.", fileName, line);
             return OperatorOverloading.dotOperator(leftValue, right, leftType, fileName, line);
         }
 

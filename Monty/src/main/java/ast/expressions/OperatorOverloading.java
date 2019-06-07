@@ -19,7 +19,7 @@ package ast.expressions;
 import ast.Block;
 import ast.declarations.FunctionDeclarationNode;
 import ast.declarations.LambdaDeclarationNode;
-import ast.declarations.StructDeclarationNode;
+import ast.declarations.TypeDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import parser.DataTypes;
 import parser.LogError;
@@ -398,11 +398,11 @@ class OperatorOverloading {
 
         if (builtInTypes.containsKey(rightName))
             return isInstance(leftValue, rightName);
-        if (!parent.hasStructure(rightName))
+        if (!parent.hasType(rightName))
             new LogError("There isn't any data type with name " + rightName, fileName, line);
         if (type.equals(DataTypes.OBJECT)) {
-            return parent.getStructure(rightName, fileName, line)
-                    .instanceOfMe((StructDeclarationNode) leftValue);
+            return parent.getType(rightName, fileName, line)
+                    .instanceOfMe((TypeDeclarationNode) leftValue);
         }
 
         return false;
@@ -565,18 +565,18 @@ class OperatorOverloading {
         var arguments = new Tuple(leftValue, rightValue);
         leftValue = OperationNode.getVariableValue(leftValue);
         if (leftValue instanceof Block) {
-            var struct = (Block) leftValue;
-            if (struct.hasFunction(nameOfFunction)) {
-                var operator = struct.getFunction(nameOfFunction, fileName, line);
+            var type = (Block) leftValue;
+            if (type.hasFunction(nameOfFunction)) {
+                var operator = type.getFunction(nameOfFunction, fileName, line);
                 if (operator.getParametersLength() == numberOfParameters)
                     return operator.call(arguments, fileName, line);
             }
         }
         if (rightValue instanceof Block) {
-            var struct = (Block) rightValue;
+            var type = (Block) rightValue;
             var name = "$r_" + nameOfFunction.substring(1);
-            if (struct.hasFunction(name)) {
-                var operator = struct.getFunction(name, fileName, line);
+            if (type.hasFunction(name)) {
+                var operator = type.getFunction(name, fileName, line);
                 if (operator.getParametersLength() == numberOfParameters)
                     return operator.call(arguments, fileName, line);
             }

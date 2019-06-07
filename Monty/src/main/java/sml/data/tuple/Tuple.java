@@ -1,7 +1,7 @@
 package sml.data.tuple;
 
 import ast.Block;
-import ast.declarations.StructDeclarationNode;
+import ast.declarations.TypeDeclarationNode;
 import ast.declarations.VariableDeclarationNode;
 import lexer.Lexer;
 import monty.FileIO;
@@ -12,7 +12,7 @@ import sml.io.Println;
 
 import java.util.LinkedList;
 
-public class Tuple extends StructDeclarationNode {
+public class Tuple extends TypeDeclarationNode {
     private final static Block methodsWrittenInMonty;
 
     static {

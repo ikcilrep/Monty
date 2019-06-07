@@ -47,7 +47,7 @@ public final class ToInt extends NativeFunctionDeclarationNode {
         if (toBeCasted instanceof MontyString)
             return fromString((MontyString) toBeCasted, callFileName, callLine);
         else
-            new LogError("Can't cast structure to integer", callFileName, callLine);
+            new LogError("Can't cast type to integer", callFileName, callLine);
         return null;
     }
 

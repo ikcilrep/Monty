@@ -17,7 +17,7 @@ limitations under the License.
 package sml.casts;
 
 import ast.Block;
-import ast.declarations.StructDeclarationNode;
+import ast.declarations.TypeDeclarationNode;
 import sml.NativeFunctionDeclarationNode;
 import sml.data.string.MontyString;
 import sml.data.tuple.Tuple;
@@ -31,8 +31,8 @@ public final class ToString extends NativeFunctionDeclarationNode {
     }
 
     public static MontyString toString(Object toBeCasted, String fileName, int line) {
-        if (toBeCasted instanceof StructDeclarationNode)
-            return ((StructDeclarationNode) toBeCasted).toString(fileName, line);
+        if (toBeCasted instanceof TypeDeclarationNode)
+            return ((TypeDeclarationNode) toBeCasted).toString(fileName, line);
         return new MontyString(toBeCasted.toString());
     }
 

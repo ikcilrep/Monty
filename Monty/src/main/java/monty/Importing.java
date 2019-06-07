@@ -133,8 +133,8 @@ public class Importing {
             if (doesContainFunction) {
                 var function = importedBlock.getNamedFunction(name, fileName, line);
                 if (Character.isUpperCase(name.charAt(0))) {
-                    var struct = importedBlock.getStructure(name);
-                    namespace.addStruct(struct, (Constructor) function, struct.getFileName(), struct.getLine());
+                    var type = importedBlock.getType(name);
+                    namespace.addType(type, (Constructor) function, type.getFileName(), type.getLine());
                 } else
                     namespace.addFunction(function, function.getFileName(), function.getLine());
             }

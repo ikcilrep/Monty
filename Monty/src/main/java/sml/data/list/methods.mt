@@ -1,4 +1,4 @@
-func $eq this other;
+fn $eq this other;
     println this, other;
     if !(other instanceof List) | other.length() != this.length();
         return false;
@@ -12,17 +12,17 @@ func $eq this other;
     end;
     => true;
 
-func $neq this other; => !(this == other);
+fn $neq this other; => !(this == other);
 
-func $r_eq other this; => this == other;
+fn $r_eq other this; => this == other;
 
-func $r_neq other this; => this != other;
+fn $r_neq other this; => this != other;
 
-func $r_mul other this; => this * other;
+fn $r_mul other this; => this * other;
 
-func $r_a_mul other this; => this *= other;
+fn $r_a_mul other this; => this *= other;
 
-func replace toBeReplaced replacement;
+fn replace toBeReplaced replacement;
     i = 0;
     for x in This;
         if toBeReplaced == x;
@@ -32,7 +32,7 @@ func replace toBeReplaced replacement;
     end;
     => This;
 
-func find value;
+fn find value;
     i = 0;
     for x in This;
         if value == x; => i;
@@ -40,11 +40,11 @@ func find value;
     end;
     => -1;
 
-func remove value;
+fn remove value;
     pop find value;
     => This;
 
-func count value;
+fn count value;
     counter = 0;
     for x in This;
         if value == x;
@@ -53,7 +53,7 @@ func count value;
     end;
     => counter;
 
-func sublist first last;
+fn sublist first last;
     result = [Nothing] * (last - first + 1);
     i = 0;
     while first <= last;
@@ -63,11 +63,11 @@ func sublist first last;
     end;
     => result;
 
-struct Iterator;
+type Iterator;
     counter = 0;
-    func hasNext; => counter < length();
+    fn hasNext; => counter < length();
 
-    func next;
+    fn next;
         result = get counter;
         counter += 1;
         => result;

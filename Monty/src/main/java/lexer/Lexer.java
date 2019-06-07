@@ -67,10 +67,10 @@ public final class Lexer {
                 return TokenTypes.ELSE_KEYWORD;
             case "end":
                 return TokenTypes.END_KEYWORD;
-            case "func":
-                return TokenTypes.FUNC_KEYWORD;
-            case "struct":
-                return TokenTypes.STRUCT_KEYWORD;
+            case "fn":
+                return TokenTypes.FN_KEYWORD;
+            case "type":
+                return TokenTypes.TYPE_KEYWORD;
             case "return":
                 return TokenTypes.RETURN_KEYWORD;
             case "for":

@@ -4,16 +4,16 @@ import sml.NativeFunctionDeclarationNode;
 import sml.data.tuple.Tuple;
 
 public class Constructor extends NativeFunctionDeclarationNode {
-    private final StructDeclarationNode struct;
+    private final TypeDeclarationNode type;
 
-    public Constructor(StructDeclarationNode struct) {
-        super(struct.getName(), FunctionDeclarationNode.EMPTY_PARAMETERS);
-        this.struct = struct;
+    public Constructor(TypeDeclarationNode type) {
+        super(type.getName(), FunctionDeclarationNode.EMPTY_PARAMETERS);
+        this.type = type;
     }
 
     @Override
     public Object call(Tuple arguments, String callFileName, int callLine) {
-        var newStruct = struct.getParent().getStructure(struct.getName(), callFileName, callLine).copy();
+        var newStruct = type.getParent().getType(type.getName(), callFileName, callLine).copy();
         newStruct.addThisVariable(callFileName, callLine);
         newStruct.incrementNumber();
         newStruct.run();
@@ -26,7 +26,7 @@ public class Constructor extends NativeFunctionDeclarationNode {
 
     @Override
     public Constructor copy() {
-        return new Constructor(struct);
+        return new Constructor(type);
     }
 
 

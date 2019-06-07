@@ -1,4 +1,4 @@
-func $eq this other;
+fn $eq this other;
     if !(other instanceof Tuple) | other.length() != this.length(); => false;
     i = -1;
     for x in this;
@@ -6,18 +6,18 @@ func $eq this other;
     end;
     => true;
 
-func $neq this other; => !(this == other);
+fn $neq this other; => !(this == other);
 
-func $r_eq other this; => this == other;
+fn $r_eq other this; => this == other;
 
-func $r_neq other this; => this != other;
+fn $r_neq other this; => this != other;
 
 
-struct Iterator;
+type Iterator;
     counter = 0;
-    func hasNext; => counter < length();
+    fn hasNext; => counter < length();
 
-    func next;
+    fn next;
         result = get counter;
         counter += 1;
         => result;

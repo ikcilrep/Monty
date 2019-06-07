@@ -32,7 +32,7 @@ public class Block extends NodeWithParent {
     private ArrayList<RunnableNode> children = new ArrayList<>();
     private HashMap<String, NamedFunctionDeclarationNode> functions = new HashMap<>();
     private HashMap<String, VariableDeclarationNode> variables = new HashMap<>();
-    private HashMap<String, StructDeclarationNode> structs = new HashMap<>();
+    private HashMap<String, TypeDeclarationNode> types = new HashMap<>();
     private HashMap<String, Block> namespaces = new HashMap<>();
 
     public Block(Block parent) {
@@ -55,16 +55,12 @@ public class Block extends NodeWithParent {
         this.functions = functions;
     }
 
-    public HashMap<String, VariableDeclarationNode> getVariables() {
-        return variables;
+    protected HashMap<String, TypeDeclarationNode> getTypes() {
+        return types;
     }
 
-    protected HashMap<String, StructDeclarationNode> getStructs() {
-        return structs;
-    }
-
-    protected void setStructs(HashMap<String, StructDeclarationNode> structs) {
-        this.structs = structs;
+    protected void setTypes(HashMap<String, TypeDeclarationNode> types) {
+        this.types = types;
     }
 
     public void addChild(RunnableNode child) {
@@ -95,17 +91,17 @@ public class Block extends NodeWithParent {
         addFunction(function, token.getFileName(), token.getLine());
     }
 
-    public void addStruct(StructDeclarationNode structure, Constructor constructor, String fileName, int line) {
-        String name = structure.getName();
-        structure.setFileName(fileName);
-        structure.setLine(line);
-        if (hasStructure(name)) {
-            var existing_structure = structs.get(name);
-            int[] lines = {existing_structure.getLine(), line};
-            String[] fileNames = {existing_structure.getFileName(), fileName};
-            new LogError("Struct " + name + " already exists", fileNames, lines);
+    public void addType(TypeDeclarationNode type, Constructor constructor, String fileName, int line) {
+        String name = type.getName();
+        type.setFileName(fileName);
+        type.setLine(line);
+        if (hasType(name)) {
+            var existing_type = types.get(name);
+            int[] lines = {existing_type.getLine(), line};
+            String[] fileNames = {existing_type.getFileName(), fileName};
+            new LogError("Type with name" + name + " already exists", fileNames, lines);
         }
-        structs.put(name, structure);
+        types.put(name, type);
         functions.put(name, constructor);
     }
 
@@ -145,11 +141,11 @@ public class Block extends NodeWithParent {
     public void concat(Block block, String fileName, int line) {
         block.run();
 
-        var structSet = block.structs.entrySet();
-        for (Map.Entry<String, StructDeclarationNode> entry : structSet) {
-            var struct = entry.getValue();
-            struct.setParent(this);
-            addStruct(struct, new Constructor(struct), fileName, line);
+        var structSet = block.types.entrySet();
+        for (Map.Entry<String, TypeDeclarationNode> entry : structSet) {
+            var type = entry.getValue();
+            type.setParent(this);
+            addType(type, new Constructor(type), fileName, line);
         }
 
         var functionsSet = block.functions.entrySet();
@@ -179,11 +175,11 @@ public class Block extends NodeWithParent {
         copied.functions = functions;
         copied.variables = variables;
         copied.children = children;
-        copied.structs = structs;
+        copied.types = types;
         copied.namespaces = namespaces;
         copied.copyChildren();
         copied.copyFunctions();
-        copied.copyStructs();
+        copied.copyTypes();
         copied.copyVariables();
         copied.copyNamespaces();
         return copied;
@@ -222,15 +218,15 @@ public class Block extends NodeWithParent {
         this.functions = functions;
     }
 
-    public void copyStructs() {
-        var structs = new HashMap<String, StructDeclarationNode>();
-        for (Map.Entry<String, StructDeclarationNode> entry : this.structs.entrySet()) {
-            var struct = entry.getValue().copy();
-            struct.setParent(this);
-            structs.put(entry.getKey(), struct);
-            this.functions.put(struct.getName(), new Constructor(struct));
+    public void copyTypes() {
+        var types = new HashMap<String, TypeDeclarationNode>();
+        for (Map.Entry<String, TypeDeclarationNode> entry : this.types.entrySet()) {
+            var type = entry.getValue().copy();
+            type.setParent(this);
+            types.put(entry.getKey(), type);
+            this.functions.put(type.getName(), new Constructor(type));
         }
-        this.structs = structs;
+        this.types = types;
     }
 
     public void copyNamespaces() {
@@ -285,20 +281,20 @@ public class Block extends NodeWithParent {
         return ToString.toString(getVariable(name, fileName, line).getValue(), fileName, line);
     }
 
-    public StructDeclarationNode getStructure(String name) {
-        if (hasStructure(name))
-            return structs.get(name);
+    public TypeDeclarationNode getType(String name) {
+        if (hasType(name))
+            return types.get(name);
         if (parent == null)
-            new LogError("There isn't any struct with name:\t" + name);
-        return parent.getStructure(name);
+            new LogError("There isn't any type with name:\t" + name);
+        return parent.getType(name);
     }
 
-    public StructDeclarationNode getStructure(String name, String fileName, int line) {
-        if (hasStructure(name))
-            return structs.get(name);
+    public TypeDeclarationNode getType(String name, String fileName, int line) {
+        if (hasType(name))
+            return types.get(name);
         if (parent == null)
-            new LogError("There isn't any struct with name:\t" + name, fileName, line);
-        return parent.getStructure(name, fileName, line);
+            new LogError("There isn't any type with name:\t" + name, fileName, line);
+        return parent.getType(name, fileName, line);
     }
 
     public VariableDeclarationNode getVariable(String name, String fileName, int line) {
@@ -352,8 +348,8 @@ public class Block extends NodeWithParent {
         return functions.containsKey(name);
     }
 
-    public boolean hasStructure(String name) {
-        return structs.containsKey(name);
+    public boolean hasType(String name) {
+        return types.containsKey(name);
     }
 
     public boolean hasVariable(String name) {

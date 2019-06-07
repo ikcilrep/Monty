@@ -17,7 +17,7 @@ limitations under the License.
 package ast.statements;
 
 import ast.Block;
-import ast.declarations.StructDeclarationNode;
+import ast.declarations.TypeDeclarationNode;
 import ast.expressions.OperationNode;
 import sml.casts.ToBoolean;
 import sml.data.returning.BreakType;
@@ -38,15 +38,15 @@ public final class ForStatementNode extends Block {
     public static boolean isIterable(Object toCheck, String callFileName, int callLine) {
         if (toCheck instanceof String)
             return true;
-        if (!(toCheck instanceof StructDeclarationNode)) {
+        if (!(toCheck instanceof TypeDeclarationNode)) {
             return false;
         }
-        var structToCheck = (StructDeclarationNode) toCheck;
-        if (!(structToCheck.hasFunction("Iterator") || structToCheck.hasStructure("Iterator"))) {
+        var structToCheck = (TypeDeclarationNode) toCheck;
+        if (!(structToCheck.hasFunction("Iterator") || structToCheck.hasType("Iterator"))) {
             return false;
         }
 
-        var iteratorStruct = structToCheck.getStructure("Iterator");
+        var iteratorStruct = structToCheck.getType("Iterator");
         if (iteratorStruct.hasFunction("init") && iteratorStruct.getFunction("init", callFileName, callLine).getParametersLength() > 0) {
             return false;
         }
@@ -76,7 +76,7 @@ public final class ForStatementNode extends Block {
         var fileName = getFileName();
         var line = getLine();
         if (isIterable(toBeIterated, getFileName(), getLine())) {
-            var iterator = (StructDeclarationNode) ((StructDeclarationNode) toBeIterated).getFunction("Iterator", getFileName(), getLine())
+            var iterator = (TypeDeclarationNode) ((TypeDeclarationNode) toBeIterated).getFunction("Iterator", getFileName(), getLine())
                     .call(OperationNode.emptyTuple, getFileName(), getLine());
             var hasNext = iterator.getFunction("hasNext", getFileName(), getLine());
             var next = iterator.getFunction("next", getFileName(), getLine());

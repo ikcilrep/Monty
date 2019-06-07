@@ -47,7 +47,7 @@ public final class ToBoolean extends NativeFunctionDeclarationNode {
         if (toBeCasted instanceof MontyString)
             return fromString((MontyString) toBeCasted);
         else
-            new LogError("Can't cast structure to boolean", callFileName, callLine);
+            new LogError("Can't cast type to boolean", callFileName, callLine);
         return false;
     }
 

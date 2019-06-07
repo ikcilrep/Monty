@@ -48,7 +48,7 @@ public final class ToFloat extends NativeFunctionDeclarationNode {
         if (toBeCasted instanceof MontyString)
             return fromString((MontyString) toBeCasted, callFileName, callLine);
         else
-            new LogError("Can't cast structure to real", callFileName, callLine);
+            new LogError("Can't cast type to real", callFileName, callLine);
         return null;
     }
 

@@ -116,7 +116,7 @@ public abstract class Recognizer {
     }
 
     public static boolean isFunctionDeclaration(ArrayList<Token> tokens) {
-        var isFirstTokenFuncKeyword = tokens.get(0).getType().equals(TokenTypes.FUNC_KEYWORD);
+        var isFirstTokenFuncKeyword = tokens.get(0).getType().equals(TokenTypes.FN_KEYWORD);
         var isSecondTokenIdentifier = tokens.size() > 1
                 && tokens.get(1).getType().equals(TokenTypes.IDENTIFIER);
         if (!isFirstTokenFuncKeyword)
@@ -192,10 +192,10 @@ public abstract class Recognizer {
     }
 
     public static boolean isStructDeclaration(ArrayList<Token> tokens) {
-        if (!tokens.get(0).getType().equals(TokenTypes.STRUCT_KEYWORD))
+        if (!tokens.get(0).getType().equals(TokenTypes.TYPE_KEYWORD))
             return false;
         if (tokens.size() == 1 || !tokens.get(1).getType().equals(TokenTypes.IDENTIFIER))
-            new LogError("Expected name after \"struct\" keyword.", tokens.get(tokens.size() > 1 ? 1 : 0));
+            new LogError("Expected name after \"type\" keyword.", tokens.get(tokens.size() > 1 ? 1 : 0));
 
         return true;
     }

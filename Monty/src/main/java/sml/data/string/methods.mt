@@ -1,20 +1,20 @@
-struct Iterator;
+type Iterator;
     counter = 0;
-    func hasNext; => counter < length();
+    fn hasNext; => counter < length();
 
-    func next;
+    fn next;
         result = charAt counter;
         counter += 1;
         => result;
 end;
 
 
-func $neq this other; => !(this == other);
+fn $neq this other; => !(this == other);
 
-func $r_eq other this; => this == other;
+fn $r_eq other this; => this == other;
 
-func $r_neq other this; => this != other;
+fn $r_neq other this; => this != other;
 
-func $r_mul times this; => this * times;
+fn $r_mul times this; => this * times;
 
-func $r_a_mul times this; => this *= times;
+fn $r_a_mul times this; => this *= times;

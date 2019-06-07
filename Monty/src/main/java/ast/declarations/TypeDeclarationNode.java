@@ -25,48 +25,48 @@ import sml.data.string.MontyString;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class StructDeclarationNode extends Block {
+public class TypeDeclarationNode extends Block {
     private final static HashMap<Integer, Integer> numbers = new HashMap<>();
     private static int actualStructNumber = -1;
     private final String name;
     private int structNumber;
     private int instanceNumber;
 
-    public StructDeclarationNode(Block parent, String name) {
+    public TypeDeclarationNode(Block parent, String name) {
         super(parent);
         this.name = name;
         incrementStructNumber();
         numbers.put(structNumber, -1);
     }
 
-    private StructDeclarationNode(Block parent, String name, int structNumber, ArrayList<RunnableNode> children,
-                                  HashMap<String, NamedFunctionDeclarationNode> functions,
-                                  HashMap<String, StructDeclarationNode> structs, HashMap<String, Block> namespaces) {
+    private TypeDeclarationNode(Block parent, String name, int structNumber, ArrayList<RunnableNode> children,
+                                HashMap<String, NamedFunctionDeclarationNode> functions,
+                                HashMap<String, TypeDeclarationNode> structs, HashMap<String, Block> namespaces) {
         super(parent);
         this.name = name;
         this.structNumber = structNumber;
         setChildren(children);
         setFunctions(functions);
-        setStructs(structs);
+        setTypes(structs);
         setNamespaces(namespaces);
         numbers.put(structNumber, -1);
     }
 
-    private void addNewStruct(Block block, String fileName, int line) {
-        block.addStruct(this, new Constructor(this), fileName, line);
+    private void addNewType(Block block, String fileName, int line) {
+        block.addType(this, new Constructor(this), fileName, line);
     }
 
-    public void addNewStruct(Block block, Token token) {
-        addNewStruct(block, token.getFileName(), token.getLine());
+    public void addNewType(Block block, Token token) {
+        addNewType(block, token.getFileName(), token.getLine());
     }
 
     @Override
-    public StructDeclarationNode copy() {
-        StructDeclarationNode copied;
-        copied = new StructDeclarationNode(getParent(), name, structNumber, getChildren(), getFunctions(), getStructs(), getNamespaces());
+    public TypeDeclarationNode copy() {
+        TypeDeclarationNode copied;
+        copied = new TypeDeclarationNode(getParent(), name, structNumber, getChildren(), getFunctions(), getTypes(), getNamespaces());
         copied.copyChildren();
         copied.copyFunctions();
-        copied.copyStructs();
+        copied.copyTypes();
         copied.copyNamespaces();
         return copied;
     }
@@ -87,7 +87,7 @@ public class StructDeclarationNode extends Block {
         this.structNumber = ++actualStructNumber;
     }
 
-    public boolean instanceOfMe(StructDeclarationNode other) {
+    public boolean instanceOfMe(TypeDeclarationNode other) {
         return other.structNumber == structNumber;
     }
 
