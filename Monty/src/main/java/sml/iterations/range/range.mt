@@ -11,11 +11,8 @@ type Range;
         counter = 0;
         fn hasNext;
             counter += step;
-            return counter < max;
-        end;
+            => counter < max;
 
-        fn next;
-            return counter;
-        end;
+        fn next; => counter;
     end;
 end;

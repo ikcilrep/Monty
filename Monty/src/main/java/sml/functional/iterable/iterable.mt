@@ -22,8 +22,7 @@ type Iterable;
 			list.set(i, x);
 			i += 1;
 		end;
-		return list;
-	end;
+		=> list;
 	
 	fn tail;
 		result = Iterable iterable;

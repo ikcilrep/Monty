@@ -1,13 +1,8 @@
 fn $eq this other;
-    println this, other;
-    if !(other instanceof List) | other.length() != this.length();
-        return false;
-    end;
+    if !(other instanceof List) | other.length() != this.length(); => false;
     i = 0;
     for x in this;
-        if x != other.get i;
-            return false;
-        end;
+        if x != other.get i; => false;
         i += 1;
     end;
     => true;
@@ -41,7 +36,7 @@ fn find value;
     => -1;
 
 fn remove value;
-    pop find value;
+    pop(find value);
     => This;
 
 fn count value;
