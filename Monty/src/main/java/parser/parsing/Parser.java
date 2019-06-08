@@ -72,7 +72,7 @@ public final class Parser {
                 } else if (Recognizer.isArrowStatement(tokensBeforeSemicolon)) {
                     AdderToBlock.addReturnStatement(block, tokensBeforeSemicolon);
                     block = endAndReturnParent(block,"Arrow statement returns value and ends block," +
-                            " but there is nothing to end!", tokens.get(0));
+                            " but there is nothing to end!", tokensBeforeSemicolon.get(0));
                 } else if (Recognizer.isEndKeyword(tokensBeforeSemicolon))
                     block = endAndReturnParent(block,"There is nothing to end!", tokens.get(0));
                 else if (Recognizer.isExpression(tokensBeforeSemicolon, 0, tokensBeforeSemicolon.size())) {

@@ -61,10 +61,6 @@ public abstract class FunctionDeclarationNode extends Node {
         this.body = body;
     }
 
-    public String[] getParameters() {
-        return parameters;
-    }
-
     public int getParametersLength() {
         return parameters.length;
     }

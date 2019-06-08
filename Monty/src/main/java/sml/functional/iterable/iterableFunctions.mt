@@ -1,9 +1,9 @@
 fn filter function iterable;
 	list = [];
 	for x in iterable;
-		if function x; => list.add x;
+		doIf(list.add, x,function x);
 	end;
-	=> Iterable list;
+	=> list;
 
 fn map function iterable;
 	list = [Nothing] * length iterable;
@@ -12,7 +12,7 @@ fn map function iterable;
 		list.set(i, function x);
 		i += 1;
 	end;
-	=> Iterable list;
+	=> list;
 
 
 fn length iterable;
@@ -28,14 +28,18 @@ fn isEmpty iterable;
 
 fn foldl function start iterable;
 	iterator = iterable.Iterator();
-	function recFoldl start;
+	fn recFoldl start;
 	    if iterator.hasNext(); => recFoldl(function(start,iterator.next()));
 	    => start;
 	=> recFoldl(start);
 
 fn foldr function start iterable;
 	iterator = iterable.Iterator();
-	function recFoldr start;
+	fn recFoldr start;
 	    if iterator.hasNext(); => function(iterator.next(), recFoldr(start));
 	    => start;
 	=> recFoldr(start);
+
+fn doIf function argument condition;
+    if condition; => function argument;
+end;

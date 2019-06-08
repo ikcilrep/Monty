@@ -38,7 +38,7 @@ public final class Sml {
     public static String[] paths;
 
     static {
-        String[] paths_ = {"iterations/range/range.mt", "functional/iterable/iterable.mt",
+        String[] paths_ = {"iterations/range/range.mt",
                 "functional/iterable/iterableFunctions.mt"};
         NUMBER_OF_FILES = (short) paths_.length;
         paths = new String[NUMBER_OF_FILES];
